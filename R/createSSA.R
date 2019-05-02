@@ -277,6 +277,8 @@ print.summary.SSA <- function(x,
 #' ## Create spatial plots.
 #' plot(myModel, what = "fixed", plotType = "spatial")
 #'
+#' @importFrom grDevices topo.colors
+#'
 #' @export
 plot.SSA <- function(x,
                      ...,
@@ -554,15 +556,17 @@ fieldPlot <- function(plotDat,
 #' A pdf report will be created containing a summary of the results of the
 #' fitted model. Simultaneously the same report will be created as a tex file.
 #'
-#' @inheritParams report.AMMI
-#'
 #' @param x An object of class SSA.
+#' @param ... Further arguments passed to the report function.
 #' @param trial A character string indicating the trial to be reported. If
 #' \code{NULL} and \code{SSA} contains only one trial, that trial is reported.
 #' @param trait A character string indicating the trait to be reported. If
 #' \code{NULL} and \code{SSA} contains only one trait, that trait is reported.
 #' @param descending Should the trait be ordered in descending order? Set to
 #' \code{FALSE} if low values of the trait indicate better performance.
+#' @param outfile A character string, the name and location of the output .pdf
+#' and .tex file for the report. If \code{NULL}, a report with a default name
+#' will be created in the current working directory.
 #' @param what A character string indicating whether the model with genotype
 #' fixed or genotype random should be reported. Can be omitted if only one
 #' model has been fitted.
@@ -671,7 +675,7 @@ report.SSA <- function(x,
 #' ## Create cross object with BLUEs from myModel using genotypic information
 #' ## from markers.csv in the package.
 #' cross <- SSAtoCross(myModel, genoFile = system.file("extdata", "markers.csv",
-#'                                                     package = "RAP"))
+#'                                                     package = "statgenSSA"))
 #'
 #' @export
 SSAtoCross <- function(SSA,

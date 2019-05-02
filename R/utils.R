@@ -220,10 +220,7 @@ seKurtosis <- function(n) {
 #' @param x An \code{R} object
 #' @param ... Further arguments to be passed on to specific report functions.
 #'
-#' @seealso \code{\link{report.SSA}}, \code{\link{report.varComp}},
-#' \code{\link{report.AMMI}}, \code{\link{report.FW}},
-#' \code{\link{report.stability}}, \code{\link{report.cross}},
-#' \code{\link{report.QTLDet}}, \code{\link{report.multiQTL}}
+#' @seealso \code{\link{report.SSA}}
 #'
 #' @export
 report <- function(x,
@@ -281,7 +278,7 @@ createReport <- function(x,
   ## Construct the output name of the .tex file
   outTex <- file.path(outDir, paste0(outBase, "tex"))
   ## Get the report file from the directory where the package is installed.
-  reportFile <- system.file("reports", reportName, package = "RAP")
+  reportFile <- system.file("reports", reportName, package = "statgenSSA")
   ## Save knitr options for reset when exiting function.
   knitrOptsOrig <- knitr::opts_chunk$get()
   on.exit(knitr::opts_chunk$set(knitrOptsOrig))
@@ -327,49 +324,13 @@ createReport <- function(x,
   ## A .csv file might be created in the package directory.
   ## This file is moved to the proper output location.
   if (file.exists(system.file("reports", paste0(outBase, "csv"),
-                              package = "RAP"))) {
-    file.copy(system.file("reports", paste0(outBase, "csv"), package = "RAP"),
+                              package = "statgenSSA"))) {
+    file.copy(system.file("reports", paste0(outBase, "csv"),
+                          package = "statgenSSA"),
               file.path(outDir, paste0(outBase, "csv")), overwrite = TRUE)
-    unlink(system.file("reports", paste0(outBase, "csv"), package = "RAP"))
+    unlink(system.file("reports", paste0(outBase, "csv"),
+                       package = "statgenSSA"))
   }
-}
-
-#' Function for extracting the name of a qtl combining the peaks from a QTLDet
-#' object and the position of the qtl on the chromosome.
-#'
-#' @keywords internal
-qtlPosToName <- function(chrPos,
-                         peaks) {
-  ## chromosome positions are given in chr@position + .a, .d or nothing.
-  ## Extract chromosome.
-  chr <- sapply(X = chrPos, function(cp) {
-    unlist(strsplit(cp, "@"))[1]
-  })
-  ## Extract chromosome position in two steps. First take the part behind @.
-  ## Then remove everything behind the dot.
-  pos <- as.numeric(sapply(X = chrPos, function(cp) {
-    regmatches(x = unlist(strsplit(cp, "@"))[2],
-               gregexpr("[[:digit:]]+\\.*[[:digit:]]",
-                        unlist(strsplit(cp, "@"))[2]))[[1]]
-  }))
-  ## Extract the extesion, i.e. the bit after the last dot.
-  posExt <- sapply(X = chrPos, function(cp) {
-    sub(pattern = "\\d*(\\.\\d)", replacement = "",
-        x = unlist(strsplit(cp, "@"))[2])
-  })
-  chrPosDf <- data.frame(chr, pos, posExt, stringsAsFactors = FALSE)
-  #mapTot <- qtl::pull.map(cross, as.table = TRUE)[, 1:2]
-  mapTot <- peaks[ , c("chr", "pos")]
-  mapTot$mrkNames <- rownames(mapTot)
-  ## QTLDetection rounds positions to 1 digit in the names.
-  ## For a proper match position in the peaks has to be rounded to 1
-  ## digit as well.
-  mapTot$pos <- round(mapTot$pos, digits = 1)
-  chrPosMap <- merge(chrPosDf, mapTot, by = c("chr", "pos"), all.x = TRUE)
-  chrPosMap[is.na(chrPosMap$mrkNames), "mrkNames"] <-
-    paste0("c", chrPosMap[is.na(chrPosMap$mrkNames), "chr"], ".loc",
-           chrPosMap[is.na(chrPosMap$mrkNames), "pos"])
-  return(list(chrNames = chrPosMap$mrkNames, ext = chrPosMap$posExt))
 }
 
 #' Function for escaping special LaTeX characters
@@ -477,32 +438,6 @@ extractVarComp <- function(model,
                      varComp[resRow:nrow(varComp), , drop = FALSE])
   }
   return(varComp)
-}
-
-#' Helper function for printing anova table in reports.
-#' @keywords internal
-printAnova <- function(aovTab,
-                       title = NULL) {
-  ## Add significance stars
-  aovTab[, ncol(aovTab) + 1] <-
-    symnum(x = aovTab[, ncol(aovTab)], corr = FALSE, na = FALSE,
-           cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1),
-           symbols = c("***", "**", "*", ".", " "))
-  colnames(aovTab)[ncol(aovTab)] <- ""
-  legendText <- paste("Significance codes:",
-                      attr(x = aovTab[, ncol(aovTab)], which = "legend"),
-                      "} \\\\")
-  print(xtable::xtable(x = aovTab, caption = title,
-                       label = paste0("anova", title),
-                       align = c("l", "r", "r", "r", "r", "r", "l"),
-                       digits = c(0, 0, 0, 0, 2, -2, 0),
-                       display = c("s", "f", "f", "f", "f", "e", "s")),
-        caption.placement = "top",
-        latex.environments = "flushleft",
-        include.rownames = TRUE, include.colnames = TRUE,
-        add.to.row = list(pos = list(nrow(aovTab)),
-                          command = paste0("\\hline  \\multicolumn{",
-                                           ncol(aovTab), "}{c}{", legendText)))
 }
 
 calcPlotBorders <- function(trDat,

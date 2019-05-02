@@ -107,11 +107,11 @@ test_that("function SSAtoCross functions properly", {
                         what = "fixed")
   expect_error(SSAtoCross(SSA = myModel, trial = "HEAT06",
                           genoFile = system.file("extdata", "markers.csv",
-                                                 package = "RAP")),
+                                                 package = "statgenSSA")),
                "single character string defining a trial in SSA")
   cross <- SSAtoCross(SSA = myModel,
                       genoFile = system.file("extdata", "markers.csv",
-                                             package = "RAP"))
+                                             package = "statgenSSA"))
   expect_is(cross, "cross")
   expect_is(cross$pheno, "data.frame")
   expect_equal(dim(cross$pheno), c(169, 2))

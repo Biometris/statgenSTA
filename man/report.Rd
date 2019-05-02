@@ -15,8 +15,5 @@ report(x, ...)
 Base method for creating a .pdf and .tex report from an \code{R} object.
 }
 \seealso{
-\code{\link{report.SSA}}, \code{\link{report.varComp}},
-\code{\link{report.AMMI}}, \code{\link{report.FW}},
-\code{\link{report.stability}}, \code{\link{report.cross}},
-\code{\link{report.QTLDet}}, \code{\link{report.multiQTL}}
+\code{\link{report.SSA}}
 }

@@ -1,5 +1,5 @@
 ---
-title: "Modeling field trials using RAP"
+title: "Modeling field trials using statgenSSA"
 author: "Bart-Jan van Rossum"
 date: "`r Sys.Date()`"
 output: 
@@ -8,7 +8,7 @@ output:
     number_sections: true
 bibliography: bibliography.bib
 vignette: >
-  %\VignetteIndexEntry{Modeling field trials using RAP}
+  %\VignetteIndexEntry{Modeling field trials using statgenSSA}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,12 +19,12 @@ collapse = TRUE,
 comment = "#>",
 fig.dim = c(6, 4)
 )
-library(RAP)
+library(statgenSSA)
 ```
 
-# The RAP Package  
+# The statgenSSA Package  
 
-The RAP package is developed as an easy-to-use package for analyzing data of 
+The statgenSSA package is developed as an easy-to-use package for analyzing data of 
 plant breeding experiments with many options for plotting and reporting 
 the results of the analyses.  
 
@@ -43,7 +43,7 @@ modeling engines and extract the results from the models.
 # Data preparation
 
 The first step when modeling field trial data or performing a GxE analysis with 
-the RAP package is creating an object of class `TD` (Trial Data). This object is used by the RAP package for performing most analyses.  
+the statgenSSA package is creating an object of class `TD` (Trial Data). This object is used by the statgenSSA package for performing most analyses.  
 
 ## Creating a `TD` object
 
@@ -374,7 +374,7 @@ plot(modWheatSp, plotType = "spatial")
 
 ## Model reports
 
-As with many objects in the RAP package there is a `report` function available 
+As with many objects in the statgenSSA package there is a `report` function available 
 for `SSA` objects. This `report` function creates a pdf report describing 
 the main results of the fitted model. Also the tex file and figures used for generating
 the pdf report are saved. By editing the tex file it is possible to modify the report to ones needs, creating high flexibility.  

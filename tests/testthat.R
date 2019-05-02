@@ -1,4 +1,4 @@
 library(testthat)
-library(RAP)
+library(statgenSSA)
 
-test_check("RAP")
+test_check("statgenSSA")

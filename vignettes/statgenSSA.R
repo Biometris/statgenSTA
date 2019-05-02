@@ -4,7 +4,7 @@ collapse = TRUE,
 comment = "#>",
 fig.dim = c(6, 4)
 )
-library(RAP)
+library(statgenSSA)
 
 ## ----createTD------------------------------------------------------------
 ## Create a TD object containing the data from Santa Rosa.
@@ -80,30 +80,27 @@ plot(wheatTD, plotType = "cor", traits = "GY")
 
 ## ----fitSp, message=FALSE------------------------------------------------
 ## Fit a single trial model.
-modWheatSp <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY",
-                    design = "res.rowcol")
+modWheatSp <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", design = "res.rowcol")
 
 ## ----fitSpSm, message=FALSE----------------------------------------------
 ## Fit a single trial model with genotype as random effect.
-modWheatSp2 <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY",
+modWheatSp2 <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", 
                      what = "random", design = "res.rowcol")
 
 ## ----fitSpCtr, message=FALSE---------------------------------------------
 ## Fit a spatial single trial model using SpATS. 
 ## Manually specify the number of segments for rows and columns.
-modWheatSp3 <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY",
+modWheatSp3 <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", 
                      design = "res.rowcol", control = list(nSeg = c(20, 20)))
 
 ## ----fitAs, message=FALSE, results='hide'--------------------------------
 if (requireNamespace("asreml", quietly = TRUE)) {
   ## Fit a spatial single trial model using asreml.
-  modWheatAs <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY",
-                      design = "res.rowcol", trySpatial = TRUE,
-                      engine = "asreml", control = list(criterion = "BIC"))
+  modWheatAs <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", design = "res.rowcol", trySpatial = TRUE, engine = "asreml", control = list(criterion = "BIC"))
 }
 
 ## ----spatCh--------------------------------------------------------------
-if (requireNamespace("asreml", quietly = TRUE)) {
+if (exists("modWheatAs")) {
   ## Overview of fitted models
   print(modWheatAs$SR_FI_11$sumTab$GY, digits = 2)
 }  
