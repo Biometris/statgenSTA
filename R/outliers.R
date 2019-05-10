@@ -95,6 +95,7 @@ outlierSSA <- function(SSA,
                                  dimnames = list(NULL, traits)))
   outTrait <- setNames(vector(mode = "list", length = length(traits)), traits)
   for (trait in traits) {
+    stdResTr <- stdRes
     ## Compute limit value for residuals.
     if (is.null(rLimit)) {
       rLimit <- min(max(2, qnorm(p = 1 - 0.5 / rDf[trait])), 4)
@@ -103,15 +104,15 @@ outlierSSA <- function(SSA,
     datTr <- datTr[!colnames(datTr) %in% setdiff(traits, trait)]
     ## Compute outliers.
     ## Set missing values to 0 to prevent problems when comparing to rLimit.
-    stdRes[is.na(stdRes[[trait]]), trait] <- 0
-    outVals <- stdRes[abs(stdRes[[trait]]) > rLimit, trait]
+    stdResTr[is.na(stdResTr[[trait]]), trait] <- 0
+    outVals <- stdResTr[abs(stdResTr[[trait]]) > rLimit, trait]
     if (length(outVals > 0)) {
       ## Fill indicator column for current trait.
-      indicator[[trait]] <- abs(stdRes[[trait]]) > rLimit
+      indicator[[trait]] <- abs(stdResTr[[trait]]) > rLimit
       ## Rename column for easier joining.
-      colnames(stdRes)[colnames(stdRes) == trait] <- "res"
+      colnames(stdResTr)[colnames(stdResTr) == trait] <- "res"
       ## Create data.frame with outliers for current trait.
-      outTr <- cbind(datTr, stdRes["res"])
+      outTr <- cbind(datTr, stdResTr["res"])
       if (!is.null(commonFactors)) {
         ## If commonFactors are given merge to data.
         outTr <- unique(merge(x = outTr,
