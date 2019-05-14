@@ -6,4 +6,5 @@
 .gitlab-ci.yml
 .gitlab-ci.R
 ^README\.Rmd$
-^installed_deps$
+^.apt$
+^ci
