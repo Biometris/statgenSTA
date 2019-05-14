@@ -926,21 +926,24 @@ plot.TD <- function(x,
       corKeep <- sapply(X = 1:ncol(corMat), FUN = function(i) {
         any(!is.na(corMat[, i]))
       })
-      corMat <- corMat[corKeep, corKeep]
+      corMat <- corMat[corKeep, corKeep, drop = FALSE]
       ## Determine ordering according to clustering of trials.
-      corClust <- hclust(as.dist(1 - corMat), method = "ward.D2")
-      ordClust <- order.dendrogram(as.dendrogram(corClust))
-      ## Reorder according to clusters.
-      corMat <- corMat[ordClust, ordClust]
+      ## Only relevant when there are at least 2 trials.
+      if (length(corMat) > 1) {
+        corClust <- hclust(as.dist(1 - corMat), method = "ward.D2")
+        ordClust <- order.dendrogram(as.dendrogram(corClust))
+        ## Reorder according to clusters.
+        corMat <- corMat[ordClust, ordClust]
+      }
       ## Melt to get the proper format for ggplot.
       meltedCorMat <- reshape2::melt(corMat)
       ## If trial names consist of only numbers melt converts them to numeric.
       ## This gives problems with plotting, so reconvert them to factor.
       if (is.numeric(meltedCorMat[["Var1"]])) {
         meltedCorMat[["Var1"]] <- factor(meltedCorMat[["Var1"]],
-                                       levels = rownames(corMat))
+                                         levels = rownames(corMat))
         meltedCorMat[["Var2"]] <- factor(meltedCorMat[["Var2"]],
-                                       levels = rownames(corMat))
+                                         levels = rownames(corMat))
       }
       ## Remove top left of the plot. Only plotting a bottom right triangle.
       ## Diagonal is removed as well.
@@ -948,12 +951,13 @@ plot.TD <- function(x,
                                      as.numeric(meltedCorMat$Var2), ]
       ## Create plot.
       pTr <- ggplot2::ggplot(data = meltedCorMat,
-                             ggplot2::aes_string("Var1", "Var2",
-                                                 fill = "value")) +
-        ggplot2::geom_raster() +
+                             ggplot2::aes_string("Var1", "Var2")) +
+        ggplot2::geom_tile(fill = "white", color = "grey50") +
+        ggplot2::geom_point(ggplot2::aes_string(size = "abs(value)",
+                                                color = "value")) +
         ## Create a gradient scale.
-        ggplot2::scale_fill_gradient2(low = "blue", high = "red", mid = "white",
-                                      na.value = "grey", limit = c(-1, 1)) +
+        ggplot2::scale_color_gradient2(low = "blue", high = "red", mid = "white",
+                                       na.value = "grey", limit = c(-1, 1)) +
         ## Move y-axis to the right for easier reading.
         ggplot2::scale_y_discrete(position = "right") +
         ggplot2::theme_minimal() +
@@ -967,8 +971,9 @@ plot.TD <- function(x,
         ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
                        panel.grid.minor = ggplot2::element_blank()) +
         ## No axis and legend titles.
-        ggplot2::labs(x = "", y = "", fill = "") +
+        ggplot2::labs(x = "", y = "", color = "") +
         ggplot2::ggtitle(paste("Correlations of environments for", trait)) +
+        ggplot2::guides(size = FALSE) +
         ## Fix coordinates to get a square sized plot.
         ggplot2::coord_fixed()
       p[[trait]] <- pTr
