@@ -2,7 +2,7 @@
 knitr::opts_chunk$set(
 collapse = TRUE,
 comment = "#>",
-fig.dim = c(6, 4)
+fig.dim = c(7, 4)
 )
 library(statgenSSA)
 
@@ -52,11 +52,11 @@ plot(wheatTD, trials = "SR_FI_11")
 ## Plot the layout for SR_FI_11 with genotypes G278 and G279 highlighted.
 plot(wheatTD, trials = "SR_FI_11", highlight = c("G278", "G279"))
 
-## ----layoutPlotSB, fig.dim = c(6, 5)-------------------------------------
+## ----layoutPlotSB, fig.dim = c(7, 5)-------------------------------------
 ## Plot the layout for SR_FI_11, color subBlocks.
 plot(wheatTD, trials = "SR_FI_11", colorSubBlock = TRUE)
 
-## ----layoutPlotSG, fig.dim = c(6, 5)-------------------------------------
+## ----layoutPlotSG, fig.dim = c(7, 5)-------------------------------------
 ## Plot the layout for SR_FI_11, color subBlocks.
 plot(wheatTD, trials = "SR_FI_11", showGeno = TRUE)
 
@@ -96,13 +96,15 @@ modWheatSp3 <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY",
 ## ----fitAs, message=FALSE, results='hide'--------------------------------
 if (requireNamespace("asreml", quietly = TRUE)) {
   ## Fit a spatial single trial model using asreml.
-  modWheatAs <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", design = "res.rowcol", trySpatial = TRUE, engine = "asreml", control = list(criterion = "BIC"))
+  modWheatAs <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", 
+                      design = "res.rowcol", trySpatial = TRUE, engine = "asreml",
+                      control = list(criterion = "BIC"))
 }
 
-## ----spatCh--------------------------------------------------------------
+## ----spatCh, R.options=list(width=90)---------------------------------------------------
 if (exists("modWheatAs")) {
-  ## Overview of fitted models
-  print(modWheatAs$SR_FI_11$sumTab$GY, digits = 2)
+  ## Overview of fitted models.
+  print(modWheatAs$SR_FI_11$sumTab$GY, digits = 2, row.names = FALSE)
 }  
 
 ## ----fitSum, message=FALSE-----------------------------------------------
