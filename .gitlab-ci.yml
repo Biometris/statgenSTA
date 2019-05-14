@@ -54,7 +54,6 @@ R-release:
     - Rscript -e 'sessionInfo()'
     # install missing and outdated packages
     - Rscript -e 'source(".gitlab-ci.R"); pkgsUpdate(repos = "https://cran.rstudio.com", quiet = TRUE, instPkgdown = FALSE)'
-    - Rscript -e 'remotes::install_gitlab(repo = "statistical-genetic-pipeline/statgenSSA", host = "git.wur.nl")'
     # remove vignettes folder and get VignetteBuilder field out of DESCRIPTION file
     - rm -rf vignettes
     - Rscript -e 'd <- read.dcf("DESCRIPTION"); d[, colnames(d) == "VignetteBuilder"] <- NA; write.dcf(d, "DESCRIPTION")'
@@ -82,7 +81,6 @@ R-devel:
     - Rscriptdevel -e 'sessionInfo()'
     ## Install missing and outdated packages.
     - Rscriptdevel -e 'source(".gitlab-ci.R"); pkgsUpdate(repos = "https://cran.rstudio.com", quiet = TRUE, instPkgdown = FALSE)'
-    - Rscriptdevel -e 'remotes::install_gitlab(repo = "statistical-genetic-pipeline/statgenSSA", host = "git.wur.nl")'
     ## Remove vignettes folder and get VignetteBuilder field out of DESCRIPTION file.
     - rm -rf vignettes
     - Rscriptdevel -e 'd <- read.dcf("DESCRIPTION"); d[, colnames(d) == "VignetteBuilder"] <- NA; write.dcf(d, "DESCRIPTION")'
