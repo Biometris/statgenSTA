@@ -4,37 +4,6 @@ context("Plots")
 ## objects on which the plots are based are invisibly returned at least some
 ## checking can be done.
 
-SSA <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield")
-test_that("SSA base plot gives correct output types", {
-  p1 <- plot(SSA, traits = "yield", output = FALSE)
-  expect_is(p1, "list")
-  expect_length(p1, 1)
-  expect_is(p1[[1]], "list")
-  expect_length(p1[[1]], 1)
-  expect_is(p1[[1]][[1]], "list")
-  expect_length(p1[[1]][[1]], 4)
-  lapply(X = p1[[1]][[1]], FUN = expect_is, "ggplot")
-})
-
-test_that("SSA spatial plot gives correct output types", {
-  p1 <- plot(SSA, plotType = "spatial", traits = "yield", output = FALSE)
-  expect_is(p1, "list")
-  expect_length(p1, 1)
-  expect_is(p1[[1]], "list")
-  expect_length(p1[[1]], 1)
-  expect_is(p1[[1]][[1]], "list")
-  expect_length(p1[[1]][[1]], 6)
-  lapply(X = p1[[1]][[1]], FUN = expect_is, "ggplot")
-})
-
-test_that("option what in SSA plot functions properly", {
-  p1 <- plot(SSA, what = "random", output = FALSE)
-  p2 <- plot(SSA, plotType = "spatial", what = "random", output = FALSE)
-  expect_is(p1, "list")
-  expect_equal(p2[[1]][[1]][[5]]$labels$title, "Genotypic BLUPs")
-  expect_equal(p2[[1]][[1]][[6]]$labels$x, "Genotypic BLUPs")
-})
-
 p0 <- plot(TDHeat05, plotType = "layout", output = FALSE)
 test_that("TD layout plot gives correct output types", {
   expect_warning(plot(TDMaize, plotType = "layout"), "Plot skipped")
@@ -147,3 +116,36 @@ test_that("TD correlation plot gives correct output types", {
   expect_silent(p <- plot(TDMaize2, plotType = "cor", traits = "yld",
                           output = FALSE))
 })
+
+SSA <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield")
+test_that("SSA base plot gives correct output types", {
+  p1 <- plot(SSA, traits = "yield", output = FALSE)
+  expect_is(p1, "list")
+  expect_length(p1, 1)
+  expect_is(p1[[1]], "list")
+  expect_length(p1[[1]], 1)
+  expect_is(p1[[1]][[1]], "list")
+  expect_length(p1[[1]][[1]], 4)
+  lapply(X = p1[[1]][[1]], FUN = expect_is, "ggplot")
+})
+
+test_that("SSA spatial plot gives correct output types", {
+  p1 <- plot(SSA, plotType = "spatial", traits = "yield", output = FALSE)
+  expect_is(p1, "list")
+  expect_length(p1, 1)
+  expect_is(p1[[1]], "list")
+  expect_length(p1[[1]], 1)
+  expect_is(p1[[1]][[1]], "list")
+  expect_length(p1[[1]][[1]], 6)
+  lapply(X = p1[[1]][[1]], FUN = expect_is, "ggplot")
+})
+
+test_that("option what in SSA plot functions properly", {
+  p1 <- plot(SSA, what = "random", output = FALSE)
+  p2 <- plot(SSA, plotType = "spatial", what = "random", output = FALSE)
+  expect_is(p1, "list")
+  expect_equal(p2[[1]][[1]][[5]]$labels$title, "Genotypic BLUPs")
+  expect_equal(p2[[1]][[1]][[6]]$labels$x, "Genotypic BLUPs")
+})
+
+

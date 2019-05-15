@@ -1,9 +1,5 @@
 context("Extract SpATS")
 
-testTD <- createTD(data = testData[testData$field == "E1", ],
-                   genotype = "seed", repId = "rep", subBlock = "block",
-                   rowCoord = "Y", colCoord = "X")
-
 modelSp <- fitTD(testTD, design = "rowcol", traits = "t1")
 
 test_that("the output of extract is of the proper type", {
@@ -243,6 +239,6 @@ test_that("correct attributes are added", {
 
 test_that("calculated values are logically correct", {
   ## Fitted + residuals should match raw data.
-  expect_equal(testTD[[1]]$t1 - extSp$fitted$t1 - extSp$resid$t1, rep(0, 30))
-  expect_equal(testTD[[1]]$t1 - extSp$rMeans$t1 - extSp$residR$t1, rep(0, 30))
+  expect_equal(testTD[["E1"]]$t1, extSp$fitted$t1 + extSp$resid$t1)
+  expect_equal(testTD[["E1"]]$t1, extSp$rMeans$t1 + extSp$residR$t1)
 })

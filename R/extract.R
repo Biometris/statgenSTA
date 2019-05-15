@@ -959,7 +959,7 @@ createBaseData <- function(TD,
 #'
 #' @keywords internal
 restoreColNames <- function(renDat,
-                            renamedCols,
+                            renamedCols = NULL,
                             restore = FALSE) {
   if (restore && !is.null(renamedCols)) {
     renCols <- colnames(renDat)

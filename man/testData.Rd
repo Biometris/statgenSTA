@@ -7,8 +7,12 @@
 \format{An object of class \code{data.frame} with 90 rows and 12 columns.}
 \usage{
 testData
+
+testData
 }
 \description{
 Random test data for unit testing.
+
+TD object based on testData for unit testing.
 }
 \keyword{internal}

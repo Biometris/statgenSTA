@@ -1,10 +1,5 @@
 context("Extract Lme4")
 
-testTD <- createTD(data = testData[testData$field == "E1", ],
-                   genotype = "seed", repId = "rep",
-                   subBlock = "block", rowId = "Y", colId = "X",
-                   rowCoord = "Y", colCoord = "X")
-
 modelLm <- fitTD(testTD, design = "rcbd", traits = "t1", engine = "lme4")
 
 test_that("the output of extract is of the proper type", {
@@ -232,7 +227,7 @@ test_that("correct attributes are added", {
 
 test_that("calculated values are logically correct", {
   ## Fitted + residuals should match raw data.
-  expect_equal(testTD[[1]]$t1 - extLm$fitted$t1 - extLm$resid$t1, rep(0, 30))
-  expect_equal(testTD[[1]]$t1 - extLm$rMeans$t1 - extLm$residR$t1, rep(0, 30))
+  expect_equal(testTD[["E1"]]$t1, extLm$fitted$t1 + extLm$resid$t1)
+  expect_equal(testTD[["E1"]]$t1, extLm$rMeans$t1 + extLm$residR$t1)
 })
 

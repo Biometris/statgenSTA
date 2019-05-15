@@ -1,11 +1,6 @@
 context("ExtractAsreml")
 
 if (requireNamespace("asreml", quietly = TRUE)) {
-  testTD <- createTD(data = testData[testData$field == "E1", ],
-                     genotype = "seed", repId = "rep",
-                     subBlock = "block", rowId = "Y", colId = "X",
-                     rowCoord = "Y", colCoord = "X")
-
   modelAs <- fitTD(testTD, design = "res.ibd", traits = "t1", engine = "asreml")
 
   test_that("the output of extract is of the proper type - asreml", {
@@ -247,8 +242,8 @@ if (requireNamespace("asreml", quietly = TRUE)) {
 
   test_that("calculated values are logically correct", {
     ## Fitted + residuals should match raw data.
-    expect_equal(testTD[[1]]$t1, extAs$fitted$t1 + extAs$resid$t1)
-    expect_equal(testTD[[1]]$t1, extAs$rMeans$t1 + extAs$residR$t1)
+    expect_equal(testTD[["E1"]]$t1, extAs$fitted$t1 + extAs$resid$t1)
+    expect_equal(testTD[["E1"]]$t1, extAs$rMeans$t1 + extAs$residR$t1)
   })
 }
 

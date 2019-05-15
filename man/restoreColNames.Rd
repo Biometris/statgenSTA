@@ -4,7 +4,7 @@
 \alias{restoreColNames}
 \title{Helper function for adding back original colnames}
 \usage{
-restoreColNames(renDat, renamedCols, restore = FALSE)
+restoreColNames(renDat, renamedCols = NULL, restore = FALSE)
 }
 \description{
 Helper function for adding back original colnames

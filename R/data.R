@@ -108,3 +108,7 @@
 #' Random test data for unit testing.
 #' @keywords internal
 "testData"
+
+#' TD object based on testData for unit testing.
+#' @keywords internal
+"testData"

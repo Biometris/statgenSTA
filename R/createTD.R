@@ -894,6 +894,9 @@ plot.TD <- function(x,
       }
     }
   } else if (plotType == "cor") {
+    if (length(trials) == 1) {
+      stop("At least two trials requiered for a correlation plot.\n")
+    }
     if (is.null(traits) || !is.character(traits)) {
       stop("traits should be a character vector.\n")
     }
@@ -928,13 +931,10 @@ plot.TD <- function(x,
       })
       corMat <- corMat[corKeep, corKeep, drop = FALSE]
       ## Determine ordering according to clustering of trials.
-      ## Only relevant when there are at least 2 trials.
-      if (length(corMat) > 1) {
-        corClust <- hclust(as.dist(1 - corMat), method = "ward.D2")
-        ordClust <- order.dendrogram(as.dendrogram(corClust))
-        ## Reorder according to clusters.
-        corMat <- corMat[ordClust, ordClust]
-      }
+      corClust <- hclust(as.dist(1 - corMat), method = "ward.D2")
+      ordClust <- order.dendrogram(as.dendrogram(corClust))
+      ## Reorder according to clusters.
+      corMat <- corMat[ordClust, ordClust]
       ## Melt to get the proper format for ggplot.
       meltedCorMat <- reshape2::melt(corMat)
       ## If trial names consist of only numbers melt converts them to numeric.

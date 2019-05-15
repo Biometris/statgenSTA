@@ -73,8 +73,8 @@ test_that("setMeta functions properly", {
 })
 
 test_that("attribute design is properly filled in create TD", {
-  expect_null(attr(createTD(data = testData)[[1]], "design"))
-  expect_equal(attr(createTD(data = testData, trDesign = "rcbd")[[1]],
+  expect_null(attr(createTD(data = testData)[["testData"]], "design"))
+  expect_equal(attr(createTD(data = testData, trDesign = "rcbd")[["testData"]],
                     "trDesign"), "rcbd")
   expect_error(createTD(data = testData, trDesign = "abc"), "should be one of")
 })

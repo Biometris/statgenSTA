@@ -1,5 +1,9 @@
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/statgenSSA)](https://cran.r-project.org/package=statgenSSA)
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![pipeline status](https://git.wur.nl/statistical-genetic-pipeline/statgenSSA/badges/master/pipeline.svg)](https://git.wur.nl/statistical-genetic-pipeline/statgenSSA/commits/master)
 [![coverage report](https://git.wur.nl/statistical-genetic-pipeline/statgenSSA/badges/master/coverage.svg)](https://git.wur.nl/statistical-genetic-pipeline/statgenSSA/commits/master)
+<!-- badges: end -->
 
 # statgenSSA
 
@@ -11,10 +15,9 @@ For direct installation from gitlab use the following code:
 
 ``` r
 ## Replace the location for public and private key with your own.
-creds <- git2r::cred_ssh_key(publickey = "M:\\.ssh\\id_rsa.pub",
-                             privatekey = "M:\\.ssh\\id_rsa")
-devtools::install_git(url = "git@git.wur.nl:statistical-genetic-pipeline/statgenSSA.git",
-                      credentials = creds)
+creds <- git2r::cred_ssh_key(publickey = "C:\\users\\...\\.ssh\\id_rsa.pub",
+                             privatekey = "C:\\users\\...\\.ssh\\id_rsa")
+remotes::install_git(url = "git@git.wur.nl:statistical-genetic-pipeline/statgenSSA.git", credentials = creds)
 
 ```
 

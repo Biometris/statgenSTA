@@ -1,11 +1,6 @@
 context("Class SSA")
 
-## Create testdata containing only one trial.
-testTD <- createTD(data = testData, trial = "field",
-                   genotype = "seed", repId = "rep",
-                   subBlock = "block", rowId = "Y", colId = "X",
-                   rowCoord = "Y", colCoord = "X")
-modelSp <- fitTD(testTD, trials = "E1", design = "rowcol", traits = "t1")
+modelSp <- fitTD(testTD, design = "rowcol", traits = "t1")
 test_that("summary.SSA produces correct output for SpATS", {
   sumSp <- summary(modelSp)
   expect_length(sumSp, 6)
@@ -18,8 +13,7 @@ test_that("summary.SSA produces correct output for SpATS", {
 })
 
 test_that("summary.SSA produces correct output for lme4", {
-  modelLm <- fitTD(testTD, trials = "E1", design = "rowcol", traits = "t1",
-                        engine = "lme4")
+  modelLm <- fitTD(testTD, design = "rowcol", traits = "t1", engine = "lme4")
   sumLm <- summary(modelLm)
   expect_length(sumLm, 6)
   expect_null(sumLm$selSpatMod)
@@ -32,8 +26,7 @@ test_that("summary.SSA produces correct output for lme4", {
 
 test_that("summary.SSA produces correct output for asreml", {
   skip_on_cran()
-  modelAs <- fitTD(testTD, trials = "E1", design = "rowcol", traits = "t1",
-                        engine = "asreml")
+  modelAs <- fitTD(testTD, design = "rowcol", traits = "t1", engine = "asreml")
   sumAs <- summary(modelAs)
   expect_length(sumAs, 6)
   expect_null(sumAs$selSpatMod)
@@ -45,8 +38,9 @@ test_that("summary.SSA produces correct output for asreml", {
 })
 
 test_that("summary.SSA produces correct output for multiple trials", {
-  modelSp <- fitTD(testTD, trials = c("E1", "E2"), design = "rowcol",
-                        traits = "t1")
+  testTD[["E2"]] <- testTD[["E1"]]
+  testTD[["E2"]][["trial"]] <- "E2"
+  modelSp <- fitTD(testTD, design = "rowcol", traits = "t1")
   sumSp <- summary(modelSp, traits = "t1")
   expect_length(sumSp, 3)
   expect_is(sumSp$sumTab, "matrix")
@@ -67,8 +61,7 @@ test_that("print.summary.SSA functions properly", {
                     "Predicted means (BLUEs & BLUPs) ") %in% sumSp))
   expect_false(any(grepl("Best", sumSp2)))
   skip_on_cran()
-  modelAs <- fitTD(testTD, trials = "E1", design = "rowcol", traits = "t1",
-                        engine = "asreml")
+  modelAs <- fitTD(testTD, design = "rowcol", traits = "t1", engine = "asreml")
   sumAs <- capture.output(print(summary(modelAs)))
   expect_true(all(c("Standard Error of Difference (genotype modeled as fixed effect) ",
                     "Least Significant Difference (genotype modeled as fixed effect) ") %in%
@@ -76,8 +69,9 @@ test_that("print.summary.SSA functions properly", {
 })
 
 test_that("print.summary.SSA functions properly for multiple trials", {
-  modelSp <- fitTD(testTD, trials = c("E1", "E2"), design = "rowcol",
-                        traits = "t1")
+  testTD[["E2"]] <- testTD[["E1"]]
+  testTD[["E2"]][["trial"]] <- "E2"
+  modelSp <- fitTD(testTD, design = "rowcol", traits = "t1")
   sumSp <- capture.output(print(summary(modelSp)))
   expect_true("Summary statistics for BLUEs of t1 " %in% sumSp)
 })
@@ -89,17 +83,14 @@ test_that("function SSAtoTD functions properly", {
                c("genotype", "trial", "BLUEs_t1", "seBLUEs_t1", "BLUPs_t1",
                  "seBLUPs_t1"))
   TDSp2 <- SSAtoTD(SSA = modelSp, what = "BLUEs")
-  expect_equal(colnames(TDSp2$E1),
-               c("genotype", "trial", "t1"))
+  expect_named(TDSp2$E1, c("genotype", "trial", "t1"))
   expect_warning(TDSp3 <- SSAtoTD(SSA = modelSp, what = "BLUEs", addWt = TRUE),
                  "Weights can only be added together with seBLUEs")
-  expect_equal(colnames(TDSp3$E1),
-               c("genotype", "trial", "BLUEs_t1", "seBLUEs_t1", "wt"))
+  expect_named(TDSp3$E1, c("genotype", "trial", "BLUEs_t1", "seBLUEs_t1", "wt"))
   expect_warning(TDSp4 <- SSAtoTD(SSA = modelSp, keep = "family"),
                  "Duplicate values for")
-  expect_equal(colnames(TDSp4$E1),
-               c("genotype", "trial", "BLUEs_t1", "seBLUEs_t1", "BLUPs_t1",
-                 "seBLUPs_t1"))
+  expect_named(TDSp4$E1, c("genotype", "trial", "BLUEs_t1", "seBLUEs_t1",
+                           "BLUPs_t1", "seBLUPs_t1"))
 })
 
 test_that("function SSAtoCross functions properly", {
@@ -120,8 +111,8 @@ test_that("function SSAtoCross functions properly", {
 test_that("function report.SSA functions properly" ,{
   ## Reporting doesn't work on cran because of usage of pdflatex.
   skip_on_cran()
-  modelSp <- fitTD(testTD, trials = c("E1", "E2"), design = "rowcol",
-                        traits = c("t1", "t2"))
+  testTD[["E2"]] <- testTD[["E1"]]
+  modelSp <- fitTD(testTD, design = "rowcol", traits = c("t1", "t2"))
   expect_error(report(modelSp),
                "No trial provided but multiple trials found")
   expect_error(report(modelSp, trial = "E3"),
