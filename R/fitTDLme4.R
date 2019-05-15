@@ -6,6 +6,7 @@
 #'
 #' @seealso \code{\link{fitTD}}
 #'
+#' @noRd
 #' @keywords internal
 fitTDLme4 <- function(TD,
                       trial = NULL,

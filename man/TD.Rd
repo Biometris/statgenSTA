@@ -139,11 +139,27 @@ class TD.\cr\cr
 \code{\link{summary.TD}} and \code{\link{plot.TD}} methods are available.
 }
 \examples{
-## Create a data.frame with two traits to be converted to TD object.
-dat <- data.frame(geno = paste0("G", 1:10), tr = "T1", yield = 1:10,
-flowering = 3:12)
+## Create a data.frame with to be converted to TD object.
+## The data consists of genotype, trial, row and column information and
+## two traits, yield and flowering time.
+datT1 <- data.frame(geno = paste0("G", 1:10), tr = "T1",
+                    row = rep(1:5, each = 2), col = rep(1:2, times = 5),
+                    yield = 1:10, flowering = 3:12)
+
 ## Convert data.frame to TD object.
-TD0 <- createTD(data = dat, genotype = "geno", trial = "tr")
+TDT1 <- createTD(data = datT1, genotype = "geno", trial = "tr",
+                 rowCoord = "row", colCoord = "col")
+
+## Create a second data.frame similar to the first with data for a second trial.
+datT2<- data.frame(geno = paste0("G", 1:10), tr = "T2",
+                    row = rep(1:2, each = 5), col = rep(1:5, times = 2),
+                    yield = 10:1, flowering = 12:3)
+## Add this data to the TD object created above.
+TDTot <- addTD(TD = TDT1, data = datT2, genotype = "geno", trial = "tr",
+               rowCoord = "row", colCoord = "col")
+
+## Drop the data for the first trial from the object.
+TDT2 <- dropTD(TD = TDTot, rmTrials = "T1")
 
 }
 \seealso{

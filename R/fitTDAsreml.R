@@ -6,6 +6,7 @@
 #'
 #' @seealso \code{\link{fitTD}}
 #'
+#' @noRd
 #' @keywords internal
 fitTDAsreml <- function(TD,
                         trial = NULL,
@@ -215,6 +216,7 @@ fitTDAsreml <- function(TD,
 }
 
 #' Helper function for calculating best spatial model using asreml.
+#' @noRd
 #' @keywords internal
 bestSpatMod <- function(TD,
                         traits,

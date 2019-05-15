@@ -106,9 +106,13 @@
 "TDMaize"
 
 #' Random test data for unit testing.
+#'
+#' @noRd
 #' @keywords internal
 "testData"
 
 #' TD object based on testData for unit testing.
+#'
+#' @noRd
 #' @keywords internal
 "testData"

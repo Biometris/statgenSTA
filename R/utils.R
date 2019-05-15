@@ -1,6 +1,7 @@
 #' Custom tryCatch to return result, errors and warnings.
 #' Copied from http://stackoverflow.com/a/24569739/2271856.
 #'
+#' @noRd
 #' @keywords internal
 tryCatchExt <- function(expr) {
   warn <- err <- NULL
@@ -16,6 +17,8 @@ tryCatchExt <- function(expr) {
 }
 
 #' Helper function for suppressing a single warning message.
+#'
+#' @noRd
 #' @keywords internal
 supprWarn <- function(expression,
                       message) {
@@ -31,6 +34,8 @@ supprWarn <- function(expression,
 #' last iteration for asreml is worth mentioning as a warning.
 #' If the corresponding parameter is close to zero and then changes of 1%
 #' or more can be expected and are ok.
+#'
+#' @noRd
 #' @keywords internal
 chkLastIter <- function(model) {
   wrnMsg <- "changed by more than 1%"
@@ -54,6 +59,8 @@ chkLastIter <- function(model) {
 }
 
 #' Helper function for converting certain asreml warnings to errors.
+#'
+#' @noRd
 #' @keywords internal
 wrnToErr <- function(model) {
   wrns <- c("Abnormal termination", "returning -Inf")
@@ -78,6 +85,7 @@ wrnToErr <- function(model) {
 #' always work.
 #' If this happens pworkspace is increased in 'small' steps.
 #'
+#' @noRd
 #' @keywords internal
 predictAsreml <- function(model,
                           classify = "genotype",
@@ -125,6 +133,7 @@ predictAsreml <- function(model,
 
 #' Helper function for computing the standard error of the variance.
 #'
+#' @noRd
 #' @keywords internal
 seVar <- function(x,
                   na.rm = FALSE) {
@@ -151,6 +160,7 @@ seVar <- function(x,
 #' This and following formulas taken from
 #' https://brownmath.com/stat/shape.htm#Normal.
 #'
+#' @noRd
 #' @keywords internal
 skewness <- function(x,
                      na.rm = FALSE) {
@@ -170,6 +180,7 @@ skewness <- function(x,
 
 #' Helper function for computing the standard error of the skewness.
 #'
+#' @noRd
 #' @keywords internal
 seSkewness <- function(n) {
   if (n <= 2) {
@@ -184,6 +195,7 @@ seSkewness <- function(n) {
 #' Rescaled by subtracting 3 from the result to give the normal distribution
 #' a kurtosis of 0, so basically the excess kurtosis.
 #'
+#' @noRd
 #' @keywords internal
 kurtosis <- function(x,
                      na.rm = FALSE) {
@@ -203,6 +215,7 @@ kurtosis <- function(x,
 
 #' Helper function for computing the standard error of the kurtosis.
 #'
+#' @noRd
 #' @keywords internal
 seKurtosis <- function(n) {
   if (n <= 3) {
@@ -230,6 +243,7 @@ report <- function(x,
 
 #' Helper function for creating the actual report
 #'
+#' @noRd
 #' @keywords internal
 createReport <- function(x,
                          reportName,
@@ -336,7 +350,8 @@ createReport <- function(x,
 #' Function for escaping special LaTeX characters
 #'
 #' Taken from knitr package. Copied since it is an internal knitr function.
-#
+#'
+#' @noRd
 #' @keywords internal
 escapeLatex = function(x, newlines = FALSE, spaces = FALSE) {
   x = gsub('\\\\', '\\\\textbackslash', x)
@@ -377,6 +392,7 @@ renameVars <- data.frame(renameFrom = c("genotype", "repId", "rowId", "colId",
 #' Function for extracting the table with variance components from a model in
 #' a nicely printable format.
 #'
+#' @noRd
 #' @keywords internal
 extractVarComp <- function(model,
                            engine) {
@@ -440,6 +456,14 @@ extractVarComp <- function(model,
   return(varComp)
 }
 
+#' Helper function for constructing two data.frames containing the coordinates
+#' that can be used for plotting a border around parts of a raster plot using
+#' geom_path in ggplot2. This can be used to construct an outside border
+#' around each replicate in a plot. ggplot2 itself doesn't have this
+#' functionality.
+#'
+#' @noRd
+#' @keywords internal
 calcPlotBorders <- function(trDat,
                             bordVar) {
   yMin <- min(trDat$rowCoord)
@@ -488,10 +512,13 @@ calcPlotBorders <- function(trDat,
   return(list(horW = horW, vertW = vertW))
 }
 
-## This function is a slightly modified copy of map_data from ggplot2 combined
-## with map.fortify also from ggplot2.
-## Using the normal function is not possible because both packages qtl and maps
-## have a class map and when building the vignette this gives an error.
+#' This function is a slightly modified copy of map_data from ggplot2 combined
+#' with map.fortify also from ggplot2.
+#' Using the normal function is not possible because both packages qtl and maps
+#' have a class map and when building the vignette this gives an error.
+#'
+#' @noRd
+#' @keywords internal
 mapData <- function(xLim,
                     yLim) {
   mapObj <- maps::map("world", exact = FALSE, plot = FALSE,
@@ -506,9 +533,12 @@ mapData <- function(xLim,
   return(df[stats::complete.cases(df$lat, df$long), ])
 }
 
-## The syntax for asreml4 differs from asreml3.
-## This helper function is for detecting if the version is 4 or higher.
+#' Helper function for detecting the version of asreml installed.
+#' This is used whereever the syntax for asreml4 differs from asreml3.
+#'
+#' @noRd
 #' @importFrom utils packageVersion
+#' @keywords internal
 asreml4 <- function() {
   if (requireNamespace("asreml", quietly = TRUE)) {
     if (packageVersion("asreml") >= 4) {

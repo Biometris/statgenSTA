@@ -1,10 +1,9 @@
 #' Fit Single Trial Mixed Model
 #'
-#' Perform REML analysis given a specific experimental design. This is a wrapper
-#' function of \code{\link{fitTDSpATS}}, \code{\link{fitTDLme4}} and
-#' \code{\link{fitTDAsreml}}. See details for the exact models fitted. SpATS is
-#' used as a default method when design is rowcol or res.rowcol, lme4 for other
-#' designs.
+#' Perform REML analysis given a specific experimental design using either
+#' SpATS, lme4 or asreml. SpATS is used as a default method when design is
+#' rowcol or res.rowcol, lme4 for other designs.
+#' See details for the exact models fitted.
 #'
 #' The actual model fitted depends on the design. For the supported designs, the
 #' following models are used:

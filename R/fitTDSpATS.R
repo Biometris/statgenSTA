@@ -6,6 +6,7 @@
 #'
 #' @seealso \code{\link{fitTD}}
 #'
+#' @noRd
 #' @keywords internal
 fitTDSpATS <- function(TD,
                         trial = NULL,

@@ -143,10 +143,11 @@ extract <- function(SSA,
 
 #' Extract statistics from model fitted using SpATS
 #'
+#' @noRd
 #' @importFrom SpATS predict.SpATS
 #' @keywords internal
 extractSpATS <- function(SSA,
-                         traits = SSA$traits,
+                         traits = NULL,
                          what = "all",
                          keep = NULL,
                          useRepId,
@@ -369,9 +370,10 @@ extractSpATS <- function(SSA,
 
 #' Extract statistics from model fitted using lme4
 #'
+#' @noRd
 #' @keywords internal
 extractLme4 <- function(SSA,
-                        traits = SSA$traits,
+                        traits = NULL,
                         what = "all",
                         keep = NULL,
                         useRepId,
@@ -614,9 +616,10 @@ extractLme4 <- function(SSA,
 
 #' Extract statistics from model fitted using asreml
 #'
+#' @noRd
 #' @keywords internal
 extractAsreml <- function(SSA,
-                          traits = SSA$traits,
+                          traits = NULL,
                           what = "all",
                           keep = NULL,
                           useRepId,
@@ -925,6 +928,7 @@ extractAsreml <- function(SSA,
 
 #' Helper function for creating baseData
 #'
+#' @noRd
 #' @keywords internal
 createBaseData <- function(TD,
                            predicted,
@@ -957,6 +961,7 @@ createBaseData <- function(TD,
 
 #' Helper function for adding back original colnames
 #'
+#' @noRd
 #' @keywords internal
 restoreColNames <- function(renDat,
                             renamedCols = NULL,
