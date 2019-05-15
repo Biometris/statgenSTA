@@ -38,15 +38,15 @@ test_that("option rLimit funtions properly", {
                      verbose = FALSE)
   expect_equal(sum(out1$indicator[["t1"]]), 4)
   expect_equal(nrow(out1$outliers), 4)
-  expect_equal(out1$outliers$res, c(-1.69959940078883, 1.16726345597009,
-                                    1.69959940078883, -1.16726345597009))
+  expect_equal(out1$outliers$res, c(1.73562640255469, -1.73562640255469,
+                                    1.48592104460245, -1.48592104460245))
 })
 
 test_that("option rLimit funtions properly for multiple traits", {
   out14 <- outlierSSA(modelLm, trial = "E1", traits = paste0("t", 1:4),
                       rLimit = 1, verbose = FALSE)
-  expect_equivalent(colSums(out14$indicator), c(4, 6, 2, 4))
-  expect_equal(nrow(out14$outliers), 16)
+  expect_equivalent(colSums(out14$indicator), c(4, 6, 2, 2))
+  expect_equal(nrow(out14$outliers), 14)
 })
 
 test_that("option commonFactors functions properly", {
@@ -65,6 +65,6 @@ test_that("option verbose functions properly", {
                                                  rLimit = 2, verbose = TRUE))
   expect_equal(printOut1, "No large standardized residuals.")
   expect_true("Large standardized residuals" %in% printOut2)
-  expect_true(any(grepl(pattern = "2.008841", x = printOut2)))
+  expect_true(any(grepl(pattern = "2.031948", x = printOut2)))
 })
 

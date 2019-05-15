@@ -1,31 +1,31 @@
 context("Statistical Helper Functions")
 
 test_that("function seVar gives correct results", {
-  expect_equal(seVar(testData$t1), 102.714733134436)
+  expect_equal(seVar(testData$t1), 80.1983989585527)
   expect_equivalent(seVar(testData[c("t1", "t2")]),
-                    c(102.714733134436, 0.0301924400875601))
+                    c(80.1983989585527, 0.0386387244078258))
   expect_equivalent(seVar(as.matrix(testData[c("t1", "t2")])),
-                    c(102.714733134436, 0.0301924400875601))
-  expect_equal(seVar(testData$t3), NA_integer_)
-  expect_equal(seVar(testData$t3, na.rm = TRUE), 16.5770418740614)
+                    c(80.1983989585527, 0.0386387244078258))
+  expect_equal(seVar(testData$t3), NA_real_)
+  expect_equal(seVar(testData$t3, na.rm = TRUE), 12.7296670386034)
   expect_equivalent(seVar(testData[c("t1", "t3")]),
-                    c(102.714733134436, NA))
+                    c(80.1983989585527, NA))
   expect_equivalent(seVar(testData[c("t1", "t3")], na.rm = TRUE),
-                    c(102.714733134436, 16.5770418740614))
+                    c(80.1983989585527, 12.7296670386034))
 })
 
 test_that("function skewness gives correct results", {
-  expect_equal(skewness(testData$t1), 0.570922732616638)
+  expect_equal(skewness(testData$t1), 0.400950835964985)
   expect_equivalent(skewness(testData[c("t1", "t2")]),
-                    c(0.570922732616638, 0.619398806071279))
+                    c(0.400950835964985, -0.215149588132529))
   expect_equivalent(skewness(as.matrix(testData[c("t1", "t2")])),
-                    c(0.570922732616638, 0.619398806071279))
-  expect_equal(skewness(testData$t3), NA_integer_)
-  expect_equal(skewness(testData$t3, na.rm = TRUE), -0.221167185848707)
+                    c(0.400950835964985, -0.215149588132529))
+  expect_equal(skewness(testData$t3), NA_real_)
+  expect_equal(skewness(testData$t3, na.rm = TRUE), -0.201787119775979)
   expect_equivalent(skewness(testData[c("t1", "t3")]),
-                    c(0.570922732616638, NA))
+                    c(0.400950835964985, NA))
   expect_equivalent(skewness(testData[c("t1", "t3")], na.rm = TRUE),
-                    c(0.570922732616638, -0.221167185848707))
+                    c(0.400950835964985, -0.201787119775979))
 })
 
 test_that("function seKurtosis gives correct results", {
@@ -36,17 +36,17 @@ test_that("function seKurtosis gives correct results", {
 })
 
 test_that("function kurtosis gives correct results", {
-  expect_equal(kurtosis(testData$t1), 0.43414980172502)
+  expect_equal(kurtosis(testData$t1), -0.342794098910884)
   expect_equivalent(kurtosis(testData[c("t1", "t2")]),
-                    c(0.434149801725015, -0.357971292973335))
+                    c(-0.342794098910884, 0.105277086648978))
   expect_equivalent(kurtosis(as.matrix(testData[c("t1", "t2")])),
-                    c(0.434149801725015, -0.357971292973335))
-  expect_equal(kurtosis(testData$t3), NA_integer_)
-  expect_equal(kurtosis(testData$t3, na.rm = TRUE), -0.340117318912085)
+                    c(-0.342794098910884, 0.105277086648978))
+  expect_equal(kurtosis(testData$t3), NA_real_)
+  expect_equal(kurtosis(testData$t3, na.rm = TRUE), -0.455004238429161)
   expect_equivalent(kurtosis(testData[c("t1", "t3")]),
-                    c(0.434149801725015, NA))
+                    c(-0.342794098910884, NA))
   expect_equivalent(kurtosis(testData[c("t1", "t3")], na.rm = TRUE),
-                    c(0.434149801725015, -0.340117318912085))
+                    c(-0.342794098910884, -0.455004238429161))
 })
 
 test_that("function seKurtosis gives correct results", {

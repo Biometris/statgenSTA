@@ -43,10 +43,10 @@ test_that("running models creates objects with correct structure - SpATS", {
   expect_SSA(modelSp)
   expect_SSAMod(modelSp, "mRand")
   expect_SSAMod(modelSp, "mFix")
-  expect_identical(modelSp[["E1"]]$traits, "t1")
-  expect_identical(modelSp[["E1"]]$design, "rowcol")
-  expect_identical(modelSp[["E1"]]$spatial[["t1"]], "2 dimensional P-splines")
-  expect_identical(modelSp[["E1"]]$engine, "SpATS")
+  expect_equal(modelSp[["E1"]]$traits, "t1")
+  expect_equal(modelSp[["E1"]]$design, "rowcol")
+  expect_equal(modelSp[["E1"]]$spatial[["t1"]], "2 dimensional P-splines")
+  expect_equal(modelSp[["E1"]]$engine, "SpATS")
 })
 
 test_that("running models creates objects with correct structure - lme4", {
@@ -54,10 +54,10 @@ test_that("running models creates objects with correct structure - lme4", {
   expect_SSA(modelLm)
   expect_SSAMod(modelLm, "mRand", class = "lmerMod")
   expect_SSAMod(modelLm, "mFix", class = "lm")
-  expect_identical(modelLm[["E1"]]$traits, "t1")
-  expect_identical(modelLm[["E1"]]$design, "rcbd")
+  expect_equal(modelLm[["E1"]]$traits, "t1")
+  expect_equal(modelLm[["E1"]]$design, "rcbd")
   expect_false(modelLm[["E1"]]$spatial)
-  expect_identical(modelLm[["E1"]]$engine, "lme4")
+  expect_equal(modelLm[["E1"]]$engine, "lme4")
 })
 
 test_that("running models creates objects with correct structure - asreml", {
@@ -66,10 +66,10 @@ test_that("running models creates objects with correct structure - asreml", {
   expect_SSA(modelAs)
   expect_SSAMod(modelAs, "mRand")
   expect_SSAMod(modelAs, "mFix")
-  expect_identical(modelAs[["E1"]]$traits, "t1")
-  expect_identical(modelAs[["E1"]]$design, "res.ibd")
+  expect_equal(modelAs[["E1"]]$traits, "t1")
+  expect_equal(modelAs[["E1"]]$design, "res.ibd")
   expect_false(modelAs[["E1"]]$spatial[["t1"]])
-  expect_identical(modelAs[["E1"]]$engine, "asreml")
+  expect_equal(modelAs[["E1"]]$engine, "asreml")
 })
 
 test_that("option what produces expected output - SpATS", {
@@ -221,7 +221,7 @@ test_that("option trySpatial produces expected output structure", {
   expect_is(modelAsTs[["E1"]]$spatial, "list")
   expect_length(modelAsTs[["E1"]]$spatial, 1)
   expect_named(modelAsTs[["E1"]]$spatial, "t1")
-  expect_identical(modelAsTs[["E1"]]$spatial$t1, "none")
+  expect_equal(modelAsTs[["E1"]]$spatial$t1, "none")
 })
 
 test_that("option nSeg in control produces correct output", {

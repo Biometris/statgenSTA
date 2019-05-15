@@ -24,8 +24,7 @@ TDMaize <- createTD(data = F2Maize, genotype = "genotype.", trial = "env.")
 usethis::use_data(TDMaize, overwrite = TRUE)
 
 ## Create a dataset for unit testing.
-RNGversion("3.5.3")
-set.seed(123)
+set.seed(1)
 testData <- data.frame(seed = rep(x = paste0("G", rep(x = 1:15, times = 2)),
                                   times = 3),
                        family = paste0("F", 1:90),

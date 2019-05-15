@@ -14,7 +14,6 @@ pkgsUpdate <- function(repos = "https://cran.rstudio.com",
                        quiet = TRUE,
                        instPkgdown = FALSE) {
   installIfNeeded(pkg = "remotes", repos = repos, quiet = quiet)
-  remotes::install_github("r-lib/remotes")
   if (instPkgdown) {
     installIfNeeded(pkg = "pkgdown", repos = repos, quiet = quiet)
   }

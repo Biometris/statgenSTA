@@ -93,7 +93,7 @@ test_that("option groupBy in summary.TD produces correct output", {
   expect_equal(dim(sumTD), c(3, 2, 3))
   expect_equivalent(as.numeric(by(data = testData$t1, INDICES = testData$field,
                                   FUN = mean)), sumTD["Mean", "t1", ])
-  expect_equivalent(sumTD["Number of observations", "t4", ], c(27, 22, 26))
+  expect_equivalent(sumTD["Number of observations", "t4", ], c(26, 26, 23))
 })
 
 test_that("print.summary.TD produces correct output", {
