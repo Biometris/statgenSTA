@@ -200,7 +200,7 @@ print(xtable::xtable(x = varComp, label = "varComps",
 if (modelType == "random") {
   cat(paste("The generalized heritability is",
             round(extract(x, trials = trial,
-                            what = "heritability")[[trial]][["heritability"]],
+                            what = "heritability")[[trial]][["heritability"]][trait],
                   digits = 2)))
 }
 @

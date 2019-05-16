@@ -1093,6 +1093,7 @@ setMeta <- function(TD,
 
 #' Function for extracting for objects of class TD that keeps class.
 #'
+#' @noRd
 #' @keywords internal
 `[.TD` <- function(x, i, ...) {
   r <- NextMethod("[")

@@ -255,7 +255,7 @@ createReport <- function(x,
     ## to pathnames with _. To prevent this spaces are not allowed.
     if (grepl(pattern = " ", x = outfile)) {
       stop("outfile path cannot contain spaces. Provide a path without spaces or
-           a relative path")
+           a relative path.\n")
     }
   } else {
     ## Create a generic output filenane from the name of the report and
@@ -540,7 +540,7 @@ asreml4 <- function() {
     if (packageVersion("asreml") >= 4) {
       ## Calling license status apparently also activates the license if this
       ## was done once before.
-      asreml::asreml.license.status()
+      asreml::asreml.license.status(quiet = TRUE)
       return(TRUE)
     }
     return(FALSE)

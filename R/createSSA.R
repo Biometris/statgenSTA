@@ -38,6 +38,17 @@ createSSA <- function(models) {
   return(SSA)
 }
 
+#' Function for extracting for objects of class SSA that keeps class.
+#'
+#' @noRd
+#' @keywords internal
+`[.SSA` <- function(x, i, ...) {
+  r <- NextMethod("[")
+  attr(r, "class") <- attr(x, "class")
+  attr(r, "timestamp") <- attr(x, "timestamp")
+  return(r)
+}
+
 #' Summarizing objects of class \code{SSA}
 #'
 #' \code{summary} method for class \code{SSA}.
@@ -599,48 +610,67 @@ fieldPlot <- function(plotDat,
 #' @export
 report.SSA <- function(x,
                        ...,
-                       trial = NULL,
-                       trait = NULL,
+                       trials = names(x),
+                       traits = NULL,
                        descending = TRUE,
                        outfile = NULL,
                        what = c("fixed", "random")) {
-  if (is.null(trial) && length(x) > 1) {
-    stop("No trial provided but multiple trials found in SSA object.\n")
+  ## Checks.
+  if (!is.null(trials) && (!is.character(trials) ||
+                           !all(hasName(x = x, name = trials)))) {
+    stop("trials has to be a character vector defining a trial in SSA.\n")
   }
-  if (!is.null(trial) && (!is.character(trial) || length(trial) > 1 ||
-                          !hasName(x = x, name = trial))) {
-    stop("Trial has to be a single character string defining a trial in SSA.\n")
+  if (!is.null(traits) && !is.character(traits)) {
+    stop("traits has to be a character vector.\n")
   }
-  if (is.null(trial)) {
-    trial <- names(x)
+  ## Generate a single timestamp for all files.
+  timeStamp <- format(Sys.time(), "%Y%m%d%H%M%S")
+  what <- match.arg(what, several.ok = TRUE)
+  for (trial in trials) {
+    for (whatTr in what) {
+      modTr <- x[trial]
+      whatMod <- c("mFix", "mRand")[whatTr == c("fixed", "random")]
+      if (is.null(modTr[[trial]][[whatMod]])) {
+        warning("Model with genotype ", whatTr, " not available for trial ",
+                trial, ".\nReport skipped.")
+        break
+      }
+      ## Set other model to NULL for easier reporting inside Rnw.
+      ## Doing so assures always only one fitted model is available.
+      modTr[[trial]][[setdiff(c("mFix", "mRand"), whatMod)]] <- NULL
+      ## Check that traits are available for current trial.
+      if (!is.null(traits)) {
+        traitsTr <- traits[hasName(x = modTr[[trial]][[whatMod]],
+                                   name = traits)]
+        if (length(traitsTr) == 0) {
+          ## Skip with warning if no traits available.
+          warning(paste0("traits not available for trial ", trial, ".\n",
+                         "Reports for trial ", trial, " skipped.\n"))
+          break
+        }
+      } else {
+        ## If no trait is given as input extract it from the SSA object.
+        traitsTr <- names(modTr[[trial]][[whatMod]])
+      }
+      for (trait in traitsTr) {
+        ## report name has to be adapted.
+        if (!is.null(outfile)) {
+          ## Add trial and trait info before file extension.
+          outExt <- tools::file_ext("test.pdf")
+          outLen <- nchar(outfile)
+          outfileTr <- paste0(substring(text = outfile, first = 1,
+                                        last = outLen - nchar(outExt) - 1),
+                              "_", trial, "_", trait, "_", whatTr, ".", outExt)
+        } else {
+          outfileTr <- paste0("./modelReport_" , trial, "_", trait, "_", whatTr,
+                              "_", timeStamp, ".pdf")
+        }
+        createReport(x = modTr, reportName = "modelReport.Rnw",
+                     outfile = outfileTr, ..., trial = trial, trait = trait,
+                     descending = descending)
+      }
+    }
   }
-  if (is.null(trait) && length(x[[trial]][["traits"]]) > 1) {
-    stop("No trait provided but multiple traits found.\n")
-  }
-  if (!is.null(trait) && (!is.character(trait) || length(trait) > 1 ||
-                          !trait %in% x[[trial]][["traits"]])) {
-    stop(paste("Trait has to be a single character string defining a trait",
-               "for which a model was fitted.\n"))
-  }
-  ## If no trait is given as input extract it from the SSA object.
-  if (is.null(trait)) {
-    trait <- x[[trial]][["traits"]]
-  }
-  what <- match.arg(what)
-  if (is.null(x[[trial]]$mFix)) {
-    what <- "random"
-  }
-  if (is.null(x[[trial]]$mRand)) {
-    what <- "fixed"
-  }
-  if (what == "fixed") {
-    x[[trial]]$mRand <- NULL
-  } else {
-    x[[trial]]$mFix <- NULL
-  }
-  createReport(x = x, reportName = "modelReport.Rnw",
-               outfile = outfile, ..., trial = trial, trait = trait,
-               descending = descending)
 }
 
 #' Convert SSA to Cross

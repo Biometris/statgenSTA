@@ -4,19 +4,13 @@
 \alias{report.SSA}
 \title{Report method for class SSA}
 \usage{
-\method{report}{SSA}(x, ..., trial = NULL, trait = NULL,
+\method{report}{SSA}(x, ..., trials = names(x), traits = NULL,
   descending = TRUE, outfile = NULL, what = c("fixed", "random"))
 }
 \arguments{
 \item{x}{An object of class SSA.}
 
 \item{...}{Further arguments passed to the report function.}
-
-\item{trial}{A character string indicating the trial to be reported. If
-\code{NULL} and \code{SSA} contains only one trial, that trial is reported.}
-
-\item{trait}{A character string indicating the trait to be reported. If
-\code{NULL} and \code{SSA} contains only one trait, that trait is reported.}
 
 \item{descending}{Should the trait be ordered in descending order? Set to
 \code{FALSE} if low values of the trait indicate better performance.}
@@ -28,6 +22,12 @@ will be created in the current working directory.}
 \item{what}{A character string indicating whether the model with genotype
 fixed or genotype random should be reported. Can be omitted if only one
 model has been fitted.}
+
+\item{trial}{A character string indicating the trial to be reported. If
+\code{NULL} and \code{SSA} contains only one trial, that trial is reported.}
+
+\item{trait}{A character string indicating the trait to be reported. If
+\code{NULL} and \code{SSA} contains only one trait, that trait is reported.}
 }
 \value{
 A pdf and tex report.
