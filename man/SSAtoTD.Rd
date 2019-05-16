@@ -48,3 +48,9 @@ myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
 myTD <- SSAtoTD(myModel)
 
 }
+\seealso{
+Other SSA: \code{\link{SSAtoCross}}, \code{\link{SSA}},
+  \code{\link{plot.SSA}}, \code{\link{print.summary.SSA}},
+  \code{\link{report.SSA}}, \code{\link{summary.SSA}}
+}
+\concept{SSA}

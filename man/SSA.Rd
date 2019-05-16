@@ -32,10 +32,12 @@ Function for creating objects of S3 class Single Site Analysis (SSA).\cr
 methods are available.
 }
 \seealso{
-\code{\link{summary.SSA}}, \code{\link{plot.SSA}},
-\code{\link{report.SSA}}
+Other SSA: \code{\link{SSAtoCross}}, \code{\link{SSAtoTD}},
+  \code{\link{plot.SSA}}, \code{\link{print.summary.SSA}},
+  \code{\link{report.SSA}}, \code{\link{summary.SSA}}
 }
 \author{
 Bart-Jan van Rossum
 }
+\concept{SSA}
 \keyword{internal}

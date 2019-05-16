@@ -24,8 +24,7 @@
 #'
 #' @author Bart-Jan van Rossum
 #'
-#' @seealso \code{\link{summary.SSA}}, \code{\link{plot.SSA}},
-#' \code{\link{report.SSA}}
+#' @family SSA
 #'
 #' @name SSA
 NULL
@@ -65,6 +64,8 @@ createSSA <- function(models) {
 #' myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield")
 #' ## Print a summary of the fitted model.
 #' summary(myModel)
+#'
+#' @family SSA
 #'
 #' @export
 summary.SSA <- function(object,
@@ -185,6 +186,8 @@ summary.SSA <- function(object,
 #' printing.
 #' @param ... Further arguments passed to \code{\link[stats]{printCoefmat}}.
 #'
+#' @family SSA
+#'
 #' @export
 print.summary.SSA <- function(x,
                               digits = max(getOption("digits") - 2, 3),
@@ -277,8 +280,9 @@ print.summary.SSA <- function(x,
 #' ## Create spatial plots.
 #' plot(myModel, what = "fixed", plotType = "spatial")
 #'
-#' @importFrom grDevices topo.colors
+#' @family SSA
 #'
+#' @importFrom grDevices topo.colors
 #' @export
 plot.SSA <- function(x,
                      ...,
@@ -390,13 +394,13 @@ plot.SSA <- function(x,
         plotDat <- ggplot2::remove_missing(plotDat, na.rm = TRUE)
         ## Plot histogram of residuals.
         plots$p1 <- ggplot2::ggplot(data = plotDat) +
-          ggplot2::geom_histogram(ggplot2::aes(x = residuals,
-                                               y = (..count..)/sum(..count..)),
+          ggplot2::geom_histogram(ggplot2::aes_string(x = "residuals",
+                                                      y = "(..count..)/sum(..count..)"),
                                   fill = "cyan", col = "black", bins = 10,
                                   boundary = 0) +
           ggplot2::scale_y_continuous(labels = function(x) {paste0(100 * x, "%")}) +
           ggplot2::labs(y = "Percent of Total", x = "Residuals")
-        ## Plot Q-Q plot of residuals.
+        ## Plot QQ plot of residuals.
         plots$p2 <- ggplot2::ggplot(data = plotDat,
                                     ggplot2::aes_string(sample = "residuals")) +
           ggplot2::stat_qq(col = "blue") +
@@ -521,7 +525,10 @@ plot.SSA <- function(x,
   invisible(p)
 }
 
-## Helper function for creating field plots.
+#' Helper function for creating field plots.
+#'
+#' @noRd
+#' @keywords internal
 fieldPlot <- function(plotDat,
                       fillVar,
                       title,
@@ -586,6 +593,8 @@ fieldPlot <- function(plotDat,
 #' report(myModel1, outfile = "./testReports/reportModelLme4.pdf",
 #'        what = "random", descending = FALSE)
 #' }
+#'
+#' @family SSA
 #'
 #' @export
 report.SSA <- function(x,
@@ -677,6 +686,7 @@ report.SSA <- function(x,
 #' cross <- SSAtoCross(myModel, genoFile = system.file("extdata", "markers.csv",
 #'                                                     package = "statgenSSA"))
 #'
+#' @family SSA
 #' @export
 SSAtoCross <- function(SSA,
                        trial = NULL,
@@ -761,6 +771,7 @@ SSAtoCross <- function(SSA,
 #' ## Create TD object from the fitted model.
 #' myTD <- SSAtoTD(myModel)
 #'
+#' @family SSA
 #' @export
 SSAtoTD <- function(SSA,
                     what = c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs"),
