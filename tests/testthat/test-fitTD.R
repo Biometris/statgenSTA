@@ -213,8 +213,9 @@ test_that("option trySpatial produces expected output structure", {
                        trySpatial = TRUE, engine = "lme4"),
                  "Spatial models can only be fitted using SpATS or asreml.")
   skip_on_cran()
-  modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1", trySpatial = TRUE,
-                     engine = "asreml")
+  expect_warning(modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1",
+                                    trySpatial = TRUE, engine = "asreml"),
+                 "Log-likelihood not converged")
   expect_SSA(modelAsTs)
   expect_SSAMod(modelAsTs, "mRand")
   expect_SSAMod(modelAsTs, "mFix")

@@ -671,7 +671,7 @@ report.SSA <- function(x,
 #' @examples
 #' ## Run model using SpATS.
 #' myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
-#'                       what = "fixed")
+#'                  what = "fixed")
 #' ## Create cross object with BLUEs from myModel using genotypic information
 #' ## from markers.csv in the package.
 #' cross <- SSAtoCross(myModel, genoFile = system.file("extdata", "markers.csv",
@@ -718,11 +718,10 @@ SSAtoCross <- function(SSA,
   tmp <- tempfile()
   utils::write.csv(pred, file = tmp, row.names = FALSE)
   ## Read cross from temporary file and supplied genoFile.
-  cross <- qtl::read.cross(format = "csvs",
-                           phefile = tmp,
-                           genfile = genoFile,
-                           genotypes = genotypes,
-                           ...)
+  capture.output(cross <- qtl::read.cross(format = "csvs", phefile = tmp,
+                                          genfile = genoFile,
+                                          genotypes = genotypes, ...),
+                 file = tempfile())
   unlink(tmp)
   return(cross)
 }

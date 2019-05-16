@@ -48,7 +48,7 @@ package.
 \examples{
 ## Run model using SpATS.
 myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
-                      what = "fixed")
+                 what = "fixed")
 ## Create cross object with BLUEs from myModel using genotypic information
 ## from markers.csv in the package.
 cross <- SSAtoCross(myModel, genoFile = system.file("extdata", "markers.csv",

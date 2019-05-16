@@ -866,11 +866,11 @@ extractAsreml <- function(SSA,
   }
   ## Compute wald test.
   if ("wald" %in% what) {
-    tmpfile <- tempfile()
-    sink(file = tmpfile)
     result[["wald"]] <- lapply(X = mf, function(mf0) {
-      wtt <- asreml::wald.asreml(mf0, ssType = "conditional", denDF = "numeric",
-                                 maxiter = 200, data = TD)
+      capture.output(wtt <- asreml::wald.asreml(mf0, ssType = "conditional",
+                                                denDF = "numeric", maxiter = 200,
+                                                data = TD, trace = FALSE),
+                     file = tempfile())
       pos <- grep(pattern = predicted, x = row.names(wtt$Wald))
       chi2 <- wtt$Wald$F.con[pos] * wtt$Wald$Df[pos]
       prob <- 1 - pchisq(q = chi2, df = wtt$Wald$Df[pos])
@@ -880,8 +880,6 @@ extractAsreml <- function(SSA,
                      df2 = wtt$Wald$denDF[pos],
                      P = wtt$Wald$Pr[pos]))
     })
-    sink()
-    unlink(tmpfile)
   }
   ## Compute Coefficient of Variation.
   if ("CV" %in% what) {

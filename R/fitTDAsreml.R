@@ -85,8 +85,6 @@ fitTDAsreml <- function(TD,
     randomForm <- character()
   }
   if (!trySpatial) {
-    ## Create tempfile to suppress asreml output messages.
-    tmp <- tempfile()
     ## Increase max number of iterations for asreml.
     maxIter <- 200
     ## Create empty base lists.
@@ -96,14 +94,13 @@ fitTDAsreml <- function(TD,
     for (trait in traits) {
       if ("random" %in% what) {
         ## Fit model with genotype random.
-        sink(file = tmp)
         mrTrait <- tryCatchExt(
           asreml::asreml(fixed = formula(paste(trait, fixedForm)),
                          random = formula(paste("~", randomForm,
                                                 if (length(randomForm) != 0) "+",
                                                 "genotype")),
-                         aom = TRUE, data = TDTr, maxiter = maxIter, ...))
-        sink()
+                         aom = TRUE, data = TDTr, maxiter = maxIter,
+                         trace = FALSE, ...))
         if (!is.null(mrTrait$warning)) {
           mrTrait <- chkLastIter(mrTrait)
           mrTrait <- wrnToErr(mrTrait)
@@ -147,7 +144,6 @@ fitTDAsreml <- function(TD,
         if (!"random" %in% what) {
           GParamTmp <- NULL
         }
-        sink(file = tmp)
         ## There is no way to specify random as NULL or NA so therefore split
         ## cases on whether there is or there is not a random term.
         if (length(randomForm) != 0) {
@@ -156,15 +152,14 @@ fitTDAsreml <- function(TD,
                                                  "+ genotype")),
                            random = formula(paste("~", randomForm)),
                            G.param = GParamTmp, aom = TRUE, data = TDTr,
-                           maxiter = maxIter, ...))
+                           maxiter = maxIter, trace = FALSE, ...))
         } else {
           mfTrait <- tryCatchExt(
             asreml::asreml(fixed = formula(paste(trait, fixedForm,
                                                  "+ genotype")),
                            G.param = GParamTmp, aom = TRUE, data = TDTr,
-                           maxiter = maxIter, ...))
+                           maxiter = maxIter, trace = FALSE, ...))
         }
-        sink()
         if (!is.null(mfTrait$warning)) {
           mfTrait <- chkLastIter(mfTrait)
           mfTrait <- wrnToErr(mfTrait)
@@ -198,7 +193,6 @@ fitTDAsreml <- function(TD,
       } # End fixed.
       spatial[trait] <- FALSE
     } # End for traits.
-    unlink(tmp)
     ## Construct SSA object.
     return(list(mRand = if ("random" %in% what) mr else NULL,
                 mFix = if ("fixed" %in% what) mf else NULL, TD = TD[trial],
@@ -230,8 +224,6 @@ bestSpatMod <- function(TD,
                         randomForm,
                         ...) {
   dotArgs <- list(...)
-  ## Create tempfile to suppress asreml output messages.
-  tmp <- tempfile()
   ## Increase max number of iterations for asreml.
   maxIter <- 200
   TDTr <- droplevels(TD[[1]])
@@ -291,7 +283,8 @@ bestSpatMod <- function(TD,
         randFormR <- formula(paste("~ genotype +", randTerm[i]))
       }
       asrArgsR <- c(list(fixed = fixedFormR, random = randFormR, aom = TRUE,
-                         data = TDTr, maxiter = maxIter), dotArgs)
+                         data = TDTr, maxiter = maxIter, trace = FALSE),
+                    dotArgs)
       ## In asreml3 na.method.X and na.method.Y are used.
       ## In asreml4 this is replaced by na.action.
       asrArgsR <- c(asrArgsR, if (asreml4()) {
@@ -303,9 +296,9 @@ bestSpatMod <- function(TD,
         ## In asreml4 rcov is replaced by residual.
         asrArgsR[[ifelse(asreml4(), "residual", "rcov")]] <- formula(spatTerm[i])
       }
-      sink(file = tmp)
-      mrTrait <- tryCatchExt(do.call(what = asreml::asreml, args = asrArgsR))
-      sink()
+      capture.output(mrTrait <- tryCatchExt(do.call(what = asreml::asreml,
+                                                    args = asrArgsR)),
+                     file = tempfile())
       if (!is.null(mrTrait$warning)) {
         mrTrait <- chkLastIter(mrTrait)
         mrTrait <- wrnToErr(mrTrait)
@@ -409,7 +402,7 @@ bestSpatMod <- function(TD,
     }
     asrArgsF <- c(list(fixed = fixedFormfTrait, random = randFormF,
                        G.param = GParamTmp, aom = TRUE, data = TDTr,
-                       maxiter = maxIter), dotArgs)
+                       maxiter = maxIter, trace = FALSE), dotArgs)
     ## In asreml3 na.method.X and na.method.Y are used.
     ## In asreml4 this is replaced by na.action.
     asrArgsR <- c(asrArgsR, if (asreml4()) {
@@ -421,10 +414,10 @@ bestSpatMod <- function(TD,
       ## In asreml4 parameter rcov is replaced by residual.
       asrArgsF[[ifelse(asreml4(), "residual", "rcov")]] <- formula(spatTerm[bestMod])
     }
-    sink(file = tmp)
     ## Fit the model with genotype fixed only for the best model.
-    mfTrait <- tryCatchExt(do.call(what = asreml::asreml, args = asrArgsF))
-    sink()
+    capture.output(mfTrait <- tryCatchExt(do.call(what = asreml::asreml,
+                                                  args = asrArgsF)),
+                   file = tempfile())
     if (!is.null(mfTrait$warning)) {
       mfTrait <- chkLastIter(mfTrait)
       mfTrait <- wrnToErr(mfTrait)
@@ -455,7 +448,6 @@ bestSpatMod <- function(TD,
     attr(x = modSum, which = "chosen") <- bestMod
     sumTab[[trait]] <- modSum
   } # End for traits.
-  unlink(tmp)
   TD[[1]] <- TDTr
   return(list(mRand = if ("random" %in% what) mr else NULL,
               mFix = if ("fixed" %in% what) mf else NULL, TD = TD,
