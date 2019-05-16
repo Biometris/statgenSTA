@@ -365,21 +365,19 @@ plot(modWheatSp, plotType = "spatial")
 
 ## Model reports
 
-As with many objects in the statgenSSA package there is a `report` function available 
-for `SSA` objects. This `report` function creates a pdf report describing 
-the main results of the fitted model. Also the tex file and figures used for generating
-the pdf report are saved. By editing the tex file it is possible to modify the report to ones needs, creating high flexibility.  
+For `SSA` objects there is a `report` function available in the statgenSSA package.
+This function creates a pdf report summarizing the main results of the fitted model. Also the tex file and figures used for generating the pdf report are saved. By editing the tex file it is possible to modify the report to ones needs, creating high flexibility.  
 
-When no outfile is specified, a report will be created with a default name, i.e. "modelReport.pdf", in the current working directory. The parameter `outfile` can be used to change the location. This value of this parameter should be a valid location and name for a **pdf** file, i.e. including the postfix ".pdf". Non-existing directories are created by the `report` function.  
+When no outfile is specified, reports will be created with a default names, e.g. "modelReport_trial_trait_fixed_timestamp.pdf", in the current working directory. The parameter `outfile` can be used to change the name and location of the report. The value of this parameter should be a valid location and name for a **pdf** file, i.e. including the postfix ".pdf". Non-existing directories are created by the `report` function. When an outfile is supplied trial, trait and modeltype (fixed or random) are concatenated to it in the name of the report.
 
-The report contains general information on the model fitted, a summary of the results, the plots described in the previous section, a `list` of best (highest BLUEs or BLUPs) genotypes and a scatter plot of all genotypes and their BLUEs or BLUPs. If, for the modeled trait, a low value means the genotype is performing well, then the selection on the best genotypes can be based on the lowest BLUEs or BLUPs by setting the parameter `descending` to `TRUE` in the report function.
+The reports contains general information on the model fitted, a summary of the results, the plots described in the previous section, a `list` of best (highest BLUEs or BLUPs) genotypes and a scatter plot of all genotypes and their BLUEs or BLUPs. If, for the modeled trait, a low value means the genotype is performing well, then the selection on the best genotypes can be based on the lowest BLUEs or BLUPs by setting the parameter `descending` to `TRUE` in the report function.
 ```{r modRep, eval=FALSE}
 ## Create a report in the current working directory
 report(modWheatSp)
 ## Create a report for the model with genotype fitted as random.
 report(modWheatSp, outfile = "./myReports/wheatReport.pdf", what = "random")
 ```
-Reporting for an `SSA` object is always done for one trait in one trial for one fitted model. Parameters `trait`, `trial` and `what` can be used for selecting the model for which the report should be made.
+Reporting for an `SSA` object can be done for multiple trials, traits and modeltypes simultaneously. For each combination of trial, trait and modeltype a separate .pdf report will be created. Parameters `traits`, `trials` and `what` can be used for specifying the models for which the reports should be made.
 
 ----
 

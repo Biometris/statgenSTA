@@ -56,10 +56,11 @@ myModel1 <- fitTD(TD = TDHeat05, design = "ibd", traits = "yield")
 ## as fixed factor.
 report(myModel1, outfile = "./testReports/reportModelLme4.pdf",
        what = "fixed")
-## Create a pdf report summarizing the results for the model with genotype
-## as random factor. Order the results in ascending order.
+## Create two pdf report summarizing the results for the model with genotype
+## as fixed factor and for the model with genotype as random factor. Order
+## the results in ascending order.
 report(myModel1, outfile = "./testReports/reportModelLme4.pdf",
-       what = "random", descending = FALSE)
+      descending = FALSE)
 }
 
 }
