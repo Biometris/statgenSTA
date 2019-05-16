@@ -12,29 +12,41 @@
 
 \item{...}{Further arguments passed to the report function.}
 
+\item{trials}{A character vector indicating the trials to plot. If
+\code{trials = NULL}, all trials are reported.}
+
+\item{traits}{A character vector indicating the traits to plot. If
+\code{traits = NULL}, all traits are reported.}
+
 \item{descending}{Should the trait be ordered in descending order? Set to
 \code{FALSE} if low values of the trait indicate better performance.}
 
 \item{outfile}{A character string, the name and location of the output .pdf
 and .tex file for the report. If \code{NULL}, a report with a default name
-will be created in the current working directory.}
+will be created in the current working directory. Trialname, traitname and
+the type of model (genotype fixed or random) will be concatenated to the
+name of the outputfile.\cr
+Both knitr and pdflatex don't work well with spaces in file paths and these
+are therefore disallowed. Relative paths are possible though.}
 
-\item{what}{A character string indicating whether the model with genotype
-fixed or genotype random should be reported. Can be omitted if only one
-model has been fitted.}
-
-\item{trial}{A character string indicating the trial to be reported. If
-\code{NULL} and \code{SSA} contains only one trial, that trial is reported.}
-
-\item{trait}{A character string indicating the trait to be reported. If
-\code{NULL} and \code{SSA} contains only one trait, that trait is reported.}
+\item{what}{A character vector indicating whether the fitted model with
+genotype as fixed or genotype as random factor should be reported. By
+default all fitted models in the SSA object are reported.}
 }
 \value{
-A pdf and tex report.
+A pdf report and the .tex file and figures folder that can be used
+to recreate the report.
 }
 \description{
-A pdf report will be created containing a summary of the results of the
-fitted model. Simultaneously the same report will be created as a tex file.
+pdf reports will be created containing a summary of the results of the
+fitted model(s). For all selected trails and traits a separate pdf file will
+be generatd. Also a .tex file and a folder containing figures will be
+created for each report to enable easy modifying of the report.
+}
+\details{
+This function uses pdflatex to create a pdf report. For it to run correctly
+an installation of LaTeX is requiered. Checking for this is done with
+Sys.which("pdflatex").
 }
 \examples{
 ## Fit model using lme4.
