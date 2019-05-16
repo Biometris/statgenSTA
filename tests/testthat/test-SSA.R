@@ -113,17 +113,10 @@ test_that("function report.SSA functions properly" ,{
   skip_on_cran()
   testTD[["E2"]] <- testTD[["E1"]]
   modelSp <- fitTD(testTD, design = "rowcol", traits = c("t1", "t2"))
-  expect_error(report(modelSp),
-               "No trial provided but multiple trials found")
-  expect_error(report(modelSp, trial = "E3"),
-               "single character string defining a trial in SSA")
-  expect_error(report(modelSp, trial = "E1"),
-               "No trait provided but multiple traits found")
-  expect_error(report(modelSp, trial = "E1", trait = "t3"),
-               "single character string defining a trait for which a model")
   tmpFile = tempfile(fileext = ".pdf")
   expect_silent(report(modelSp, trial = "E1", trait = "t1", outfile = tmpFile))
-  expect_true(file.exists(tmpFile))
-  expect_true(file.exists(gsub(pattern = ".pdf", replacement = ".tex",
-                               x = tmpFile)))
+  expect_true(file.exists(gsub(pattern = ".pdf",
+                               replacement = "_E1_t1_fixed.pdf", x = tmpFile)))
+  expect_true(file.exists(gsub(pattern = ".pdf",
+                               replacement = "_E1_t1_fixed.tex", x = tmpFile)))
 })
