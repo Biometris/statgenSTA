@@ -64,8 +64,9 @@ fitTDLme4 <- function(TD,
     mr <- sapply(X = traits, FUN = function(trait) {
       ## Fit model with genotype random.
       modTrR <- tryCatchExt(
-        lme4::lmer(as.formula(paste(trait, fixedForm, "+ (1 | genotype) ",
-                                    if (length(randomForm) != 0)
+        lme4::lmer(as.formula(paste0("`", trait, "`", fixedForm,
+                                     "+ (1 | genotype) ",
+                                     if (length(randomForm) != 0)
                                       paste("+", randomForm))), data = TDTr,
                    na.action = na.exclude, ...)
       )
@@ -93,13 +94,13 @@ fitTDLme4 <- function(TD,
     mf <- sapply(X = traits, FUN = function(trait) {
       if (length(randomForm) != 0) {
         modTrF <- tryCatchExt(
-          lme4::lmer(as.formula(paste(trait, fixedForm, "+ genotype + ",
-                                      randomForm)), data = TDTr,
-                     na.action = na.exclude, ...))
+          lme4::lmer(as.formula(paste0("`", trait, "`", fixedForm,
+                                       "+ genotype + ", randomForm)),
+                     data = TDTr, na.action = na.exclude, ...))
       } else {
         modTrF <- tryCatchExt(
-          lm(as.formula(paste(trait, fixedForm, "+ genotype")), data = TDTr,
-             na.action = na.exclude, ...))
+          lm(as.formula(paste("`", trait, "`", fixedForm, "+ genotype")),
+             data = TDTr, na.action = na.exclude, ...))
       }
       if (length(modTrF$warning) != 0) {
         warning(paste0("Warning in lmer for genotype fixed, trait ", trait,

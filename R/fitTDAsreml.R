@@ -95,7 +95,7 @@ fitTDAsreml <- function(TD,
       if ("random" %in% what) {
         ## Fit model with genotype random.
         mrTrait <- tryCatchExt(
-          asreml::asreml(fixed = formula(paste(trait, fixedForm)),
+          asreml::asreml(fixed = formula(paste0("`", trait, "`", fixedForm)),
                          random = formula(paste("~", randomForm,
                                                 if (length(randomForm) != 0) "+",
                                                 "genotype")),
@@ -148,15 +148,15 @@ fitTDAsreml <- function(TD,
         ## cases on whether there is or there is not a random term.
         if (length(randomForm) != 0) {
           mfTrait <- tryCatchExt(
-            asreml::asreml(fixed = formula(paste(trait, fixedForm,
-                                                 "+ genotype")),
+            asreml::asreml(fixed = formula(paste0("`", trait, "`", fixedForm,
+                                                  "+ genotype")),
                            random = formula(paste("~", randomForm)),
                            G.param = GParamTmp, aom = TRUE, data = TDTr,
                            maxiter = maxIter, trace = FALSE, ...))
         } else {
           mfTrait <- tryCatchExt(
-            asreml::asreml(fixed = formula(paste(trait, fixedForm,
-                                                 "+ genotype")),
+            asreml::asreml(fixed = formula(paste0("`", trait, "`", fixedForm,
+                                                  "+ genotype")),
                            G.param = GParamTmp, aom = TRUE, data = TDTr,
                            maxiter = maxIter, trace = FALSE, ...))
         }
@@ -274,7 +274,7 @@ bestSpatMod <- function(TD,
     modSum <- as.data.frame(matrix(nrow = length(spatCh), ncol = length(btCols),
                                    dimnames = list(NULL, btCols)))
     ## Create formula for the fixed part.
-    fixedFormR <- formula(paste(trait, fixedForm))
+    fixedFormR <- formula(paste0("`", trait, "`", fixedForm))
     ## Fit model with genotype random for all different random/spatial terms.
     for (i in seq_along(randTerm)) {
       if (length(randomForm) > 0) {
