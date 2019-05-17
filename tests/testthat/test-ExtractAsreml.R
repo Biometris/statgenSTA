@@ -1,4 +1,4 @@
-context("ExtractAsreml")
+context("Extract asreml")
 
 if (requireNamespace("asreml", quietly = TRUE)) {
   modelAs <- fitTD(testTD, design = "res.ibd", traits = "t1", engine = "asreml")

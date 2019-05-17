@@ -5,14 +5,13 @@
 #' \code{qnorm(1 - 0.5 / rDf)} where \code{rDf} are the residual degrees
 #' of freedom for the model. This value is then restricted to the interval
 #' 2..4. Alternatively a custom limit may be provided.\cr
-#' A summary is printed of outliers and observations that have the same
-#' value for \code{commonFactors}. The latter ones will be marked as
-#' similar to distinguish them from the former ones.
+#' If \code{verbose = TRUE} a summary is printed of outliers and observations
+#' that have the same value for \code{commonFactors}. The latter ones will be
+#' marked as similar to distinguish them from the former ones.
 #'
 #' @param SSA An object of class \code{\link{SSA}}.
-#' @param trial A character string specifying the trial for which outliers
-#' should be identified. If \code{NULL} and \code{SSA} contains only one trial,
-#' that trial is used.
+#' @param trials A character vector specifying the trials for which outliers
+#' should be identified. If \code{trials = NULL}, all trials are included.
 #' @param traits A character vector specifying the names of the traits for
 #' which outliers should be identified.
 #' @param what A character string indicating whether the outlier should be
@@ -44,9 +43,9 @@
 #'
 #' @export
 outlierSSA <- function(SSA,
-                       trial = NULL,
+                       trials = NULL,
                        traits,
-                       what = NULL,
+                       what = c("fixed", "random"),
                        rLimit = NULL,
                        commonFactors = NULL,
                        verbose = TRUE) {
@@ -54,95 +53,110 @@ outlierSSA <- function(SSA,
   if (missing(SSA) || !inherits(SSA, "SSA")) {
     stop("SSA should be a valid object of class SSA.\n")
   }
-  if (is.null(trial) && length(SSA) > 1) {
-    stop("No trial provided but multiple trials found in SSA object.\n")
+  if (!is.null(trials) && (!is.character(trials) ||
+                           !all(hasName(x = SSA, name = trials)))) {
+    stop("trials has to be a character vector defining trials in SSA.\n")
   }
-  if (!is.null(trial) && (!is.character(trial) || length(trial) > 1 ||
-                          !hasName(SSA, trial))) {
-    stop("Trial has to be a single character string defining a trial in SSA.\n")
+  if (is.null(trials)) {
+    trials <- names(SSA)
   }
-  if (is.null(trial)) {
-    trial <- names(SSA)
-  }
-  if (!is.null(traits) && (!is.character(traits) ||
-                           !all(hasName(x = SSA[[trial]]$TD[[trial]],
-                                        name = traits)))) {
-    stop("Trait has to be a character vector defining columns in TD.\n")
-  }
-  if (is.null(what)) {
-    what <- ifelse(is.null(SSA[[trial]]$mFix), "random", "fixed")
-  } else {
-    what <- match.arg(arg = what, choices = c("fixed", "random"))
-  }
-  if (!is.null(commonFactors) && !is.character(commonFactors) &&
-      !all(commonFactors %in% colnames(SSA[[trial]]$TD[[trial]]))) {
-    stop("commonFactor has to be a character vector defining columns in TD.\n")
+  if (!is.null(traits) && !is.character(traits)) {
+    stop("traits has to be a character vector.\n")
   }
   if (!is.null(rLimit) && (!is.numeric(rLimit) || length(rLimit) > 1 ||
                            rLimit < 0)) {
     stop("rLimit should be NULL or a positive numerical value.\n")
   }
-  whatExt <- ifelse(what == "fixed", "stdRes", "stdResR")
-  whatExtDf <- ifelse(what == "fixed", "rDf", "rDfR")
-  stdRes <- extract(SSA, trials = trial, traits = traits,
-                      what = whatExt)[[trial]][[whatExt]]
-  rDf <- extract(SSA, trials = trial, traits = traits,
-                   what = whatExtDf)[[trial]][[whatExtDf]]
-  ## Create empty data.frame for storing results.
-  indicator <- data.frame(matrix(data = FALSE,
-                                 nrow = nrow(SSA[[trial]]$TD[[trial]]),
-                                 ncol = length(traits),
-                                 dimnames = list(NULL, traits)))
-  outTrait <- setNames(vector(mode = "list", length = length(traits)), traits)
-  for (trait in traits) {
-    stdResTr <- stdRes
-    ## Compute limit value for residuals.
-    if (is.null(rLimit)) {
-      rLimit <- min(max(2, qnorm(p = 1 - 0.5 / rDf[trait])), 4)
+  what <- match.arg(arg = what, choices = c("fixed", "random"))
+  outTot <- sapply(X = trials, FUN = function(trial) {
+    if (!is.null(commonFactors) && !is.character(commonFactors) &&
+        !all(hasName(x = SSA[[trial]]$TD[[trial]], name = commonFactors))) {
+      stop("commonFactor has to be a character vector defining columns in TD.\n")
     }
-    datTr <- SSA[[trial]]$TD[[trial]]
-    datTr <- datTr[!colnames(datTr) %in% setdiff(traits, trait)]
-    ## Compute outliers.
-    ## Set missing values to 0 to prevent problems when comparing to rLimit.
-    stdResTr[is.na(stdResTr[[trait]]), trait] <- 0
-    outVals <- stdResTr[abs(stdResTr[[trait]]) > rLimit, trait]
-    if (length(outVals > 0)) {
-      ## Fill indicator column for current trait.
-      indicator[[trait]] <- abs(stdResTr[[trait]]) > rLimit
-      ## Rename column for easier joining.
-      colnames(stdResTr)[colnames(stdResTr) == trait] <- "res"
-      ## Create data.frame with outliers for current trait.
-      outTr <- cbind(datTr, stdResTr["res"])
-      if (!is.null(commonFactors)) {
-        ## If commonFactors are given merge to data.
-        outTr <- unique(merge(x = outTr,
-                              y = outTr[abs(outTr$res) > rLimit,
-                                        commonFactors, drop = FALSE],
-                              by = commonFactors))
-      } else {
-        outTr <- outTr[abs(outTr$res) > rLimit, ]
+    whatMod <- c("mFix", "mRand")[what == c("fixed", "random")]
+    if (is.null(SSA[[trial]][[whatMod]])) {
+      warning("Model with genotype ", what, " not available for trial ",
+              trial, ".\nReport skipped.")
+      break
+    }
+    ## Check that traits are available for current trial.
+    if (!is.null(traits)) {
+      traitsTr <- traits[hasName(x = SSA[[trial]][[whatMod]],
+                                 name = traits)]
+      if (length(traitsTr) == 0) {
+        ## Skip with warning if no traits available.
+        warning(paste0("traits not available for trial ", trial, ".\n",
+                       "Reports for trial ", trial, " skipped.\n"))
+        break
       }
-      outTr$similar <- abs(outTr$res) <= rLimit
-      outTr$trait <- trait
-      ## Rename column trait to value.
-      colnames(outTr)[colnames(outTr) == trait] <- "value"
-      ## Change order of columns to always display trait, value and res first.
-      outTr <- cbind(outTr[, c("trait", "value", "res")],
-                     outTr[!colnames(outTr) %in% c("trait", "value", "res")])
-      outTrait[[trait]] <- outTr
+    } else {
+      ## If no trait is given as input extract it from the SSA object.
+      traitsTr <- names(SSA[[trial]][[whatMod]])
     }
-  }
-  ## Create one single outlier data.frame.
-  pMat <- Reduce(f = rbind, x = outTrait)
+    whatExt <- ifelse(what == "fixed", "stdRes", "stdResR")
+    whatExtDf <- ifelse(what == "fixed", "rDf", "rDfR")
+    stdRes <- extract(SSA, trials = trial, traits = traitsTr,
+                      what = whatExt)[[trial]][[whatExt]]
+    rDf <- extract(SSA, trials = trial, traits = traitsTr,
+                   what = whatExtDf)[[trial]][[whatExtDf]]
+    ## Create empty data.frame for storing results.
+    outTr <- indicatorTr <- setNames(vector(mode = "list",
+                                            length = length(traitsTr)),
+                                     traitsTr)
+    for (trait in traitsTr) {
+      stdResTr <- stdRes
+      ## Compute limit value for residuals.
+      if (is.null(rLimit)) {
+        rLimit <- min(max(2, qnorm(p = 1 - 0.5 / rDf[trait])), 4)
+      }
+      datTr <- SSA[[trial]]$TD[[trial]]
+      datTr <- datTr[!colnames(datTr) %in% setdiff(traitsTr, trait)]
+      ## Compute outliers.
+      ## Set missing values to 0 to prevent problems when comparing to rLimit.
+      stdResTr[is.na(stdResTr[[trait]]), trait] <- 0
+      outVals <- stdResTr[abs(stdResTr[[trait]]) > rLimit, trait]
+      if (length(outVals > 0)) {
+        ## Rename column for easier joining.
+        colnames(stdResTr)[colnames(stdResTr) == trait] <- "res"
+        ## Create data.frame with outliers for current trait.
+        outTrt <- cbind(datTr, stdResTr["res"])
+        if (!is.null(commonFactors)) {
+          ## If commonFactors are given merge to data.
+          outTrt <- unique(merge(x = outTrt,
+                                 y = outTrt[abs(outTrt$res) > rLimit,
+                                            commonFactors, drop = FALSE],
+                                 by = commonFactors))
+        } else {
+          outTrt <- outTrt[abs(outTrt$res) > rLimit, ]
+        }
+        outTrt$similar <- abs(outTrt$res) <= rLimit
+        outTrt$trait <- trait
+        ## Rename column trait to value.
+        colnames(outTrt)[colnames(outTrt) == trait] <- "value"
+        ## Change order of columns to always display most relevant info first.
+        firstCols <- c("trial", "trait", "value", "res")
+        outTrt <- cbind(outTrt[, firstCols],
+                        outTrt[!colnames(outTrt) %in% firstCols])
+        outTr[[trait]] <- outTrt
+        ## Fill indicator column for current trait.
+        indicatorTr[[trait]] <- which(abs(stdResTr[["res"]]) > rLimit)
+      }
+    }
+    ## Create one single outlier data.frame.
+    outTotTr <- Reduce(f = rbind, x = outTr)
+    return(list(outTotTr, indicatorTr))
+  }, simplify = FALSE)
+  indicatorTot <- lapply(X = outTot, `[[`, 2)
+  outTot <- Reduce(f = rbind, x = lapply(X = outTot, `[[`, 1))
   if (verbose) {
-    if (!is.null(pMat)) {
+    if (!is.null(outTot)) {
       cat(paste("Large standardized residuals\n\n"))
-      print(format(pMat, quote = FALSE))
+      print(format(outTot, quote = FALSE), row.names = FALSE)
     } else {
       cat("No large standardized residuals.\n")
     }
   }
-  return(list(indicator = indicator, outliers = pMat))
+  return(list(indicator = indicatorTot, outliers = outTot))
 }
 
 

@@ -106,6 +106,10 @@ coverage:
   when: on_success
   cache:
     key: release-cache
+    paths:
+      - $R_LIBS_USER
+      - $CI_PROJECT_DIR/.apt
+    policy: pull
   only:
     - develop
     - master

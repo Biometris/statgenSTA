@@ -1,4 +1,4 @@
-context("Extract Lme4")
+context("Extract lme4")
 
 modelLm <- fitTD(testTD, design = "rcbd", traits = "t1", engine = "lme4")
 

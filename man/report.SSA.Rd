@@ -4,7 +4,7 @@
 \alias{report.SSA}
 \title{Report method for class SSA}
 \usage{
-\method{report}{SSA}(x, ..., trials = names(x), traits = NULL,
+\method{report}{SSA}(x, ..., trials = NULL, traits = NULL,
   descending = TRUE, outfile = NULL, what = c("fixed", "random"))
 }
 \arguments{
@@ -12,10 +12,10 @@
 
 \item{...}{Further arguments passed to the report function.}
 
-\item{trials}{A character vector indicating the trials to plot. If
+\item{trials}{A character vector indicating the trials to report. If
 \code{trials = NULL}, all trials are reported.}
 
-\item{traits}{A character vector indicating the traits to plot. If
+\item{traits}{A character vector indicating the traits to report. If
 \code{traits = NULL}, all traits are reported.}
 
 \item{descending}{Should the trait be ordered in descending order? Set to

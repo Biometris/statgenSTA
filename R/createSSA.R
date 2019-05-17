@@ -582,9 +582,9 @@ fieldPlot <- function(plotDat,
 #'
 #' @param x An object of class SSA.
 #' @param ... Further arguments passed to the report function.
-#' @param trials A character vector indicating the trials to plot. If
+#' @param trials A character vector indicating the trials to report. If
 #' \code{trials = NULL}, all trials are reported.
-#' @param traits A character vector indicating the traits to plot. If
+#' @param traits A character vector indicating the traits to report. If
 #' \code{traits = NULL}, all traits are reported.
 #' @param descending Should the trait be ordered in descending order? Set to
 #' \code{FALSE} if low values of the trait indicate better performance.
@@ -622,7 +622,7 @@ fieldPlot <- function(plotDat,
 #' @export
 report.SSA <- function(x,
                        ...,
-                       trials = names(x),
+                       trials = NULL,
                        traits = NULL,
                        descending = TRUE,
                        outfile = NULL,
@@ -634,6 +634,9 @@ report.SSA <- function(x,
   if (!is.null(trials) && (!is.character(trials) ||
                            !all(hasName(x = x, name = trials)))) {
     stop("trials has to be a character vector defining a trial in SSA.\n")
+  }
+  if (is.null(trials)) {
+    trials <- names(SSA)
   }
   if (!is.null(traits) && !is.character(traits)) {
     stop("traits has to be a character vector.\n")

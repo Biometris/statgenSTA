@@ -4,15 +4,14 @@
 \alias{outlierSSA}
 \title{Identifying outliers in objects of class SSA}
 \usage{
-outlierSSA(SSA, trial = NULL, traits, what = NULL, rLimit = NULL,
-  commonFactors = NULL, verbose = TRUE)
+outlierSSA(SSA, trials = NULL, traits, what = c("fixed", "random"),
+  rLimit = NULL, commonFactors = NULL, verbose = TRUE)
 }
 \arguments{
 \item{SSA}{An object of class \code{\link{SSA}}.}
 
-\item{trial}{A character string specifying the trial for which outliers
-should be identified. If \code{NULL} and \code{SSA} contains only one trial,
-that trial is used.}
+\item{trials}{A character vector specifying the trials for which outliers
+should be identified. If \code{trials = NULL}, all trials are included.}
 
 \item{traits}{A character vector specifying the names of the traits for
 which outliers should be identified.}
@@ -47,9 +46,9 @@ Function to identify observations with standardized residuals exceeding
 \code{qnorm(1 - 0.5 / rDf)} where \code{rDf} are the residual degrees
 of freedom for the model. This value is then restricted to the interval
 2..4. Alternatively a custom limit may be provided.\cr
-A summary is printed of outliers and observations that have the same
-value for \code{commonFactors}. The latter ones will be marked as
-similar to distinguish them from the former ones.
+If \code{verbose = TRUE} a summary is printed of outliers and observations
+that have the same value for \code{commonFactors}. The latter ones will be
+marked as similar to distinguish them from the former ones.
 }
 \examples{
 ## Fit a model using lme4.
