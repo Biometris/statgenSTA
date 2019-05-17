@@ -28,8 +28,8 @@
 #'
 #' @return A list with two components:
 #' \itemize{
-#' \item{indicator - a data.frame containing logical values indicating if the
-#' observation is an outlier.}
+#' \item{indicator - a list of numeric vectors indicating the location of the
+#' outliers in the data}
 #' \item{outliers - a data.frame containing the outliers and observations
 #' similar to the outliers as defined by \code{commonFactors}}
 #' }

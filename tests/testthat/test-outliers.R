@@ -68,4 +68,3 @@ test_that("option verbose functions properly", {
   expect_true("Large standardized residuals" %in% printOut2)
   expect_true(any(grepl(pattern = "2.031948", x = printOut2)))
 })
-
