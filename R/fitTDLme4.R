@@ -99,7 +99,7 @@ fitTDLme4 <- function(TD,
                      data = TDTr, na.action = na.exclude, ...))
       } else {
         modTrF <- tryCatchExt(
-          lm(as.formula(paste("`", trait, "`", fixedForm, "+ genotype")),
+          lm(as.formula(paste0("`", trait, "`", fixedForm, "+ genotype")),
              data = TDTr, na.action = na.exclude, ...))
       }
       if (length(modTrF$warning) != 0) {
