@@ -67,7 +67,7 @@ R-release:
       - '*.Rcheck/*'
     expire_in: '1 month'
   cache:
-    key: "$CI_COMMIT_REF_SLUG"
+    key: release-cache
     paths:
       - $R_LIBS_USER
       - $CI_PROJECT_DIR/.apt
@@ -92,6 +92,11 @@ R-devel:
     paths:
       - '*.Rcheck/*'
     expire_in: '1 month'
+  cache:
+    key: devel-cache
+    paths:
+      - $R_LIBS_USER
+      - $CI_PROJECT_DIR/.apt
 
 coverage:
   stage: test
@@ -100,11 +105,7 @@ coverage:
     - R-release
   when: on_success
   cache:
-    key: "$CI_COMMIT_REF_SLUG"
-    paths:
-      - $R_LIBS_USER
-      - $CI_PROJECT_DIR/.apt
-    policy: pull
+    key: release-cache
   only:
     - develop
     - master
