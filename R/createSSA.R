@@ -668,6 +668,7 @@ report.SSA <- function(x,
         traitsTr <- names(modTr[[trial]][[whatMod]])
       }
       for (trait in traitsTr) {
+        outTr <- gsub(pattern = " ", replacement = "_", x = trait)
         ## report name has to be adapted.
         if (!is.null(outfile)) {
           ## Add trial and trait info before file extension.
@@ -675,9 +676,9 @@ report.SSA <- function(x,
           outLen <- nchar(outfile)
           outfileTr <- paste0(substring(text = outfile, first = 1,
                                         last = outLen - nchar(outExt) - 1),
-                              "_", trial, "_", trait, "_", whatTr, ".", outExt)
+                              "_", trial, "_", outTr, "_", whatTr, ".", outExt)
         } else {
-          outfileTr <- paste0("./modelReport_" , trial, "_", trait, "_", whatTr,
+          outfileTr <- paste0("./modelReport_" , trial, "_", outTr, "_", whatTr,
                               "_", timeStamp, ".pdf")
         }
         createReport(x = modTr, reportName = "modelReport.Rnw",
