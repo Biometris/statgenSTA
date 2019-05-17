@@ -77,7 +77,7 @@ outlierSSA <- function(SSA,
     if (is.null(SSA[[trial]][[whatMod]])) {
       warning("Model with genotype ", what, " not available for trial ",
               trial, ".\nReport skipped.")
-      break
+      return(NULL)
     }
     ## Check that traits are available for current trial.
     if (!is.null(traits)) {
@@ -87,7 +87,7 @@ outlierSSA <- function(SSA,
         ## Skip with warning if no traits available.
         warning(paste0("traits not available for trial ", trial, ".\n",
                        "Reports for trial ", trial, " skipped.\n"))
-        break
+        return(NULL)
       }
     } else {
       ## If no trait is given as input extract it from the SSA object.

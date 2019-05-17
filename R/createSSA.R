@@ -636,7 +636,7 @@ report.SSA <- function(x,
     stop("trials has to be a character vector defining a trial in SSA.\n")
   }
   if (is.null(trials)) {
-    trials <- names(SSA)
+    trials <- names(x)
   }
   if (!is.null(traits) && !is.character(traits)) {
     stop("traits has to be a character vector.\n")
