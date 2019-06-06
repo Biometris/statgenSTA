@@ -893,6 +893,10 @@ plot.TD <- function(x,
           plotDat[xVar] <- factor(plotDat[[xVar]], levels = rev(levels(levNw)))
         }
       }
+      ## Colorby is ignored in plot if it is not a factor.
+      if (!is.null(colorBy) && !is.factor(plotDat[colorBy])) {
+        plotDat[colorBy] <- factor(plotDat[[colorBy]])
+      }
       ## Create boxplot.
       pTr <- ggplot2::ggplot(plotDat,
                              ggplot2::aes_string(x = paste0("`", xVar, "`"),
