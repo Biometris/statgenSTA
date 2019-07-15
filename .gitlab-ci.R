@@ -14,6 +14,7 @@ pkgsUpdate <- function(repos = "https://cran.rstudio.com",
                        quiet = TRUE,
                        instPkgdown = FALSE) {
   installIfNeeded(pkg = "remotes", repos = repos, quiet = quiet)
+  installIfNeeded(pkg = "DT", repos = repos, quiet = quiet)
   if (instPkgdown) {
     installIfNeeded(pkg = "pkgdown", repos = repos, quiet = quiet)
   }
