@@ -65,6 +65,6 @@ test_that("option verbose functions properly", {
                                                  traits = "t1", what = "random",
                                                  rLimit = 2, verbose = TRUE))
   expect_equal(printOut1, "No large standardized residuals.")
-  expect_true("Large standardized residuals" %in% printOut2)
+  expect_true("Large standardized residuals." %in% printOut2)
   expect_true(any(grepl(pattern = "2.031948", x = printOut2)))
 })
