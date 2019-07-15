@@ -3,6 +3,22 @@ context("outliers")
 modelLm <- fitTD(testTD, design = "rowcol", traits = paste0("t", 1:4),
                  engine = "lme4")
 
+test_that("checks in outliersSSA functioin properly", {
+  expect_error(outlierSSA(), "SSA should be a valid object of class SSA")
+  expect_error(outlierSSA(modelLm, trials = "E2"),
+               "trials has to be a character vector defining trials in SSA")
+  expect_error(outlierSSA(modelLm, traits = 1) , "has to be a character vector")
+  expect_warning(outlierSSA(modelLm, traits = "t5"),
+                 "traits not available for trial E1")
+  expect_error(outlierSSA(modelLm, traits = "t1", rLimit = -1),
+               "rLimit should be NULL or a positive numerical value")
+  expect_error(outlierSSA(modelLm, traits = "t1", commonFactors = "comFac"),
+               "commonFactors has to be a character vector defining columns")
+  modelLm$E1$mRand <- NULL
+  expect_warning(outlierSSA(modelLm, traits = "t1", what = "random"),
+                 "Model with genotype random not available for trial E1")
+})
+
 test_that("outliersSSA functions properly", {
   out1 <- outlierSSA(modelLm, trials = "E1", traits = "t1", verbose = FALSE)
   expect_is(out1, "list")

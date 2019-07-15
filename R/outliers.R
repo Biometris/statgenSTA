@@ -44,7 +44,7 @@
 #' @export
 outlierSSA <- function(SSA,
                        trials = NULL,
-                       traits,
+                       traits = NULL,
                        what = c("fixed", "random"),
                        rLimit = NULL,
                        commonFactors = NULL,
@@ -69,14 +69,14 @@ outlierSSA <- function(SSA,
   }
   what <- match.arg(arg = what, choices = c("fixed", "random"))
   outTot <- sapply(X = trials, FUN = function(trial) {
-    if (!is.null(commonFactors) && !is.character(commonFactors) &&
-        !all(hasName(x = SSA[[trial]]$TD[[trial]], name = commonFactors))) {
-      stop("commonFactor has to be a character vector defining columns in TD.\n")
+    if (!is.null(commonFactors) && (!is.character(commonFactors) ||
+        !all(hasName(x = SSA[[trial]]$TD[[trial]], name = commonFactors)))) {
+      stop("commonFactors has to be a character vector defining columns in TD.\n")
     }
     whatMod <- c("mFix", "mRand")[what == c("fixed", "random")]
     if (is.null(SSA[[trial]][[whatMod]])) {
       warning("Model with genotype ", what, " not available for trial ",
-              trial, ".\nReport skipped.")
+              trial, ".\nOutlier detection skipped.")
       return(NULL)
     }
     ## Check that traits are available for current trial.

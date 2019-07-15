@@ -4,8 +4,8 @@
 \alias{outlierSSA}
 \title{Identifying outliers in objects of class SSA}
 \usage{
-outlierSSA(SSA, trials = NULL, traits, what = c("fixed", "random"),
-  rLimit = NULL, commonFactors = NULL, verbose = TRUE)
+outlierSSA(SSA, trials = NULL, traits = NULL, what = c("fixed",
+  "random"), rLimit = NULL, commonFactors = NULL, verbose = TRUE)
 }
 \arguments{
 \item{SSA}{An object of class \code{\link{SSA}}.}
