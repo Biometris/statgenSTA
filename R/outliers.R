@@ -86,7 +86,7 @@ outlierSSA <- function(SSA,
       if (length(traitsTr) == 0) {
         ## Skip with warning if no traits available.
         warning(paste0("traits not available for trial ", trial, ".\n",
-                       "Reports for trial ", trial, " skipped.\n"))
+                       "Outlier detection for trial ", trial, " skipped.\n"))
         return(NULL)
       }
     } else {
@@ -150,8 +150,9 @@ outlierSSA <- function(SSA,
   outTot <- Reduce(f = rbind, x = lapply(X = outTot, `[[`, 1))
   if (verbose) {
     if (!is.null(outTot)) {
-      cat(paste("Large standardized residuals\n\n"))
-      print(format(outTot, quote = FALSE), row.names = FALSE)
+      cat(paste("Large standardized residuals.\n\n"))
+      print(format(outTot[c("trial", "genotype", "trait", "value", "res",
+                            "similar")], quote = FALSE), row.names = FALSE)
     } else {
       cat("No large standardized residuals.\n")
     }

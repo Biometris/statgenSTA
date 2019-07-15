@@ -32,7 +32,7 @@ supprWarn <- function(expression,
 
 #' Helper function for checking whether error message about 1% change on
 #' last iteration for asreml is worth mentioning as a warning.
-#' If the corresponding parameter is close to zero and then changes of 1%
+#' If the corresponding parameter is close to zero then changes of 1%
 #' or more can be expected and are ok.
 #'
 #' @noRd
