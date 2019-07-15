@@ -90,7 +90,7 @@ summary.SSA <- function(object,
   ## Checks.
   if (!is.null(trials) && (!is.character(trials) ||
                            !all(hasName(x = object, name = trials)))) {
-    stop("Trial has to be a single character string defining a trial in SSA.\n")
+    stop("trials has to be a character vector defining trials in SSA.\n")
   }
   if (is.null(trials)) {
     trials <- names(object)
@@ -103,7 +103,7 @@ summary.SSA <- function(object,
                             hasName(x = object[[trial]]$TD[[trial]],
                                     name = trait)
                           })))) {
-    stop("Trait has to be a single character string defining a column in TD.\n")
+    stop("trait has to be a single character string defining a column in TD.\n")
   }
   if (is.null(trait)) {
     trait <- object[[trials[1]]]$traits
@@ -135,7 +135,7 @@ summary.SSA <- function(object,
     TD <- object[[trials]]$TD
     if (is.null(trait) || (is.null(object[[trials]]$mFix[[trait]]) &&
                            is.null(object[[trials]]$mRand[[trait]]))) {
-      stop(paste0("No fitted model found for ", trait, " in ", trials, ".\n"))
+      stop("No fitted model found for ", trait, " in ", trials, ".\n")
     }
     stats <- summary.TD(object = TD, traits = trait)
     ## get predicted means (BLUEs + BLUPs).
@@ -306,7 +306,7 @@ plot.SSA <- function(x,
   ## Checks.
   if (!is.null(trials) && (!is.character(trials) ||
                            !all(hasName(x = x, name = trials)))) {
-    stop("trials has to be a character vector defining a trial in SSA.\n")
+    stop("trials has to be a character vector defining trials in SSA.\n")
   }
   if (!is.null(traits) && !is.character(traits)) {
     stop("traits has to be a character vector.\n")
@@ -314,7 +314,7 @@ plot.SSA <- function(x,
   plotType <- match.arg(arg = plotType)
   if (is.null(outCols) || !is.numeric(outCols) || length(outCols) > 1 ||
       outCols < 1) {
-    stop("outCols should be a single numerical value greater than 1.\n")
+    stop("outCols should be a single numerical value greater than 0.\n")
   }
   dotArgs <- list(...)
   ## Check whether data contains row/col information.
@@ -328,8 +328,8 @@ plot.SSA <- function(x,
       traitsTr <- traits[hasName(x = x[[trial]]$TD[[trial]],
                                  name = traits)]
       if (length(traitsTr) == 0) {
-        warning(paste0("traits not available for trial ", trial, ".\n",
-                       "Plots for trial ", trial, " skipped.\n"))
+        warning("traits not available for trial ", trial, ".\n",
+                "Plots for trial ", trial, " skipped.\n")
         break
       }
     } else {
@@ -359,8 +359,8 @@ plot.SSA <- function(x,
     }
     if (plotType == "spatial" && !all(spatCols %in%
                                       colnames(x[[trial]]$TD[[trial]]))) {
-      warning(paste("Data for trial ", trial, " contains no spatial ",
-                    " information.\n Plots for trial ", trial, " skipped.\n"))
+      warning("Data for trial ", trial, " contains no spatial ",
+              "information.\n Plots for trial ", trial, " skipped.\n")
       break
     }
     pTr <- setNames(vector(mode = "list", length = length(traits)), traits)
@@ -372,9 +372,10 @@ plot.SSA <- function(x,
         model <- x[[trial]]$mRand[[trait]]
       }
       if (is.null(model)) {
-        warning(paste0("No model with genotype ", what, "for trial ", trial,
-                       " and trait ", trait, ".\n", "Plots for trial ",
-                       trial, " and trait ", trait, " skipped.\n"))
+        warning("No model with genotype ", what, " for trial ", trial,
+                " and trait ", trait, ".\n", "Plots for trial ",
+                trial, " and trait ", trait, " skipped.\n")
+        break
       }
       predicted <- x[[trial]]$predicted
       ## Extract fitted and predicted values from model.
@@ -753,14 +754,14 @@ SSAtoCross <- function(SSA,
   }
   if (!is.null(trial) && (!is.character(trial) || length(trial) > 1 ||
                           !trial %in% names(SSA))) {
-    stop("Trial has to be a single character string defining a trial in SSA.\n")
+    stop("trial has to be a single character string defining a trial in SSA.\n")
   }
   if (is.null(trial)) {
     trial <- names(SSA)
   }
   if (!is.null(traits) && (!is.character(traits) ||
                            !all(traits %in% colnames(SSA[[trial]]$TD[[trial]])))) {
-    stop("Trait has to be a character vector defining columns in TD.\n")
+    stop("traits has to be a character vector defining columns in TD.\n")
   }
   if (is.null(traits)) {
     traits <- SSA[[trial]]$traits
@@ -833,33 +834,30 @@ SSAtoTD <- function(SSA,
   }
   if (!is.null(traits) && (!is.character(traits) ||
                            !all(traits %in% colnames(SSA[[1]]$TD[[1]])))) {
-    stop("Trait has to be a character vector defining columns in TD.\n")
+    stop("traits has to be a character vector defining columns in TD.\n")
   }
   what <- match.arg(what, several.ok = TRUE)
   if (any(c("BLUEs", "seBLUEs") %in% what) && is.null(SSA[[1]]$mFix)) {
-    warning(paste("BLUEs and seBLUEs can only extracted if a model with",
-                  "genotype fixed is fitted\nRemoving them from what"),
-            call. = FALSE)
+    warning("BLUEs and seBLUEs can only be extracted if a model with ",
+            "genotype fixed is fitted\nRemoving them from what", call. = FALSE)
     what <- setdiff(what, c("BLUEs", "seBLUEs"))
   }
   if (any(c("BLUPs", "seBLUPs") %in% what) && is.null(SSA[[1]]$mRand)) {
-    warning(paste("BLUPs and seBLUPs can only extracted if a model with",
-                  "genotype random is fitted\nRemoving them from what"),
-            call. = FALSE)
+    warning("BLUPs and seBLUPs can only be extracted if a model with ",
+            "genotype random is fitted\nRemoving them from what", call. = FALSE)
     what <- setdiff(what , c("BLUPs", "seBLUPs"))
   }
   if (length(what) == 0) {
     stop("No statistics left to extract.")
   }
   if (addWt && is.null(SSA[[1]]$mFix)) {
-    warning(paste("Weights can only be added if a model with genotype fixed is",
-                  "fitted.\naddWt set to FALSE"),
-            call. = FALSE)
+    warning("Weights can only be added if a model with genotype fixed is ",
+            "fitted.\naddWt set to FALSE", call. = FALSE)
     addWt <- FALSE
   }
   if (addWt && !"seBLUEs" %in% what) {
-    warning(paste("Weights can only be added together with seBLUEs.\n",
-                  "seBLUEs added to what"), call. = FALSE)
+    warning("Weights can only be added together with seBLUEs.\n",
+            "seBLUEs added to what", call. = FALSE)
     what <- c(what, "seBLUEs")
   }
   if (is.null(traits)) {

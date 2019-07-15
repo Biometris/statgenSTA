@@ -3,17 +3,17 @@ context("Plots")
 ## Testing the exact plot output is difficult but since also the ggplot
 ## objects on which the plots are based are invisibly returned at least some
 ## checking can be done.
-
-p0 <- plot(TDHeat05, plotType = "layout", output = FALSE)
+p0 <- plot(testTD, plotType = "layout", output = FALSE)
 test_that("TD layout plot gives correct output types", {
-  expect_warning(plot(TDMaize, plotType = "layout"), "Plot skipped")
   expect_is(p0, "list")
   expect_length(p0, 1)
   expect_is(p0[[1]], "ggplot")
+  testTD$E1$colCoord <- NULL
+  expect_warning(plot(testTD, plotType = "layout"), "Plot skipped")
 })
 
 test_that("option showGeno functions properly in TD layout plot", {
-  p1 <- plot(TDHeat05, plotType = "layout", showGeno = TRUE, output = FALSE)
+  p1 <- plot(testTD, plotType = "layout", showGeno = TRUE, output = FALSE)
   ## Difference with default plot p0 should be the extra GeomText layer.
   geoms0 <- sapply(p0[[1]]$layers, function(x) class(x$geom)[1])
   geoms1 <- sapply(p1[[1]]$layers, function(x) class(x$geom)[1])
@@ -21,7 +21,7 @@ test_that("option showGeno functions properly in TD layout plot", {
 })
 
 test_that("option highlight functions properly in TD layout plot", {
-  p1 <- plot(TDHeat05, plotType = "layout", highlight = "SB001", output = FALSE)
+  p1 <- plot(testTD, plotType = "layout", highlight = "G1", output = FALSE)
   geoms1 <- sapply(p1[[1]]$layers, function(x) class(x$geom)[1])
   ## Two plots should be highlighted as defined in variable highlight..
   expect_equal(as.character(p1[[1]]$layers[geoms1 == "GeomTile"][[1]]$mapping),
@@ -30,7 +30,7 @@ test_that("option highlight functions properly in TD layout plot", {
 })
 
 test_that("option colorSubBlock functions properly in TD layout plot", {
-  p1 <- plot(TDHeat05, plotType = "layout", colorSubBlock = TRUE,
+  p1 <- plot(testTD, plotType = "layout", colorSubBlock = TRUE,
              output = FALSE)
   geoms1 <- sapply(p1[[1]]$layers, function(x) class(x$geom)[1])
   ## Fill should be based on subBlocks.
@@ -39,7 +39,7 @@ test_that("option colorSubBlock functions properly in TD layout plot", {
 })
 
 test_that("option highlight overrides colorSubBlock in TD layout plot", {
-  p1 <- plot(TDHeat05, plotType = "layout", highlight = "SB001",
+  p1 <- plot(testTD, plotType = "layout", highlight = "G1",
              colorSubBlock = TRUE, output = FALSE)
   geoms1 <- sapply(p1[[1]]$layers, function(x) class(x$geom)[1])
   ## Two plots should be highlighted as defined in variable highlight..
@@ -48,7 +48,7 @@ test_that("option highlight overrides colorSubBlock in TD layout plot", {
 })
 
 test_that("TD map plot gives correct output types", {
-  expect_error(plot(TDMaize, plotType = "map"),
+  expect_error(plot(testTD, plotType = "map"),
                "should have latitude and longitude")
   p <- plot(TDHeat05, plotType = "map", output = FALSE)
   expect_is(p, "ggplot")
@@ -62,40 +62,42 @@ test_that("options minLatRange and minLongRange function properly for TD map plo
 })
 
 test_that("TD box plot gives correct output types", {
-  expect_warning(plot(TDMaize, plotType = "box", traits = "trait"),
+  expect_warning(plot(testTD, plotType = "box", traits = "trait"),
                  "trait isn't a column in any of the trials")
-  p <- plot(TDMaize, plotType = "box", traits = "yld", output = FALSE)
+  p <- plot(testTD, plotType = "box", traits = "t1", output = FALSE)
   expect_is(p, "list")
   expect_length(p, 1)
   expect_is(p[[1]], "ggplot")
 })
 
 test_that("option groupBy functions properly for TD box plot", {
-  p <- plot(TDHeat05, plotType = "box", traits = "yield", groupBy = "repId",
+  p <- plot(testTD, plotType = "box", traits = "t1", groupBy = "repId",
             output = FALSE)
-  expect_true("~repId" %in% as.character(p$yield$mapping))
+  expect_true("~repId" %in% as.character(p$t1$mapping))
 })
 
 test_that("option colorBy functions properly for TD box plot", {
-  p <- plot(TDHeat05, plotType = "box", traits = "yield", colorBy = "repId",
+  p <- plot(testTD, plotType = "box", traits = "t1", colorBy = "repId",
             output = FALSE)
-  expect_true(all(c("~repId", "~trial") %in% as.character(p$yield$mapping)))
+  expect_true(all(c("~repId", "~trial") %in% as.character(p$t1$mapping)))
 })
 
 test_that("option orderBy functions properly for TD box plot", {
-  p0 <- plot(TDHeat05, plotType = "box", traits = "yield", output = FALSE)
-  p1 <- plot(TDHeat05, plotType = "box", traits = "yield",
+  p0 <- plot(testTD, plotType = "box", traits = "t1", output = FALSE)
+  p1 <- plot(testTD, plotType = "box", traits = "t1",
              orderBy = "ascending", output = FALSE)
-  p2 <- plot(TDHeat05, plotType = "box", traits = "yield",
+  p2 <- plot(testTD, plotType = "box", traits = "t1",
              orderBy = "descending", output = FALSE)
   ## This basically only checks that releveling took place.
-  expect_equal(setdiff(names(p1$yield$plot_env), names(p0$yield$plot_env)),
+  expect_equal(setdiff(names(p1$t1$plot_env), names(p0$t1$plot_env)),
                "levNw")
-  expect_equal(setdiff(names(p2$yield$plot_env), names(p0$yield$plot_env)),
+  expect_equal(setdiff(names(p2$t1$plot_env), names(p0$t1$plot_env)),
                "levNw")
 })
 
 test_that("TD correlation plot gives correct output types", {
+  expect_error(plot(testTD, plotType = "cor", traits = "trait"),
+               "At least two trials requiered for a correlation plot")
   expect_warning(plot(TDMaize, plotType = "cor", traits = "trait"),
                  "trait isn't a column in any of the trials")
   p <- plot(TDMaize, plotType = "cor", traits = "yld", output = FALSE)
@@ -117,9 +119,26 @@ test_that("TD correlation plot gives correct output types", {
                           output = FALSE))
 })
 
-SSA <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield")
+modelSp <- fitTD(TD = testTD, design = "rowcol", traits = "t1")
+test_that("checks in plot.SSA functions properly", {
+  expect_error(plot(modelSp, trials = 2),
+               "trials has to be a character vector defining trials in SSA")
+  expect_error(plot(modelSp, traits = 1),
+               "traits has to be a character vector")
+  expect_error(plot(modelSp, trait = "t2", outCols = 0),
+               "outCols should be a single numerical value greater than 0")
+  expect_warning(plot(modelSp, traits = "myTr"),
+                "traits not available for trial")
+  modelSp$E1$mRand <- NULL
+  expect_warning(plot(modelSp, what = "random"),
+                 "No model with genotype random for trial E1 and trait t1")
+  modelSp$E1$TD$E1$rowCoord <- NULL
+  expect_warning(plot(modelSp, plotType = "spatial"),
+                 "Data for trial E1 contains no spatial information")
+})
+
 test_that("SSA base plot gives correct output types", {
-  p1 <- plot(SSA, traits = "yield", output = FALSE)
+  p1 <- plot(modelSp, traits = "t1")
   expect_is(p1, "list")
   expect_length(p1, 1)
   expect_is(p1[[1]], "list")
@@ -130,7 +149,7 @@ test_that("SSA base plot gives correct output types", {
 })
 
 test_that("SSA spatial plot gives correct output types", {
-  p1 <- plot(SSA, plotType = "spatial", traits = "yield", output = FALSE)
+  p1 <- plot(modelSp, plotType = "spatial", traits = "t1")
   expect_is(p1, "list")
   expect_length(p1, 1)
   expect_is(p1[[1]], "list")
@@ -141,11 +160,10 @@ test_that("SSA spatial plot gives correct output types", {
 })
 
 test_that("option what in SSA plot functions properly", {
-  p1 <- plot(SSA, what = "random", output = FALSE)
-  p2 <- plot(SSA, plotType = "spatial", what = "random", output = FALSE)
+  p1 <- plot(modelSp, what = "random", output = FALSE)
+  p2 <- plot(modelSp, plotType = "spatial", what = "random", output = FALSE)
   expect_is(p1, "list")
   expect_equal(p2[[1]][[1]][[5]]$labels$title, "Genotypic BLUPs")
   expect_equal(p2[[1]][[1]][[6]]$labels$x, "Genotypic BLUPs")
 })
-
 

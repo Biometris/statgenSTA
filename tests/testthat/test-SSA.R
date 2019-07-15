@@ -1,6 +1,17 @@
 context("Class SSA")
 
 modelSp <- fitTD(testTD, design = "rowcol", traits = "t1")
+test_that("checks in summary.SSA functions properly", {
+  expect_error(summary(modelSp, trials = "E2"),
+               "trials has to be a character vector defining trials in SSA")
+  expect_error(summary(modelSp, trait = "t5"),
+               "trait has to be a single character string defining a column in")
+  expect_error(summary(modelSp, trait = "t2"),
+               "No fitted model found for t2 in E1")
+  modelSp2 <- fitTD(testTD, design = "rowcol", traits = c("t1", "t2"))
+  expect_error(summary(modelSp2), "No trait provided but multiple traits found")
+})
+
 test_that("summary.SSA produces correct output for SpATS", {
   sumSp <- summary(modelSp)
   expect_length(sumSp, 6)
@@ -37,6 +48,14 @@ test_that("summary.SSA produces correct output for asreml", {
   expect_equal(nrow(sumAs$lsd), 3)
 })
 
+test_that("option sortBy functions properly for summary.SSA", {
+  sumSp1 <- summary(modelSp)
+  sumSp2 <- summary(modelSp, sortBy = "BLUEs")
+  sumSp3 <- summary(modelSp, sortBy = "BLUPs")
+  expect_equal(sumSp1, sumSp2)
+  expect_equal(rank(sumSp3$meanTab[["BLUPs"]]), 15:1)
+})
+
 test_that("summary.SSA produces correct output for multiple trials", {
   testTD[["E2"]] <- testTD[["E1"]]
   testTD[["E2"]][["trial"]] <- "E2"
@@ -46,6 +65,12 @@ test_that("summary.SSA produces correct output for multiple trials", {
   expect_is(sumSp$sumTab, "matrix")
   expect_equal(dim(sumSp$sumTab), c(2, 9))
   expect_equal(sumSp$what, "BLUEs")
+})
+
+test_that("subsetting SSA objects works correctly", {
+  expect_is(modelSp["E1"], "SSA")
+  expect_is(modelSp["E1"], "list")
+  expect_equal(attr(modelSp, "timestamp"), attr(modelSp["E1"], "timestamp"))
 })
 
 test_that("option nBest functions properly", {
@@ -76,6 +101,46 @@ test_that("print.summary.SSA functions properly for multiple trials", {
   expect_true("Summary statistics for BLUEs of t1 " %in% sumSp)
 })
 
+test_that("checks in SSAtoCross function properly", {
+  expect_error(SSAtoCross(1), "SSA is not a valid object of class SSA")
+  expect_error(SSAtoCross(modelSp, traits = "t5"),
+               "traits has to be a character vector defining columns in")
+  expect_error(SSAtoCross(modelSp, trial = "E2"),
+               "single character string defining a trial in SSA")
+  expect_error(SSAtoCross(SSA = modelSp, genoFile = 1),
+               "genoFile is not a valid filename")
+  modelSp2 <- fitTD(TD = testTD, design = "rowcol", traits = "t1",
+                    trials = c("E1", "E1"))
+  expect_error(SSAtoCross(modelSp2), "No trial provided but multiple trials")
+})
+
+test_that("function SSAtoCross functions properly", {
+  myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield")
+  cross <- SSAtoCross(SSA = myModel,
+                      genoFile = system.file("extdata", "markers.csv",
+                                             package = "statgenSSA"))
+  expect_is(cross, "cross")
+  expect_is(cross$pheno, "data.frame")
+  expect_equal(dim(cross$pheno), c(169, 2))
+})
+
+test_that("checks in SSAtoTD function properly", {
+  expect_error(SSAtoTD(1), "SSA is not a valid object of class SSA")
+  expect_error(SSAtoTD(modelSp, traits = "t5"),
+               "traits has to be a character vector defining columns in")
+  modelSp2a <- fitTD(testTD, design = "rowcol", traits = "t1", what = "fixed")
+  modelSp2b <- fitTD(testTD, design = "rowcol", traits = "t1", what = "random")
+  expect_warning(SSAtoTD(modelSp2a, traits = "t1"),
+                 "BLUPs and seBLUPs can only be extracted if a model with")
+  expect_warning(SSAtoTD(modelSp2b, traits = "t1"),
+                 "BLUEs and seBLUEs can only be extracted if a model with")
+  expect_error(suppressWarnings(SSAtoTD(modelSp2a, traits = "t1",
+                                        what = "BLUPs")),
+               "No statistics left to extract.")
+  expect_warning(SSAtoTD(modelSp2b, traits = "t1", addWt = TRUE),
+                 "Weights can only be added if a model with genotype fixed is")
+})
+
 test_that("function SSAtoTD functions properly", {
   TDSp <- SSAtoTD(SSA = modelSp)
   expect_is(TDSp, "TD")
@@ -91,21 +156,6 @@ test_that("function SSAtoTD functions properly", {
                  "Duplicate values for")
   expect_named(TDSp4$E1, c("genotype", "trial", "BLUEs_t1", "seBLUEs_t1",
                            "BLUPs_t1", "seBLUPs_t1"))
-})
-
-test_that("function SSAtoCross functions properly", {
-  myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
-                        what = "fixed")
-  expect_error(SSAtoCross(SSA = myModel, trial = "HEAT06",
-                          genoFile = system.file("extdata", "markers.csv",
-                                                 package = "statgenSSA")),
-               "single character string defining a trial in SSA")
-  cross <- SSAtoCross(SSA = myModel,
-                      genoFile = system.file("extdata", "markers.csv",
-                                             package = "statgenSSA"))
-  expect_is(cross, "cross")
-  expect_is(cross$pheno, "data.frame")
-  expect_equal(dim(cross$pheno), c(169, 2))
 })
 
 test_that("function report.SSA functions properly" ,{
