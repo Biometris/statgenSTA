@@ -363,6 +363,32 @@ extra parameter `plotType = "spatial"`. Note that spatial plots can only be made
 plot(modWheatSp, plotType = "spatial")
 ```
 
+## Outlier detection
+
+After fitting a model, it is possible to run an outlier detection on the 
+results. This outlier detection checks the residuals in the fitted model and 
+compares them to a limit. The default limit is calculated based on the number of
+observations in the data. Setting a custom limit is also possible.
+
+```{r outDet}
+## Outlier detection for the model with genotype fitted as random.
+outliers <- outlierSSA(modWheatSp, traits = "GY", what = "random")
+```
+
+The output of the outlier detection function is a data.frame with the outliers and of vector of indices of the outliers in the original data. This vector can be used for removing outliers from the data.    
+
+It is possible to run outlier detection on a model with genotype fitted as fixed, but when doing so it is only possible to detect outliers in genotypes that are replicated in the data. For unreplicated genotypes the residual will always be 0 and so these will never be marked as outliers.    
+
+To get an idea of the magnitude of the outliers the parameter commonFactors can be used to see the values of observations with similar characteristics. In the example below, for all outliers also the other observations for the same genotype are shown.
+
+```{r outDetCom}
+## Outlier detection for the model with genotype fitted as random.
+## A custom limit is used and commonFactors set to genotype.
+outliers <- outlierSSA(modWheatSp, traits = "GY", what = "random",
+                       rLimit = 3.2, commonFactors = "genotype")
+```
+
+
 ## Model reports
 
 For `SSA` objects there is a `report` function available in the statgenSSA package.

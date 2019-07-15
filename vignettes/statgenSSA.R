@@ -119,6 +119,16 @@ plot(modWheatSp, what = "random")
 ## Spatial plot for the model with genotype fitted as fixed effect.
 plot(modWheatSp, plotType = "spatial")
 
+## ----outDet--------------------------------------------------------------
+## Outlier detection for the model with genotype fitted as random.
+outliers <- outlierSSA(modWheatSp, traits = "GY", what = "random")
+
+## ----outDetCom-----------------------------------------------------------
+## Outlier detection for the model with genotype fitted as random.
+## A custom limit is used and commonFactors set to genotype.
+outliers <- outlierSSA(modWheatSp, traits = "GY", what = "random",
+                       rLimit = 3.2, commonFactors = "genotype")
+
 ## ----modRep, eval=FALSE--------------------------------------------------
 #  ## Create a report in the current working directory
 #  report(modWheatSp)
