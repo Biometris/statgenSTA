@@ -1,4 +1,5 @@
 ---
+title:  statgenSSA
 output: github_document
 ---
 
@@ -12,19 +13,15 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-# statgenSSA
 
 <!-- badges: start -->
-[![CRAN status](https://www.r-pkg.org/badges/version/statgenSSA)](https://cran.r-project.org/package=statgenSSA)
 [![pipeline status](https://git.wur.nl/statistical-genetic-pipeline/statgenSSA/badges/master/pipeline.svg)](https://git.wur.nl/statistical-genetic-pipeline/statgenSSA/commits/master)
 [![coverage report](https://git.wur.nl/statistical-genetic-pipeline/statgenSSA/badges/master/coverage.svg)](https://git.wur.nl/statistical-genetic-pipeline/statgenSSA/commits/master)
 <!-- badges: end -->
 
-# statgenSSA
-
 R package for single site analysis
 
-# Installation
+## Installation
 
 For direct installation from gitlab use the following code:
 
@@ -36,7 +33,7 @@ remotes::install_git(url = "git@git.wur.nl:statistical-genetic-pipeline/statgenS
 
 ```
 
-# Implemented functionality
+## Implemented functionality
 
 The following functionality has been implemented:
 
