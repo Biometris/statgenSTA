@@ -3,13 +3,22 @@ context("Plots")
 ## Testing the exact plot output is difficult but since also the ggplot
 ## objects on which the plots are based are invisibly returned at least some
 ## checking can be done.
-p0 <- plot(testTD, plotType = "layout", output = FALSE)
+
+test_that("general checks in plot.TD function properly", {
+  expect_error(plot(testTD, trials = 2), "All trials should be in")
+})
+
+### TD layout plot.
+
+p0 <- plot(testTD, plotType = "layout")
 test_that("TD layout plot gives correct output types", {
   expect_is(p0, "list")
   expect_length(p0, 1)
   expect_is(p0[[1]], "ggplot")
   testTD$E1$colCoord <- NULL
-  expect_warning(plot(testTD, plotType = "layout"), "Plot skipped")
+  expect_warning(plot(testTD, plotType = "layout"), "colCoord should be")
+  testTD$E1$rowCoord <- NULL
+  expect_warning(plot(testTD, plotType = "layout"), "rowCoord should be")
 })
 
 test_that("option showGeno functions properly in TD layout plot", {
@@ -21,6 +30,8 @@ test_that("option showGeno functions properly in TD layout plot", {
 })
 
 test_that("option highlight functions properly in TD layout plot", {
+  expect_error(plot(testTD, plotType = "layout", highlight = 1),
+               "highlight should be a character vector")
   p1 <- plot(testTD, plotType = "layout", highlight = "G1", output = FALSE)
   geoms1 <- sapply(p1[[1]]$layers, function(x) class(x$geom)[1])
   ## Two plots should be highlighted as defined in variable highlight..
@@ -47,36 +58,54 @@ test_that("option highlight overrides colorSubBlock in TD layout plot", {
                "~highlight.")
 })
 
+### TD map plot.
+
 test_that("TD map plot gives correct output types", {
   expect_error(plot(testTD, plotType = "map"),
                "should have latitude and longitude")
-  p <- plot(TDHeat05, plotType = "map", output = FALSE)
+  p <- plot(TDHeat05, plotType = "map")
   expect_is(p, "ggplot")
 })
 
 test_that("options minLatRange and minLongRange function properly for TD map plot", {
+  expect_error(plot(TDHeat05, plotType = "map", minLatRange = c(20, 20)),
+               "minLatRange should be a single numerical value")
+  expect_error(plot(TDHeat05, plotType = "map", minLongRange = c(20, 20)),
+               "minLongRange should be a single numerical value")
   p <- plot(TDHeat05, plotType = "map", minLatRange = 20, minLongRange = 20,
             output = FALSE)
   expect_equal(p$coordinates$limits$x, c(-6.33333, 17.66667))
   expect_equal(p$coordinates$limits$y, c(39.97, 63.97))
 })
 
+### TD box plot.
+
 test_that("TD box plot gives correct output types", {
+  expect_error(plot(testTD, plotType = "box", traits = 1),
+               "traits should be a character vector")
   expect_warning(plot(testTD, plotType = "box", traits = "trait"),
                  "trait isn't a column in any of the trials")
-  p <- plot(testTD, plotType = "box", traits = "t1", output = FALSE)
+  p <- plot(testTD, plotType = "box", traits = "t1")
   expect_is(p, "list")
   expect_length(p, 1)
   expect_is(p[[1]], "ggplot")
 })
 
 test_that("option groupBy functions properly for TD box plot", {
+  expect_error(plot(testTD, plotType = "box", traits = "t1", groupBy = 1),
+               "groupBy should be a single character string")
+  expect_error(plot(testTD, plotType = "box", traits = "t1", groupBy = "grp"),
+               "groupBy should be a column in TD")
   p <- plot(testTD, plotType = "box", traits = "t1", groupBy = "repId",
             output = FALSE)
   expect_true("~repId" %in% as.character(p$t1$mapping))
 })
 
 test_that("option colorBy functions properly for TD box plot", {
+  expect_error(plot(testTD, plotType = "box", traits = "t1", colorBy = 1),
+               "colorBy should be a single character string")
+  expect_error(plot(testTD, plotType = "box", traits = "t1", colorBy = "grp"),
+               "colorBy should be a column in TD")
   p <- plot(testTD, plotType = "box", traits = "t1", colorBy = "repId",
             output = FALSE)
   expect_true(all(c("~repId", "~trial") %in% as.character(p$t1$mapping)))
@@ -95,12 +124,16 @@ test_that("option orderBy functions properly for TD box plot", {
                "levNw")
 })
 
+### TD correlation plot.
+
 test_that("TD correlation plot gives correct output types", {
   expect_error(plot(testTD, plotType = "cor", traits = "trait"),
                "At least two trials requiered for a correlation plot")
+  expect_error(plot(TDMaize, plotType = "cor", traits = 1),
+               "traits should be a character vector")
   expect_warning(plot(TDMaize, plotType = "cor", traits = "trait"),
                  "trait isn't a column in any of the trials")
-  p <- plot(TDMaize, plotType = "cor", traits = "yld", output = FALSE)
+  p <- plot(TDMaize, plotType = "cor", traits = "yld")
   expect_is(p, "list")
   expect_length(p, 1)
   expect_is(p[[1]], "ggplot")
@@ -119,13 +152,15 @@ test_that("TD correlation plot gives correct output types", {
                           output = FALSE))
 })
 
+### SSA plots.
+
 modelSp <- fitTD(TD = testTD, design = "rowcol", traits = "t1")
-test_that("checks in plot.SSA functions properly", {
+test_that("checks in plot.SSA function properly", {
   expect_error(plot(modelSp, trials = 2),
                "trials has to be a character vector defining trials in SSA")
   expect_error(plot(modelSp, traits = 1),
                "traits has to be a character vector")
-  expect_error(plot(modelSp, trait = "t2", outCols = 0),
+  expect_error(plot(modelSp, traits = "t2", outCols = 0),
                "outCols should be a single numerical value greater than 0")
   expect_warning(plot(modelSp, traits = "myTr"),
                 "traits not available for trial")
@@ -137,6 +172,8 @@ test_that("checks in plot.SSA functions properly", {
                  "Data for trial E1 contains no spatial information")
 })
 
+### SSA base plot.
+
 test_that("SSA base plot gives correct output types", {
   p1 <- plot(modelSp, traits = "t1")
   expect_is(p1, "list")
@@ -147,6 +184,8 @@ test_that("SSA base plot gives correct output types", {
   expect_length(p1[[1]][[1]], 4)
   lapply(X = p1[[1]][[1]], FUN = expect_is, "ggplot")
 })
+
+### SSA spatial plot.
 
 test_that("SSA spatial plot gives correct output types", {
   p1 <- plot(modelSp, plotType = "spatial", traits = "t1")

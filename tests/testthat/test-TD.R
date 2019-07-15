@@ -1,5 +1,7 @@
 context("Class TD")
 
+### Create.
+
 test_that("createTD creates objects of class TD", {
   expect_is(createTD(data = testData), "TD")
 })
@@ -40,6 +42,21 @@ test_that("attribute renamed is properly filled in createTD", {
                           stringsAsFactors = FALSE))
 })
 
+test_that("attribute design is properly filled in create TD", {
+  expect_null(attr(createTD(data = testData)[["testData"]], "design"))
+  expect_equal(attr(createTD(data = testData, trDesign = "rcbd")[["testData"]],
+                    "trDesign"), "rcbd")
+  expect_error(createTD(data = testData, trDesign = "abc"), "should be one of")
+})
+
+test_that("createTD accepts tibbles as input", {
+  ## Skip on cran since it needs package tibble as extra dependency.
+  skip_on_cran()
+  expect_is(createTD(data = tibble::as_tibble(testData)), "TD")
+})
+
+### Drop.
+
 test_that("dropTD functions properly", {
   testTD <- createTD(data = testData, trial = "field")
   expect_warning(dropTD(TD = testTD, rmTrials = "E4"),
@@ -51,7 +68,24 @@ test_that("dropTD functions properly", {
   expect_named(testTDrm, c("E2", "E3"))
 })
 
+### Add.
+
+test_that("addTD functions properly", {
+  testTD <- createTD(data = testData[testData[["field"]] %in% c("E1" ,"E2"), ],
+                     trial = "field")
+  testTD2 <- addTD(testTD, data = testData[testData[["field"]] == "E3", ],
+                   trial = "field")
+  expect_is(testTD2, "TD")
+  expect_equal(testTD2, createTD(data = testData, trial = "field"))
+  expect_warning(addTD(testTD, data = testData[testData[["field"]] == "E1", ],
+                       trial = "field"),
+                 "already existed in TD and will be added again: E1")
+})
+
+### getMeta.
+
 test_that("getMeta functions properly", {
+  expect_error(getMeta(), "TD should be an object of class TD")
   TD1 <- createTD(data = testData)
   meta1 <- getMeta(TD1)
   ## No trial defined, so only 1 row in meta
@@ -64,19 +98,52 @@ test_that("getMeta functions properly", {
   expect_equal(meta2$trLocation, c("E1", "E2", "E3"))
 })
 
+### setMeta.
+
 test_that("setMeta functions properly", {
+  expect_error(setMeta(), "TD should be an object of class TD")
   TD1 <- createTD(data = testData, trial = "field")
+  expect_error(setMeta(TD1), "meta should be a data.frame")
   meta1 <- getMeta(TD1)
   meta1$trDesign <- c("res.rowcol", "rowcol", "res.ibd")
   TD2 <- setMeta(TD = TD1, meta = meta1)
   expect_equal(attr(x = TD2$E1, which = "trDesign"), "res.rowcol")
+  rownames(meta1)[1] <- "E4"
+  expect_warning(setMeta(TD1, meta = meta1),
+                 "The following trials in meta are not in TD: E4")
+  meta1$trDesign[2] <- "trDes"
+  expect_error(suppressWarnings(setMeta(TD1, meta = meta1)), "Error for E2:")
 })
 
-test_that("attribute design is properly filled in create TD", {
-  expect_null(attr(createTD(data = testData)[["testData"]], "design"))
-  expect_equal(attr(createTD(data = testData, trDesign = "rcbd")[["testData"]],
-                    "trDesign"), "rcbd")
-  expect_error(createTD(data = testData, trDesign = "abc"), "should be one of")
+### checkTDMeta.
+
+test_that("checkTDMeta functions properly", {
+  expect_error(checkTDMeta(trDesign = "trDes"), "should be one of")
+  expect_silent(checkTDMeta(trDesign = "rowcol"))
+  expect_error(checkTDMeta(trLat = 145), "between -90 and 90")
+  expect_silent(checkTDMeta(trLat = 45))
+  expect_error(checkTDMeta(trLong = -200), "between -180 and 180")
+  expect_silent(checkTDMeta(trLong = 120))
+  expect_warning(checkTDMeta(trLat = 0, trLong = 0),
+               "trLat and trLong should all match a known land location")
+  expect_silent(checkTDMeta(trLat = 53, trLong = 0))
+  expect_error(checkTDMeta(trPlWidth = c(-1, 1, 2)), "a positive numerical")
+  expect_silent(checkTDMeta(trPlWidth = c(1, 1, 2)))
+  expect_error(checkTDMeta(trPlLength = c(-1, 1, 2)), "a positive numerical")
+  expect_silent(checkTDMeta(trPlLength = c(1, 1, 2)))
+})
+
+### Summary.
+
+test_that("check in summary.TD function correctly", {
+  expect_error(summary(testTD, trial = "E2"),
+               "trial should be a single character string in testTD")
+  expect_error(summary(testTD, trial = "E1", traits = "t5"),
+               "All traits should be columns in trial")
+  expect_error(summary(testTD, trial = "E1", traits = "t1", groupBy = "grp"),
+               "groupBy should be a single character string indicating")
+  expect_error(summary(testTD, trial = "E1", traits = "t1", what = "st1"),
+               "At least one statistic should be chosen")
 })
 
 test_that("summary.TD produces correct output", {
@@ -111,8 +178,3 @@ test_that("option groupBy in print.summary.TD produces correct output", {
                     "Summary statistics for t4 in testData grouped by field ") %in% sumTD))
 })
 
-test_that("createTD accepts tibbles as input", {
-  ## Skip on cran since it needs package tibble as extra dependency.
-  skip_on_cran()
-  expect_is(createTD(data = tibble::as_tibble(testData)), "TD")
-})

@@ -158,7 +158,7 @@ createTD <- function(data,
                   rowId, colId, rowCoord, colCoord, checkId)) {
     if (!is.null(param) && (!is.character(param) || length(param) > 1 ||
                             !hasName(data, param))) {
-      stop(paste(deparse(param), "has to be NULL or a column in data.\n"))
+      stop(deparse(param), " has to be NULL or a column in data.\n")
     }
   }
   checkTDMeta(trDesign = trDesign, trLat = trLat, trLong = trLong,
@@ -300,9 +300,8 @@ addTD <- function(TD,
                    trPlWidth = trPlWidth, trPlLength = trPlLength)
   dupTrials <- names(TDNw)[names(TDNw) %in% names(TD)]
   if (length(dupTrials) > 0) {
-    warning(paste0("The following trials already existed in TD and will be ",
-                   "added again: ", paste(dupTrials, collapse = ", "), ".\n"),
-            call. = FALSE)
+    warning("The following trials already existed in TD and will be added ",
+            "again: ", paste(dupTrials, collapse = ", "), ".\n", call. = FALSE)
   }
   TDTot <- c(TD, TDNw)
   class(TDTot) <- c("TD", "list")
@@ -319,8 +318,8 @@ dropTD <- function(TD,
                    rmTrials) {
   naTrials <- rmTrials[!rmTrials %in% names(TD)]
   if (length(naTrials) > 0) {
-    warning(paste0("The following trials are not in TD: ",
-                   paste(naTrials, collapse = ", "), ".\n"), call. = FALSE)
+    warning("The following trials are not in TD: ",
+            paste(naTrials, collapse = ", "), ".\n", call. = FALSE)
   }
   leftTrials <- names(TD)[!names(TD) %in% rmTrials]
   if (length(leftTrials) == 0) {
@@ -407,8 +406,8 @@ summary.TD <- function(object,
   ## Checks.
   if (!is.character(trial) || length(trial) > 1 ||
       !hasName(x = object, name = trial)) {
-    stop(paste0("trial should be a single character string in ",
-                deparse(substitute(object)), ".\n"))
+    stop("trial should be a single character string in ",
+         deparse(substitute(object)), ".\n")
   }
   trDat <- object[[trial]]
   if (!is.character(traits) || !all(hasName(x = trDat, name = traits))) {
@@ -416,8 +415,8 @@ summary.TD <- function(object,
   }
   if (!is.null(groupBy) && (!is.character(groupBy) || length(groupBy) > 1 ||
                             !hasName(x = trDat, name = groupBy))) {
-    stop(paste("groupBy should be a single character string indicating",
-               "a column in trial"))
+    stop("groupBy should be a single character string indicating ",
+         "a column in trial")
   }
   if (what[[1]] == "all") {
     what <- allStat[["stat"]]
@@ -640,7 +639,7 @@ plot.TD <- function(x,
                     output = TRUE) {
   ## Checks.
   if (!is.character(trials) || !all(hasName(x = x, name = trials))) {
-    stop(paste0("All trials should be in ", deparse(substitute(x)), ".\n"))
+    stop("All trials should be in ", deparse(substitute(x)), ".\n")
   }
   plotType <- match.arg(plotType)
   dotArgs <- list(...)
@@ -655,13 +654,13 @@ plot.TD <- function(x,
     for (trial in trials) {
       trDat <- x[[trial]]
       if (!"rowCoord" %in% colnames(trDat)) {
-        warning(paste0("rowCoord should be a column in ", trial, ".\n",
-                       "Plot skipped.\n"), call. = FALSE)
+        warning("rowCoord should be a column in ", trial, ".\n",
+                "Plot skipped.\n", call. = FALSE)
         break
       }
       if (!"colCoord" %in% colnames(trDat)) {
-        warning(paste0("colCoord should be a column in ", trial, ".\n",
-                       "Plot skipped.\n"), call. = FALSE)
+        warning("colCoord should be a column in ", trial, ".\n",
+                "Plot skipped.\n", call. = FALSE)
         break
       }
       if (length(highlight) > 0) {
@@ -779,8 +778,8 @@ plot.TD <- function(x,
                      c("name", "lat", "long"))
     locs <- unique(locs[!is.na(locs$lat) & !is.na(locs$long), ])
     if (nrow(locs) == 0) {
-      stop(paste("At least one trial should have latitude and longitude",
-                 "for plotting on map.\n"))
+      stop("At least one trial should have latitude and longitude ",
+           "for plotting on map.\n")
     }
     minLatRange <- dotArgs$minLatRange
     minLongRange <- dotArgs$minLongRange
@@ -790,7 +789,7 @@ plot.TD <- function(x,
     }
     if (!is.null(minLongRange) && (!is.numeric(minLongRange) ||
                                    length(minLongRange) > 1)) {
-      stop("minLatRange should be a single numerical value.\n")
+      stop("minLongRange should be a single numerical value.\n")
     }
     if (is.null(minLatRange)) {
       minLatRange <- 10
@@ -878,8 +877,8 @@ plot.TD <- function(x,
         }
       }))
       if (is.null(plotDat)) {
-        warning(paste0(trait, " isn't a column in any of the trials.\n",
-                       "Plot skipped.\n"), call. = FALSE)
+        warning(trait, " isn't a column in any of the trials.\n",
+                "Plot skipped.\n", call. = FALSE)
         break
       }
       if (orderBy != "alphabetic") {
@@ -933,8 +932,8 @@ plot.TD <- function(x,
         }
       }))
       if (is.null(plotDat)) {
-        warning(paste0(trait, " isn't a column in any of the trials.\n",
-                       "Plot skipped.\n"), call. = FALSE)
+        warning(trait, " isn't a column in any of the trials.\n",
+                "Plot skipped.\n", call. = FALSE)
         break
       }
       ## Create table with values trait per genotype per trial.
@@ -1070,8 +1069,8 @@ setMeta <- function(TD,
   }
   naTr <- rownames(meta)[!rownames(meta) %in% names(TD)]
   if (length(naTr) > 0) {
-    warning(paste0("The following trials in meta are not in TD: ",
-                   paste(naTr, collapse = ", "), ".\n"), call. = FALSE)
+    warning("The following trials in meta are not in TD: ",
+            paste(naTr, collapse = ", "), ".\n", call. = FALSE)
   }
   metaVars <- c("trLocation", "trDate", "trDesign", "trLat", "trLong",
                 "trPlWidth", "trPlLength")
@@ -1085,8 +1084,7 @@ setMeta <- function(TD,
         if (inherits(chk, "try-error")) {
           ## Get message from check function but remove first 8 chars to
           ## prevent having an error text with 3x error in it.
-          stop(paste0("\nError for ", tr, ":\n",
-                      substring(text = chk, first = 9)))
+          stop("\nError for ", tr, ":\n", substring(text = chk, first = 9))
         }
         attr(TD[[tr]], which = mv) <- mvTr
       }
@@ -1135,17 +1133,14 @@ checkTDMeta <- function(trLocation = NULL,
     loc <- maps::map.where(x = rep(x = trLong, length.out = locLen),
                            y = rep(x = trLat, length.out = locLen))
     if (length(loc) > 0 && anyNA(loc)) {
-      warning(paste("Values for trLat and trLong should all match a known",
-                    "land location.\n"),
-              call. = FALSE)
+      warning("Values for trLat and trLong should all match a known land ",
+              "location.\n", call. = FALSE)
     }
   }
   if (!is.null(trPlWidth) && (!is.numeric(trPlWidth) || any(trPlWidth < 0))) {
-    stop("trPlWidth should be a positive numerical vector.\n",
-         call. = FALSE)
+    stop("trPlWidth should be a positive numerical vector.\n", call. = FALSE)
   }
   if (!is.null(trPlLength) && (!is.numeric(trPlLength) || any(trPlLength < 0))) {
-    stop("should be a positive numerical vector.\n",
-         call. = FALSE)
+    stop("should be a positive numerical vector.\n", call. = FALSE)
   }
 }
