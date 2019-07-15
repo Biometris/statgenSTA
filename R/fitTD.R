@@ -215,33 +215,32 @@ modelChecks <- function(TD,
                            !attr(TD[[trial]], "trDesign") %in% designs)) ||
       (!is.null(design) && (!is.character(design) || length(design) > 1 ||
                             !design %in% designs))) {
-    stop(paste("design should either be an attribute of TD or one of ",
-               paste(designs, collapse = ", "), ".\n"))
+    stop("design should either be an attribute of TD or one of ",
+         paste(designs, collapse = ", "), ".\n")
   }
   ## Extract design from TD if needed.
   if (is.null(design)) {
     design <- attr(TD[[trial]], "trDesign")
   }
   if (is.null(traits) || !is.character(traits)) {
-    stop("Traits should be a character vector.\n")
+    stop("traits should be a character vector.\n")
   }
   if (!all(traits %in% colnames(TD[[trial]]))) {
-    stop(paste0("All traits should be columns in ", trial, ".\n"))
+    stop("All traits should be columns in ", trial, ".\n")
   }
   what <- match.arg(arg = what, several.ok = TRUE)
   if (!is.null(covariates) && !is.character(covariates)) {
-    stop("Covariates should be NULL or a character vector.\n")
+    stop("covariates should be NULL or a character vector.\n")
   }
   if (!all(covariates %in% colnames(TD[[trial]]))) {
-    stop(paste0("All covariates should be columns in ", trial, ".\n"))
+    stop("All covariates should be columns in ", trial, ".\n")
   }
   if (!is.logical(trySpatial) || length(trySpatial) > 1) {
     stop("trySpatial should be a single logical value.\n")
   }
   if (!is.na(engine) && (!is.character(engine) || length(engine) > 1 ||
                          !engine %in% engines)) {
-    stop(paste0("engine should be one of ", paste(engines, collapse = ", "),
-                ".\n"))
+    stop("engine should be one of ", paste(engines, collapse = ", "), ".\n")
   }
   if (is.na(engine)) {
     if (isTRUE(length(unique(TD[[trial]][["rowCoord"]])) > 1) &
@@ -254,8 +253,8 @@ modelChecks <- function(TD,
     }
   }
   if (trySpatial && engine == "lme4") {
-    warning("Spatial models can only be fitted using SpATS or asreml.\n
-              Defaulting to SpATS.", call. = FALSE)
+    warning("Spatial models can only be fitted using SpATS or asreml.\n",
+            "Defaulting to SpATS.", call. = FALSE)
     engine <- "SpATS"
   }
   ## Columns needed depend on design.
@@ -266,7 +265,7 @@ modelChecks <- function(TD,
                if (useCheckId) "checkId")
   for (desCol in desCols) {
     if (!desCol %in% colnames(TD[[trial]])) {
-      stop(paste0(desCol, " should be a column in ", trial, ".\n"))
+      stop(desCol, " should be a column in ", trial, ".\n")
     }
   }
   ## SpATS and lme4 will crash for the designs with replicates when repId only
@@ -276,8 +275,8 @@ modelChecks <- function(TD,
   if (design %in% c("res.ibd", "res.rowcol") &&
       length(unique(TD[[trial]][["repId"]])) == 1) {
     design <- substring(text = design, first = 5)
-    warning(paste0(trial, " contains only one distinct value for repId\n",
-                   "Design changed to ", design, ".\n"), call. = FALSE)
+    warning(trial, " contains only one distinct value for repId.\n",
+            "Design changed to ", design, ".\n", call. = FALSE)
   }
   if (!is.null(control) && !is.list(control)) {
     stop("control has to be NULL or a list.\n")
@@ -285,7 +284,7 @@ modelChecks <- function(TD,
   if (!is.null(control$nSeg)) {
     if (is.list(control$nSeg)) {
       if (!trial %in% names(control$nSeg)) {
-        stop(paste(trial, "should be a named item in list of nSeg in control"))
+        stop(trial, " should be a named item in list of nSeg in control")
       } else {
         control$nSeg <- control$nSeg[[trial]]
       }

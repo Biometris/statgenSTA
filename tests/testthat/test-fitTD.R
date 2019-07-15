@@ -235,6 +235,9 @@ test_that("option nSeg in control produces correct output", {
   expect_error(fitTD(testTD, design = "rowcol", traits = "t1",
                      control = list(nSeg = list(c(1, 1)))),
                "should be a named item in list of nSeg")
+  expect_warning(fitTD(testTD, design = "rowcol", traits = "t1",
+                     control = list(nSeg = c(0, 1))),
+                 "Invalid value for control parameter nSeg")
   modelSp2 <- fitTD(testTD, design = "rowcol", traits = "t1",
                     control = list(nSeg = list(E1 = c(1, 1))))
   expect_equivalent(modelSp, modelSp2)
@@ -294,4 +297,34 @@ test_that("Design is modified when replicates contain only 1 distinct value", {
   expect_warning(modelSp <- fitTD(testTD, design = "res.rowcol", traits = "t1"),
                  "Design changed")
   expect_equal(modelSp$E1$design, "rowcol")
+})
+
+test_that("Model checks function properly", {
+  expect_error(fitTD(), "TD should be a valid object of class TD")
+  expect_error(fitTD(testTD, trial = "E2"), "trial should be in TD")
+  expect_error(fitTD(testTD, trial = "E1", design = "myDes"),
+               "design should either be an attribute of TD or one of")
+  expect_error(fitTD(testTD, trial = "E1", traits = 1, design = "rowcol"),
+               "traits should be a character vector")
+  expect_error(fitTD(testTD, trial = "E1", traits = "t5", design = "rowcol"),
+               "All traits should be columns in")
+  expect_error(fitTD(testTD, trial = "E1", traits = "t1", design = "rowcol",
+                     covariates = 1),
+               "covariates should be NULL or a character vector")
+  expect_error(fitTD(testTD, trial = "E1", traits = "t1", design = "rowcol",
+                     covariates = "myCovar"),
+               "All covariates should be columns in E1")
+  expect_error(fitTD(testTD, trial = "E1", traits = "t1", design = "rowcol",
+                     trySpatial = 1),
+               "trySpatial should be a single logical value")
+  expect_error(fitTD(testTD, trial = "E1", traits = "t1", design = "rowcol",
+                     engine = "myEng"),
+               "engine should be one of SpATS, lme4, asreml")
+  expect_error(fitTD(testTD, trial = "E1", traits = "t1", design = "rowcol",
+                     control = 1),
+               "control has to be NULL or a list")
+  testTD$E1$colId <- NULL
+  testTD$E1$colCoord <- NULL
+  expect_error(fitTD(testTD, trial = "E1", traits = "t1", design = "rowcol"),
+               "colId should be a column in E1")
 })

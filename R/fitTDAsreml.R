@@ -45,8 +45,8 @@ fitTDAsreml <- function(TD,
       if (critCt %in% c("AIC", "BIC")) {
         criterion <- critCt
       } else {
-        warning(paste("Invalid value for control parameter criterion.",
-                      "Using default value instead.\n"))
+        warning("Invalid value for control parameter criterion. ",
+                "Using default value instead.\n")
       }
     }
     if (repIdFix) {
@@ -55,9 +55,9 @@ fitTDAsreml <- function(TD,
       repTab <- table(TDTr$rowId, TDTr$colId)
     }
     if (min(repTab) > 1) {
-      warning(paste("There should only be one plot at each combination of",
-                    if (repIdFix) "replicate", "row and column.\n",
-                    "Spatial models will not be tried"))
+      warning("There should only be one plot at each combination of",
+              if (repIdFix) "replicate", "row and column.\n",
+              "Spatial models will not be tried")
       trySpatial <- FALSE
     }
   }
@@ -106,15 +106,15 @@ fitTDAsreml <- function(TD,
           mrTrait <- wrnToErr(mrTrait)
         }
         if (length(mrTrait$warning) != 0) {
-          warning(paste0("Warning in asreml for genotype random, trait ", trait,
-                         " in trial ", trial, ":\n", mrTrait$warning, "\n"),
+          warning("Warning in asreml for genotype random, trait ", trait,
+                  " in trial ", trial, ":\n", mrTrait$warning, "\n",
                   call. = FALSE)
         }
         if (is.null(mrTrait$error)) {
           mrTrait <- mrTrait$value
         } else {
-          warning(paste0("Error in asreml for genotype random, trait ", trait,
-                         " in trial ", trial, ":\n", mrTrait$error, "\n"),
+          warning("Error in asreml for genotype random, trait ", trait,
+                  " in trial ", trial, ":\n", mrTrait$error, "\n",
                   call. = FALSE)
           mrTrait <- NULL
         }
@@ -165,15 +165,15 @@ fitTDAsreml <- function(TD,
           mfTrait <- wrnToErr(mfTrait)
         }
         if (length(mfTrait$warning) != 0) {
-          warning(paste0("Warning in asreml for genotype fixed, trait ", trait,
-                         " in trial ", trial, ":\n", mfTrait$warning, "\n"),
+          warning("Warning in asreml for genotype fixed, trait ", trait,
+                  " in trial ", trial, ":\n", mfTrait$warning, "\n",
                   call. = FALSE)
         }
         if (is.null(mfTrait$error)) {
           mfTrait <- mfTrait$value
         } else {
-          warning(paste0("Error in asreml for genotype fixed, trait ", trait,
-                         " in trial ", trial, ":\n", mfTrait$error, "\n"),
+          warning("Error in asreml for genotype fixed, trait ", trait,
+                  " in trial ", trial, ":\n", mfTrait$error, "\n",
                   call. = FALSE)
           mfTrait <- NULL
         }
@@ -304,18 +304,16 @@ bestSpatMod <- function(TD,
         mrTrait <- wrnToErr(mrTrait)
       }
       if (length(mrTrait$warning) != 0) {
-        warning(paste0("Warning in asreml for model ", spatCh[i],
-                       " genotype random, trait ", trait, " in trial ",
-                       TDTr$trial[1], ":\n", mrTrait$warning,
-                       "\n"), call. = FALSE)
+        warning("Warning in asreml for model ", spatCh[i],
+                " genotype random, trait ", trait, " in trial ",
+                TDTr$trial[1], ":\n", mrTrait$warning, "\n", call. = FALSE)
       }
       if (is.null(mrTrait$error)) {
         mrTrait <- mrTrait$value
       } else {
-        warning(paste0("Error in asreml for model ", spatCh[i],
-                       " genotype random, trait ", trait, " in trial ",
-                       TDTr$trial[1], ":\n", mrTrait$error,
-                       "\n"), call. = FALSE)
+        warning("Error in asreml for model ", spatCh[i],
+                " genotype random, trait ", trait, " in trial ",
+                TDTr$trial[1], ":\n", mrTrait$error, "\n", call. = FALSE)
         mrTrait <- NULL
       }
       ## Fill model summary table.
@@ -423,18 +421,16 @@ bestSpatMod <- function(TD,
       mfTrait <- wrnToErr(mfTrait)
     }
     if (length(mfTrait$warning) != 0) {
-      warning(paste0("Warning in asreml for model ", spatCh[i],
-                     " genotype fixed, trait ", trait, " in trial ",
-                     TDTr$trial[1], ":\n", mrTrait$warning,
-                     "\n"), call. = FALSE)
+      warning("Warning in asreml for model ", spatCh[i],
+              " genotype fixed, trait ", trait, " in trial ",
+              TDTr$trial[1], ":\n", mrTrait$warning, "\n", call. = FALSE)
     }
     if (is.null(mfTrait$error)) {
       mfTrait <- mfTrait$value
     } else {
-      warning(paste0("Error in asreml for model ", spatCh[i],
-                     " genotype fixed, trait ", trait, " in trial ",
-                     TDTr$trial[1], ":\n", mfTrait$error,
-                     "\n"), call. = FALSE)
+      warning("Error in asreml for model ", spatCh[i],
+              " genotype fixed, trait ", trait, " in trial ",
+              TDTr$trial[1], ":\n", mfTrait$error, "\n", call. = FALSE)
       mfTrait <- NULL
     }
     if (!is.null(mfTrait)) {

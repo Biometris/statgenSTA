@@ -44,8 +44,8 @@ fitTDSpATS <- function(TD,
     if (is.numeric(nestDivCt) && length(nestDivCt) <= 2 && all(nestDivCt >= 1)) {
       nestDiv <- nestDivCt
     } else {
-      warning(paste("Invalid value for control parameter nestDiv.",
-                    "Using default values instead.\n"))
+      warning("Invalid value for control parameter nestDiv. ",
+              "Using default values instead.\n")
     }
   }
   TDTr <- droplevels(TD[[trial]])
@@ -71,8 +71,8 @@ fitTDSpATS <- function(TD,
         all(nSegCt <= c(nlevels(TDTr$colId), nlevels(TDTr$rowId)))) {
       nSeg <- nSegCt
     } else {
-      warning(paste("Invalid value for control parameter nSeg.",
-                    "Using default values instead.\n"))
+      warning("Invalid value for control parameter nSeg. ",
+              "Using default values instead.\n")
     }
   }
   ## Construct formula for fixed part.
@@ -104,16 +104,14 @@ fitTDSpATS <- function(TD,
         modTrR <- wrnToErr(modTrR)
       }
       if (length(modTrR$warning) != 0) {
-        warning(paste0("Warning in SpATS for genotype random, trait ", trait,
-                       " in trial ", trial, ":\n", modTrR$warning, "\n"),
-                call. = FALSE)
+        warning("Warning in SpATS for genotype random, trait ", trait,
+                " in trial ", trial, ":\n", modTrR$warning, "\n", call. = FALSE)
       }
       if (is.null(modTrR$error)) {
         return(modTrR$value)
       } else {
-        warning(paste0("Error in SpATS for genotype random, trait ", trait,
-                       " in trial ", trial, ":\n", modTrR$error, "\n"),
-                call. = FALSE)
+        warning("Error in SpATS for genotype random, trait ", trait,
+                " in trial ", trial, ":\n", modTrR$error, "\n", call. = FALSE)
         return(NULL)
       }
     }, simplify = FALSE)
@@ -136,16 +134,14 @@ fitTDSpATS <- function(TD,
         modTrF <- wrnToErr(modTrF)
       }
       if (length(modTrF$warning) != 0) {
-        warning(paste0("Warning in SpATS for genotype fixed, trait ", trait,
-                       " in trial ", trial, ":\n", modTrF$warning, "\n"),
-                call. = FALSE)
+        warning("Warning in SpATS for genotype fixed, trait ", trait,
+                " in trial ", trial, ":\n", modTrF$warning, "\n", call. = FALSE)
       }
       if (is.null(modTrF$error)) {
         return(modTrF$value)
       } else {
-        warning(paste0("Error in SpATS for genotype fixed, trait ", trait,
-                       " in trial ", trial, ":\n", modTrF$error, "\n"),
-                call. = FALSE)
+        warning("Error in SpATS for genotype fixed, trait ", trait,
+                " in trial ", trial, ":\n", modTrF$error, "\n", call. = FALSE)
         return(NULL)
       }
     }, simplify = FALSE)

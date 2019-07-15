@@ -71,16 +71,14 @@ fitTDLme4 <- function(TD,
                    na.action = na.exclude, ...)
       )
       if (length(modTrR$warning) != 0) {
-        warning(paste0("Warning in lmer for genotype random, trait ", trait,
-                       " in trial ", trial, ":\n", modTrR$warning, "\n"),
-                call. = FALSE)
+        warning("Warning in lmer for genotype random, trait ", trait,
+                " in trial ", trial, ":\n", modTrR$warning, "\n", call. = FALSE)
       }
       if (is.null(modTrR$error)) {
         return(modTrR$value)
       } else {
-        warning(paste0("Error in lmer for genotype random, trait ", trait,
-                       " in trial ", trial, ":\n", modTrR$error, "\n"),
-                call. = FALSE)
+        warning("Error in lmer for genotype random, trait ", trait,
+                " in trial ", trial, ":\n", modTrR$error, "\n", call. = FALSE)
         return(NULL)
       }
     }, simplify = FALSE)
@@ -103,16 +101,14 @@ fitTDLme4 <- function(TD,
              data = TDTr, na.action = na.exclude, ...))
       }
       if (length(modTrF$warning) != 0) {
-        warning(paste0("Warning in lmer for genotype fixed, trait ", trait,
-                       " in trial ", trial, ":\n", modTrF$warning, "\n"),
-                call. = FALSE)
+        warning("Warning in lmer for genotype fixed, trait ", trait,
+                " in trial ", trial, ":\n", modTrF$warning, "\n", call. = FALSE)
       }
       if (is.null(modTrF$error)) {
         return(modTrF$value)
       } else {
-        warning(paste0("Error in lmer for genotype fixed, trait ", trait,
-                       " in trial ", trial, ":\n", modTrF$error, "\n"),
-                call. = FALSE)
+        warning("Error in lmer for genotype fixed, trait ", trait,
+                " in trial ", trial, ":\n", modTrF$error, "\n", call. = FALSE)
         return(NULL)
       }
     }, simplify = FALSE)
