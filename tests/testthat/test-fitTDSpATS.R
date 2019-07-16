@@ -38,7 +38,7 @@ expect_SSAMod <- function(SSA,
   }
 }
 
-test_that("running models creates objects with correct structure - SpATS", {
+test_that("running models creates objects with correct structure", {
   modelSp <- fitTD(testTD, design = "rowcol", traits = "t1")
   expect_SSA(modelSp)
   expect_SSAMod(modelSp, "mRand")
@@ -49,30 +49,7 @@ test_that("running models creates objects with correct structure - SpATS", {
   expect_equal(modelSp[["E1"]]$engine, "SpATS")
 })
 
-test_that("running models creates objects with correct structure - lme4", {
-  modelLm <- fitTD(testTD, design = "rcbd", traits = "t1", engine = "lme4")
-  expect_SSA(modelLm)
-  expect_SSAMod(modelLm, "mRand", class = "lmerMod")
-  expect_SSAMod(modelLm, "mFix", class = "lm")
-  expect_equal(modelLm[["E1"]]$traits, "t1")
-  expect_equal(modelLm[["E1"]]$design, "rcbd")
-  expect_false(modelLm[["E1"]]$spatial)
-  expect_equal(modelLm[["E1"]]$engine, "lme4")
-})
-
-test_that("running models creates objects with correct structure - asreml", {
-  skip_on_cran()
-  modelAs <- fitTD(testTD, design = "res.ibd", traits = "t1", engine = "asreml")
-  expect_SSA(modelAs)
-  expect_SSAMod(modelAs, "mRand")
-  expect_SSAMod(modelAs, "mFix")
-  expect_equal(modelAs[["E1"]]$traits, "t1")
-  expect_equal(modelAs[["E1"]]$design, "res.ibd")
-  expect_false(modelAs[["E1"]]$spatial[["t1"]])
-  expect_equal(modelAs[["E1"]]$engine, "asreml")
-})
-
-test_that("option what produces expected output - SpATS", {
+test_that("option what produces expected output", {
   modelSp <- fitTD(testTD, design = "res.ibd", traits = "t1")
   modelSpF <- fitTD(testTD, design = "res.ibd", traits = "t1", what = "fixed")
   expect_SSA(modelSpF)
@@ -84,37 +61,6 @@ test_that("option what produces expected output - SpATS", {
   expect_SSAMod(modelSpR, "mRand")
   expect_equal(modelSp[["E1"]]$mRand, modelSpR[["E1"]]$mRand)
   expect_null(modelSpR[["E1"]]$mFix)
-})
-
-test_that("option what produces expected output - lme4", {
-  modelLm <- fitTD(testTD, design = "rcbd", traits = "t1", engine = "lme4")
-  modelLmF <- fitTD(testTD, design = "rcbd", traits = "t1", what = "fixed",
-                    engine = "lme4")
-  expect_SSA(modelLmF)
-  expect_null(modelLmF[["E1"]]$mRand)
-  expect_SSAMod(modelLmF, "mFix", "lm")
-  expect_equal(modelLmF[["E1"]]$mFix, modelLm[["E1"]]$mFix)
-  modelLmR <- fitTD(testTD, design = "rcbd", traits = "t1", what = "random",
-                    engine = "lme4")
-  expect_SSA(modelLmR)
-  expect_SSAMod(modelLmR, "mRand", "lmerMod")
-  expect_equal(modelLm[["E1"]]$mRand, modelLmR[["E1"]]$mRand)
-  expect_null(modelLmR[["E1"]]$mFix)
-})
-
-test_that("option what produces expected output - asreml", {
-  skip_on_cran()
-  modelAs <- fitTD(testTD, design = "rowcol", traits = "t1", engine = "asreml")
-  modelAsF <- fitTD(testTD, design = "rowcol", traits = "t1", what = "fixed",
-                    engine = "asreml")
-  expect_SSA(modelAsF)
-  expect_null(modelAsF[["E1"]]$mRand)
-  expect_SSAMod(modelAsF, "mFix")
-  modelAsR <- fitTD(testTD, design = "rowcol", traits = "t1", what = "random",
-                    engine = "asreml")
-  expect_SSA(modelAsR)
-  expect_SSAMod(modelAsR, "mRand")
-  expect_null(modelAsR[["E1"]]$mFix)
 })
 
 test_that("running models for multiple traits produces correct output structure", {
@@ -155,30 +101,6 @@ test_that("option covariates produces expected output structure", {
                     x = deparse(modelSpCov[["E1"]]$mRand$t1$model$fixed)))
   expect_true(grepl(pattern = "repId",
                     x = deparse(modelSpCov[["E1"]]$mFix$t1$model$fixed)))
-  modelLmCov <- fitTD(testTD, design = "rcbd", traits = "t1",
-                      covariates = "repId", engine = "lme4")
-  expect_SSA(modelLmCov)
-  expect_SSAMod(modelLmCov, "mRand", "lmerMod")
-  expect_SSAMod(modelLmCov, "mFix", "lm")
-  expect_true("repId" %in% colnames(modelLmCov[["E1"]]$mRand$t1@frame))
-  expect_true("repId" %in% colnames(modelLmCov[["E1"]]$mFix$t1$model))
-  skip_on_cran()
-  modelAsCov <- fitTD(testTD, design = "rowcol", traits = "t1",
-                      covariates = "repId", engine = "asreml")
-  expect_SSA(modelAsCov)
-  expect_SSAMod(modelAsCov, "mRand")
-  expect_SSAMod(modelAsCov, "mFix")
-  if (asreml4()) {
-    expect_true(grepl(pattern = "repId",
-                      x = deparse(modelAsCov[["E1"]]$mRand$t1$formulae$fixed)))
-    expect_true(grepl(pattern = "repId",
-                      x = deparse(modelAsCov[["E1"]]$mFix$t1$formulae$fixed)))
-  } else {
-    expect_true(grepl(pattern = "repId",
-                      x = deparse(modelAsCov[["E1"]]$mRand$t1$fixed.formula)))
-    expect_true(grepl(pattern = "repId",
-                      x = deparse(modelAsCov[["E1"]]$mFix$t1$fixed.formula)))
-  }
 })
 
 test_that("option useCheckId produces expected output structure", {
@@ -191,13 +113,6 @@ test_that("option useCheckId produces expected output structure", {
                     x = deparse(modelSpCi[["E1"]]$mRand$t1$model$fixed)))
   expect_true(grepl(pattern = "checkId",
                     x = deparse(modelSpCi[["E1"]]$mFix$t1$model$fixed)))
-  modelLmCi <- fitTD(testTD, design = "rcbd", traits = "t1", useCheckId = TRUE,
-                     engine = "lme4")
-  expect_SSA(modelLmCi)
-  expect_SSAMod(modelLmCi, "mRand", "lmerMod")
-  expect_SSAMod(modelLmCi, "mFix", "lm")
-  expect_true("checkId" %in% colnames(modelLmCi[["E1"]]$mRand$t1@frame))
-  expect_true("checkId" %in% colnames(modelLmCi[["E1"]]$mFix$t1$model))
 })
 
 test_that("option trySpatial produces expected output structure", {
@@ -209,20 +124,6 @@ test_that("option trySpatial produces expected output structure", {
   expect_SSAMod(modelSpTs, "mFix")
   ## SpATS should use trySpatial as default. Timestamp will be different.
   expect_equivalent(modelSp, modelSpTs)
-  expect_warning(fitTD(testTD, design = "rowcol", traits = "t1",
-                       trySpatial = TRUE, engine = "lme4"),
-                 "Spatial models can only be fitted using SpATS or asreml.")
-  skip_on_cran()
-  expect_warning(modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1",
-                                    trySpatial = TRUE, engine = "asreml"),
-                 "Log-likelihood not converged")
-  expect_SSA(modelAsTs)
-  expect_SSAMod(modelAsTs, "mRand")
-  expect_SSAMod(modelAsTs, "mFix")
-  expect_is(modelAsTs[["E1"]]$spatial, "list")
-  expect_length(modelAsTs[["E1"]]$spatial, 1)
-  expect_named(modelAsTs[["E1"]]$spatial, "t1")
-  expect_equal(modelAsTs[["E1"]]$spatial$t1, "none")
 })
 
 test_that("option nSeg in control produces correct output", {
@@ -274,20 +175,6 @@ test_that("Trial with missing data is handled properly when fitting models", {
                                   traits = c("t1", "t2")),
                  "Error in SpATS")
   expect_SSA(modelSp)
-  expect_warning(modelLm <- fitTD(testTD, design = "rowcol",
-                                  traits = c("t1", "t2"), engine = "lme4"),
-                 "Error in lmer")
-  expect_SSA(modelLm)
-  skip_on_cran()
-  expect_warning(modelAs <- fitTD(testTD, design = "rowcol",
-                                  traits = c("t1", "t2"), engine = "asreml"),
-                 "Error in asreml")
-  expect_SSA(modelAs)
-  expect_warning(modelAs2 <- fitTD(testTD, design = "rowcol",
-                                   traits = c("t1", "t2"), engine = "asreml",
-                                   trySpatial = TRUE),
-                 "Error in asreml")
-  expect_SSA(modelAs2)
 })
 
 test_that("Design is modified when replicates contain only 1 distinct value", {

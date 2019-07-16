@@ -116,10 +116,10 @@ extract <- function(SSA,
     }
     ## Trial specific checks.
     if (!all(traits %in% colnames(SSATr$TD[[trial]]))) {
-      stop(paste0("All traits should be columns in ", trial, ".\n"))
+      stop("All traits should be columns in ", trial, ".\n")
     }
     if (!all(keep %in% colnames(SSATr$TD[[trial]]))) {
-      stop(paste0("All keep should be columns in ", trial, ".\n"))
+      stop("All keep should be columns in ", trial, ".\n")
     }
     traitsTr <- traitsTr[sapply(X = traitsTr, FUN = function(trait) {
       !is.null(SSATr$mRand[[trait]]) || !is.null(SSATr$mFix[[trait]])})]
@@ -947,8 +947,8 @@ createBaseData <- function(TD,
       if (!anyDuplicated(TDKeep[, predicted])) {
         baseDataPred <- merge(baseDataPred, TDKeep, by = predicted)
       } else {
-        warning(paste0("Duplicate values for ", deparse(substitute(col)), ". ",
-                       "Column dropped.\n"), call. = FALSE)
+        warning("Duplicate values for ", deparse(substitute(col)), ". ",
+                "Column dropped.\n", call. = FALSE)
       }
     }
   } else {

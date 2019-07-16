@@ -1,5 +1,7 @@
 context("Class SSA")
 
+### Summary.
+
 modelSp <- fitTD(testTD, design = "rowcol", traits = "t1")
 test_that("checks in summary.SSA functions properly", {
   expect_error(summary(modelSp, trials = "E2"),
@@ -67,16 +69,20 @@ test_that("summary.SSA produces correct output for multiple trials", {
   expect_equal(sumSp$what, "BLUEs")
 })
 
+test_that("option nBest functions properly", {
+  sumSp <- summary(modelSp, nBest = 5)
+  expect_equal(dim(sumSp$meanTab), c(5, 4))
+})
+
+### Subsetting.
+
 test_that("subsetting SSA objects works correctly", {
   expect_is(modelSp["E1"], "SSA")
   expect_is(modelSp["E1"], "list")
   expect_equal(attr(modelSp, "timestamp"), attr(modelSp["E1"], "timestamp"))
 })
 
-test_that("option nBest functions properly", {
-  sumSp <- summary(modelSp, nBest = 5)
-  expect_equal(dim(sumSp$meanTab), c(5, 4))
-})
+### Print summary.
 
 test_that("print.summary.SSA functions properly", {
   sumSp <- capture.output(print(summary(modelSp)))
@@ -101,6 +107,8 @@ test_that("print.summary.SSA functions properly for multiple trials", {
   expect_true("Summary statistics for BLUEs of t1 " %in% sumSp)
 })
 
+### SSAtoCross.
+
 test_that("checks in SSAtoCross function properly", {
   expect_error(SSAtoCross(1), "SSA is not a valid object of class SSA")
   expect_error(SSAtoCross(modelSp, traits = "t5"),
@@ -123,6 +131,8 @@ test_that("function SSAtoCross functions properly", {
   expect_is(cross$pheno, "data.frame")
   expect_equal(dim(cross$pheno), c(169, 2))
 })
+
+### SSAtoTD.
 
 test_that("checks in SSAtoTD function properly", {
   expect_error(SSAtoTD(1), "SSA is not a valid object of class SSA")
@@ -156,6 +166,21 @@ test_that("function SSAtoTD functions properly", {
                  "Duplicate values for")
   expect_named(TDSp4$E1, c("genotype", "trial", "BLUEs_t1", "seBLUEs_t1",
                            "BLUPs_t1", "seBLUPs_t1"))
+})
+
+### Report.
+
+test_that("checks in report.SSA function properly", {
+  skip_on_cran()
+  expect_error(report(modelSp, trials = "E2"),
+               "trials has to be a character vector defining trials in SSA")
+  expect_error(report(modelSp, traits = 1),
+               "traits has to be a character vector")
+  expect_warning(report(modelSp, traits = "t5"),
+                 "traits not available for trial E1")
+  modelSp2a <- fitTD(testTD, design = "rowcol", traits = "t1", what = "fixed")
+  expect_warning(report(modelSp2a, traits = "t1", what = "random"),
+                 "Model with genotype random not available for")
 })
 
 test_that("function report.SSA functions properly" ,{

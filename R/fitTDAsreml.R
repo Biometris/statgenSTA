@@ -54,7 +54,7 @@ fitTDAsreml <- function(TD,
     } else {
       repTab <- table(TDTr$rowId, TDTr$colId)
     }
-    if (min(repTab) > 1) {
+    if (max(repTab) > 1) {
       warning("There should only be one plot at each combination of",
               if (repIdFix) "replicate", "row and column.\n",
               "Spatial models will not be tried")
@@ -403,7 +403,7 @@ bestSpatMod <- function(TD,
                        maxiter = maxIter, trace = FALSE), dotArgs)
     ## In asreml3 na.method.X and na.method.Y are used.
     ## In asreml4 this is replaced by na.action.
-    asrArgsR <- c(asrArgsR, if (asreml4()) {
+    asrArgsF <- c(asrArgsF, if (asreml4()) {
       list(na.action = asreml::na.method(x = "include"))
     } else {
       list(na.method.X = "include")

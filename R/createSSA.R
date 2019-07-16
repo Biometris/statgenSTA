@@ -634,7 +634,7 @@ report.SSA <- function(x,
   }
   if (!is.null(trials) && (!is.character(trials) ||
                            !all(hasName(x = x, name = trials)))) {
-    stop("trials has to be a character vector defining a trial in SSA.\n")
+    stop("trials has to be a character vector defining trials in SSA.\n")
   }
   if (is.null(trials)) {
     trials <- names(x)
@@ -663,8 +663,8 @@ report.SSA <- function(x,
                                    name = traits)]
         if (length(traitsTr) == 0) {
           ## Skip with warning if no traits available.
-          warning(paste0("traits not available for trial ", trial, ".\n",
-                         "Reports for trial ", trial, " skipped.\n"))
+          warning("traits not available for trial ", trial, ".\n",
+                  "Reports for trial ", trial, " skipped.\n")
           break
         }
       } else {

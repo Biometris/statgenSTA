@@ -85,8 +85,8 @@ outlierSSA <- function(SSA,
                                  name = traits)]
       if (length(traitsTr) == 0) {
         ## Skip with warning if no traits available.
-        warning(paste0("traits not available for trial ", trial, ".\n",
-                       "Outlier detection for trial ", trial, " skipped.\n"))
+        warning("traits not available for trial ", trial, ".\n",
+                "Outlier detection for trial ", trial, " skipped.\n")
         return(NULL)
       }
     } else {

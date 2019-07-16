@@ -25,5 +25,3 @@ pkgsUpdate <- function(repos = "https://cran.rstudio.com",
   print(instld[, c("Package", "Version")])
   return(invisible(TRUE))
 }
-
-

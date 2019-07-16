@@ -121,9 +121,9 @@ predictAsreml <- function(model,
       is.null(modelP$error)) {
     return(modelP$value)
   } else {
-    stop(paste("Error in asreml when running predict. Asreml message:\n",
-               modelP$error, "\n",
-               modelP$warning, "\n"), call. = FALSE)
+    stop("Error in asreml when running predict. Asreml message:\n",
+         modelP$error, "\n",
+         modelP$warning, "\n", call. = FALSE)
   }
 }
 
@@ -180,8 +180,8 @@ skewness <- function(x,
 #' @keywords internal
 seSkewness <- function(n) {
   if (n <= 2) {
-    warning(paste("For n less than 2 the standard error of skewness cannot be",
-                  "calculated"), call. = FALSE)
+    warning("For n less than 2 the standard error of skewness cannot be ",
+            "calculated", call. = FALSE)
     return(NA)
   }
   return(sqrt((6 * n * (n - 1)) / ((n - 2) * (n + 1) * (n + 3))))
@@ -215,8 +215,8 @@ kurtosis <- function(x,
 #' @keywords internal
 seKurtosis <- function(n) {
   if (n <= 3) {
-    warning(paste("For n less than 2 the standard error of kurtosis cannot be",
-                  "calculated"), call. = FALSE)
+    warning("For n less than 2 the standard error of kurtosis cannot be ",
+            "calculated", call. = FALSE)
     return(NA)
   }
   return(sqrt((24 * n * (n - 1) ^ 2) / ((n - 2) * (n - 3) * (n + 3) * (n + 5))))
