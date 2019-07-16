@@ -94,7 +94,7 @@ extract <- function(SSA,
                     keep = NULL,
                     restoreColNames = FALSE) {
   ## Checks.
-  if (!inherits(SSA, "SSA")) {
+  if (missing(SSA) || !inherits(SSA, "SSA")) {
     stop("SSA has to be an object of class SSA.\n")
   }
   if (is.null(trials) || !is.character(trials) ||
@@ -831,17 +831,12 @@ extractAsreml <- function(SSA,
       coefs <- mr[[trait]]$coe$random
       ## In asreml3 coefficients are stored as a vector,
       ## in asreml4 as a data.frame.
-      ranEff <- if (asreml4()) {
-        data.frame(gsub(pattern = paste0(predicted, "_"), replacement = "",
-                        x = rownames(coefs)[grep(pattern = predicted,
-                                                 x = rownames(coefs))]),
-                   coefs[grep(pattern = predicted, x = rownames(coefs))])
-      } else {
-        data.frame(gsub(pattern = paste0(predicted, "_"), replacement = "",
-                        x = names(coefs)[grep(pattern = predicted,
-                                              x = names(coefs))]),
-                   coefs[grep(pattern = predicted, x = names(coefs))])
-      }
+      coefNames <- if (asreml4()) rownames(coefs) else names(coefs)
+      ranEff <- data.frame(gsub(pattern = paste0(predicted, "_"),
+                                replacement = "",
+                                x = coefNames[grep(pattern = predicted,
+                                                   x = coefNames)]),
+                   coefs[grep(pattern = predicted, x = coefNames)])
       colnames(ranEff) <- c(predicted, trait)
       return(ranEff)
     })

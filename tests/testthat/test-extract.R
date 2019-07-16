@@ -1,6 +1,19 @@
 context("extract general options")
 
 modelLm <- fitTD(testTD, design = "rcbd", traits = "t1", engine = "lme4")
+test_that("checks in extract function properly", {
+  expect_error(extract(1), "SSA has to be an object of class SSA")
+  expect_error(extract(modelLm, traits = 1),
+               "traits should be NULL or a character vector")
+  expect_error(extract(modelLm, keep = 1),
+               "keep should be NULL or a character vector")
+  expect_error(extract(modelLm, traits = "t5"),
+               "All traits should be columns in E1")
+  expect_error(extract(modelLm, keep = "myKp"),
+               "All keep should be columns in E1")
+  expect_null(extract(modelLm, traits = "t2")$E1)
+})
+
 test_that("option keep functions properly", {
   expect_named(extract(modelLm, what = "BLUEs", keep = "trial")[[1]][["BLUEs"]],
                c("genotype", "trial", "t1"))
