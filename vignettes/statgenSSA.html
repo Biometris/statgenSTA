@@ -13,7 +13,7 @@
 
 <meta name="author" content="Bart-Jan van Rossum" />
 
-<meta name="date" content="2019-07-15" />
+<meta name="date" content="2019-07-25" />
 
 <title>Modeling field trials using statgenSSA</title>
 
@@ -304,7 +304,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Modeling field trials using statgenSSA</h1>
 <h4 class="author">Bart-Jan van Rossum</h4>
-<h4 class="date">2019-07-15</h4>
+<h4 class="date">2019-07-25</h4>
 
 
 
@@ -473,27 +473,27 @@ Dropping one or more trials from a <code>TD</code> object can be done using the 
 <tr class="odd">
 <td>incomplete block design</td>
 <td>ibd</td>
-<td>trait = genotype + <em>subBlock</em> + <span class="math inline">\(\epsilon\)</span></td>
+<td>trait = genotype + <strong>subBlock</strong> + <span class="math inline">\(\epsilon\)</span></td>
 </tr>
 <tr class="even">
 <td>resovable incomplete block design</td>
 <td>res.ibd</td>
-<td>trait = genotype + <strong>repId</strong> + <strong>repId:subBlock</strong> + <span class="math inline">\(\epsilon\)</span></td>
+<td>trait = genotype + <em>repId</em> + <strong>repId:subBlock</strong> + <span class="math inline">\(\epsilon\)</span></td>
 </tr>
 <tr class="odd">
 <td>randomized complete block design</td>
 <td>rcbd</td>
-<td>trait = genotype + <strong>repId</strong> + <span class="math inline">\(\epsilon\)</span></td>
+<td>trait = genotype + <em>repId</em> + <span class="math inline">\(\epsilon\)</span></td>
 </tr>
 <tr class="even">
 <td>row column design</td>
 <td>rowcol</td>
-<td>trait = genotype + <em>rowId</em> + <em>colId</em> + <span class="math inline">\(\epsilon\)</span></td>
+<td>trait = genotype + <strong>rowId</strong> + <strong>colId</strong> + <span class="math inline">\(\epsilon\)</span></td>
 </tr>
 <tr class="odd">
 <td>resolvable row column design</td>
 <td>res.rowcol</td>
-<td>trait = genotype + <strong>repId</strong> + <em>repId:rowId</em> + <em>repId:colId</em> + <span class="math inline">\(\epsilon\)</span></td>
+<td>trait = genotype + <em>repId</em> + <strong>repId:rowId</strong> + <strong>repId:colId</strong> + <span class="math inline">\(\epsilon\)</span></td>
 </tr>
 </tbody>
 </table>

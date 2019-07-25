@@ -253,11 +253,11 @@ following table with their respective model specifications.
 
 design | code | model fitted |
 -------------------------- | -------- | ----------------------------------------- |
-incomplete block design | ibd | trait = genotype + *subBlock* + $\epsilon$ |
-resovable incomplete block design | res.ibd | trait = genotype + **repId** + **repId:subBlock** + $\epsilon$ |
-randomized complete block design | rcbd | trait = genotype + **repId** + $\epsilon$ | 
-row column design | rowcol | trait = genotype + *rowId* + *colId* + $\epsilon$ |
-resolvable row column design | res.rowcol | trait = genotype + **repId** + *repId:rowId* + *repId:colId* + $\epsilon$ |
+incomplete block design | ibd | trait = genotype + **subBlock** + $\epsilon$ |
+resovable incomplete block design | res.ibd | trait = genotype + *repId* + **repId:subBlock** + $\epsilon$ |
+randomized complete block design | rcbd | trait = genotype + *repId* + $\epsilon$ | 
+row column design | rowcol | trait = genotype + **rowId** + **colId** + $\epsilon$ |
+resolvable row column design | res.rowcol | trait = genotype + *repId* + **repId:rowId** + **repId:colId** + $\epsilon$ |
 
 In the models above, fixed effects are indicated in *italics* whereas random 
 effects are indicated in **bold**. genotype can be fitted as fixed or as 
