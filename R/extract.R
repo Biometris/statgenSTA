@@ -356,7 +356,13 @@ extractSpATS <- function(SSA,
   ## Extract effective dimensions.
   if ("effDim" %in% what) {
     result[["effDim"]] <- lapply(X = mr, FUN = function(mr0) {
+      ## Get row order for effective dimensions in SpATS summary output.
+      capture.output(effDimOrd <- rownames(summary(mr0)$p.table.dim))
+      effDimOrd <- effDimOrd[1:(length(effDimOrd) - 4)]
+      ## Extract directly from model since summary rounds the numbers.
       effDim <- data.frame(effDim = mr0[["eff.dim"]])
+      ## order rows as in SpATS summary output.
+      effDim <- effDim[effDimOrd, , drop = FALSE]
       ## Rename rows for more user readable output.
       renameRows(effDim)
     })
