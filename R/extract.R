@@ -355,14 +355,21 @@ extractSpATS <- function(SSA,
   }
   ## Extract effective dimensions.
   if ("effDim" %in% what) {
-    result[["effDim"]] <- sapply(X = mr, FUN = `[[`, "eff.dim")
+    result[["effDim"]] <- lapply(X = mr, FUN = function(mr0) {
+      effDim <- data.frame(effDim = mr0[["eff.dim"]])
+      ## Rename rows for more user readable output.
+      renameRows(effDim)
+    })
   }
   ## Extract ratio's of effective dimensions.
   if ("ratEffDim" %in% what) {
-    result[["ratEffDim"]] <- sapply(X = mr, FUN = function(mr0) {
+    result[["ratEffDim"]] <- lapply(X = mr, FUN = function(mr0) {
       capture.output(ratTot <- summary(mr0)$p.table.dim[, "Ratio"])
-      setNames(as.numeric(ratTot[1:(length(ratTot) - 4)]),
-               names(ratTot[1:(length(ratTot) - 4)]))
+      ratTot <- setNames(as.numeric(ratTot[1:(length(ratTot) - 4)]),
+                         names(ratTot[1:(length(ratTot) - 4)]))
+      ratTot <- data.frame(ratEffDim = ratTot)
+      ## Rename rows for more user readable output.
+      renameRows(ratTot)
     })
   }
   return(result)

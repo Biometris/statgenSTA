@@ -360,30 +360,45 @@ escapeLatex = function(x, newlines = FALSE, spaces = FALSE) {
   x
 }
 
-# Vectors for renaming columns in varcomp and effdim tables.
-renameVars <- data.frame(renameFrom = c("genotype", "repId", "rowId", "colId",
-                                        "subBlock", "repId:rowId",
-                                        "repId:colId", "repId:subBlock",
-                                        "colCoord", "rowCoord",
-                                        "rowCoordcolCoord", "f(colCoord)",
-                                        "f(rowCoord)", "f(colCoord):rowCoord",
-                                        "colCoord:f(rowCoord)",
-                                        "f(colCoord):f(rowCoord)", "Nobs", "R",
-                                        "variance", "pow", "units"),
-                         renameTo = c("Genotype", "Replicate", "Row", "Col",
-                                      "Block", "Row(replicate)",
-                                      "Col(replicate)", "Block(replicate)",
-                                      "Linear trend along cols",
-                                      "Linear trend along rows",
-                                      "Linear trend along rows and cols",
-                                      "Smooth trend along cols",
-                                      "Smooth trend along rows",
-                                      "Linear trend in rows changing smoothly along cols",
-                                      "Linear trend in cols changing smoothly along rows",
-                                      "Smooth-by-smooth interaction trend over rows and cols",
-                                      "Number of observations",
-                                      "Residual", "Residual", "Power",
-                                      "Units"), stringsAsFactors = FALSE)
+#' Helper function for renaming row to a more user readable output.
+#'
+#' @noRd
+#' @keywords internal
+renameRows <- function(dat) {
+  ## data.frame for renaming columns in varcomp and effdim tables.
+  renameVars <-
+    matrix(nrow = 2,
+           dimnames = list(rownames = c("renameFrom", "renameTo")),
+           data =
+             c("genotype", "Genotype",
+               "repId", "Replicate",
+               "rowId", "Row",
+               "colId", "Col",
+               "subBlock", "Block",
+               "repId:rowId", "Row(replicate)",
+               "repId:colId", "Col(replicate)",
+               "repId:subBlock", "Block(replicate)",
+               "colCoord", "Linear trend along cols",
+               "rowCoord", "Linear trend along rows",
+               "rowCoordcolCoord", "Linear trend along rows and cols",
+               "f(colCoord)", "Smooth trend along cols",
+               "f(rowCoord)", "Smooth trend along rows",
+               "f(colCoord):rowCoord", "Linear trend in rows changing smoothly along cols",
+               "colCoord:f(rowCoord)", "Linear trend in cols changing smoothly along rows",
+               "f(colCoord):f(rowCoord)", "Smooth-by-smooth interaction trend over rows and cols",
+               "Nobs", "Number of observations",
+               "R", "Residual",
+               "variance", "Residual",
+               "pow", "Power",
+               "units", "Units"))
+  renameVars <- as.data.frame(t(renameVars), stringsAsFactors = FALSE)
+  for (i in seq_along(renameVars[["renameFrom"]])) {
+    rownames(dat)[rownames(dat) == renameVars[["renameFrom"]][i]] <-
+      renameVars[["renameTo"]][i]
+  }
+  return(dat)
+}
+
 
 #' Function for extracting the table with variance components from a model in
 #' a nicely printable format.
@@ -432,10 +447,7 @@ extractVarComp <- function(model,
     colnames(varComp) <- c("Variance", "SE")
   }
   ## Rename rows for more user readable output.
-  for (i in seq_along(renameVars[["renameFrom"]])) {
-    rownames(varComp)[rownames(varComp) == renameVars[["renameFrom"]][i]] <-
-      renameVars[["renameTo"]][i]
-  }
+  varComp <- renameRows(varComp)
   ## Always put genotype as first row.
   if ("Genotype" %in% rownames(varComp)) {
     varComp <- rbind(varComp["Genotype", , drop = FALSE],

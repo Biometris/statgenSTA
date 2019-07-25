@@ -211,10 +211,10 @@ test_that("rDfR is computed correctly", {
 })
 
 test_that("effective dimensions are computed correctly", {
-  expect_is(extSp$effDim, "matrix")
-  expect_equal(dim(extSp$effDim), c(12, 1))
-  expect_equal(colnames(extSp$effDim), "t1")
-  expect_equal(as.numeric(extSp$effDim),
+  expect_is(extSp$effDim, "list")
+  expect_is(extSp$effDim$t1, "data.frame")
+  expect_equal(dim(extSp$effDim$t1), c(12, 1))
+  expect_equal(extSp$effDim$t1[["effDim"]],
                c(1, 1, 1, 1, 9.14671486135065, 0.00016273208568656,
                  1.43834833591063e-05, 1.4982795165739e-05, 0.20697157790348,
                  2.15831939067247e-08, 9.66891224699188e-06, 0.00105396169741819
@@ -222,10 +222,10 @@ test_that("effective dimensions are computed correctly", {
 })
 
 test_that("ratios of effective dimensions are computed correctly", {
-  expect_is(extSp$ratEffDim, "matrix")
-  expect_equal(dim(extSp$ratEffDim), c(12, 1))
-  expect_equal(colnames(extSp$ratEffDim), "t1")
-  expect_equal(as.numeric(extSp$ratEffDim),
+  expect_is(extSp$ratEffDim, "list")
+  expect_is(extSp$ratEffDim$t1, "data.frame")
+  expect_equal(dim(extSp$ratEffDim$t1), c(12, 1))
+  expect_equal(extSp$ratEffDim$t1[["ratEffDim"]],
                c(1, 0.65, 0, 0, 1, 1, 1, 0, 0.03, 0, 0, 0))
 })
 
