@@ -132,6 +132,7 @@ fitTDAsreml <- function(TD,
             }
           }
           ## evaluate call terms in mr and mfTrait so predict can be run.
+          mrTrait$call[[1]] <- quote(asreml::asreml)
           mrTrait$call$fixed <- eval(mrTrait$call$fixed)
           mrTrait$call$random <- eval(mrTrait$call$random)
           mrTrait$call$rcov <- eval(mrTrait$call$rcov)
@@ -178,6 +179,7 @@ fitTDAsreml <- function(TD,
           mfTrait <- NULL
         }
         if (!is.null(mfTrait)) {
+          mfTrait$call[[1]] <- quote(asreml::asreml)
           mfTrait$call$fixed <- eval(mfTrait$call$fixed)
           mfTrait$call$random <- eval(mfTrait$call$random)
           mfTrait$call$rcov <- eval(mfTrait$call$rcov)
@@ -375,6 +377,7 @@ bestSpatMod <- function(TD,
           ## Evaluate call terms in bestModTr and mfTrait so predict can be run.
           ## Needs to be called in every iteration to prevent final result
           ## from always having the values of the last iteration.
+          bestModTr$call[[1]] <- quote(asreml::asreml)
           bestModTr$call$fixed <- eval(bestModTr$call$fixed)
           bestModTr$call$random <- eval(bestModTr$call$random)
           bestModTr$call$rcov <- eval(bestModTr$call$rcov)
@@ -434,6 +437,7 @@ bestSpatMod <- function(TD,
       mfTrait <- NULL
     }
     if (!is.null(mfTrait)) {
+      mfTrait$call[[1]] <- quote(asreml::asreml)
       mfTrait$call$fixed <- eval(mfTrait$call$fixed)
       mfTrait$call$random <- eval(mfTrait$call$random)
       mfTrait$call$rcov <- eval(mfTrait$call$rcov)

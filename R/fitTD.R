@@ -178,11 +178,12 @@ fitTD = function(TD,
                             engine = engine, useCheckId = useCheckId,
                             control = control)
     ## Convert output to variables.
+    list2env(x = checkOut, envir = environment())
     if (progress) {
+      ## Print progress, list of traits + trial.
       cat(paste0("Fitting models for ", paste(traits, collapse = ", "),
                  " in ", trial, ".\n"))
     }
-    list2env(x = checkOut, envir = environment())
     model <- do.call(what = paste0("fitTD", tools::toTitleCase(engine)),
                      args = list(TD = TD[trial], trial = trial, traits = traits,
                                  what = what, covariates = covariates,
