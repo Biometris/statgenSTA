@@ -2,7 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-R/redundant
-figure
-figures
 tests/testthat/Rplots.pdf
+public
