@@ -110,7 +110,6 @@ outlierSSA <- function(SSA,
         rLimit <- min(max(2, qnorm(p = 1 - 0.5 / rDf[trait])), 4)
       }
       datTr <- SSA[[trial]]$TD[[trial]]
-      datTr <- datTr[!colnames(datTr) %in% setdiff(traitsTr, trait)]
       ## Compute outliers.
       ## Set missing values to 0 to prevent problems when comparing to rLimit.
       stdResTr[is.na(stdResTr[[trait]]), trait] <- 0
