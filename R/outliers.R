@@ -131,8 +131,9 @@ outlierSSA <- function(SSA,
         }
         outTrt$similar <- abs(outTrt$res) <= rLimit
         outTrt$trait <- trait
-        ## Rename column trait to value.
-        colnames(outTrt)[colnames(outTrt) == trait] <- "value"
+        ## Add column value with value of trait.
+        ## Leave actual trait column as well for ease of judging outliers.
+        outTrt[["value"]] <- outTrt[[trait]]
         ## Change order of columns to always display most relevant info first.
         firstCols <- c("trial", "trait", "value", "res")
         outTrt <- cbind(outTrt[, firstCols],
