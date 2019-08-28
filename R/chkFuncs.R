@@ -5,10 +5,14 @@
 chkNum <- function(x,
                    min = NULL,
                    max = NULL,
-                   null = TRUE) {
+                   null = TRUE,
+                   incl = FALSE) {
   if ((is.null(x) && !null) ||
-      (!is.null(x) && (length(x) > 1 || !is.numeric(x) || isTRUE(x < min) ||
-                       isTRUE(x > max)))) {
+      (!is.null(x) && (length(x) > 1 || !is.numeric(x) ||
+                       isTRUE(incl & x < min) ||
+                       isTRUE(!incl & x <= min) ||
+                       isTRUE(incl & x > max) ||
+                       isTRUE(!incl & x >= max)))) {
     if (null) {
       nullTxt <- " NULL or "
     } else {
@@ -17,9 +21,9 @@ chkNum <- function(x,
     if (!is.null(min) && !is.null(max)) {
       txt <- paste(" between", min, "and", max)
     } else if (!is.null(min)) {
-      txt <- paste(" greater than", min)
+      txt <- paste0(" greater than ", if (incl) "or equal to ", min)
     } else if (!is.null(max)) {
-      txt <- paste(" smaller than", max)
+      txt <- paste0(" smaller than ", if (incl) "or equal to ", max)
     } else {
       txt <- ""
     }

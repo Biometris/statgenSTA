@@ -94,7 +94,7 @@ test_that("TD box plot gives correct output types", {
 
 test_that("option groupBy functions properly for TD box plot", {
   expect_error(plot(testTD, plotType = "box", traits = "t1", groupBy = 1),
-               "groupBy should be a single character string")
+               "groupBy should be a character string")
   expect_error(plot(testTD, plotType = "box", traits = "t1", groupBy = "grp"),
                "groupBy should be a column in TD")
   p <- plot(testTD, plotType = "box", traits = "t1", groupBy = "repId",
@@ -104,7 +104,7 @@ test_that("option groupBy functions properly for TD box plot", {
 
 test_that("option colorBy functions properly for TD box plot", {
   expect_error(plot(testTD, plotType = "box", traits = "t1", colorBy = 1),
-               "colorBy should be a single character string")
+               "colorBy should be a character string")
   expect_error(plot(testTD, plotType = "box", traits = "t1", colorBy = "grp"),
                "colorBy should be a column in TD")
   p <- plot(testTD, plotType = "box", traits = "t1", colorBy = "repId",
@@ -162,7 +162,7 @@ test_that("checks in plot.SSA function properly", {
   expect_error(plot(modelSp, traits = 1),
                "traits should be NULL or a character vector")
   expect_error(plot(modelSp, traits = "t2", outCols = 0),
-               "outCols should be a single numerical value greater than 0")
+               "a single numerical value greater than or equal to 1")
   expect_warning(plot(modelSp, traits = "myTr"),
                 "traits not available for trial")
   modelSp$E1$mRand <- NULL

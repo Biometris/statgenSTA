@@ -301,10 +301,7 @@ plot.SSA <- function(x,
   trials <- chkTrials(trials, x)
   chkChar(traits)
   plotType <- match.arg(arg = plotType)
-  if (is.null(outCols) || !is.numeric(outCols) || length(outCols) > 1 ||
-      outCols < 1) {
-    stop("outCols should be a single numerical value greater than 0.\n")
-  }
+  chkNum(outCols, min = 1, null = FALSE, incl = TRUE)
   dotArgs <- list(...)
   ## Check whether data contains row/col information.
   spatCols <- c("colCoord", "rowCoord")

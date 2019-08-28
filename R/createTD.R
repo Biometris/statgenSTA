@@ -831,8 +831,8 @@ plot.TD <- function(x,
   } else if (plotType == "box") {
     chkChar(traits)
     groupBy <- dotArgs$groupBy
-    if (!is.null(groupBy) && (!is.character(groupBy) || length(groupBy) > 1)) {
-      stop("groupBy should be a single character string.\n")
+    if (!is.null(groupBy)) {
+      chkChar(groupBy, len = 1, null = FALSE)
     }
     if (!is.null(groupBy) && !all(sapply(X = x, FUN = function(trial) {
       hasName(x = trial, name = groupBy)
@@ -840,8 +840,8 @@ plot.TD <- function(x,
       stop("groupBy should be a column in TD.\n")
     }
     colorBy <- dotArgs$colorBy
-    if (!is.null(colorBy) && (!is.character(colorBy) || length(colorBy) > 1)) {
-      stop("colorBy should be a single character string.\n")
+    if (!is.null(colorBy)) {
+      chkChar(colorBy, len = 1, null = FALSE)
     }
     if (!is.null(colorBy) && !all(sapply(X = x, FUN = function(trial) {
       hasName(x = trial, name = colorBy)
@@ -1135,6 +1135,6 @@ checkTDMeta <- function(trLocation = NULL,
     stop("trPlWidth should be a positive numerical vector.\n", call. = FALSE)
   }
   if (!is.null(trPlLength) && (!is.numeric(trPlLength) || any(trPlLength < 0))) {
-    stop("should be a positive numerical vector.\n", call. = FALSE)
+    stop("trPlLength should be a positive numerical vector.\n", call. = FALSE)
   }
 }
