@@ -88,13 +88,7 @@ summary.SSA <- function(object,
                         decreasing = TRUE,
                         ...) {
   ## Checks.
-  if (!is.null(trials) && (!is.character(trials) ||
-                           !all(hasName(x = object, name = trials)))) {
-    stop("trials has to be a character vector defining trials in SSA.\n")
-  }
-  if (is.null(trials)) {
-    trials <- names(object)
-  }
+  trials <- chkTrials(trials, object)
   if (is.null(trait) && length(object[[trials[1]]]$traits) > 1) {
     stop("No trait provided but multiple traits found.\n")
   }
@@ -304,10 +298,7 @@ plot.SSA <- function(x,
                      outCols = ifelse(plotType == "base", 2, 3),
                      output = TRUE) {
   ## Checks.
-  if (!is.null(trials) && (!is.character(trials) ||
-                           !all(hasName(x = x, name = trials)))) {
-    stop("trials has to be a character vector defining trials in SSA.\n")
-  }
+  trials <- chkTrials(trials, x)
   if (!is.null(traits) && !is.character(traits)) {
     stop("traits has to be a character vector.\n")
   }
@@ -319,9 +310,6 @@ plot.SSA <- function(x,
   dotArgs <- list(...)
   ## Check whether data contains row/col information.
   spatCols <- c("colCoord", "rowCoord")
-  if (is.null(trials)) {
-    trials <- names(x)
-  }
   p <- setNames(vector(mode = "list", length = length(trials)), trials)
   for (trial in trials) {
     if (!is.null(traits)) {
@@ -632,13 +620,7 @@ report.SSA <- function(x,
   if (nchar(Sys.which("pdflatex")) == 0) {
     stop("An installation of LaTeX is required to create a pdf report.\n")
   }
-  if (!is.null(trials) && (!is.character(trials) ||
-                           !all(hasName(x = x, name = trials)))) {
-    stop("trials has to be a character vector defining trials in SSA.\n")
-  }
-  if (is.null(trials)) {
-    trials <- names(x)
-  }
+  trials <- chkTrials(trials, x)
   if (!is.null(traits) && !is.character(traits)) {
     stop("traits has to be a character vector.\n")
   }

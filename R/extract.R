@@ -97,10 +97,7 @@ extract <- function(SSA,
   if (missing(SSA) || !inherits(SSA, "SSA")) {
     stop("SSA has to be an object of class SSA.\n")
   }
-  if (is.null(trials) || !is.character(trials) ||
-      !all(trials %in% names(SSA))) {
-    stop("All trials should be in SSA.")
-  }
+  trials <- chkTrials(trials, SSA)
   if (!is.null(traits) && !is.character(traits)) {
     stop("traits should be NULL or a character vector.")
   }

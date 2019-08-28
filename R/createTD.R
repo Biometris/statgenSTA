@@ -638,9 +638,7 @@ plot.TD <- function(x,
                     traits = NULL,
                     output = TRUE) {
   ## Checks.
-  if (!is.character(trials) || !all(hasName(x = x, name = trials))) {
-    stop("All trials should be in ", deparse(substitute(x)), ".\n")
-  }
+  trials <- chkTrials(trials, x)
   plotType <- match.arg(plotType)
   dotArgs <- list(...)
   if (plotType == "layout") {

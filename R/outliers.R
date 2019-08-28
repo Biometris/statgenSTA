@@ -53,22 +53,16 @@ outlierSSA <- function(SSA,
   if (missing(SSA) || !inherits(SSA, "SSA")) {
     stop("SSA should be a valid object of class SSA.\n")
   }
-  if (!is.null(trials) && (!is.character(trials) ||
-                           !all(hasName(x = SSA, name = trials)))) {
-    stop("trials has to be a character vector defining trials in SSA.\n")
-  }
-  if (is.null(trials)) {
-    trials <- names(SSA)
-  }
+  trials <- chkTrials(trials, SSA)
   if (!is.null(traits) && !is.character(traits)) {
     stop("traits has to be a character vector.\n")
   }
-  if (!is.null(rLimit) && (!is.numeric(rLimit) || length(rLimit) > 1 ||
-                           rLimit < 0)) {
-    stop("rLimit should be NULL or a positive numerical value.\n")
+  if (!is.null(rLimit)) {
+    chkNum(rLimit, min = 0)
   }
   what <- match.arg(arg = what, choices = c("fixed", "random"))
   outTot <- sapply(X = trials, FUN = function(trial) {
+    ## Checks.
     if (!is.null(commonFactors) && (!is.character(commonFactors) ||
         !all(hasName(x = SSA[[trial]]$TD[[trial]], name = commonFactors)))) {
       stop("commonFactors has to be a character vector defining columns in TD.\n")
@@ -122,32 +116,32 @@ outlierSSA <- function(SSA,
         if (!is.null(commonFactors)) {
           ## If commonFactors are given merge to data.
           outTrt <- unique(merge(x = outTrt,
-                                 y = outTrt[abs(outTrt$res) > rLimit,
+                                 y = outTrt[abs(outTrt[["res"]]) > rLimit,
                                             commonFactors, drop = FALSE],
                                  by = commonFactors))
         } else {
-          outTrt <- outTrt[abs(outTrt$res) > rLimit, ]
+          outTrt <- outTrt[abs(outTrt[["res"]]) > rLimit, ]
         }
-        outTrt$similar <- abs(outTrt$res) <= rLimit
-        outTrt$trait <- trait
+        ## Add columns similar and trait to output.
+        outTrt[["similar"]] <- abs(outTrt[["res"]]) <= rLimit
+        outTrt[["trait"]] <- trait
         ## Add column value with value of trait.
         ## Leave actual trait column as well for ease of judging outliers.
         outTrt[["value"]] <- outTrt[[trait]]
         ## Change order of columns to always display most relevant info first.
         firstCols <- c("trial", "trait", "value", "res")
-        outTrt <- cbind(outTrt[, firstCols],
-                        outTrt[!colnames(outTrt) %in% firstCols])
+        outTrt <- outTrt[c(firstCols, setdiff(colnames(outTrt), firstCols))]
         outTr[[trait]] <- outTrt
         ## Fill indicator column for current trait.
         indicatorTr[[trait]] <- which(abs(stdResTr[["res"]]) > rLimit)
       }
-    }
+    } # End for loop over traits.
     ## Create one single outlier data.frame.
-    outTotTr <- Reduce(f = rbind, x = outTr)
+    outTotTr <- do.call(what = rbind, args = outTr)
     return(list(outTotTr, indicatorTr))
-  }, simplify = FALSE)
+  }, simplify = FALSE) # End lapply over trials.
   indicatorTot <- lapply(X = outTot, `[[`, 2)
-  outTot <- Reduce(f = rbind, x = lapply(X = outTot, `[[`, 1))
+  outTot <- do.call(what = rbind, args = lapply(X = outTot, `[[`, 1))
   if (verbose) {
     if (!is.null(outTot)) {
       cat(paste("Large standardized residuals.\n\n"))

@@ -5,7 +5,8 @@ context("Plots")
 ## checking can be done.
 
 test_that("general checks in plot.TD function properly", {
-  expect_error(plot(testTD, trials = 2), "All trials should be in")
+  expect_error(plot(testTD, trials = 2),
+               "trials has to be a character vector defining trials in testTD")
 })
 
 ### TD layout plot.
@@ -157,7 +158,7 @@ test_that("TD correlation plot gives correct output types", {
 modelSp <- fitTD(TD = testTD, design = "rowcol", traits = "t1")
 test_that("checks in plot.SSA function properly", {
   expect_error(plot(modelSp, trials = 2),
-               "trials has to be a character vector defining trials in SSA")
+               "trials has to be a character vector defining trials in modelSp")
   expect_error(plot(modelSp, traits = 1),
                "traits has to be a character vector")
   expect_error(plot(modelSp, traits = "t2", outCols = 0),

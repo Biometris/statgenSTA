@@ -5,7 +5,7 @@ context("Class SSA")
 modelSp <- fitTD(testTD, design = "rowcol", traits = "t1")
 test_that("checks in summary.SSA functions properly", {
   expect_error(summary(modelSp, trials = "E2"),
-               "trials has to be a character vector defining trials in SSA")
+               "trials has to be a character vector defining trials in modelSp")
   expect_error(summary(modelSp, trait = "t5"),
                "trait has to be a single character string defining a column in")
   expect_error(summary(modelSp, trait = "t2"),
@@ -173,7 +173,7 @@ test_that("function SSAtoTD functions properly", {
 test_that("checks in report.SSA function properly", {
   skip_on_cran()
   expect_error(report(modelSp, trials = "E2"),
-               "trials has to be a character vector defining trials in SSA")
+               "trials has to be a character vector defining trials in modelSp")
   expect_error(report(modelSp, traits = 1),
                "traits has to be a character vector")
   expect_warning(report(modelSp, traits = "t5"),

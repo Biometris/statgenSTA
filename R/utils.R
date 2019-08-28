@@ -399,7 +399,6 @@ renameRows <- function(dat) {
   return(dat)
 }
 
-
 #' Function for extracting the table with variance components from a model in
 #' a nicely printable format.
 #'
