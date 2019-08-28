@@ -164,7 +164,7 @@ test_that("checks in plot.SSA function properly", {
   expect_error(plot(modelSp, traits = "t2", outCols = 0),
                "a single numerical value greater than or equal to 1")
   expect_warning(plot(modelSp, traits = "myTr"),
-                "traits not available for trial")
+                "The following traits are not modeled for E1: myTr")
   modelSp$E1$mRand <- NULL
   expect_warning(plot(modelSp, what = "random"),
                  "No model with genotype random for trial E1 and trait t1")

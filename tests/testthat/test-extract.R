@@ -8,10 +8,9 @@ test_that("checks in extract function properly", {
   expect_error(extract(modelLm, keep = 1),
                "keep should be NULL or a character vector")
   expect_error(extract(modelLm, traits = "t5"),
-               "All traits should be columns in E1")
+               "The following traits are not modeled for E1: t5")
   expect_error(extract(modelLm, keep = "myKp"),
                "All keep should be columns in E1")
-  expect_null(extract(modelLm, traits = "t2")$E1)
 })
 
 test_that("option keep functions properly", {

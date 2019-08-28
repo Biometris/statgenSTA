@@ -102,15 +102,7 @@ extract <- function(SSA,
   chkChar(keep)
   sapply(X = trials, FUN = function(trial) {
     SSATr <- SSA[[trial]]
-    if (is.null(traits)) {
-      traitsTr <- SSATr$traits
-    } else {
-      traitsTr <- traits
-    }
-    ## Trial specific checks.
-    if (!all(traits %in% colnames(SSATr$TD[[trial]]))) {
-      stop("All traits should be columns in ", trial, ".\n")
-    }
+    traitsTr <- chkTraits(traits, trial, SSATr)
     if (!all(keep %in% colnames(SSATr$TD[[trial]]))) {
       stop("All keep should be columns in ", trial, ".\n")
     }

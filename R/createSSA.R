@@ -307,17 +307,9 @@ plot.SSA <- function(x,
   spatCols <- c("colCoord", "rowCoord")
   p <- setNames(vector(mode = "list", length = length(trials)), trials)
   for (trial in trials) {
-    if (!is.null(traits)) {
-      traitsTr <- traits[hasName(x = x[[trial]]$TD[[trial]],
-                                 name = traits)]
-      if (length(traitsTr) == 0) {
-        warning("traits not available for trial ", trial, ".\n",
-                "Plots for trial ", trial, " skipped.\n")
-        break
-      }
-    } else {
-      ## If no trait is given as input extract it from the SSA object.
-      traitsTr <- x[[trial]]$traits
+    traitsTr <- chkTraits(traits, trial, x[[trial]], err = FALSE)
+    if (length(traitsTr) == 0) {
+      break
     }
     if (is.null(what)) {
       what <- ifelse(is.null(x[[trial]]$mFix), "random", "fixed")
@@ -380,7 +372,7 @@ plot.SSA <- function(x,
       plotDat$pred <- plotDat[[trait]]
       plotDat$pred[is.na(plotDat$fitted)] <- NA
       plotDat$residuals <- plotDat$response - plotDat$fitted
-      ## Create empty list for storing plots
+      ## Create empty list for storing plots.
       plots <- vector(mode = "list")
       ## Create main plot title.
       plotTitle <- ifelse(!is.null(dotArgs$title), dotArgs$title,
@@ -633,18 +625,9 @@ report.SSA <- function(x,
       ## Doing so assures always only one fitted model is available.
       modTr[[trial]][[setdiff(c("mFix", "mRand"), whatMod)]] <- NULL
       ## Check that traits are available for current trial.
-      if (!is.null(traits)) {
-        traitsTr <- traits[hasName(x = modTr[[trial]][[whatMod]],
-                                   name = traits)]
-        if (length(traitsTr) == 0) {
-          ## Skip with warning if no traits available.
-          warning("traits not available for trial ", trial, ".\n",
-                  "Reports for trial ", trial, " skipped.\n")
-          break
-        }
-      } else {
-        ## If no trait is given as input extract it from the SSA object.
-        traitsTr <- names(modTr[[trial]][[whatMod]])
+      traitsTr <- chkTraits(traits, trial, x[[trial]], err = FALSE)
+      if (length(traitsTr) == 0) {
+        break
       }
       for (trait in traitsTr) {
         outTr <- gsub(pattern = " ", replacement = "_", x = trait)
@@ -663,9 +646,9 @@ report.SSA <- function(x,
         createReport(x = modTr, reportName = "modelReport.Rnw",
                      outfile = outfileTr, ..., trial = trial, trait = trait,
                      descending = descending)
-      }
-    }
-  }
+      } # End loop over traits.
+    } # End loop over what.
+  } # End loop over trials.
 }
 
 #' Convert SSA to Cross
@@ -734,13 +717,7 @@ SSAtoCross <- function(SSA,
   if (is.null(trial)) {
     trial <- names(SSA)
   }
-  if (!is.null(traits) && (!is.character(traits) ||
-                           !all(traits %in% colnames(SSA[[trial]]$TD[[trial]])))) {
-    stop("traits has to be a character vector defining columns in TD.\n")
-  }
-  if (is.null(traits)) {
-    traits <- SSA[[trial]]$traits
-  }
+  traits <- chkTraits(traits, trial, SSA[[trial]])
   what <- match.arg(what)
   if (!is.character(genoFile) || length(genoFile) > 1 || !file.exists(genoFile)) {
     stop("genoFile is not a valid filename.\n")
@@ -803,8 +780,8 @@ SSAtoTD <- function(SSA,
                     traits = NULL,
                     keep = NULL,
                     addWt = FALSE) {
-  ## Checks
-  if (!inherits(SSA, "SSA")) {
+  ## Checks.
+  if (missing(SSA) || !inherits(SSA, "SSA")) {
     stop("SSA is not a valid object of class SSA.\n")
   }
   if (!is.null(traits) && (!is.character(traits) ||
@@ -861,7 +838,7 @@ SSAtoTD <- function(SSA,
       })
     }
     ## Merge all statistics togethter. Because of the renaming above there is
-    ## never a problem with duplicate column and merging is done on all other
+    ## never a problem with duplicate columns and merging is done on all other
     ## columns than the traits.
     predTr <- Reduce(f = merge, x = unlist(predLst, recursive = FALSE))
     traitsTr <- traits[!sapply(X = predLst, FUN = is.null)]

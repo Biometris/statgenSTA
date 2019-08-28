@@ -72,18 +72,10 @@ outlierSSA <- function(SSA,
       return(NULL)
     }
     ## Check that traits are available for current trial.
-    if (!is.null(traits)) {
-      traitsTr <- traits[hasName(x = SSA[[trial]][[whatMod]],
-                                 name = traits)]
-      if (length(traitsTr) == 0) {
-        ## Skip with warning if no traits available.
-        warning("traits not available for trial ", trial, ".\n",
-                "Outlier detection for trial ", trial, " skipped.\n")
-        return(NULL)
-      }
-    } else {
-      ## If no trait is given as input extract it from the SSA object.
-      traitsTr <- names(SSA[[trial]][[whatMod]])
+    traitsTr <- chkTraits(traits, trial, SSA[[trial]], err = FALSE)
+    if (length(traitsTr) == 0) {
+      ## Return NULL to be able to rbind everything together in the end.
+      return(NULL)
     }
     whatExt <- ifelse(what == "fixed", "stdRes", "stdResR")
     whatExtDf <- ifelse(what == "fixed", "rDf", "rDfR")

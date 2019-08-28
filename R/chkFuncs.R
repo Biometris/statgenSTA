@@ -28,7 +28,7 @@ chkNum <- function(x,
       txt <- ""
     }
     stop(match.call()$x, " should be", nullTxt, "a single numerical value",
-         txt, ".\n", call. = FALSE)
+         txt, ".\n")
   }
 }
 
@@ -51,8 +51,7 @@ chkChar <- function(x,
     } else {
       txt <- "string"
     }
-    stop(match.call()$x, " should be", nullTxt, "a character ", txt, ".\n",
-         call. = FALSE)
+    stop(match.call()$x, " should be", nullTxt, "a character ", txt, ".\n")
   }
 }
 
@@ -67,8 +66,29 @@ chkTrials <- function(trials,
   } else if (!is.character(trials) || !all(hasName(x = obj, name = trials))) {
     stop("trials has to be a character vector defining trials in ",
          deparse(do.call(substitute, list(expr = substitute(obj),
-                                          env = parent.frame()))), ".\n",
-         call. = FALSE)
+                                          env = parent.frame()))), ".\n")
   }
   return(trials)
+}
+
+chkTraits <- function(traits,
+                      trial,
+                      obj,
+                      err = TRUE) {
+  if (is.null(traits)) {
+    traits <- obj$traits
+  } else {
+    errTraits <- traits[!traits %in% obj$traits]
+    if (length(errTraits) > 0) {
+      if (err) {
+        stop("The following traits are not modeled for ", trial, ": ",
+             paste(errTraits, collapse = ","), "\n")
+      } else {
+        warning("The following traits are not modeled for ", trial, ": ",
+                paste(errTraits, collapse = ","), "\n", trial, " skipped.")
+        traits <- NULL
+      }
+    }
+  }
+  return(traits)
 }

@@ -10,7 +10,7 @@ test_that("checks in outliersSSA function properly", {
   expect_error(outlierSSA(modelLm, traits = 1) ,
                "traits should be NULL or a character vector")
   expect_warning(outlierSSA(modelLm, traits = "t5"),
-                 "traits not available for trial E1")
+                 "The following traits are not modeled for E1: t5")
   expect_error(outlierSSA(modelLm, traits = "t1", rLimit = -1),
                "rLimit should be NULL or a single numerical value greater than 0")
   expect_error(outlierSSA(modelLm, traits = "t1", commonFactors = "comFac"),

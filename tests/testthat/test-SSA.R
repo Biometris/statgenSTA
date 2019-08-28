@@ -112,7 +112,7 @@ test_that("print.summary.SSA functions properly for multiple trials", {
 test_that("checks in SSAtoCross function properly", {
   expect_error(SSAtoCross(1), "SSA is not a valid object of class SSA")
   expect_error(SSAtoCross(modelSp, traits = "t5"),
-               "traits has to be a character vector defining columns in")
+               "The following traits are not modeled for E1: t5")
   expect_error(SSAtoCross(modelSp, trial = "E2"),
                "single character string defining a trial in SSA")
   expect_error(SSAtoCross(SSA = modelSp, genoFile = 1),
@@ -177,7 +177,7 @@ test_that("checks in report.SSA function properly", {
   expect_error(report(modelSp, traits = 1),
                "traits should be NULL or a character vector")
   expect_warning(report(modelSp, traits = "t5"),
-                 "traits not available for trial E1")
+                 "The following traits are not modeled for E1: t5")
   modelSp2a <- fitTD(testTD, design = "rowcol", traits = "t1", what = "fixed")
   expect_warning(report(modelSp2a, traits = "t1", what = "random"),
                  "Model with genotype random not available for")
