@@ -175,7 +175,7 @@ test_that("checks in report.SSA function properly", {
   expect_error(report(modelSp, trials = "E2"),
                "trials has to be a character vector defining trials in modelSp")
   expect_error(report(modelSp, traits = 1),
-               "traits has to be a character vector")
+               "traits should be NULL or a character vector")
   expect_warning(report(modelSp, traits = "t5"),
                  "traits not available for trial E1")
   modelSp2a <- fitTD(testTD, design = "rowcol", traits = "t1", what = "fixed")

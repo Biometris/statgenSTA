@@ -192,7 +192,7 @@ test_that("Model checks function properly", {
   expect_error(fitTD(testTD, trial = "E1", design = "myDes"),
                "design should either be an attribute of TD or one of")
   expect_error(fitTD(testTD, trial = "E1", traits = 1, design = "rowcol"),
-               "traits should be a character vector")
+               "traits should be NULL or a character vector")
   expect_error(fitTD(testTD, trial = "E1", traits = "t5", design = "rowcol"),
                "All traits should be columns in")
   expect_error(fitTD(testTD, trial = "E1", traits = "t1", design = "rowcol",

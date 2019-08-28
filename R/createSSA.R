@@ -299,9 +299,7 @@ plot.SSA <- function(x,
                      output = TRUE) {
   ## Checks.
   trials <- chkTrials(trials, x)
-  if (!is.null(traits) && !is.character(traits)) {
-    stop("traits has to be a character vector.\n")
-  }
+  chkChar(traits)
   plotType <- match.arg(arg = plotType)
   if (is.null(outCols) || !is.numeric(outCols) || length(outCols) > 1 ||
       outCols < 1) {
@@ -621,9 +619,7 @@ report.SSA <- function(x,
     stop("An installation of LaTeX is required to create a pdf report.\n")
   }
   trials <- chkTrials(trials, x)
-  if (!is.null(traits) && !is.character(traits)) {
-    stop("traits has to be a character vector.\n")
-  }
+  chkChar(traits)
   ## Generate a single timestamp for all files.
   timeStamp <- format(Sys.time(), "%Y%m%d%H%M%S")
   what <- match.arg(what, several.ok = TRUE)

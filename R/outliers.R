@@ -54,9 +54,7 @@ outlierSSA <- function(SSA,
     stop("SSA should be a valid object of class SSA.\n")
   }
   trials <- chkTrials(trials, SSA)
-  if (!is.null(traits) && !is.character(traits)) {
-    stop("traits has to be a character vector.\n")
-  }
+  chkChar(traits)
   if (!is.null(rLimit)) {
     chkNum(rLimit, min = 0)
   }

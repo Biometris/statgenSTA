@@ -98,12 +98,8 @@ extract <- function(SSA,
     stop("SSA has to be an object of class SSA.\n")
   }
   trials <- chkTrials(trials, SSA)
-  if (!is.null(traits) && !is.character(traits)) {
-    stop("traits should be NULL or a character vector.")
-  }
-  if (!is.null(keep) && !is.character(keep)) {
-    stop("keep should be NULL or a character vector.")
-  }
+  chkChar(traits)
+  chkChar(keep)
   sapply(X = trials, FUN = function(trial) {
     SSATr <- SSA[[trial]]
     if (is.null(traits)) {

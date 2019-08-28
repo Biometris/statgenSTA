@@ -4,9 +4,16 @@
 #' @keywords internal
 chkNum <- function(x,
                    min = NULL,
-                   max = NULL) {
-  if (missing(x) || length(x) > 1 || !is.numeric(x) || isTRUE(x < min) ||
-      isTRUE(x > max)) {
+                   max = NULL,
+                   null = TRUE) {
+  if ((is.null(x) && !null) ||
+      (!is.null(x) && (length(x) > 1 || !is.numeric(x) || isTRUE(x < min) ||
+                       isTRUE(x > max)))) {
+    if (null) {
+      nullTxt <- " NULL or "
+    } else {
+      nullTxt <- " "
+    }
     if (!is.null(min) && !is.null(max)) {
       txt <- paste(" between", min, "and", max)
     } else if (!is.null(min)) {
@@ -16,7 +23,31 @@ chkNum <- function(x,
     } else {
       txt <- ""
     }
-    stop(match.call()$x, " should be a single numerical value", txt, ".\n",
+    stop(match.call()$x, " should be", nullTxt, "a single numerical value",
+         txt, ".\n", call. = FALSE)
+  }
+}
+
+#' Check that x is a character vector of given length.
+#'
+#' @noRd
+#' @keywords internal
+chkChar <- function(x,
+                    len = NULL,
+                    null = TRUE) {
+  if ((is.null(x) && !null) ||
+      (!is.null(x) && (!is.character(x) || isTRUE(length(x) > len)))) {
+    if (null) {
+      nullTxt <- " NULL or "
+    } else {
+      nullTxt <- " "
+    }
+    if (is.null(len)) {
+      txt <- "vector"
+    } else {
+      txt <- "string"
+    }
+    stop(match.call()$x, " should be", nullTxt, "a character ", txt, ".\n",
          call. = FALSE)
   }
 }

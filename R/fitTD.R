@@ -223,16 +223,12 @@ modelChecks <- function(TD,
   if (is.null(design)) {
     design <- attr(TD[[trial]], "trDesign")
   }
-  if (is.null(traits) || !is.character(traits)) {
-    stop("traits should be a character vector.\n")
-  }
+  chkChar(traits)
   if (!all(traits %in% colnames(TD[[trial]]))) {
     stop("All traits should be columns in ", trial, ".\n")
   }
   what <- match.arg(arg = what, several.ok = TRUE)
-  if (!is.null(covariates) && !is.character(covariates)) {
-    stop("covariates should be NULL or a character vector.\n")
-  }
+  chkChar(covariates)
   if (!all(covariates %in% colnames(TD[[trial]]))) {
     stop("All covariates should be columns in ", trial, ".\n")
   }

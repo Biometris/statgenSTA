@@ -83,7 +83,7 @@ test_that("options minLatRange and minLongRange function properly for TD map plo
 
 test_that("TD box plot gives correct output types", {
   expect_error(plot(testTD, plotType = "box", traits = 1),
-               "traits should be a character vector")
+               "traits should be NULL or a character vector")
   expect_warning(plot(testTD, plotType = "box", traits = "trait"),
                  "trait isn't a column in any of the trials")
   p <- plot(testTD, plotType = "box", traits = "t1")
@@ -131,7 +131,7 @@ test_that("TD correlation plot gives correct output types", {
   expect_error(plot(testTD, plotType = "cor", traits = "trait"),
                "At least two trials requiered for a correlation plot")
   expect_error(plot(TDMaize, plotType = "cor", traits = 1),
-               "traits should be a character vector")
+               "traits should be NULL or a character vector")
   expect_warning(plot(TDMaize, plotType = "cor", traits = "trait"),
                  "trait isn't a column in any of the trials")
   p <- plot(TDMaize, plotType = "cor", traits = "yld")
@@ -160,7 +160,7 @@ test_that("checks in plot.SSA function properly", {
   expect_error(plot(modelSp, trials = 2),
                "trials has to be a character vector defining trials in modelSp")
   expect_error(plot(modelSp, traits = 1),
-               "traits has to be a character vector")
+               "traits should be NULL or a character vector")
   expect_error(plot(modelSp, traits = "t2", outCols = 0),
                "outCols should be a single numerical value greater than 0")
   expect_warning(plot(modelSp, traits = "myTr"),

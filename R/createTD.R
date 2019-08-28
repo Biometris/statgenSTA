@@ -645,8 +645,8 @@ plot.TD <- function(x,
     showGeno <- isTRUE(dotArgs$showGeno)
     highlight <- dotArgs$highlight
     colorSubBlock <- isTRUE(dotArgs$colorSubBlock)
-    if (!is.null(highlight) && !is.character(highlight)) {
-      stop("highlight should be a character vector.\n")
+    if (!is.null(highlight)) {
+      chkChar(highlight, null = FALSE)
     }
     p <- setNames(vector(mode = "list", length = length(trials)), trials)
     for (trial in trials) {
@@ -829,9 +829,7 @@ plot.TD <- function(x,
       plot(p)
     }
   } else if (plotType == "box") {
-    if (is.null(traits) || !is.character(traits)) {
-      stop("traits should be a character vector.\n")
-    }
+    chkChar(traits)
     groupBy <- dotArgs$groupBy
     if (!is.null(groupBy) && (!is.character(groupBy) || length(groupBy) > 1)) {
       stop("groupBy should be a single character string.\n")
@@ -914,9 +912,7 @@ plot.TD <- function(x,
     if (length(trials) == 1) {
       stop("At least two trials requiered for a correlation plot.\n")
     }
-    if (is.null(traits) || !is.character(traits)) {
-      stop("traits should be a character vector.\n")
-    }
+    chkChar(traits)
     p <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traits) {
       ## Create a single data.frame from x with only columns trial and trait.
