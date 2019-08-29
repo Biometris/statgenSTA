@@ -630,6 +630,8 @@ print.summary.TD <- function(x, ...) {
 #'
 #' @family functions for TD objects
 #'
+#' @import ggplot2
+#'
 #' @export
 plot.TD <- function(x,
                     ...,
@@ -683,86 +685,78 @@ plot.TD <- function(x,
         repBord <- calcPlotBorders(trDat = trDat, bordVar = "repId")
       }
       ## Create base plot.
-      pTr <- ggplot2::ggplot(data = trDat,
-                             ggplot2::aes_string(x = "colCoord",
-                                                 y = "rowCoord")) +
-        ggplot2::coord_fixed(ratio = aspect,
-                             xlim = range(trDat$colCoord) + c(-0.5, 0.5),
-                             ylim = range(trDat$rowCoord) + c(-0.5, 0.5),
-                             clip = "off") +
-        ggplot2::theme(panel.background = ggplot2::element_blank(),
-                       plot.title = ggplot2::element_text(hjust = 0.5)) +
+      pTr <- ggplot(data = trDat, aes_string(x = "colCoord", y = "rowCoord")) +
+        coord_fixed(ratio = aspect,
+                    xlim = range(trDat$colCoord) + c(-0.5, 0.5),
+                    ylim = range(trDat$rowCoord) + c(-0.5, 0.5),
+                    clip = "off") +
+        theme(panel.background = element_blank(),
+              plot.title = element_text(hjust = 0.5)) +
         ## Move ticks to edge of the plot.
-        ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(),
-                                    expand = c(0, 0)) +
-        ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(),
-                                    expand = c(0, 0)) +
-        ggplot2::ggtitle(trLoc)
+        scale_x_continuous(breaks = scales::pretty_breaks(),
+                           expand = c(0, 0)) +
+        scale_y_continuous(breaks = scales::pretty_breaks(),
+                           expand = c(0, 0)) +
+        ggtitle(trLoc)
       if (sum(!is.na(trDat$highlight.)) > 0) {
         ## Genotypes to be highlighted get a color.
         ## Everything else the NA color.
-        pTr <- pTr + ggplot2::geom_tile(
-          ggplot2::aes_string(fill = "highlight."), color = "grey75") +
-          ggplot2::labs(fill = "Highlighted") +
+        pTr <- pTr + geom_tile(aes_string(fill = "highlight."),
+                               color = "grey75") +
+          labs(fill = "Highlighted") +
           ## Remove NA from scale.
-          ggplot2::scale_fill_discrete(na.translate = FALSE)
+          scale_fill_discrete(na.translate = FALSE)
       } else if (plotSubBlock && colorSubBlock) {
         ## Color tiles by subblock.
-        pTr <- pTr + ggplot2::geom_tile(
-          ggplot2::aes_string(fill = "subBlock"), color = "grey75") +
-          ggplot2::guides(fill = ggplot2::guide_legend(ncol = 3))
+        pTr <- pTr + geom_tile(aes_string(fill = "subBlock"),
+                               color = "grey75") +
+          guides(fill = guide_legend(ncol = 3))
       } else {
         ## No subblocks and no hightlights so just a single fill color.
-        pTr <- pTr + ggplot2::geom_tile(fill = "white", color = "grey75")
+        pTr <- pTr + geom_tile(fill = "white", color = "grey75")
       }
       ## Create data for lines between subBlocks.
       if (plotSubBlock) {
         subBlockBord <- calcPlotBorders(trDat = trDat, bordVar = "subBlock")
-        pTr <- pTr +
-          ## Add verical lines as segment.
-          ## adding/subtracting 0.5 assures plotting at the borders of
-          ## the tiles.
-          ggplot2::geom_segment(
-            ggplot2::aes_string(x = "x - 0.5", xend = "x - 0.5",
-                                y = "y - 0.5", yend = "y + 0.5",
-                                linetype = "'subBlocks'"),
-            data = subBlockBord$vertW, size = 0.4) +
-          ggplot2::geom_segment(
-            ggplot2::aes_string(x = "x - 0.5", xend = "x + 0.5",
-                                y = "y - 0.5", yend = "y - 0.5"),
-            data = subBlockBord$horW, size = 0.4)
+        ## Add horizontal and vertical lines as segment.
+        ## adding/subtracting 0.5 assures plotting at the borders of
+        ## the tiles.
+        pTr <- pTr + geom_segment(aes_string(x = "x - 0.5", xend = "x - 0.5",
+                                             y = "y - 0.5", yend = "y + 0.5",
+                                             linetype = "'subBlocks'"),
+                                  data = subBlockBord$vertW, size = 0.4) +
+          geom_segment(aes_string(x = "x - 0.5", xend = "x + 0.5",
+                                  y = "y - 0.5", yend = "y - 0.5"),
+                       data = subBlockBord$horW, size = 0.4)
       }
       if (showGeno) {
         ## Add names of genotypes to the center of the tiles.
-        pTr <- pTr + ggplot2::geom_text(ggplot2::aes_string(label = "genotype"),
-                                        size = 2, check_overlap = TRUE)
+        pTr <- pTr + geom_text(aes_string(label = "genotype"),
+                               size = 2, check_overlap = TRUE)
       }
       if (plotRep) {
         ## Add lines for replicates.
-        pTr <- pTr +
-          ## Add verical lines as segment.
-          ## adding/subtracting 0.5 assures plotting at the borders of
-          ## the tiles.
-          ggplot2::geom_segment(
-            ggplot2::aes_string(x = "x - 0.5", xend = "x - 0.5",
-                                y = "y - 0.5", yend = "y + 0.5",
-                                linetype = "'replicates'"),
-            data = repBord$vertW, size = 1) +
-          ggplot2::geom_segment(
-            ggplot2::aes_string(x = "x - 0.5", xend = "x + 0.5",
-                                y = "y - 0.5", yend = "y - 0.5"),
-            data = repBord$horW, size = 1)
+        ## Add horizontal and vertical lines as segment.
+        ## adding/subtracting 0.5 assures plotting at the borders of
+        ## the tiles.
+        pTr <- pTr +  geom_segment(aes_string(x = "x - 0.5", xend = "x - 0.5",
+                                              y = "y - 0.5", yend = "y + 0.5",
+                                              linetype = "'replicates'"),
+                                   data = repBord$vertW, size = 1) +
+          geom_segment(aes_string(x = "x - 0.5", xend = "x + 0.5",
+                                  y = "y - 0.5", yend = "y - 0.5"),
+                       data = repBord$horW, size = 1)
       }
       if (plotSubBlock || plotRep) {
         shwVals <- c(plotRep, plotSubBlock)
         pTr <- pTr +
           ## Add a legend entry for replicates and subBlocks.
-          ggplot2::scale_linetype_manual(c("replicates", "subBlocks")[shwVals],
-                                         values = c("replicates" = "solid",
-                                                    "subBlocks" = "solid")[shwVals],
-                                         name = ggplot2::element_blank()) +
-          ggplot2::guides(linetype = ggplot2::guide_legend(override.aes =
-                                                             list(size = c(1, 0.4)[shwVals])))
+          scale_linetype_manual(c("replicates", "subBlocks")[shwVals],
+                                values = c("replicates" = "solid",
+                                           "subBlocks" = "solid")[shwVals],
+                                name = element_blank()) +
+          guides(linetype = guide_legend(override.aes =
+                                           list(size = c(1, 0.4)[shwVals])))
       }
       p[[trial]] <- pTr
       if (output) {
@@ -807,24 +801,23 @@ plot.TD <- function(x,
     latR <- latR + c(-0.1, 0.1) * diff(latR)
     ## Create data useable by ggplot geom_polygon.
     mapDat <- mapData(xLim = longR, yLim = latR)
-    p <- ggplot2::ggplot(mapDat, ggplot2::aes_string(x = "long", y = "lat")) +
-      ggplot2::geom_polygon(ggplot2::aes_string(group = "group"),
-                            fill = "white", color = "black") +
+    p <- ggplot(mapDat, aes_string(x = "long", y = "lat")) +
+      geom_polygon(aes_string(group = "group"), fill = "white",
+                   color = "black") +
       ## Add a proper map projection.
-      ggplot2::coord_map(clip = "on", xlim = longR, ylim = latR) +
+      coord_map(clip = "on", xlim = longR, ylim = latR) +
       ## Add trial locations.
-      ggplot2::geom_point(data = locs) +
-      ggrepel::geom_text_repel(ggplot2::aes_string(label = "name"), data = locs,
+      geom_point(data = locs) +
+      ggrepel::geom_text_repel(aes_string(label = "name"), data = locs,
                                color = "red", size = 3,
                                nudge_x = 0.01 * diff(longR),
                                nudge_y = 0.04 * diff(latR)) +
-      ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
-                     panel.grid.major = ggplot2::element_blank(),
-                     panel.grid.minor = ggplot2::element_blank(),
-                     ## Empty space left represents water areas. Color blue.
-                     panel.background =
-                       ggplot2::element_rect(fill = "steelblue2")) +
-      ggplot2::ggtitle("Trial locations")
+      theme(plot.title = element_text(hjust = 0.5),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            ## Empty space left represents water areas. Color blue.
+            panel.background = element_rect(fill = "steelblue2")) +
+      ggtitle("Trial locations")
     if (output) {
       plot(p)
     }
@@ -893,16 +886,13 @@ plot.TD <- function(x,
         plotDat[colorBy] <- factor(plotDat[[colorBy]])
       }
       ## Create boxplot.
-      pTr <- ggplot2::ggplot(plotDat,
-                             ggplot2::aes_string(x = paste0("`", xVar, "`"),
-                                                 y = paste0("`", trait, "`"),
-                                                 fill = if (is.null(colorBy)) NULL else
-                                                   paste0("`", colorBy, "`"))) +
-        ggplot2::geom_boxplot(na.rm = TRUE) +
-        ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90,
-                                                           vjust = 0.5,
-                                                           hjust = 1)) +
-        ggplot2::labs(x = xVar, y = trait)
+      pTr <- ggplot(plotDat, aes_string(x = paste0("`", xVar, "`"),
+                                        y = paste0("`", trait, "`"),
+                                        fill = if (is.null(colorBy)) NULL else
+                                          paste0("`", colorBy, "`"))) +
+        geom_boxplot(na.rm = TRUE) +
+        theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+        labs(x = xVar, y = trait)
       p[[trait]] <- pTr
       if (output) {
         plot(pTr)
@@ -963,32 +953,29 @@ plot.TD <- function(x,
       meltedCorMat <- meltedCorMat[as.numeric(meltedCorMat$Var1) >
                                      as.numeric(meltedCorMat$Var2), ]
       ## Create plot.
-      pTr <- ggplot2::ggplot(data = meltedCorMat,
-                             ggplot2::aes_string("Var1", "Var2")) +
-        ggplot2::geom_tile(fill = "white", color = "grey50") +
-        ggplot2::geom_point(ggplot2::aes_string(size = "abs(value)",
-                                                color = "value")) +
+      pTr <- ggplot(data = meltedCorMat, aes_string("Var1", "Var2")) +
+        geom_tile(fill = "white", color = "grey50") +
+        geom_point(aes_string(size = "abs(value)", color = "value")) +
         ## Create a gradient scale.
-        ggplot2::scale_color_gradient2(low = "blue", high = "red", mid = "white",
-                                       na.value = "grey", limit = c(-1, 1)) +
+        scale_color_gradient2(low = "blue", high = "red", mid = "white",
+                              na.value = "grey", limit = c(-1, 1)) +
         ## Move y-axis to the right for easier reading.
-        ggplot2::scale_y_discrete(position = "right") +
-        ggplot2::theme_minimal() +
-        ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45,
-                                                           vjust = 1, size = 6,
-                                                           hjust = 1)) +
-        ggplot2::theme(axis.text.y = ggplot2::element_text(size = 6)) +
+        scale_y_discrete(position = "right") +
+        theme_minimal() +
+        theme(axis.text.x = element_text(angle = 45, vjust = 1, size = 6,
+                                         hjust = 1)) +
+        theme(axis.text.y = element_text(size = 6)) +
         ## Center title.
-        ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) +
+        theme(plot.title = element_text(hjust = 0.5)) +
         ## Remove grid behind empty bit of triangle.
-        ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
-                       panel.grid.minor = ggplot2::element_blank()) +
+        theme(panel.grid.major = element_blank(),
+              panel.grid.minor = element_blank()) +
         ## No axis and legend titles.
-        ggplot2::labs(x = "", y = "", color = "") +
-        ggplot2::ggtitle(paste("Correlations of environments for", trait)) +
-        ggplot2::guides(size = FALSE) +
+        labs(x = "", y = "", color = "") +
+        ggtitle(paste("Correlations of environments for", trait)) +
+        guides(size = FALSE) +
         ## Fix coordinates to get a square sized plot.
-        ggplot2::coord_fixed()
+        coord_fixed()
       p[[trait]] <- pTr
       if (output) {
         plot(pTr)
