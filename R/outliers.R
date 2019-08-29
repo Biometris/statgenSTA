@@ -55,14 +55,16 @@ outlierSSA <- function(SSA,
   }
   trials <- chkTrials(trials, SSA)
   chkChar(traits)
-  if (!is.null(rLimit)) {
-    chkNum(rLimit, min = 0)
-  }
   what <- match.arg(arg = what, choices = c("fixed", "random"))
+  chkNum(rLimit, min = 0)
+  chkChar(commonFactors)
   outTot <- sapply(X = trials, FUN = function(trial) {
+    ## Set boolean for detecting if any outlier detection was actually done.
+    ## Used for printing output in the end.
+    detection <- FALSE
     ## Checks.
-    if (!is.null(commonFactors) && (!is.character(commonFactors) ||
-        !all(hasName(x = SSA[[trial]]$TD[[trial]], name = commonFactors)))) {
+    if (!is.null(commonFactors) && (
+      !all(hasName(x = SSA[[trial]]$TD[[trial]], name = commonFactors)))) {
       stop("commonFactors has to be a character vector defining columns in TD.\n")
     }
     whatMod <- c("mFix", "mRand")[what == c("fixed", "random")]
@@ -77,6 +79,9 @@ outlierSSA <- function(SSA,
       ## Return NULL to be able to rbind everything together in the end.
       return(NULL)
     }
+    ## At least one combination of what and trait not skipped.
+    ## Set detection to TRUE.
+    detection <- TRUE
     whatExt <- ifelse(what == "fixed", "stdRes", "stdResR")
     whatExtDf <- ifelse(what == "fixed", "rDf", "rDfR")
     stdRes <- extract(SSA, trials = trial, traits = traitsTr,
@@ -95,12 +100,9 @@ outlierSSA <- function(SSA,
       }
       datTr <- SSA[[trial]]$TD[[trial]]
       ## Compute outliers.
-      ## Set missing values to 0 to prevent problems when comparing to rLimit.
-      stdResTr[is.na(stdResTr[[trait]]), trait] <- 0
-      outVals <- stdResTr[abs(stdResTr[[trait]]) > rLimit, trait]
-      if (length(outVals > 0)) {
+      if (any(abs(na.omit(stdResTr[[trait]])) > rLimit)) {
         ## Rename column for easier joining.
-        colnames(stdResTr)[colnames(stdResTr) == trait] <- "res"
+        stdResTr[["res"]] <- stdResTr[[trait]]
         ## Create data.frame with outliers for current trait.
         outTrt <- cbind(datTr, stdResTr["res"])
         if (!is.null(commonFactors)) {
@@ -110,7 +112,8 @@ outlierSSA <- function(SSA,
                                             commonFactors, drop = FALSE],
                                  by = commonFactors))
         } else {
-          outTrt <- outTrt[abs(outTrt[["res"]]) > rLimit, ]
+          outTrt <- outTrt[!is.na(outTrt[["res"]]) &
+                                    abs(outTrt[["res"]]) > rLimit, ]
         }
         ## Add columns similar and trait to output.
         outTrt[["similar"]] <- abs(outTrt[["res"]]) <= rLimit
@@ -128,11 +131,15 @@ outlierSSA <- function(SSA,
     } # End for loop over traits.
     ## Create one single outlier data.frame.
     outTotTr <- do.call(what = rbind, args = outTr)
-    return(list(outTotTr, indicatorTr))
+    return(list(outTotTr, indicatorTr, detection))
   }, simplify = FALSE) # End lapply over trials.
+  ## Check if detecting was done for any of the trials.
+  detected <- any(unlist(sapply(X = outTot, FUN = `[[`, 3)))
+  ## Create a list of indicators per trial.
   indicatorTot <- lapply(X = outTot, `[[`, 2)
-  outTot <- do.call(what = rbind, args = lapply(X = outTot, `[[`, 1))
-  if (verbose) {
+  ## Bind outliers for all trials together in a single data.frame.
+  outTot <- do.call(what = rbind, args = lapply(X = outTot, FUN = `[[`, 1))
+  if (verbose && detected) {
     if (!is.null(outTot)) {
       cat(paste("Large standardized residuals.\n\n"))
       print(format(outTot[c("trial", "genotype", "trait", "value", "res",
