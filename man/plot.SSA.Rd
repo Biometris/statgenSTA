@@ -20,7 +20,8 @@
 \code{traits = NULL}, all traits are plotted.}
 
 \item{what}{A character string indicating whether the fitted model with
-genotype as fixed or genotype as random factor should be plotted.
+genotype as fixed (\code{what = "fixed"}) or genotype as random
+(\code{what = "random"}) factor should be plotted.
 If \code{x} contains only one model this model is chosen automatically.}
 
 \item{plotType}{A Character string indicating whether \code{base} plots or

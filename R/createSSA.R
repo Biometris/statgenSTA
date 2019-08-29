@@ -262,7 +262,8 @@ print.summary.SSA <- function(x,
 #' @param traits A character vector indicating the traits to plot. If
 #' \code{traits = NULL}, all traits are plotted.
 #' @param what A character string indicating whether the fitted model with
-#' genotype as fixed or genotype as random factor should be plotted.
+#' genotype as fixed (\code{what = "fixed"}) or genotype as random
+#' (\code{what = "random"}) factor should be plotted.
 #' If \code{x} contains only one model this model is chosen automatically.
 #' @param plotType A Character string indicating whether \code{base} plots or
 #' \code{spatial} plots should be made.
@@ -814,11 +815,10 @@ SSAtoTD <- function(SSA,
   if (is.null(traits)) {
     traits <- SSA[[1]]$traits
   }
-  nTr <- length(traits)
   if (!"trial" %in% keep && hasName(x = SSA[[1]]$TD[[1]], name = "trial")) {
     keep <- c(keep, "trial")
   }
-  ## Create a list of dataframes with all statistics per trial.
+  ## Create a list of data.frames with all statistics per trial.
   predTrTot <- lapply(X = names(SSA), FUN = function(trial) {
     ## Extract predictions from the model.
     predLst <- unlist(lapply(X = traits, FUN = function(trait) {
@@ -836,14 +836,13 @@ SSAtoTD <- function(SSA,
         return(pred)
       })
     }
-    ## Merge all statistics togethter. Because of the renaming above there is
+    ## Merge all statistics together. Because of the renaming above there is
     ## never a problem with duplicate columns and merging is done on all other
     ## columns than the traits.
     predTr <- Reduce(f = merge, x = unlist(predLst, recursive = FALSE))
     traitsTr <- traits[!sapply(X = predLst, FUN = is.null)]
     if (addWt && "seBLUEs" %in% what) {
       ## Add a wt column.
-      nTr <- length(traitsTr)
       for (trait in traitsTr) {
         ## Naming is based on all traits since different trials may have
         ## different numbers of traits but we want to keep the naming pattern
