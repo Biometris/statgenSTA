@@ -14,9 +14,10 @@
 #' should be identified. If \code{trials = NULL}, all trials are included.
 #' @param traits A character vector specifying the names of the traits for
 #' which outliers should be identified.
-#' @param what A character string indicating whether the outlier should be
-#' identified for the fitted model with genotype as fixed or genotype as random
-#' factor.
+#' @param what A character string indicating whether the outliers should be
+#' identified for the fitted model with genotype as fixed
+#' (\code{what = "fixed"})or genotype as random (\code{what = "random"}) factor.
+#' If \code{SSA} contains only one model this model is chosen automatically.
 #' @param rLimit A numerical value used for determining when a value is
 #' considered an outlier. All observations with standardized residuals
 #' exceeding \code{rLimit} will be marked as outliers.
@@ -45,7 +46,7 @@
 outlierSSA <- function(SSA,
                        trials = NULL,
                        traits = NULL,
-                       what = c("fixed", "random"),
+                       what = NULL,
                        rLimit = NULL,
                        commonFactors = NULL,
                        verbose = TRUE) {
@@ -55,7 +56,6 @@ outlierSSA <- function(SSA,
   }
   trials <- chkTrials(trials, SSA)
   chkChar(traits)
-  what <- match.arg(arg = what, choices = c("fixed", "random"))
   chkNum(rLimit, min = 0)
   chkChar(commonFactors)
   outTot <- sapply(X = trials, FUN = function(trial) {
@@ -67,16 +67,21 @@ outlierSSA <- function(SSA,
       !all(hasName(x = SSA[[trial]]$TD[[trial]], name = commonFactors)))) {
       stop("commonFactors has to be a character vector defining columns in TD.\n")
     }
-    whatMod <- c("mFix", "mRand")[what == c("fixed", "random")]
-    if (is.null(SSA[[trial]][[whatMod]])) {
-      warning("Model with genotype ", what, " not available for trial ",
-              trial, ".\nOutlier detection skipped.")
-      return(NULL)
-    }
     ## Check that traits are available for current trial.
     traitsTr <- chkTraits(traits, trial, SSA[[trial]], err = FALSE)
     if (length(traitsTr) == 0) {
       ## Return NULL to be able to rbind everything together in the end.
+      return(NULL)
+    }
+    if (is.null(what)) {
+      what <- ifelse(is.null(SSA[[trial]]$mFix), "random", "fixed")
+    } else {
+      what <- match.arg(arg = what, choices = c("fixed", "random"))
+    }
+    whatMod <- c("mFix", "mRand")[what == c("fixed", "random")]
+    if (is.null(SSA[[trial]][[whatMod]])) {
+      warning("Model with genotype ", what, " not available for trial ",
+              trial, ".\nOutlier detection skipped.")
       return(NULL)
     }
     ## At least one combination of what and trait not skipped.

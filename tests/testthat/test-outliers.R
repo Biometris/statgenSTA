@@ -78,7 +78,7 @@ test_that("option commonFactors functions properly", {
 test_that("option verbose functions properly", {
   printOut1 <- capture.output(out1 <- outlierSSA(modelLm, trials = "E1",
                                                  traits = "t1", verbose = TRUE))
-  printOut2 <- capture.output(out1 <- outlierSSA(modelLm, trials = "E1",
+  printOut2 <- capture.output(out2 <- outlierSSA(modelLm, trials = "E1",
                                                  traits = "t1", what = "random",
                                                  rLimit = 2, verbose = TRUE))
   expect_equal(printOut1, "No large standardized residuals.")

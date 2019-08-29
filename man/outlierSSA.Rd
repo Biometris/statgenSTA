@@ -4,8 +4,8 @@
 \alias{outlierSSA}
 \title{Identifying outliers in objects of class SSA}
 \usage{
-outlierSSA(SSA, trials = NULL, traits = NULL, what = c("fixed",
-  "random"), rLimit = NULL, commonFactors = NULL, verbose = TRUE)
+outlierSSA(SSA, trials = NULL, traits = NULL, what = NULL,
+  rLimit = NULL, commonFactors = NULL, verbose = TRUE)
 }
 \arguments{
 \item{SSA}{An object of class \code{\link{SSA}}.}
@@ -16,9 +16,10 @@ should be identified. If \code{trials = NULL}, all trials are included.}
 \item{traits}{A character vector specifying the names of the traits for
 which outliers should be identified.}
 
-\item{what}{A character string indicating whether the outlier should be
-identified for the fitted model with genotype as fixed or genotype as random
-factor.}
+\item{what}{A character string indicating whether the outliers should be
+identified for the fitted model with genotype as fixed
+(\code{what = "fixed"})or genotype as random (\code{what = "random"}) factor.
+If \code{SSA} contains only one model this model is chosen automatically.}
 
 \item{rLimit}{A numerical value used for determining when a value is
 considered an outlier. All observations with standardized residuals
