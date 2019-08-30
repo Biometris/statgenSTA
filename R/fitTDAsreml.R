@@ -195,9 +195,15 @@ fitTDAsreml <- function(TD,
       } # End fixed.
       spatial[trait] <- FALSE
     } # End for traits.
+    ## Create TD for output.
+    ## Based on TDTr so dropped levels are dropped in output.
+    ## Needs attribute from TD[trial].
+    TDOut <- createTD(data = TDTr)
+    attr(x = TDOut[[trial]], which = "renamedCols") <-
+      attr(x = TDTr, which = "renamedCols")
     ## Construct SSA object.
     return(list(mRand = if ("random" %in% what) mr else NULL,
-                mFix = if ("fixed" %in% what) mf else NULL, TD = TD[trial],
+                mFix = if ("fixed" %in% what) mf else NULL, TD = TDOut,
                 traits = traits, design = design, spatial = spatial,
                 engine = "asreml", predicted = "genotype", sumTab = sumTab))
   } else {# trySpatial

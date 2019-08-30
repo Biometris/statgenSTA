@@ -115,11 +115,17 @@ fitTDLme4 <- function(TD,
   } else {
     mf <- NULL
   }
+  ## Create TD for output.
+  ## Based on TDTr so dropped levels are dropped in output.
+  ## Needs attribute from TD[trial].
+  TDOut <- createTD(data = TDTr)
+  attr(x = TDOut[[trial]], which = "renamedCols") <-
+    attr(x = TDTr, which = "renamedCols")
   spatial <- setNames(rep(FALSE, times = length(traits)), traits)
   sumTab <- setNames(vector(mode = "list", length = length(traits)), traits)
   ## Construct SSA object.
   return(list(mRand = if ("random" %in% what) mr else NULL,
-              mFix = if ("fixed" %in% what) mf else NULL, TD = TD[trial],
+              mFix = if ("fixed" %in% what) mf else NULL, TD = TDOut,
               traits = traits, design = design, spatial = spatial,
               engine = "lme4", predicted = "genotype", sumTab = sumTab))
 }

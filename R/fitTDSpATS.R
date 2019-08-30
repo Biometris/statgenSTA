@@ -148,10 +148,16 @@ fitTDSpATS <- function(TD,
   } else {
     mf <- NULL
   }
+  ## Create TD for output.
+  ## Based on TDTr so dropped levels are dropped in output.
+  ## Needs attribute from TD[trial].
+  TDOut <- createTD(data = TDTr)
+  attr(x = TDOut[[trial]], which = "renamedCols") <-
+    attr(x = TDTr, which = "renamedCols")
   spatial <- setNames(rep("2 dimensional P-splines", times = length(traits)),
                       traits)
   sumTab <- setNames(vector(mode = "list", length = length(traits)), traits)
-  return(list(mRand = mr, mFix = mf, TD = TD[trial], traits = traits,
+  return(list(mRand = mr, mFix = mf, TD = TDOut, traits = traits,
               design = design, spatial = spatial, engine = "SpATS",
               predicted = "genotype", sumTab = sumTab))
 }

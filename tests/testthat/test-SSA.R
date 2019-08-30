@@ -187,6 +187,7 @@ test_that("function report.SSA functions properly" ,{
   ## Reporting doesn't work on cran because of usage of pdflatex.
   skip_on_cran()
   testTD[["E2"]] <- testTD[["E1"]]
+  testTD[["E2"]][["trial"]] <- factor("E2")
   modelSp <- fitTD(testTD, design = "rowcol", traits = c("t1", "t2"))
   tmpFile = tempfile(fileext = ".pdf")
   expect_silent(report(modelSp, trial = "E1", trait = "t1", outfile = tmpFile))
