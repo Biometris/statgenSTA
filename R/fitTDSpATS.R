@@ -23,6 +23,8 @@ fitTDSpATS <- function(TD,
   if (missing(TD) || !inherits(TD, "TD")) {
     stop("TD should be a valid object of class TD.\n")
   }
+  ## Only perform other checks if explicitely stated.
+  ## Provides the opportunity to skip check if already done in fitTD.
   if (checks) {
     ## Checks.
     checkOut <- modelChecks(TD = TD, trial = trial, design = design,
@@ -33,9 +35,21 @@ fitTDSpATS <- function(TD,
     ## Convert output to variables.
     list2env(x = checkOut, envir = environment())
   }
+  TDTr <- droplevels(TD[[trial]])
+  ## Should repId be used as fixed effect in the model.
+  useRepIdFix <- design %in% c("res.ibd", "res.rowcol", "rcbd")
+  ## Indicate extra random effects.
+  if (design %in% c("ibd", "res.ibd")) {
+    randEff <- "subBlock"
+  } else if (design %in% c("rowcol", "res.rowcol")) {
+    randEff <- c("rowId", "colId")
+  } else if (design == "rcbd") {
+    ## Set to character() so it can still be used when checking length.
+    randEff <- character()
+  }
   ## Set default value for nestDiv
   nestDiv <- 2
-  ## If valid values for nSeg are provided in control use these instead.
+  ## If valid values for nestDiv are provided in control use these instead.
   if ("nestDiv" %in% names(control)) {
     nestDivCt <- control$nestDiv
     if (length(nestDivCt) == 1) {
@@ -48,19 +62,10 @@ fitTDSpATS <- function(TD,
               "Using default values instead.\n")
     }
   }
-  TDTr <- droplevels(TD[[trial]])
-  ## Should repId be used as fixed effect in the model.
-  useRepIdFix <- design %in% c("res.ibd", "res.rowcol", "rcbd")
-  ## Indicate extra random effects.
-  if (design %in% c("ibd", "res.ibd")) {
-    randEff <- "subBlock"
-  } else if (design %in% c("rowcol", "res.rowcol")) {
-    randEff <- c("rowId", "colId")
-  } else if (design == "rcbd") {
-    randEff <- character()
-  }
   ## Compute number of segments.
-  nSeg <- c(ceiling(nlevels(TDTr$colId) / 2), ceiling(nlevels(TDTr$rowId) / 2))
+  ## Defaults to number of cols / 2 and number of rows / 2.
+  nSeg <- c(ceiling(nlevels(TDTr[["colId"]]) / 2),
+            ceiling(nlevels(TDTr[["rowId"]]) / 2))
   ## If valid values for nSeg are provided in control use these instead.
   if ("nSeg" %in% names(control)) {
     nSegCt <- control$nSeg
@@ -68,7 +73,7 @@ fitTDSpATS <- function(TD,
       nSegCt <- rep(x = nSegCt, times = 2)
     }
     if (is.numeric(nSegCt) && length(nSegCt) <= 2 && all(nSegCt >= 1) &&
-        all(nSegCt <= c(nlevels(TDTr$colId), nlevels(TDTr$rowId)))) {
+        all(nSegCt <= c(nlevels(TDTr[["colId"]]), nlevels(TDTr[["rowId"]])))) {
       nSeg <- nSegCt
     } else {
       warning("Invalid value for control parameter nSeg. ",
@@ -76,15 +81,16 @@ fitTDSpATS <- function(TD,
     }
   }
   ## Construct formula for fixed part.
-  fixedForm <- as.formula(paste("~",
-                                if (useRepIdFix) "repId" else "1",
-                                if (useCheckId) "+ checkId",
-                                if (!is.null(covariates)) paste(c("", covariates),
-                                                                collapse = "+")))
+  fixedForm <- formula(paste("~",
+                             if (useRepIdFix) "repId" else "1",
+                             if (useCheckId) "+ checkId",
+                             ## Add "" to start with +.
+                             if (!is.null(covariates)) paste(c("", covariates),
+                                                             collapse = "+")))
   ## Construct formula for random part. Include repId depending on design.
   if (length(randEff) != 0) {
-    randomForm <- as.formula(paste0("~", if (useRepIdFix) "repId:",
-                                    "(", paste(randEff, collapse = "+"), ")"))
+    randomForm <- formula(paste0("~", if (useRepIdFix) "repId:",
+                                 "(", paste(randEff, collapse = "+"), ")"))
   } else {
     randomForm <- NULL
   }
@@ -154,8 +160,12 @@ fitTDSpATS <- function(TD,
   TDOut <- createTD(data = TDTr)
   attr(x = TDOut[[trial]], which = "renamedCols") <-
     attr(x = TDTr, which = "renamedCols")
+  ## Spatial model is always the same.
+  ## Still set it for easier use in summary.
   spatial <- setNames(rep("2 dimensional P-splines", times = length(traits)),
                       traits)
+  ## sumTab is just an empty list. Needs to be available so it can be found
+  ## by other functions when checking.
   sumTab <- setNames(vector(mode = "list", length = length(traits)), traits)
   return(list(mRand = mr, mFix = mf, TD = TDOut, traits = traits,
               design = design, spatial = spatial, engine = "SpATS",

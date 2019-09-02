@@ -932,7 +932,7 @@ createBaseData <- function(TD,
                                        keep), drop = FALSE]
   ## Create baseData for predictions with predicted variable(s).
   if (bdPred) {
-    baseDataPred <- unique(TD[predicted])
+    baseDataPred <- unique(TD[!is.na(TD[[predicted]]), predicted, drop = FALSE])
     ## Add columns in keep one-by-one. Only data that is constant within
     ## predicted is actually kept. Other columns are dropped with a warning.
     for (col in keep) {

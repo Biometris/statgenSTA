@@ -196,7 +196,10 @@ fitTD = function(TD,
   return(createSSA(models = models))
 }
 
-## Helper function for performing checks for single trial modeling.
+#' Helper function for performing checks for single trial modeling.
+#'
+#' @noRd
+#' @keywords internal
 modelChecks <- function(TD,
                         trial,
                         design,
@@ -224,12 +227,12 @@ modelChecks <- function(TD,
     design <- attr(TD[[trial]], "trDesign")
   }
   chkChar(traits)
-  if (!all(traits %in% colnames(TD[[trial]]))) {
+  if (!all(hasName(x = TD[[trial]], name = traits))) {
     stop("All traits should be columns in ", trial, ".\n")
   }
   what <- match.arg(arg = what, several.ok = TRUE)
   chkChar(covariates)
-  if (!all(covariates %in% colnames(TD[[trial]]))) {
+  if (!all(hasName(x = TD[[trial]], name = covariates))) {
     stop("All covariates should be columns in ", trial, ".\n")
   }
   if (!is.logical(trySpatial) || length(trySpatial) > 1) {
@@ -240,7 +243,7 @@ modelChecks <- function(TD,
     stop("engine should be one of ", paste(engines, collapse = ", "), ".\n")
   }
   if (is.na(engine)) {
-    if (isTRUE(length(unique(TD[[trial]][["rowCoord"]])) > 1) &
+    if (isTRUE(length(unique(TD[[trial]][["rowCoord"]])) > 1) &&
         isTRUE(length(unique(TD[[trial]][["colCoord"]])) > 1)) {
       message("Using SpATS for fitting models.")
       engine <- "SpATS"
@@ -261,7 +264,7 @@ modelChecks <- function(TD,
                if (design %in% c("ibd", "res.ibd")) "subBlock",
                if (useCheckId) "checkId")
   for (desCol in desCols) {
-    if (!desCol %in% colnames(TD[[trial]])) {
+    if (!hasName(TD[[trial]], desCol)) {
       stop(desCol, " should be a column in ", trial, ".\n")
     }
   }
@@ -278,9 +281,11 @@ modelChecks <- function(TD,
   if (!is.null(control) && !is.list(control)) {
     stop("control has to be NULL or a list.\n")
   }
-  if (!is.null(control$nSeg)) {
+  ## nSeg should either be a single value or a named list of values with
+  ## names corresponding to trials. - only relevant for SpATS.
+  if (engine == "SpATS" && !is.null(control$nSeg)) {
     if (is.list(control$nSeg)) {
-      if (!trial %in% names(control$nSeg)) {
+      if (!hasName(x = control$nSeg, name = trial)) {
         stop(trial, " should be a named item in list of nSeg in control")
       } else {
         control$nSeg <- control$nSeg[[trial]]

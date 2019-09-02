@@ -23,6 +23,8 @@ fitTDAsreml <- function(TD,
   if (missing(TD) || !inherits(TD, "TD")) {
     stop("TD should be a valid object of class TD.\n")
   }
+  ## Only perform other checks if explicitely stated.
+  ## Provides the opportunity to skip check if already done in fitTD.
   if (checks) {
     ## Checks.
     checkOut <- modelChecks(TD = TD, trial = trial, design = design,
@@ -35,7 +37,15 @@ fitTDAsreml <- function(TD,
   }
   TDTr <- droplevels(TD[[trial]])
   ## Should repId be used as fixed effect in the model.
-  repIdFix <- design %in% c("res.ibd", "res.rowcol", "rcbd")
+  useRepIdFix <- design %in% c("res.ibd", "res.rowcol", "rcbd")
+  ## Indicate extra random effects.
+  if (design %in% c("ibd", "res.ibd")) {
+    randEff <- "subBlock"
+  } else if (design %in% c("rowcol", "res.rowcol")) {
+    randEff <- c("rowId", "colId")
+  } else if (design == "rcbd") {
+    randEff <- character()
+  }
   # Check if spatial models can be fitted.
   if (trySpatial) {
     ## Set default value for criterion
@@ -49,38 +59,30 @@ fitTDAsreml <- function(TD,
                 "Using default value instead.\n")
       }
     }
-    if (repIdFix) {
+    if (useRepIdFix) {
       repTab <- table(TDTr$repId, TDTr$rowId, TDTr$colId)
     } else {
       repTab <- table(TDTr$rowId, TDTr$colId)
     }
     if (max(repTab) > 1) {
       warning("There should only be one plot at each combination of",
-              if (repIdFix) "replicate", "row and column.\n",
+              if (useRepIdFix) "replicate,", "row and column.\n",
               "Spatial models will not be tried")
       trySpatial <- FALSE
     }
   }
-  ## Indicate extra random effects.
-  if (design %in% c("ibd", "res.ibd")) {
-    randEff <- "subBlock"
-  } else if (design %in% c("rowcol", "res.rowcol")) {
-    randEff <- c("rowId", "colId")
-  } else if (design == "rcbd") {
-    randEff <- character()
-  }
   ## Construct formula for fixed part.
   fixedForm <- paste("~",
-                     if (repIdFix) "repId" else "1",
+                     if (useRepIdFix) "repId" else "1",
                      if (useCheckId) "+ checkId",
                      if (!is.null(covariates)) paste(c("", covariates),
                                                      collapse = "+"))
   ## Construct formula for random part. Include repId depending on design.
   if (length(randEff) != 0) {
-    randomForm <- paste0(if (repIdFix) "repId:",
+    randomForm <- paste0(if (useRepIdFix) "repId:",
                          paste(randEff,
                                collapse = paste("+",
-                                                if (repIdFix) "repId:")))
+                                                if (useRepIdFix) "repId:")))
   } else {
     randomForm <- character()
   }
@@ -126,8 +128,8 @@ fitTDAsreml <- function(TD,
             for (randEf in randEff) {
               ## When there are no replicates the structure is
               ## [[randEf]][[randEf]] otherwise it is [[repId:randEf]][[repId]]
-              GParamTmp[[paste0(ifelse(repIdFix, "repId:", ""),
-                                randEf)]][[ifelse(repIdFix,
+              GParamTmp[[paste0(ifelse(useRepIdFix, "repId:", ""),
+                                randEf)]][[ifelse(useRepIdFix,
                                                   "repId", randEf)]]$con <- "F"
             }
           }
@@ -218,6 +220,7 @@ fitTDAsreml <- function(TD,
 }
 
 #' Helper function for calculating best spatial model using asreml.
+#'
 #' @noRd
 #' @keywords internal
 bestSpatMod <- function(TD,
@@ -236,38 +239,39 @@ bestSpatMod <- function(TD,
   maxIter <- 200
   TDTr <- droplevels(TD[[1]])
   ## Add empty observations.
-  TDTab <- as.data.frame(table(TDTr$colId, TDTr$rowId))
-  TDTab <- TDTab[TDTab$Freq == 0, , drop = FALSE]
+  TDTab <- as.data.frame(table(TDTr[["colId"]], TDTr[["rowId"]]))
+  TDTab <- TDTab[TDTab[["Freq"]] == 0, , drop = FALSE]
   if (nrow(TDTab) > 0) {
     extObs <- setNames(as.data.frame(matrix(nrow = nrow(TDTab),
                                             ncol = ncol(TDTr))),
                        colnames(TDTr))
-    extObs$trial <- TDTr$trial[1]
-    extObs[, c("colId", "rowId")] <- TDTab[, c("Var1", "Var2")]
-    extObs[, c("colCoord", "rowCoord")] <-
-      c(as.numeric(levels(TDTab[, "Var1"]))[TDTab[, "Var1"]],
-        as.numeric(levels(TDTab[, "Var2"]))[TDTab[, "Var2"]])
+    extObs[["trial"]] <- TDTr[["trial"]][1]
+    extObs[c("colId", "rowId")] <- TDTab[c("Var1", "Var2")]
+    extObs[c("colCoord", "rowCoord")] <-
+      c(as.numeric(levels(TDTab[["Var1"]]))[TDTab[["Var1"]]],
+        as.numeric(levels(TDTab[["Var2"]]))[TDTab[["Var2"]]])
     TDTr <- rbind(TDTr, extObs)
   }
   ## TD needs to be sorted by row and column to prevent asreml from crashing.
-  TDTr <- TDTr[order(TDTr$rowId, TDTr$colId), ]
-  repIdFix <- design == "res.rowcol"
+  TDTr <- TDTr[order(TDTr[["rowId"]], TDTr[["colId"]]), ]
+  useRepIdFix <- design == "res.rowcol"
   ## Define random terms of models to try.
   randTerm <- c("NULL", rep(x = c("NULL", "units"), each = 3))
   if (regular) {
     ## Define spatial terms of models to try.
+    spatCh <- c("none", rep(x = c("AR1(x)id", "id(x)AR1", "AR1(x)AR1"),
+                            times = 2))
+    spatTerm <- c(NA, paste("~",
+                            rep(x = c("ar1(rowId):colId", "rowId:ar1(colId)",
+                                      "ar1(rowId):ar1(colId)"), times = 2)))
+  } else {
+    ## Define spatial terms used when layout is irregular.
     spatCh <- c("none", rep(x = c("exp(x)id", "id(x)exp",
                                   "isotropic exponential"), times = 2))
     spatTerm <- c(NA, paste("~", rep(x = c("exp(rowCoord):colCoord",
                                            "rowCoord:exp(colCoord)",
                                            "iexp(rowCoord,colCoord)"),
                                      times = 2)))
-  } else {
-    spatCh <- c("none", rep(x = c("AR1(x)id", "id(x)AR1", "AR1(x)AR1"),
-                            times = 2))
-    spatTerm <- c(NA, paste("~",
-                            rep(x = c("ar1(rowId):colId", "rowId:ar1(colId)",
-                                      "ar1(rowId):ar1(colId)"), times = 2)))
   }
   ## Create empty base lists.
   mr <- mf <- spatial <- sumTab <- setNames(vector(mode = "list",
@@ -314,14 +318,14 @@ bestSpatMod <- function(TD,
       if (length(mrTrait$warning) != 0) {
         warning("Warning in asreml for model ", spatCh[i],
                 " genotype random, trait ", trait, " in trial ",
-                TDTr$trial[1], ":\n", mrTrait$warning, "\n", call. = FALSE)
+                TDTr[["trial"]][1], ":\n", mrTrait$warning, "\n", call. = FALSE)
       }
       if (is.null(mrTrait$error)) {
         mrTrait <- mrTrait$value
       } else {
         warning("Error in asreml for model ", spatCh[i],
                 " genotype random, trait ", trait, " in trial ",
-                TDTr$trial[1], ":\n", mrTrait$error, "\n", call. = FALSE)
+                TDTr[["trial"]][1], ":\n", mrTrait$error, "\n", call. = FALSE)
         mrTrait <- NULL
       }
       ## Fill model summary table.
@@ -350,45 +354,39 @@ bestSpatMod <- function(TD,
                            "rowCoord:colCoord!colCoord!pow",
                            "iexp(rowCoord,colCoord)!pow"), ]
         modSum[i, "col"] <- ifelse(length(colVal) == 0, NA, colVal)
-        modSum[i, "error"] <- ifelse(randTerm[i] == "units",
-                                     summ[rownames(summ) %in%
-                                            c("units!units.var",
-                                              ## New naming for asreml4.
-                                              "units"), ],
-                                     summ[rownames(summ) %in%
-                                            c("R!variance",
-                                              ## New naming for asreml4.
-                                              "units!R", "rowId:colId!R",
-                                              "rowCoord:colCoord!R",
-                                              "iexp(rowCoord,colCoord)!R"), ])
+        modSum[i, "error"] <-
+          ifelse(randTerm[i] == "units",
+                 summ[rownames(summ) %in% c("units!units.var",
+                                            ## New naming for asreml4.
+                                            "units"), ],
+                 summ[rownames(summ) %in% c("R!variance",
+                                            ## New naming for asreml4.
+                                            "units!R", "rowId:colId!R",
+                                            "rowCoord:colCoord!R",
+                                            "iexp(rowCoord,colCoord)!R"), ])
         if (randTerm[i] == "units") {
-          modSum[i, "correlated error"] <- summ[rownames(summ) %in%
-                                                  c("R!variance",
-                                                    ## New naming for asreml4.
-                                                    "rowId:colId!R",
-                                                    "rowCoord:colCoord!R",
-                                                    "iexp(rowCoord,colCoord)!R"), ]
+          modSum[i, "correlated error"] <-
+            summ[rownames(summ) %in% c("R!variance",
+                                       ## New naming for asreml4.
+                                       "rowId:colId!R", "rowCoord:colCoord!R",
+                                       "iexp(rowCoord,colCoord)!R"), ]
         }
         ## If current model is better than best so far based on chosen criterion
         ## define best model as current model.
         if (mrTrait$converge) {
-          if (criterion == "AIC") {
-            criterionCur <- modSum[i, "AIC"]
-          } else {
-            criterionCur <- modSum[i, "BIC"]
+          criterionCur <- modSum[i, criterion]
+          if (criterionCur < criterionBest) {
+            bestModTr <- mrTrait
+            ## Evaluate call terms in bestModTr and mfTrait so predict can be run.
+            ## Needs to be called in every iteration to prevent final result
+            ## from always having the values of the last iteration.
+            bestModTr$call[[1]] <- quote(asreml::asreml)
+            bestModTr$call$fixed <- eval(bestModTr$call$fixed)
+            bestModTr$call$random <- eval(bestModTr$call$random)
+            bestModTr$call$rcov <- eval(bestModTr$call$rcov)
+            criterionBest <- criterionCur
+            bestMod <- i
           }
-        }
-        if (criterionCur < criterionBest) {
-          bestModTr <- mrTrait
-          ## Evaluate call terms in bestModTr and mfTrait so predict can be run.
-          ## Needs to be called in every iteration to prevent final result
-          ## from always having the values of the last iteration.
-          bestModTr$call[[1]] <- quote(asreml::asreml)
-          bestModTr$call$fixed <- eval(bestModTr$call$fixed)
-          bestModTr$call$random <- eval(bestModTr$call$random)
-          bestModTr$call$rcov <- eval(bestModTr$call$rcov)
-          criterionBest <- criterionCur
-          bestMod <- i
         }
       }
     }
@@ -399,8 +397,8 @@ bestSpatMod <- function(TD,
     for (randEf in c("rowId", "colId")) {
       ## When there are no replicates the structure is [[randEf]][[randEf]]
       ## otherwise it is [[repId:randEf]][[repId]]
-      GParamTmp[[paste0(ifelse(repIdFix, "repId:", ""),
-                        randEf)]][[ifelse(repIdFix, "repId", randEf)]]$con <- "F"
+      GParamTmp[[paste0(ifelse(useRepIdFix, "repId:", ""),
+                        randEf)]][[ifelse(useRepIdFix, "repId", randEf)]]$con <- "F"
     }
     if (length(randomForm) > 0) {
       randFormF <- formula(paste("~", randomForm, "+", randTerm[bestMod]))
@@ -419,7 +417,8 @@ bestSpatMod <- function(TD,
     })
     if (!is.na(spatTerm[bestMod])) {
       ## In asreml4 parameter rcov is replaced by residual.
-      asrArgsF[[ifelse(asreml4(), "residual", "rcov")]] <- formula(spatTerm[bestMod])
+      asrArgsF[[ifelse(asreml4(), "residual", "rcov")]] <-
+        formula(spatTerm[bestMod])
     }
     ## Fit the model with genotype fixed only for the best model.
     capture.output(mfTrait <- tryCatchExt(do.call(what = asreml::asreml,
