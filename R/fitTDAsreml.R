@@ -251,6 +251,7 @@ bestSpatMod <- function(TD,
       c(as.numeric(levels(TDTab[["Var1"]]))[TDTab[["Var1"]]],
         as.numeric(levels(TDTab[["Var2"]]))[TDTab[["Var2"]]])
     TDTr <- rbind(TDTr, extObs)
+    TDTr[["genotype"]] <- addNA(TDTr[["genotype"]])
   }
   ## TD needs to be sorted by row and column to prevent asreml from crashing.
   TDTr <- TDTr[order(TDTr[["rowId"]], TDTr[["colId"]]), ]
@@ -406,7 +407,8 @@ bestSpatMod <- function(TD,
       randFormF <- formula(paste("~", randTerm[bestMod]))
     }
     asrArgsF <- c(list(fixed = fixedFormfTrait, random = randFormF,
-                       G.param = GParamTmp, aom = TRUE, data = TDTr,
+                       G.param = GParamTmp, aom = TRUE,
+                       data = TDTr,
                        maxiter = maxIter, trace = FALSE), dotArgs)
     ## In asreml3 na.method.X and na.method.Y are used.
     ## In asreml4 this is replaced by na.action.
