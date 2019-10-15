@@ -252,6 +252,12 @@ modelChecks <- function(TD,
       engine <- "lme4"
     }
   }
+  ## Asreml crashing for traits containing spaces with an incomprehensible
+  ## error message. Prevent this from happening by checking beforehand.
+  if (engine == "asreml" && any(grepl(pattern = "[ \t\r\n]", x = traits))) {
+    stop("asreml cannot fit models when trait contains white space.\n",
+         "Rename your trait or use SpATS or lme4 instead.\n")
+  }
   if (trySpatial && engine == "lme4") {
     warning("Spatial models can only be fitted using SpATS or asreml.\n",
             "Defaulting to SpATS.", call. = FALSE)

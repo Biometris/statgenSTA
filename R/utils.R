@@ -360,7 +360,7 @@ escapeLatex = function(x, newlines = FALSE, spaces = FALSE) {
   x
 }
 
-#' Helper function for renaming row to a more user readable output.
+#' Helper function for renaming rows to a more user readable output.
 #'
 #' @noRd
 #' @keywords internal

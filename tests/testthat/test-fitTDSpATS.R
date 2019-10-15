@@ -215,3 +215,13 @@ test_that("Model checks function properly", {
   expect_error(fitTD(testTD, trial = "E1", traits = "t1", design = "rowcol"),
                "colId should be a column in E1")
 })
+
+test_that("Fitting models functions properly when trait contains space", {
+  ## Create a trait with a space in its name.
+  ## fitTD should be able to handle this.
+  testTD[["E1"]][["t 2"]] <- testTD[["E1"]][["t2"]]
+  expect_silent(modelSp <- fitTD(testTD, design = "rowcol", engine = "SpATS",
+                                 traits = c("t1", "t 2")))
+  expect_SSA(modelSp)
+})
+

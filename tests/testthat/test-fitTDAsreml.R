@@ -140,4 +140,13 @@ if (requireNamespace("asreml", quietly = TRUE)) {
                    "Error in asreml")
     expect_SSA(modelAs2)
   })
+
+  test_that("Fitting models functions properly when trait contains space", {
+    ## Create a trait with a space in its name.
+    ## fitTD should be able to handle this.
+    testTD[["E1"]][["t 2"]] <- testTD[["E1"]][["t2"]]
+    expect_error(modelAs <- fitTD(testTD, design = "rowcol", engine = "asreml",
+                                   traits = c("t1", "t 2")),
+                 "asreml cannot fit models when trait contains white space")
+  })
 }
