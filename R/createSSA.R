@@ -531,16 +531,14 @@ fieldPlot <- function(plotDat,
     scale_x_continuous(expand = c(0, 0), breaks = xTicks) +
     scale_y_continuous(expand = c(0, 0)) +
     ## Adjust plot colors.
-    scale_fill_gradientn(limits = zlim, colors = colors) +
+    scale_fill_gradientn(limits = zlim, colors = colors, na.value = "white") +
     ## No background. Center and resize title. Resize axis labels.
     ## Remove legend title and resize legend entries.
     theme(panel.background = element_blank(),
           plot.title = element_text(hjust = 0.5, size = 10),
           axis.title = element_text(size = 9),
           legend.title = element_blank(),
-          legend.text =
-            element_text(size = 8,
-                         margin = margin(l = 5))) +
+          legend.text = element_text(size = 8, margin = margin(l = 5))) +
     ggtitle(title)
   return(p)
 }
