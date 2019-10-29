@@ -822,7 +822,7 @@ plot.TD <- function(x,
       plot(p)
     }
   } else if (plotType == "box") {
-    chkChar(traits)
+    chkChar(traits, null = FALSE)
     groupBy <- dotArgs$groupBy
     if (!is.null(groupBy)) {
       chkChar(groupBy, len = 1, null = FALSE)
@@ -851,7 +851,8 @@ plot.TD <- function(x,
     p <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traits) {
       ## Create a single data.frame from x with only columns trial, trait and
-      ## genotype. Genotype is needed to be able to display hovering info.
+      ## genotype.
+      ## Genotype is needed to be able to display hovering info (in GUI).
       ## trials where trait is not measured/available are removed by setting
       ## them to NULL.
       xVar <- if (is.null(groupBy)) "trial" else groupBy
@@ -902,10 +903,11 @@ plot.TD <- function(x,
     if (length(trials) == 1) {
       stop("At least two trials requiered for a correlation plot.\n")
     }
-    chkChar(traits)
+    chkChar(traits, null = FALSE)
     p <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traits) {
-      ## Create a single data.frame from x with only columns trial and trait.
+      ## Create a single data.frame from x with only columns genotype, trial
+      ## and trait.
       ## trials where trait is not measured/available are removed by setting
       ## them to NULL.
       plotDat <- Reduce(f = rbind, x = lapply(X = x, FUN = function(trial) {
@@ -954,28 +956,26 @@ plot.TD <- function(x,
                                      as.numeric(meltedCorMat$Var2), ]
       ## Create plot.
       pTr <- ggplot(data = meltedCorMat, aes_string("Var1", "Var2")) +
-        geom_tile(fill = "white", color = "grey50") +
-        geom_point(aes_string(size = "abs(value)", color = "value")) +
+        geom_tile(aes_string(fill = "value"), color = "grey50") +
         ## Create a gradient scale.
-        scale_color_gradient2(low = "blue", high = "red", mid = "white",
-                              na.value = "grey", limit = c(-1, 1)) +
+        scale_fill_gradient2(low = "blue", high = "red", mid = "white",
+                             na.value = "grey", limit = c(-1, 1)) +
         ## Move y-axis to the right for easier reading.
         scale_y_discrete(position = "right") +
-        theme_minimal() +
-        theme(axis.text.x = element_text(angle = 45, vjust = 1, size = 6,
-                                         hjust = 1)) +
-        theme(axis.text.y = element_text(size = 6)) +
-        ## Center title.
-        theme(plot.title = element_text(hjust = 0.5)) +
         ## Remove grid behind empty bit of triangle.
-        theme(panel.grid.major = element_blank(),
-              panel.grid.minor = element_blank()) +
+        theme(panel.background = element_blank(),
+              panel.grid = element_blank(),
+              axis.ticks = element_blank(),
+              axis.text.x = element_text(angle = 45, vjust = 1, size = 6,
+                                         hjust = 1),
+              axis.text.y = element_text(size = 6),
+              ## Center title.
+              plot.title = element_text(hjust = 0.5)) +
         ## No axis and legend titles.
-        labs(x = "", y = "", color = "") +
-        ggtitle(paste("Correlations of environments for", trait)) +
-        guides(size = FALSE) +
-        ## Fix coordinates to get a square sized plot.
-        coord_fixed()
+        labs(title = paste("Correlations of environments for", trait),
+             x = "", y = "", fill = "") +
+        ## Equal coordinates to get a square sized plot.
+        coord_equal()
       p[[trait]] <- pTr
       if (output) {
         plot(pTr)
