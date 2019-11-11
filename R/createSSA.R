@@ -382,11 +382,11 @@ plot.SSA <- function(x,
       ## columns.
       plotDat <- merge(response, fitted, by = c(predicted, mergeCols))
       plotDat <- merge(plotDat, pred, by = predicted)
-      plotDat$response <- plotDat[[paste0(trait, ".x")]]
-      plotDat$fitted <- plotDat[[paste0(trait, ".y")]]
-      plotDat$pred <- plotDat[[trait]]
-      plotDat$pred[is.na(plotDat$fitted)] <- NA
-      plotDat$residuals <- plotDat$response - plotDat$fitted
+      plotDat[["response"]] <- plotDat[[paste0(trait, ".x")]]
+      plotDat[["fitted"]] <- plotDat[[paste0(trait, ".y")]]
+      plotDat[["pred"]] <- plotDat[[trait]]
+      plotDat[is.na(plotDat[["fitted"]]), "pred"] <- NA
+      plotDat[["residuals"]] <- plotDat[["response"]] - plotDat[["fitted"]]
       ## Create empty list for storing plots.
       plots <- vector(mode = "list")
       ## Create main plot title.
