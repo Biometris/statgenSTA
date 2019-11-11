@@ -175,8 +175,8 @@ extractSpATS <- function(SSA,
   ## Compute BLUEs and se of BLUEs from fixed model.
   if ("BLUEs" %in% what) {
     predVals <- lapply(X = traits, FUN = function(trait) {
-      predVal <- predict(mf[[trait]],
-                         which = predicted)[c(predicted, "predicted.values")]
+      predVal <- predict(mf[[trait]], which = predicted,
+                         predFixed = "marginal")[c(predicted, "predicted.values")]
       colnames(predVal) <- c(predicted, trait)
       return(predVal)
     })
@@ -187,8 +187,8 @@ extractSpATS <- function(SSA,
   }
   if ("seBLUEs" %in% what) {
     predErrs <- lapply(X = traits, FUN = function(trait) {
-      predErr <- predict(mf[[trait]],
-                         which = predicted)[c(predicted, "standard.errors")]
+      predErr <- predict(mf[[trait]], which = predicted,
+                         predFixed = "marginal")[c(predicted, "standard.errors")]
       colnames(predErr) <- c(predicted, trait)
       return(predErr)
     })
@@ -202,8 +202,8 @@ extractSpATS <- function(SSA,
   if ("BLUPs" %in% what) {
     whichPred <- c(predicted, if (useCheckId) "checkId")
     predVals <- lapply(X = traits, FUN = function(trait) {
-      predVal <- predict(mr[[trait]],
-                         which = whichPred)[c(whichPred, "predicted.values")]
+      predVal <- predict(mr[[trait]], which = whichPred,
+                         predFixed = "marginal")[c(whichPred, "predicted.values")]
       colnames(predVal) <- c(whichPred, trait)
       return(predVal)
     })
@@ -215,8 +215,8 @@ extractSpATS <- function(SSA,
   if ("seBLUPs" %in% what) {
     whichPred <- c(predicted, if (useCheckId) "checkId")
     predErrs <- lapply(X = traits, FUN = function(trait) {
-      predErr <- predict(mr[[trait]],
-                         which = whichPred)[c(whichPred, "standard.errors")]
+      predErr <- predict(mr[[trait]], which = whichPred,
+                         predFixed = "marginal")[c(whichPred, "standard.errors")]
       colnames(predErr) <- c(whichPred, trait)
       return(predErr)
     })
