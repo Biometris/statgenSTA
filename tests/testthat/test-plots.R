@@ -22,6 +22,16 @@ test_that("TD layout plot gives correct output types", {
   expect_warning(plot(testTD, plotType = "layout"), "rowCoord should be")
 })
 
+test_that("TD layout plot skips plots with missing row or column coordinates", {
+  testTD$E1$colCoord[1] <- NA
+  expect_warning(plot(testTD),
+                 "colCoord contains missing values")
+  testTD$E1$rowCoord[1] <- NA
+  expect_warning(plot(testTD),
+                 "rowCoord contains missing values")
+})
+
+
 test_that("option showGeno functions properly in TD layout plot", {
   p1 <- plot(testTD, plotType = "layout", showGeno = TRUE, output = FALSE)
   ## Difference with default plot p0 should be the extra GeomText layer.

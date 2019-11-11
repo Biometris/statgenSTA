@@ -656,16 +656,26 @@ plot.TD <- function(x,
       if (!"rowCoord" %in% colnames(trDat)) {
         warning("rowCoord should be a column in ", trial, ".\n",
                 "Plot skipped.\n", call. = FALSE)
-        break
+        next
+      }
+      if (sum(is.na(trDat[["rowCoord"]])) > 0) {
+        warning("rowCoord contains missing values for ", trial, ".\n",
+                "Plot skipped.\n", call. = FALSE)
+        next
       }
       if (!"colCoord" %in% colnames(trDat)) {
         warning("colCoord should be a column in ", trial, ".\n",
                 "Plot skipped.\n", call. = FALSE)
-        break
+        next
+      }
+      if (sum(is.na(trDat[["colCoord"]])) > 0) {
+        warning("colCoord contains missing values for ", trial, ".\n",
+                "Plot skipped.\n", call. = FALSE)
+        next
       }
       if (length(highlight) > 0) {
-        trDat$highlight. <- ifelse(trDat$genotype %in% highlight,
-                                   as.character(trDat$genotype), NA)
+        trDat[["highlight."]] <- ifelse(trDat[["genotype"]] %in% highlight,
+                                   as.character(trDat[["genotype"]]), NA)
       }
       trLoc <- attr(trDat, "trLocation")
       plotRep <- hasName(x = trDat, name = "repId")
@@ -884,7 +894,7 @@ plot.TD <- function(x,
       if (is.null(plotDat)) {
         warning(trait, " isn't a column in any of the trials.\n",
                 "Plot skipped.\n", call. = FALSE)
-        break
+        next
       }
       if (orderBy != "alphabetic") {
         ## Reorder levels in trial so plotting is done according to orderBy.
@@ -935,7 +945,7 @@ plot.TD <- function(x,
       if (is.null(plotDat)) {
         warning(trait, " isn't a column in any of the trials.\n",
                 "Plot skipped.\n", call. = FALSE)
-        break
+        next
       }
       ## Create table with values trait per genotype per trial.
       ## If TD already contains BLUEs/BLUPs taking means doesn't do anything

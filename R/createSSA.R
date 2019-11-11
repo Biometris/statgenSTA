@@ -311,7 +311,7 @@ plot.SSA <- function(x,
   for (trial in trials) {
     traitsTr <- chkTraits(traits, trial, x[[trial]], err = FALSE)
     if (length(traitsTr) == 0) {
-      break
+      next
     }
     if (is.null(what)) {
       what <- ifelse(is.null(x[[trial]]$mFix), "random", "fixed")
@@ -338,7 +338,7 @@ plot.SSA <- function(x,
                                       colnames(x[[trial]]$TD[[trial]]))) {
       warning("Data for trial ", trial, " contains no spatial ",
               "information.\n Plots for trial ", trial, " skipped.\n")
-      break
+      next
     }
     pTr <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traitsTr) {
@@ -352,7 +352,7 @@ plot.SSA <- function(x,
         warning("No model with genotype ", what, " for trial ", trial,
                 " and trait ", trait, ".\n", "Plots for trial ",
                 trial, " and trait ", trait, " skipped.\n")
-        break
+        next
       }
       predicted <- x[[trial]]$predicted
       ## Extract fitted and predicted values from model.
@@ -617,7 +617,7 @@ report.SSA <- function(x,
       if (is.null(modTr[[trial]][[whatMod]])) {
         warning("Model with genotype ", whatTr, " not available for trial ",
                 trial, ".\nReport skipped.")
-        break
+        next
       }
       ## Set other model to NULL for easier reporting inside Rnw.
       ## Doing so assures always only one fitted model is available.
@@ -625,7 +625,7 @@ report.SSA <- function(x,
       ## Check that traits are available for current trial.
       traitsTr <- chkTraits(traits, trial, x[[trial]], err = FALSE)
       if (length(traitsTr) == 0) {
-        break
+        next
       }
       for (trait in traitsTr) {
         outTr <- gsub(pattern = " ", replacement = "_", x = trait)
