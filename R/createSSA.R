@@ -310,6 +310,7 @@ plot.SSA <- function(x,
   p <- setNames(vector(mode = "list", length = length(trials)), trials)
   for (trial in trials) {
     traitsTr <- chkTraits(traits, trial, x[[trial]], err = FALSE)
+    trDat <- x[[trial]]$TD[[trial]]
     if (length(traitsTr) == 0) {
       next
     }
@@ -334,11 +335,23 @@ plot.SSA <- function(x,
     if (useCheckId) {
       mergeCols <- c(mergeCols, "checkId")
     }
-    if (plotType == "spatial" && !all(spatCols %in%
-                                      colnames(x[[trial]]$TD[[trial]]))) {
-      warning("Data for trial ", trial, " contains no spatial ",
-              "information.\n Plots for trial ", trial, " skipped.\n")
-      next
+    if (plotType == "spatial") {
+      if (!all(spatCols %in% colnames(trDat))) {
+        warning("Data for trial ", trial, " contains no spatial ",
+                "information.\n Plots for trial ", trial, " skipped.\n",
+                call. = FALSE)
+        next
+      }
+      if (sum(is.na(trDat[["colCoord"]])) > 0) {
+        warning("colCoord contains missing values for ", trial, ".\n",
+                "Plots for trial ", trial, " skipped.\n", call. = FALSE)
+        next
+      }
+      if (sum(is.na(trDat[["colCoord"]])) > 0) {
+        warning("colCoord contains missing values for ", trial, ".\n",
+                "Plots for trial ", trial, " skipped.\n", call. = FALSE)
+        next
+      }
     }
     pTr <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traitsTr) {
@@ -364,7 +377,7 @@ plot.SSA <- function(x,
       pred <- extract(x, trials = trial, traits = trait,
                       what = predType)[[trial]][[predType]][c(predicted, trait)]
       ## Extract raw data and compute residuals.
-      response <- x[[trial]]$TD[[trial]][, c(predicted, trait, mergeCols)]
+      response <- trDat[, c(predicted, trait, mergeCols)]
       ## Create plot data by merging extracted data together and renaming some
       ## columns.
       plotDat <- merge(response, fitted, by = c(predicted, mergeCols))
