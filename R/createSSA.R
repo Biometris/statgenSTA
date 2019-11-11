@@ -415,15 +415,16 @@ plot.SSA <- function(x,
         pTr[[trait]] <- plots
       } else if (plotType == "spatial") {
         if (x[[trial]]$engine == "SpATS") {
-          yMin <- min(plotDat$rowCoord)
-          yMax <- max(plotDat$rowCoord)
-          xMin <- min(plotDat$colCoord)
-          xMax <- max(plotDat$colCoord)
+          yMin <- min(plotDat[["rowCoord"]])
+          yMax <- max(plotDat[["rowCoord"]])
+          xMin <- min(plotDat[["colCoord"]])
+          xMax <- max(plotDat[["colCoord"]])
           ## Execute this part first since it needs plotData without missings
           ## removed.
           ## Code mimickes code from SpATS package but is adapted to create a
           ## data.frame useable by ggplot.
-          plotDat <- plotDat[order(plotDat$colCoord, plotDat$rowCoord), ]
+          plotDat <- plotDat[order(plotDat[["colCoord"]],
+                                   plotDat[["rowCoord"]]), ]
           nCol <- xMax - xMin + 1
           nRow <- yMax - yMin + 1
           p1 <- 100 %/% nCol + 1
@@ -456,7 +457,12 @@ plot.SSA <- function(x,
           ## Remove missings from data.
           plotDatSpat <- remove_missing(plotDatSpat, na.rm = TRUE)
         }
-        plotDat <- remove_missing(plotDat, na.rm = TRUE)
+        ## Create data.frame with all rows columns in field.
+        ## Full missing rows/columns are included.
+        ## If not geom_tile just fills the empty columns by expanding the
+        ## neighbouring colums (or rows).
+        fullGrid <- expand.grid(colCoord = xMin:xMax, rowCoord = yMin:yMax)
+        plotDat <- merge(fullGrid, plotDat, all.x = TRUE)
         ## Code taken from plot.SpATS and simplified.
         ## Set colors and legends.
         colors <- topo.colors(100)
@@ -487,7 +493,7 @@ plot.SSA <- function(x,
         plots$p6 <- ggplot(data = plotDat) +
           geom_histogram(aes(x = residuals),
                          fill = "white", col = "black", bins = 10,
-                         boundary = 0) +
+                         boundary = 0, na.rm = TRUE) +
           ## Remove empty space between ticks and actual plot.
           scale_x_continuous(expand = c(0, 0)) +
           scale_y_continuous(expand = c(0, 0)) +
@@ -526,7 +532,7 @@ fieldPlot <- function(plotDat,
   p <- ggplot(data = plotDat,
               aes_string(x = "colCoord", y = "rowCoord",
                          fill = fillVar)) +
-    geom_raster() +
+    geom_tile() +
     ## Remove empty space between ticks and actual plot.
     scale_x_continuous(expand = c(0, 0), breaks = xTicks) +
     scale_y_continuous(expand = c(0, 0)) +
