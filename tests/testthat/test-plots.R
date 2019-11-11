@@ -46,8 +46,8 @@ test_that("option colorSubBlock functions properly in TD layout plot", {
              output = FALSE)
   geoms1 <- sapply(p1[[1]]$layers, function(x) class(x$geom)[1])
   ## Fill should be based on subBlocks.
-  expect_equal(as.character(p1[[1]]$layers[geoms1 == "GeomTile"][[1]]$mapping),
-               "~subBlock")
+  expect_setequal(as.character(p1[[1]]$layers[geoms1 == "GeomTile"][[1]]$mapping),
+                  c("~subBlock", "~color."))
 })
 
 test_that("option highlight overrides colorSubBlock in TD layout plot", {
@@ -83,7 +83,7 @@ test_that("options minLatRange and minLongRange function properly for TD map plo
 
 test_that("TD box plot gives correct output types", {
   expect_error(plot(testTD, plotType = "box", traits = 1),
-               "traits should be NULL or a character vector")
+               "traits should be a character vector")
   expect_warning(plot(testTD, plotType = "box", traits = "trait"),
                  "trait isn't a column in any of the trials")
   p <- plot(testTD, plotType = "box", traits = "t1")
@@ -131,7 +131,7 @@ test_that("TD correlation plot gives correct output types", {
   expect_error(plot(testTD, plotType = "cor", traits = "trait"),
                "At least two trials requiered for a correlation plot")
   expect_error(plot(TDMaize, plotType = "cor", traits = 1),
-               "traits should be NULL or a character vector")
+               "traits should be a character vector")
   expect_warning(plot(TDMaize, plotType = "cor", traits = "trait"),
                  "trait isn't a column in any of the trials")
   p <- plot(TDMaize, plotType = "cor", traits = "yld")

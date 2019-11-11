@@ -668,18 +668,30 @@ plot.TD <- function(x,
                                    as.character(trDat$genotype), NA)
       }
       trLoc <- attr(trDat, "trLocation")
-      ylen <- attr(trDat, "trPlLength")
-      xlen <- attr(trDat, "trPlWidth")
+      plotRep <- hasName(x = trDat, name = "repId")
+      plotSubBlock <- hasName(x = trDat, name = "subBlock")
+      ## Compute min and max for row and column coordinates.
+      yMin <- min(trDat[["rowCoord"]])
+      yMax <- max(trDat[["rowCoord"]])
+      xMin <- min(trDat[["colCoord"]])
+      xMax <- max(trDat[["colCoord"]])
+      ## Create data.frame with all rows columns in field.
+      ## Full missing rows/columns are included.
+      ## If not geom_tile just fills the empty columns by expanding the
+      ## neighbouring colums (or rows).
+      fullGrid <- expand.grid(colCoord = xMin:xMax, rowCoord = yMin:yMax)
+      trDat <- merge(fullGrid, trDat, all.x = TRUE)
+      trDat[!is.na(trDat[["rowId"]]), "color."] <- "grey75"
       ## Compute aspect for proper depiction of field size. If no information
       ## is available plots are assumed to be square.
+      ylen <- attr(trDat, "trPlLength")
+      xlen <- attr(trDat, "trPlWidth")
       if (is.null(ylen) || is.null(xlen)) {
-        aspect <- length(unique(trDat$colCoord)) /
-          length(unique(trDat$rowCoord))
+        aspect <- length(unique(trDat[["colCoord"]])) /
+          length(unique(trDat[["rowCoord"]]))
       } else {
         aspect <- ylen / xlen
       }
-      plotRep <- hasName(x = trDat, name = "repId")
-      plotSubBlock <- hasName(x = trDat, name = "subBlock")
       ## Create data for lines between replicates.
       if (plotRep) {
         repBord <- calcPlotBorders(trDat = trDat, bordVar = "repId")
@@ -687,8 +699,8 @@ plot.TD <- function(x,
       ## Create base plot.
       pTr <- ggplot(data = trDat, aes_string(x = "colCoord", y = "rowCoord")) +
         coord_fixed(ratio = aspect,
-                    xlim = range(trDat$colCoord) + c(-0.5, 0.5),
-                    ylim = range(trDat$rowCoord) + c(-0.5, 0.5),
+                    xlim = range(trDat[["colCoord"]]) + c(-0.5, 0.5),
+                    ylim = range(trDat[["rowCoord"]]) + c(-0.5, 0.5),
                     clip = "off") +
         theme(panel.background = element_blank(),
               plot.title = element_text(hjust = 0.5)) +
@@ -698,22 +710,25 @@ plot.TD <- function(x,
         scale_y_continuous(breaks = scales::pretty_breaks(),
                            expand = c(0, 0)) +
         ggtitle(trLoc)
-      if (sum(!is.na(trDat$highlight.)) > 0) {
+      if (sum(!is.na(trDat[["highlight."]])) > 0) {
         ## Genotypes to be highlighted get a color.
         ## Everything else the NA color.
-        pTr <- pTr + geom_tile(aes_string(fill = "highlight."),
-                               color = "grey75") +
+        pTr <- pTr + geom_tile(aes_string(fill = "highlight.")) +
           labs(fill = "Highlighted") +
           ## Remove NA from scale.
           scale_fill_discrete(na.translate = FALSE)
       } else if (plotSubBlock && colorSubBlock) {
         ## Color tiles by subblock.
-        pTr <- pTr + geom_tile(aes_string(fill = "subBlock"),
-                               color = "grey75") +
-          guides(fill = guide_legend(ncol = 3))
+        pTr <- pTr + geom_tile(aes_string(fill = "subBlock", color = "color.")) +
+          scale_color_manual(values = "grey75", na.translate = FALSE,
+                             na.value = "transparant") +
+          guides(fill = guide_legend(ncol = 3), color = "none")
       } else {
         ## No subblocks and no hightlights so just a single fill color.
-        pTr <- pTr + geom_tile(fill = "white", color = "grey75")
+        pTr <- pTr + geom_tile(aes_string(color = "color."), fill = "white") +
+          scale_color_manual(values = "grey75", na.translate = FALSE,
+                             na.value = "transparant") +
+          guides(color = "none")
       }
       ## Create data for lines between subBlocks.
       if (plotSubBlock) {
