@@ -1,11 +1,28 @@
 Package: statgenSSA
 Type: Package
-Title: Single Site Analysis (SSA)
+Title: Single Site Analysis (SSA) of Field Trials
 Version: 0.0.5.3
 Date: 2019-11-01
-Authors@R: c(person("Bart-Jan", "van Rossum", email = "bart-jan.vanrossum@wur.nl", 
-    role = c("aut", "cre")),
-    person("Biometris", rol = "cph"))
+Authors@R: c(person(given = "Bart-Jan", 
+                    family = "van Rossum", 
+                    email = "bart-jan.vanrossum@wur.nl", 
+                    role = c("aut", "cre")),
+             person(given = "Fred", 
+                    family = "van Eeuwijk",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0003-3672-2921")),
+             person(given = "Martin", 
+                    family = "Boer",
+                    role = "ctb"),
+             person(given = "Daniela", 
+                    family = "Bustos-Korts",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0003-3827-6726")),
+             person(given = "Emilie", 
+                    family = "Millet",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0002-2913-4892"))
+            )
 Description: The statgen packages, commissioned by the Generation Challenge 
     Program (GCP), are being developed to streamline the analysis of typical 
     plant breeding experiments, including both phenotypic analysis of field 
