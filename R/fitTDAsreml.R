@@ -96,13 +96,17 @@ fitTDAsreml <- function(TD,
     for (trait in traits) {
       if ("random" %in% what) {
         ## Fit model with genotype random.
-        mrTrait <- tryCatchExt(
+        mrTrait <- tryCatchExt({
+          if (all(is.na(TDTr[[trait]]))) {
+            stop("Only NA values for trait ", trait, " in trial ", trial, ".\n")
+          }
           asreml::asreml(fixed = formula(paste0("`", trait, "`", fixedForm)),
                          random = formula(paste("~", randomForm,
                                                 if (length(randomForm) != 0) "+",
                                                 "genotype")),
                          aom = TRUE, data = TDTr, maxiter = maxIter,
-                         trace = FALSE, ...))
+                         trace = FALSE, ...)
+          })
         if (!is.null(mrTrait$warning)) {
           mrTrait <- chkLastIter(mrTrait)
           mrTrait <- wrnToErr(mrTrait)
@@ -150,18 +154,26 @@ fitTDAsreml <- function(TD,
         ## There is no way to specify random as NULL or NA so therefore split
         ## cases on whether there is or there is not a random term.
         if (length(randomForm) != 0) {
-          mfTrait <- tryCatchExt(
+          mfTrait <- tryCatchExt({
+            if (all(is.na(TDTr[[trait]]))) {
+              stop("Only NA values for trait ", trait, " in trial ", trial, ".\n")
+            }
             asreml::asreml(fixed = formula(paste0("`", trait, "`", fixedForm,
                                                   "+ genotype")),
                            random = formula(paste("~", randomForm)),
                            G.param = GParamTmp, aom = TRUE, data = TDTr,
-                           maxiter = maxIter, trace = FALSE, ...))
+                           maxiter = maxIter, trace = FALSE, ...)
+            })
         } else {
-          mfTrait <- tryCatchExt(
+          mfTrait <- tryCatchExt({
+            if (all(is.na(TDTr[[trait]]))) {
+              stop("Only NA values for trait ", trait, " in trial ", trial, ".\n")
+            }
             asreml::asreml(fixed = formula(paste0("`", trait, "`", fixedForm,
                                                   "+ genotype")),
                            G.param = GParamTmp, aom = TRUE, data = TDTr,
-                           maxiter = maxIter, trace = FALSE, ...))
+                           maxiter = maxIter, trace = FALSE, ...)
+            })
         }
         if (!is.null(mfTrait$warning)) {
           mfTrait <- chkLastIter(mfTrait)
@@ -309,9 +321,12 @@ bestSpatMod <- function(TD,
         ## In asreml4 rcov is replaced by residual.
         asrArgsR[[ifelse(asreml4(), "residual", "rcov")]] <- formula(spatTerm[i])
       }
-      capture.output(mrTrait <- tryCatchExt(do.call(what = asreml::asreml,
-                                                    args = asrArgsR)),
-                     file = tempfile())
+      capture.output(mrTrait <- tryCatchExt({
+        if (all(is.na(TDTr[[trait]]))) {
+          stop("Only NA values for trait ", trait, " in trial ", trial, ".\n")
+        }
+        do.call(what = asreml::asreml, args = asrArgsR)
+        }), file = tempfile())
       if (!is.null(mrTrait$warning)) {
         mrTrait <- chkLastIter(mrTrait)
         mrTrait <- wrnToErr(mrTrait)
@@ -423,9 +438,11 @@ bestSpatMod <- function(TD,
         formula(spatTerm[bestMod])
     }
     ## Fit the model with genotype fixed only for the best model.
-    capture.output(mfTrait <- tryCatchExt(do.call(what = asreml::asreml,
-                                                  args = asrArgsF)),
-                   file = tempfile())
+    capture.output(mfTrait <- tryCatchExt({
+      if (all(is.na(TDTr[[trait]]))) {
+        stop("Only NA values for trait ", trait, " in trial ", trial, ".\n")
+      }
+      do.call(what = asreml::asreml, args = asrArgsF)}), file = tempfile())
     if (!is.null(mfTrait$warning)) {
       mfTrait <- chkLastIter(mfTrait)
       mfTrait <- wrnToErr(mfTrait)

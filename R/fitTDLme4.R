@@ -63,13 +63,16 @@ fitTDLme4 <- function(TD,
   if ("random" %in% what) {
     mr <- sapply(X = traits, FUN = function(trait) {
       ## Fit model with genotype random.
-      modTrR <- tryCatchExt(
+      modTrR <- tryCatchExt({
+        if (all(is.na(TDTr[[trait]]))) {
+          stop("Only NA values for trait ", trait, " in trial ", trial, ".\n")
+        }
         lme4::lmer(as.formula(paste0("`", trait, "`", fixedForm,
                                      "+ (1 | genotype) ",
                                      if (length(randomForm) != 0)
                                       paste("+", randomForm))), data = TDTr,
                    na.action = na.exclude, ...)
-      )
+      })
       if (length(modTrR$warning) != 0) {
         warning("Warning in lmer for genotype random, trait ", trait,
                 " in trial ", trial, ":\n", modTrR$warning, "\n", call. = FALSE)
@@ -91,14 +94,22 @@ fitTDLme4 <- function(TD,
     ## is called.
     mf <- sapply(X = traits, FUN = function(trait) {
       if (length(randomForm) != 0) {
-        modTrF <- tryCatchExt(
+        modTrF <- tryCatchExt({
+          if (all(is.na(TDTr[[trait]]))) {
+            stop("Only NA values for trait ", trait, " in trial ", trial, ".\n")
+          }
           lme4::lmer(as.formula(paste0("`", trait, "`", fixedForm,
                                        "+ genotype + ", randomForm)),
-                     data = TDTr, na.action = na.exclude, ...))
+                     data = TDTr, na.action = na.exclude, ...)
+          })
       } else {
-        modTrF <- tryCatchExt(
+        modTrF <- tryCatchExt({
+          if (all(is.na(TDTr[[trait]]))) {
+            stop("Only NA values for trait ", trait, " in trial ", trial, ".\n")
+          }
           lm(as.formula(paste0("`", trait, "`", fixedForm, "+ genotype")),
-             data = TDTr, na.action = na.exclude, ...))
+             data = TDTr, na.action = na.exclude, ...)
+          })
       }
       if (length(modTrF$warning) != 0) {
         warning("Warning in lmer for genotype fixed, trait ", trait,
