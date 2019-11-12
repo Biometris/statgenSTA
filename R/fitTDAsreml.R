@@ -250,6 +250,7 @@ bestSpatMod <- function(TD,
   ## Increase max number of iterations for asreml.
   maxIter <- 200
   TDTr <- droplevels(TD[[1]])
+  trial <- TDTr[["trial"]][1]
   ## Add empty observations.
   TDTab <- as.data.frame(table(TDTr[["colId"]], TDTr[["rowId"]]))
   TDTab <- TDTab[TDTab[["Freq"]] == 0, , drop = FALSE]
@@ -257,7 +258,7 @@ bestSpatMod <- function(TD,
     extObs <- setNames(as.data.frame(matrix(nrow = nrow(TDTab),
                                             ncol = ncol(TDTr))),
                        colnames(TDTr))
-    extObs[["trial"]] <- TDTr[["trial"]][1]
+    extObs[["trial"]] <- trial
     extObs[c("colId", "rowId")] <- TDTab[c("Var1", "Var2")]
     extObs[c("colCoord", "rowCoord")] <-
       c(as.numeric(levels(TDTab[["Var1"]]))[TDTab[["Var1"]]],
@@ -334,14 +335,14 @@ bestSpatMod <- function(TD,
       if (length(mrTrait$warning) != 0) {
         warning("Warning in asreml for model ", spatCh[i],
                 " genotype random, trait ", trait, " in trial ",
-                TDTr[["trial"]][1], ":\n", mrTrait$warning, "\n", call. = FALSE)
+                trial, ":\n", mrTrait$warning, "\n", call. = FALSE)
       }
       if (is.null(mrTrait$error)) {
         mrTrait <- mrTrait$value
       } else {
         warning("Error in asreml for model ", spatCh[i],
                 " genotype random, trait ", trait, " in trial ",
-                TDTr[["trial"]][1], ":\n", mrTrait$error, "\n", call. = FALSE)
+                trial, ":\n", mrTrait$error, "\n", call. = FALSE)
         mrTrait <- NULL
       }
       ## Fill model summary table.
