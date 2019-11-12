@@ -8,7 +8,7 @@ outlierSSA(SSA, trials = NULL, traits = NULL, what = NULL,
   rLimit = NULL, commonFactors = NULL, verbose = TRUE)
 }
 \arguments{
-\item{SSA}{An object of class \code{\link{SSA}}.}
+\item{SSA}{An object of class \code{SSA}.}
 
 \item{trials}{A character vector specifying the trials for which outliers
 should be identified. If \code{trials = NULL}, all trials are included.}

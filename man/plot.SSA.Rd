@@ -68,10 +68,8 @@ plot(myModel, what = "fixed", plotType = "spatial")
 
 }
 \seealso{
-\code{\link{SSA}}
-
 Other SSA: \code{\link{SSAtoCross}}, \code{\link{SSAtoTD}},
-  \code{\link{SSA}}, \code{\link{print.summary.SSA}},
+  \code{\link{print.summary.SSA}},
   \code{\link{report.SSA}}, \code{\link{summary.SSA}}
 }
 \concept{SSA}

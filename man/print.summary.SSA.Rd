@@ -21,7 +21,7 @@ objects of class SSA.
 }
 \seealso{
 Other SSA: \code{\link{SSAtoCross}}, \code{\link{SSAtoTD}},
-  \code{\link{SSA}}, \code{\link{plot.SSA}},
-  \code{\link{report.SSA}}, \code{\link{summary.SSA}}
+  \code{\link{plot.SSA}}, \code{\link{report.SSA}},
+  \code{\link{summary.SSA}}
 }
 \concept{SSA}

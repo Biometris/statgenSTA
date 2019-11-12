@@ -44,7 +44,7 @@ summary(myModel)
 }
 \seealso{
 Other SSA: \code{\link{SSAtoCross}}, \code{\link{SSAtoTD}},
-  \code{\link{SSA}}, \code{\link{plot.SSA}},
-  \code{\link{print.summary.SSA}}, \code{\link{report.SSA}}
+  \code{\link{plot.SSA}}, \code{\link{print.summary.SSA}},
+  \code{\link{report.SSA}}
 }
 \concept{SSA}

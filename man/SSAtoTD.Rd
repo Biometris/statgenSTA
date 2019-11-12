@@ -8,7 +8,7 @@ SSAtoTD(SSA, what = c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs"),
   traits = NULL, keep = NULL, addWt = FALSE)
 }
 \arguments{
-\item{SSA}{An object of class \code{\link{SSA}}.}
+\item{SSA}{An object of class \code{SSA}.}
 
 \item{what}{A character string containing the statistics to be included as
 traits in the TD object. Multiple statistics can be included in which case
@@ -49,7 +49,7 @@ myTD <- SSAtoTD(myModel)
 
 }
 \seealso{
-Other SSA: \code{\link{SSAtoCross}}, \code{\link{SSA}},
+Other SSA: \code{\link{SSAtoCross}},
   \code{\link{plot.SSA}}, \code{\link{print.summary.SSA}},
   \code{\link{report.SSA}}, \code{\link{summary.SSA}}
 }

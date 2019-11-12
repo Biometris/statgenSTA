@@ -2,14 +2,7 @@
 #'
 #' Function for creating objects of S3 class Extract.
 #'
-#' @author Bart-Jan van Rossum
-#'
-#' @family extract
-#'
-#' @name extractS3
-NULL
-
-#' @rdname extractS3
+#' @noRd
 #' @keywords internal
 createExtract <- function(result,
                           what) {
@@ -19,7 +12,17 @@ createExtract <- function(result,
   return(extract)
 }
 
-#' @rdname extractS3
+#' Coerce extracted heritabilities to data.frame
+#'
+#' Function for coercing heritabilities extracted from an SSA object to a
+#' data.frame for nicer printing and easier post processing.
+#'
+#' @param x An object of class extract.
+#' @param row.names An optional character vector of row.names to be added to
+#' the data.frame.
+#' @param optional Ignored.
+#' @param ... Ignored.
+#'
 #' @export
 as.data.frame.extract <- function(x,
                                   row.names = NULL,
@@ -28,7 +31,8 @@ as.data.frame.extract <- function(x,
   if ("heritability" %in% attr(x, which = "what")) {
       herit <- sapply(X = x, FUN = `[`, "heritability")
       traits <- unique(unlist(sapply(X = herit, names)))
-      heritDF <- data.frame(trial = names(x), stringsAsFactors = FALSE)
+      heritDF <- data.frame(trial = names(x), row.names = row.names,
+                            stringsAsFactors = FALSE)
       for (trait in traits) {
         heritDF[[trait]] <- sapply(herit, `[`, trait)
       }

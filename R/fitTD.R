@@ -93,7 +93,7 @@
 #' @param ... Further arguments to be passed to \code{SpATS}, \code{lme4} or
 #' \code{asreml}.
 #'
-#' @return An object of class \code{\link{SSA}}, a list containing, per trial
+#' @return An object of class \code{SSA}, a list containing, per trial
 #' that has been analyzed, a list of:
 #' \item{mRand}{A list of models with fitted with genotype as random effect.}
 #' \item{mFix}{A list of models fitted with genotype as fixed effect.}

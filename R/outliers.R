@@ -9,7 +9,7 @@
 #' that have the same value for \code{commonFactors}. The latter ones will be
 #' marked as similar to distinguish them from the former ones.
 #'
-#' @param SSA An object of class \code{\link{SSA}}.
+#' @param SSA An object of class \code{SSA}.
 #' @param trials A character vector specifying the trials for which outliers
 #' should be identified. If \code{trials = NULL}, all trials are included.
 #' @param traits A character vector specifying the names of the traits for

@@ -8,7 +8,7 @@ SSAtoCross(SSA, trial = NULL, traits = NULL, what = c("BLUEs",
   "BLUPs"), genoFile, genotypes = c("A", "H", "B", "D", "C"), ...)
 }
 \arguments{
-\item{SSA}{An object of class \code{\link{SSA}}.}
+\item{SSA}{An object of class \code{SSA}.}
 
 \item{trial}{A character string indicating the trial to be exported. If
 \code{NULL} and \code{SSA} contains only one trial, that trial is exported.}
@@ -58,8 +58,8 @@ cross <- SSAtoCross(myModel, genoFile = system.file("extdata", "markers.csv",
 \seealso{
 \code{\link[qtl]{read.cross}}
 
-Other SSA: \code{\link{SSAtoTD}}, \code{\link{SSA}},
-  \code{\link{plot.SSA}}, \code{\link{print.summary.SSA}},
+Other SSA: \code{\link{SSAtoTD}}, \code{\link{plot.SSA}},
+  \code{\link{print.summary.SSA}},
   \code{\link{report.SSA}}, \code{\link{summary.SSA}}
 }
 \concept{SSA}

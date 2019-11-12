@@ -22,14 +22,7 @@
 #' predicted.}
 #' }
 #'
-#' @author Bart-Jan van Rossum
-#'
-#' @family SSA
-#'
-#' @name SSA
-NULL
-
-#' @rdname SSA
+#' @noRd
 #' @keywords internal
 createSSA <- function(models) {
   SSA <- structure(models,
@@ -275,8 +268,6 @@ print.summary.SSA <- function(x,
 #' \code{FALSE} only a list of ggplot objects is invisibly returned.
 #'
 #' @return A list containing ggplot objects for the selected plots.
-#'
-#' @seealso \code{\link{SSA}}
 #'
 #' @examples
 #' ## Run a single trait analysis using SpATS.
@@ -681,7 +672,7 @@ report.SSA <- function(x,
 #' imported into a cross object using the read.cross function in the qtl
 #' package.
 #'
-#' @param SSA An object of class \code{\link{SSA}}.
+#' @param SSA An object of class \code{SSA}.
 #' @param trial A character string indicating the trial to be exported. If
 #' \code{NULL} and \code{SSA} contains only one trial, that trial is exported.
 #' @param traits A character string containing the traits to be exported. If
@@ -768,7 +759,7 @@ SSAtoCross <- function(SSA,
 #' Trial information for the trials in the SSA object will be copied from the
 #' original TD object on which the modeling was done.
 #'
-#' @param SSA An object of class \code{\link{SSA}}.
+#' @param SSA An object of class \code{SSA}.
 #' @param what A character string containing the statistics to be included as
 #' traits in the TD object. Multiple statistics can be included in which case
 #' they will appear as \code{statistic_trait} in the output
