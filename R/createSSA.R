@@ -184,8 +184,7 @@ summary.SSA <- function(object,
 #' printing.
 #' @param ... Further arguments passed to \code{\link[stats]{printCoefmat}}.
 #'
-#' @family SSA
-#'
+#' @noRd
 #' @export
 print.summary.SSA <- function(x,
                               digits = max(getOption("digits") - 2, 3),

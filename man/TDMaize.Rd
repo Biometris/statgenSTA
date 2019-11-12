@@ -3,7 +3,7 @@
 \docType{data}
 \name{TDMaize}
 \alias{TDMaize}
-\title{Field data for a maize experiment in Tlaltizapan, Mexico.}
+\title{Field data for a maize experiment in Tlaltizapan, Mexico}
 \format{A TD object, a list containing 8 data.frames, each with the following
 columns:
 \describe{

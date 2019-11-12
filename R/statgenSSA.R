@@ -1,9 +1,6 @@
-#' \code{statgenSSA} package
-#'
-#' statgenSSA
-#'
-#' @docType package
-#' @name statgenSSA
+#' @keywords internal
+"_PACKAGE"
+
 #' @importFrom xtable xtable
 #' @importFrom graphics plot
 #' @import stats

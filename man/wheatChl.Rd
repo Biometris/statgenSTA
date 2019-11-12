@@ -3,7 +3,7 @@
 \docType{data}
 \name{wheatChl}
 \alias{wheatChl}
-\title{Field data for a wheat experiment in Chili.}
+\title{Field data for a wheat experiment in Chili}
 \format{A data.frame with 4000 rows and 11 columns:
 \describe{
   \item{rep}{replicate}

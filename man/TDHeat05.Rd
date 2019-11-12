@@ -3,8 +3,8 @@
 \docType{data}
 \name{TDHeat05}
 \alias{TDHeat05}
-\title{Field data for a wheat experiment in Mexico.}
-\format{A TD object, a list containing 1 data.frames with the following
+\title{Field data for a wheat experiment in Mexico}
+\format{A TD object, a list containing a data.frame with the following
 columns:
 \describe{
   \item{trial}{trial, a combination of watering regime, year and nitrogen

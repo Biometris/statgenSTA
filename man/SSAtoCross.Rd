@@ -59,7 +59,6 @@ cross <- SSAtoCross(myModel, genoFile = system.file("extdata", "markers.csv",
 \code{\link[qtl]{read.cross}}
 
 Other SSA: \code{\link{SSAtoTD}}, \code{\link{plot.SSA}},
-  \code{\link{print.summary.SSA}},
   \code{\link{report.SSA}}, \code{\link{summary.SSA}}
 }
 \concept{SSA}

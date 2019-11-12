@@ -1,4 +1,4 @@
-#' Field data for a wheat experiment in Chili.
+#' Field data for a wheat experiment in Chili
 #'
 #' A dataset containing field data from an experiment with wheat in Chili
 #' described in detail by Lado (2013). The experiment was performed in 2
@@ -35,7 +35,7 @@
 #' doi:10.1534/g3.113.007807.
 "wheatChl"
 
-#' Field data for a wheat experiment in Mexico.
+#' Field data for a wheat experiment in Mexico
 #'
 #' A dataset converted to a TD object containing raw plot data for one trial
 #' from a series of wheat trials conducted in Mexico by CIMMYT. The different
@@ -48,7 +48,7 @@
 #' replicate the entries were not randomized, as they were considered to be a
 #' random selection from a population.
 #'
-#' @format A TD object, a list containing 1 data.frames with the following
+#' @format A TD object, a list containing a data.frame with the following
 #' columns:
 #' \describe{
 #'   \item{trial}{trial, a combination of watering regime, year and nitrogen
@@ -65,7 +65,7 @@
 #' }
 "TDHeat05"
 
-#' Field data for a maize experiment in Tlaltizapan, Mexico.
+#' Field data for a maize experiment in Tlaltizapan, Mexico
 #'
 #' A dataset converted into a TD object containing data corresponding to an
 #' F2 maize reference population from CIMMYT maize drought breeding program,
