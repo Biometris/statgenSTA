@@ -100,7 +100,7 @@ extract <- function(SSA,
   trials <- chkTrials(trials, SSA)
   chkChar(traits)
   chkChar(keep)
-  sapply(X = trials, FUN = function(trial) {
+  resTot <- sapply(X = trials, FUN = function(trial) {
     SSATr <- SSA[[trial]]
     traitsTr <- chkTraits(traits, trial, SSATr)
     if (!all(keep %in% colnames(SSATr$TD[[trial]]))) {
@@ -124,6 +124,8 @@ extract <- function(SSA,
     attr(x = result, which = "engine") <- engine
     return(result)
   }, simplify = FALSE)
+  return(createExtract(resTot,
+                       what = unique(sapply(resTot, names))))
 }
 
 #' Extract statistics from model fitted using SpATS
