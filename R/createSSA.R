@@ -66,6 +66,7 @@ createSSA <- function(models) {
 #' @examples
 #' ## Run a single trait analysis using SpATS.
 #' myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield")
+#'
 #' ## Print a summary of the fitted model.
 #' summary(myModel)
 #'
@@ -271,8 +272,10 @@ print.summary.SSA <- function(x,
 #' @examples
 #' ## Run a single trait analysis using SpATS.
 #' myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield")
+#'
 #' ## Create base plots.
 #' plot(myModel, what = "fixed", plotType = "base")
+#'
 #' ## Create spatial plots.
 #' plot(myModel, what = "fixed", plotType = "spatial")
 #'
@@ -696,8 +699,9 @@ report.SSA <- function(x,
 #' ## Run model using SpATS.
 #' myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
 #'                  what = "fixed")
+#'
 #' ## Create cross object with BLUEs from myModel using genotypic information
-#' ## from markers.csv in the package.
+#' ## from markers.csv in the package.#'
 #' cross <- SSAtoCross(myModel, genoFile = system.file("extdata", "markers.csv",
 #'                                                     package = "statgenSSA"))
 #'
@@ -777,10 +781,15 @@ SSAtoCross <- function(SSA,
 #' ## Run model using SpATS.
 #' myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
 #'                       what = "fixed")
-#' ## Create TD object from the fitted model.
+#'
+#' ## Create TD object from the fitted model with BLUEs and standard errors.
 #' myTD <- SSAtoTD(myModel)
 #'
+#' ## Add a weight column in the output.
+#' myTDWt <- SSAtoTD(myModel, addWt = TRUE)
+#'
 #' @family SSA
+#'
 #' @export
 SSAtoTD <- function(SSA,
                     what = c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs"),

@@ -187,6 +187,7 @@ TDT1 <- createTD(data = datT1, genotype = "geno", trial = "tr",
 datT2<- data.frame(geno = paste0("G", 1:10), tr = "T2",
                     row = rep(1:2, each = 5), col = rep(1:5, times = 2),
                     yield = 10:1, flowering = 12:3)
+
 ## Add this data to the TD object created above.
 TDTot <- addTD(TD = TDT1, data = datT2, genotype = "geno", trial = "tr",
                rowCoord = "row", colCoord = "col")

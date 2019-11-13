@@ -68,8 +68,10 @@ information.
 \examples{
 ## Run a single trait analysis using SpATS.
 myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield")
+
 ## Create base plots.
 plot(myModel, what = "fixed", plotType = "base")
+
 ## Create spatial plots.
 plot(myModel, what = "fixed", plotType = "spatial")
 

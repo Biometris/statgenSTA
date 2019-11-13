@@ -97,10 +97,13 @@ only for \code{SpATS}.}
 \examples{
 ## Fit model using SpATS.
 myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield")
+
 ## Extract all available statistics from the fitted model.
 extr <- extract(myModel)
+
 ## Extract only the BLUEs from the fitted model.
 BLUEs <- extract(myModel, what = "BLUEs")
+
 ## Extract only the BLUEs from the fitted model and keep trial as variable in
 ## the output.
 BLUEs2 <- extract(myModel, what = "BLUEs", keep = "trial")

@@ -39,6 +39,7 @@
 #' ## Fit a model using lme4.
 #' myModel <- fitTD(TD = TDHeat05, traits = "yield", design = "res.rowcol",
 #'                 engine = "lme4")
+#'
 #' ## Detect outliers in the standardized residuals of the fitted model.
 #' outliers <- outlierSSA(SSA = myModel, traits = "yield")
 #'

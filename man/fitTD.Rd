@@ -148,20 +148,26 @@ parts above.
 ## Fit model using lme4.
 myModel1 <- fitTD(TD = TDHeat05, design = "ibd", traits = "yield",
                       what = "fixed")
+
 ## Summarize results.
 summary(myModel1)
+
 ## Create base plots of the results.
 plot(myModel1)
+
 \dontrun{
 ## Create a pdf report summarizing results.
 report(myModel1, outfile = "./testReports/reportModelLme4.pdf")
 }
+
 ## Fit model using SpATS.
 myModel2 <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
                       what = "fixed")
 summary(myModel2)
+
 ## Create spatial plots of the results.
 plot(myModel2, plotType = "spatial")
+
 \dontrun{
 report(myModel2, outfile = "./testReports/reportModelSpATS.pdf")
 }

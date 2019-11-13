@@ -49,8 +49,12 @@ original TD object on which the modeling was done.
 ## Run model using SpATS.
 myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
                       what = "fixed")
-## Create TD object from the fitted model.
+
+## Create TD object from the fitted model with BLUEs and standard errors.
 myTD <- SSAtoTD(myModel)
+
+## Add a weight column in the output.
+myTDWt <- SSAtoTD(myModel, addWt = TRUE)
 
 }
 \seealso{
