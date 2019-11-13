@@ -149,21 +149,9 @@ extractSpATS <- function(SSA,
   predicted <- SSA$predicted
   useCheckId <- length(grep(pattern = "checkId",
                             x = deparse(mr[[1]]$model$fixed))) > 0
-  whatTot <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "heritability",
-               "varCompF", "varCompR", "varGen", "varSpat", "fitted", "residF",
-               "stdResF", "rMeans", "ranEf", "residR", "stdResR", "rDfF", "rDfR",
-               "effDim", "ratEffDim")
-  whatMod <- c("F", "F", "R", "R", "R", "F", "R", "R", "R", "F", "F", "F", "R",
-               "R", "R", "R", "F", "R", "R", "R")
-  whatSSA <- c(if (!is.null(mf)) "F", if (!is.null(mr)) "R")
   whatPred <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ranEf")
-  opts <- Reduce("|", sapply(whatSSA, FUN = grepl, x = whatMod,
-                             simplify = FALSE))
-  if (what[[1]] == "all") {
-    what <- whatTot[opts]
-  } else {
-    what <- match.arg(arg = what, choices = whatTot[opts], several.ok = TRUE)
-  }
+  what <- extractOptSel(what = what, fixed = !is.null(mf),
+                        random = !is.null(mr), engine = "SpATS")
   ## Fitted values and residuals are not set to NA by SpATS in case the original
   ## data is NA. Get missing values per trait to set them to NA later.
   naTr <- sapply(X = traits, FUN = function(trait) {
@@ -277,7 +265,7 @@ extractSpATS <- function(SSA,
       resVals
     }))
     result[["residF"]] <- restoreColNames(renDat = resVal, renamedCols = renCols,
-                                         restore = restore)
+                                          restore = restore)
   }
   ## Extract standardized residuals.
   if ("stdResF" %in% what) {
@@ -285,7 +273,7 @@ extractSpATS <- function(SSA,
       residuals(mf0) / sd(residuals(mf0), na.rm = TRUE)
     }))
     result[["stdResF"]] <- restoreColNames(renDat = stdRes, renamedCols = renCols,
-                                          restore = restore)
+                                           restore = restore)
   }
   ## Extract rMeans.
   if ("rMeans" %in% what) {
@@ -386,21 +374,9 @@ extractLme4 <- function(SSA,
   TD <- SSA$TD[[1]]
   renCols <- attr(TD, "renamedCols")
   predicted = SSA$predicted
-  whatTot <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ue", "heritability",
-               "varCompF", "varCompR", "varGen", "varErr", "fitted", "residF",
-               "stdResF", "rMeans", "ranEf", "residR", "stdResR", "wald", "CV",
-               "rDfF", "rDfR")
-  whatMod <- c("F", "F", "R", "R", "F", "R", "F", "R", "R", "R", "F", "F", "F",
-               "R", "R", "R", "R", "F", "F", "F", "R")
-  whatSSA <- c(if (!is.null(mf)) "F", if (!is.null(mr)) "R")
-  whatPred <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ue", "ranEf")
-  opts <- Reduce("|", sapply(whatSSA, FUN = grepl, x = whatMod,
-                             simplify = FALSE))
-  if (what[[1]] == "all") {
-    what <- whatTot[opts]
-  } else {
-    what <- match.arg(arg = what, choices = whatTot[opts], several.ok = TRUE)
-  }
+  whatPred <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ranEf")
+  what <- extractOptSel(what = what, fixed = !is.null(mf),
+                        random = !is.null(mr), engine = "lme4")
   ## Create baseData and baseDataPred to which further results will be merged.
   base <- createBaseData(TD, predicted, keep, useRepId,
                          bdPred = any(what %in% whatPred))
@@ -538,7 +514,7 @@ extractLme4 <- function(SSA,
   if ("residF" %in% what) {
     resVal <- cbind(baseData, sapply(X = mf, FUN = residuals))
     result[["residF"]] <- restoreColNames(renDat = resVal, renamedCols = renCols,
-                                         restore = restore)
+                                          restore = restore)
   }
   ## Extract standardized residuals.
   if ("stdResF" %in% what) {
@@ -551,7 +527,7 @@ extractLme4 <- function(SSA,
                       }
                     }))
     result[["stdResF"]] <- restoreColNames(renDat = stdRes, renamedCols = renCols,
-                                          restore = restore)
+                                           restore = restore)
   }
   ## Compute rMeans.
   ## Use napredict to fill in NAs in data with NAs.
@@ -635,21 +611,9 @@ extractAsreml <- function(SSA,
   TD <- SSA$TD[[1]]
   renCols <- attr(TD, "renamedCols")
   predicted <- SSA$predicted
-  whatTot <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ue", "heritability",
-               "varCompF", "varCompR", "varGen", "varErr", "fitted", "residF",
-               "stdResF", "rMeans", "ranEf", "residR", "stdResR", "wald", "CV",
-               "rDfF", "rDfR", "sed", "lsd")
-  whatMod <- c("F", "F", "R", "R", "F", "R", "F", "R", "R", "R", "F", "F", "F",
-               "R", "R", "R", "R", "F", "F", "F", "R", "F", "F")
-  whatSSA <- c(if (!is.null(mf)) "F", if (!is.null(mr)) "R")
-  whatPred <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ue", "ranEf")
-  opts <- Reduce("|", sapply(whatSSA, FUN = grepl, x = whatMod,
-                             simplify = FALSE))
-  if (what[[1]] == "all") {
-    what <- whatTot[opts]
-  } else {
-    what <- match.arg(arg = what, choices = whatTot[opts], several.ok = TRUE)
-  }
+  whatPred <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ranEf")
+  what <- extractOptSel(what = what, fixed = !is.null(mf),
+                        random = !is.null(mr), engine = "asreml")
   ## Create baseData and baseDataPred to which further results will be merged.
   base <- createBaseData(TD, predicted, keep, useRepId,
                          bdPred = any(what %in% whatPred))
@@ -814,13 +778,13 @@ extractAsreml <- function(SSA,
     resVal <- cbind(baseData, sapply(X = mf, FUN = residuals,
                                      type = "response"))
     result[["residF"]] <- restoreColNames(renDat = resVal, renamedCols = renCols,
-                                         restore = restore)
+                                          restore = restore)
   }
   ## Extract standardized residuals.
   if ("stdResF" %in% what) {
     stdRes <- cbind(baseData, sapply(X = mf, FUN = residuals, type = "stdCond"))
     result[["stdResF"]] <- restoreColNames(renDat = stdRes, renamedCols = renCols,
-                                          restore = restore)
+                                           restore = restore)
   }
   ## Extract rMeans.
   if ("rMeans" %in% what) {
@@ -839,7 +803,7 @@ extractAsreml <- function(SSA,
                                 replacement = "",
                                 x = coefNames[grep(pattern = predicted,
                                                    x = coefNames)]),
-                   coefs[grep(pattern = predicted, x = coefNames)])
+                           coefs[grep(pattern = predicted, x = coefNames)])
       colnames(ranEff) <- c(predicted, trait)
       return(ranEff)
     })

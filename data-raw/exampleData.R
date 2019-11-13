@@ -26,6 +26,7 @@ TDMaize <- createTD(data = F2Maize, genotype = "genotype.", trial = "env.")
 usethis::use_data(TDMaize, overwrite = TRUE)
 
 ## Create a dataset for unit testing.
+RNGversion("3.5")
 set.seed(1)
 testData <- data.frame(seed = rep(x = paste0("G", rep(x = 1:15, times = 2)),
                                   times = 3),
@@ -51,8 +52,13 @@ testTD <- createTD(data = testData[testData[["field"]] == "E1", ],
                    trial = "field", genotype = "seed", repId = "rep",
                    subBlock = "block", rowCoord = "Y", colCoord = "X")
 
+## Read extractOptions and save as data.frame
+extractOptions <- read.csv("data-raw/extractOptions.csv",
+                           stringsAsFactors = FALSE)
+
 ## Export all internal data in one go to package.
-usethis::use_data(testData, testTD, overwrite = TRUE, internal = TRUE)
+usethis::use_data(testData, testTD, extractOptions,
+                  overwrite = TRUE, internal = TRUE)
 
 ## Create data for vignette.
 # Read raw data.

@@ -540,6 +540,24 @@ mapData <- function(xLim,
   return(df[stats::complete.cases(df$lat, df$long), ])
 }
 
+#' @noRd
+#' @keywords internal
+extractOptSel <- function(what,
+                          fixed,
+                          random,
+                          engine) {
+  models <- c("F", "R")[c(fixed, random)]
+  extractSel <- extractOptions[extractOptions[[engine]] == 1 &
+                                 extractOptions[["model"]] %in% models, ]
+  if (what[1] != "all") {
+    what <- match.arg(arg = what, choices = extractSel[["result"]],
+                      several.ok = TRUE)
+    extractSel <- extractSel[extractSel[["result"]] %in% what, ]
+  }
+  return(extractSel[["result"]])
+}
+
+
 #' Helper function for detecting the version of asreml installed.
 #' This is used wherever the syntax for asreml4 differs from asreml3.
 #'
