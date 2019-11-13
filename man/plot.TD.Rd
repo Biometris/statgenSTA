@@ -4,8 +4,14 @@
 \alias{plot.TD}
 \title{Plot function for class TD}
 \usage{
-\method{plot}{TD}(x, ..., plotType = c("layout", "map", "box", "cor"),
-  trials = names(x), traits = NULL, output = TRUE)
+\method{plot}{TD}(
+  x,
+  ...,
+  plotType = c("layout", "map", "box", "cor"),
+  trials = names(x),
+  traits = NULL,
+  output = TRUE
+)
 }
 \arguments{
 \item{x}{An object of class TD.}
@@ -100,8 +106,10 @@ by clustering them.
 }
 
 \seealso{
-Other functions for TD objects: \code{\link{TD}},
-  \code{\link{getMeta}}, \code{\link{setMeta}},
-  \code{\link{summary.TD}}
+Other functions for TD objects: 
+\code{\link{TD}},
+\code{\link{getMeta}()},
+\code{\link{setMeta}()},
+\code{\link{summary.TD}()}
 }
 \concept{functions for TD objects}

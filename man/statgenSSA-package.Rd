@@ -20,10 +20,10 @@ The statgen packages, commissioned by the Generation Challenge
 
 Other contributors:
 \itemize{
-  \item Fred van Eeuwijk (0000-0003-3672-2921) [contributor]
+  \item Fred van Eeuwijk (\href{https://orcid.org/0000-0003-3672-2921}{ORCID}) [contributor]
   \item Martin Boer [contributor]
-  \item Daniela Bustos-Korts (0000-0003-3827-6726) [contributor]
-  \item Emilie Millet (0000-0002-2913-4892) [contributor]
+  \item Daniela Bustos-Korts (\href{https://orcid.org/0000-0003-3827-6726}{ORCID}) [contributor]
+  \item Emilie Millet (\href{https://orcid.org/0000-0002-2913-4892}{ORCID}) [contributor]
 }
 
 }

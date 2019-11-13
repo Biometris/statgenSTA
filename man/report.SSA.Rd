@@ -4,8 +4,15 @@
 \alias{report.SSA}
 \title{Report method for class SSA}
 \usage{
-\method{report}{SSA}(x, ..., trials = NULL, traits = NULL,
-  descending = TRUE, outfile = NULL, what = c("fixed", "random"))
+\method{report}{SSA}(
+  x,
+  ...,
+  trials = NULL,
+  traits = NULL,
+  descending = TRUE,
+  outfile = NULL,
+  what = c("fixed", "random")
+)
 }
 \arguments{
 \item{x}{An object of class SSA.}
@@ -65,7 +72,10 @@ report(myModel1, outfile = "./testReports/reportModelLme4.pdf",
 
 }
 \seealso{
-Other SSA: \code{\link{SSAtoCross}}, \code{\link{SSAtoTD}},
-  \code{\link{plot.SSA}}, \code{\link{summary.SSA}}
+Other SSA: 
+\code{\link{SSAtoCross}()},
+\code{\link{SSAtoTD}()},
+\code{\link{plot.SSA}()},
+\code{\link{summary.SSA}()}
 }
 \concept{SSA}

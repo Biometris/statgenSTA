@@ -4,10 +4,15 @@
 \alias{summary.TD}
 \title{Summarizing objects of class \code{TD}}
 \usage{
-\method{summary}{TD}(object, ..., trial = names(object), traits,
-  groupBy = NULL, what = if (!is.null(groupBy)) {     c("nObs", "mean",
-  "sd") } else {     c("nObs", "nMiss", "mean", "median", "min", "max",
-  "lowerQ", "upperQ", "var") })
+\method{summary}{TD}(
+  object,
+  ...,
+  trial = names(object),
+  traits,
+  groupBy = NULL,
+  what = if (!is.null(groupBy)) {     c("nObs", "mean", "sd") } else {     c("nObs",
+    "nMiss", "mean", "median", "min", "max", "lowerQ", "upperQ", "var") }
+)
 }
 \arguments{
 \item{object}{An object of class TD.}
@@ -62,8 +67,10 @@ summary(object = TDHeat05, traits = "yield")
 
 }
 \seealso{
-Other functions for TD objects: \code{\link{TD}},
-  \code{\link{getMeta}}, \code{\link{plot.TD}},
-  \code{\link{setMeta}}
+Other functions for TD objects: 
+\code{\link{TD}},
+\code{\link{getMeta}()},
+\code{\link{plot.TD}()},
+\code{\link{setMeta}()}
 }
 \concept{functions for TD objects}

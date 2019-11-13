@@ -4,8 +4,13 @@
 \alias{SSAtoTD}
 \title{Convert SSA to TD}
 \usage{
-SSAtoTD(SSA, what = c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs"),
-  traits = NULL, keep = NULL, addWt = FALSE)
+SSAtoTD(
+  SSA,
+  what = c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs"),
+  traits = NULL,
+  keep = NULL,
+  addWt = FALSE
+)
 }
 \arguments{
 \item{SSA}{An object of class \code{SSA}.}
@@ -49,8 +54,10 @@ myTD <- SSAtoTD(myModel)
 
 }
 \seealso{
-Other SSA: \code{\link{SSAtoCross}},
-  \code{\link{plot.SSA}}, \code{\link{report.SSA}},
-  \code{\link{summary.SSA}}
+Other SSA: 
+\code{\link{SSAtoCross}()},
+\code{\link{plot.SSA}()},
+\code{\link{report.SSA}()},
+\code{\link{summary.SSA}()}
 }
 \concept{SSA}

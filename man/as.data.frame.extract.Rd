@@ -4,8 +4,7 @@
 \alias{as.data.frame.extract}
 \title{Coerce extracted heritabilities to data.frame}
 \usage{
-\method{as.data.frame}{extract}(x, row.names = NULL, optional = FALSE,
-  ...)
+\method{as.data.frame}{extract}(x, row.names = NULL, optional = FALSE, ...)
 }
 \arguments{
 \item{x}{An object of class extract.}

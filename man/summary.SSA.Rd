@@ -4,8 +4,16 @@
 \alias{summary.SSA}
 \title{Summarizing objects of class \code{SSA}}
 \usage{
-\method{summary}{SSA}(object, trials = NULL, trait = NULL,
-  nBest = 20, sortBy = NULL, naLast = TRUE, decreasing = TRUE, ...)
+\method{summary}{SSA}(
+  object,
+  trials = NULL,
+  trait = NULL,
+  nBest = 20,
+  sortBy = NULL,
+  naLast = TRUE,
+  decreasing = TRUE,
+  ...
+)
 }
 \arguments{
 \item{object}{An object of class \code{SSA}.}
@@ -43,7 +51,10 @@ summary(myModel)
 
 }
 \seealso{
-Other SSA: \code{\link{SSAtoCross}}, \code{\link{SSAtoTD}},
-  \code{\link{plot.SSA}}, \code{\link{report.SSA}}
+Other SSA: 
+\code{\link{SSAtoCross}()},
+\code{\link{SSAtoTD}()},
+\code{\link{plot.SSA}()},
+\code{\link{report.SSA}()}
 }
 \concept{SSA}

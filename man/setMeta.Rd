@@ -25,8 +25,10 @@ Existing values will be overwritten, but \code{NA} will be ignored so
 setting a value to \code{NA} won't result in accidentally removing it.
 }
 \seealso{
-Other functions for TD objects: \code{\link{TD}},
-  \code{\link{getMeta}}, \code{\link{plot.TD}},
-  \code{\link{summary.TD}}
+Other functions for TD objects: 
+\code{\link{TD}},
+\code{\link{getMeta}()},
+\code{\link{plot.TD}()},
+\code{\link{summary.TD}()}
 }
 \concept{functions for TD objects}

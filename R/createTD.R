@@ -264,8 +264,6 @@ createTD <- function(data,
   return(TD)
 }
 
-#' @inheritParams createTD
-#'
 #' @param TD An object of class TD which should be modified.
 #'
 #' @rdname TD
@@ -308,8 +306,6 @@ addTD <- function(TD,
   return(TDTot)
 }
 
-#' @inheritParams addTD
-#'
 #' @param rmTrials A character vector of trials that should be removed.
 #'
 #' @rdname TD

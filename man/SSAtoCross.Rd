@@ -4,8 +4,15 @@
 \alias{SSAtoCross}
 \title{Convert SSA to Cross}
 \usage{
-SSAtoCross(SSA, trial = NULL, traits = NULL, what = c("BLUEs",
-  "BLUPs"), genoFile, genotypes = c("A", "H", "B", "D", "C"), ...)
+SSAtoCross(
+  SSA,
+  trial = NULL,
+  traits = NULL,
+  what = c("BLUEs", "BLUPs"),
+  genoFile,
+  genotypes = c("A", "H", "B", "D", "C"),
+  ...
+)
 }
 \arguments{
 \item{SSA}{An object of class \code{SSA}.}
@@ -58,7 +65,10 @@ cross <- SSAtoCross(myModel, genoFile = system.file("extdata", "markers.csv",
 \seealso{
 \code{\link[qtl]{read.cross}}
 
-Other SSA: \code{\link{SSAtoTD}}, \code{\link{plot.SSA}},
-  \code{\link{report.SSA}}, \code{\link{summary.SSA}}
+Other SSA: 
+\code{\link{SSAtoTD}()},
+\code{\link{plot.SSA}()},
+\code{\link{report.SSA}()},
+\code{\link{summary.SSA}()}
 }
 \concept{SSA}

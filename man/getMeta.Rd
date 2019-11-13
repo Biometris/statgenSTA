@@ -18,8 +18,10 @@ Location, data, design, latitude, longitude, plotWidth and plotLength for
 all trials in TD will be extracted and returned as a data.frame.
 }
 \seealso{
-Other functions for TD objects: \code{\link{TD}},
-  \code{\link{plot.TD}}, \code{\link{setMeta}},
-  \code{\link{summary.TD}}
+Other functions for TD objects: 
+\code{\link{TD}},
+\code{\link{plot.TD}()},
+\code{\link{setMeta}()},
+\code{\link{summary.TD}()}
 }
 \concept{functions for TD objects}

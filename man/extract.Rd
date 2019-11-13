@@ -4,8 +4,14 @@
 \alias{extract}
 \title{Extract statistics from Fitted Models}
 \usage{
-extract(SSA, trials = names(SSA), traits = NULL, what = "all",
-  keep = NULL, restoreColNames = FALSE)
+extract(
+  SSA,
+  trials = names(SSA),
+  traits = NULL,
+  what = "all",
+  keep = NULL,
+  restoreColNames = FALSE
+)
 }
 \arguments{
 \item{SSA}{An object of class SSA.}

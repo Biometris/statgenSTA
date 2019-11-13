@@ -4,9 +4,16 @@
 \alias{plot.SSA}
 \title{Plot function for class SSA}
 \usage{
-\method{plot}{SSA}(x, ..., trials = NULL, traits = NULL, what = NULL,
-  plotType = c("base", "spatial"), outCols = ifelse(plotType == "base",
-  2, 3), output = TRUE)
+\method{plot}{SSA}(
+  x,
+  ...,
+  trials = NULL,
+  traits = NULL,
+  what = NULL,
+  plotType = c("base", "spatial"),
+  outCols = ifelse(plotType == "base", 2, 3),
+  output = TRUE
+)
 }
 \arguments{
 \item{x}{An object of class SSA.}
@@ -68,7 +75,10 @@ plot(myModel, what = "fixed", plotType = "spatial")
 
 }
 \seealso{
-Other SSA: \code{\link{SSAtoCross}}, \code{\link{SSAtoTD}},
-  \code{\link{report.SSA}}, \code{\link{summary.SSA}}
+Other SSA: 
+\code{\link{SSAtoCross}()},
+\code{\link{SSAtoTD}()},
+\code{\link{report.SSA}()},
+\code{\link{summary.SSA}()}
 }
 \concept{SSA}

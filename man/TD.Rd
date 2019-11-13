@@ -7,19 +7,52 @@
 \alias{dropTD}
 \title{S3 class TD}
 \usage{
-createTD(data, genotype = NULL, trial = NULL, loc = NULL,
-  year = NULL, repId = NULL, subBlock = NULL, plotId = NULL,
-  rowCoord = NULL, colCoord = NULL, rowId = rowCoord,
-  colId = colCoord, checkId = NULL, trLocation = NULL,
-  trDate = NULL, trDesign = NULL, trLat = NULL, trLong = NULL,
-  trPlWidth = NULL, trPlLength = NULL)
+createTD(
+  data,
+  genotype = NULL,
+  trial = NULL,
+  loc = NULL,
+  year = NULL,
+  repId = NULL,
+  subBlock = NULL,
+  plotId = NULL,
+  rowCoord = NULL,
+  colCoord = NULL,
+  rowId = rowCoord,
+  colId = colCoord,
+  checkId = NULL,
+  trLocation = NULL,
+  trDate = NULL,
+  trDesign = NULL,
+  trLat = NULL,
+  trLong = NULL,
+  trPlWidth = NULL,
+  trPlLength = NULL
+)
 
-addTD(TD, data, genotype = NULL, trial = NULL, loc = NULL,
-  year = NULL, repId = NULL, subBlock = NULL, plotId = NULL,
-  rowCoord = NULL, colCoord = NULL, rowId = rowCoord,
-  colId = colCoord, checkId = NULL, trLocation = NULL,
-  trDate = NULL, trDesign = NULL, trLat = NULL, trLong = NULL,
-  trPlWidth = NULL, trPlLength = NULL)
+addTD(
+  TD,
+  data,
+  genotype = NULL,
+  trial = NULL,
+  loc = NULL,
+  year = NULL,
+  repId = NULL,
+  subBlock = NULL,
+  plotId = NULL,
+  rowCoord = NULL,
+  colCoord = NULL,
+  rowId = rowCoord,
+  colId = colCoord,
+  checkId = NULL,
+  trLocation = NULL,
+  trDate = NULL,
+  trDesign = NULL,
+  trLat = NULL,
+  trLong = NULL,
+  trPlWidth = NULL,
+  trPlLength = NULL
+)
 
 dropTD(TD, rmTrials)
 }
@@ -163,8 +196,10 @@ TDT2 <- dropTD(TD = TDTot, rmTrials = "T1")
 
 }
 \seealso{
-Other functions for TD objects: \code{\link{getMeta}},
-  \code{\link{plot.TD}}, \code{\link{setMeta}},
-  \code{\link{summary.TD}}
+Other functions for TD objects: 
+\code{\link{getMeta}()},
+\code{\link{plot.TD}()},
+\code{\link{setMeta}()},
+\code{\link{summary.TD}()}
 }
 \concept{functions for TD objects}
