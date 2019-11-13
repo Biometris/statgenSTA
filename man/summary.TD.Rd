@@ -63,7 +63,10 @@ A table containing the selected summary statistics.
 }
 \examples{
 ## Summarize TDHeat05.
-summary(object = TDHeat05, traits = "yield")
+summary(TDHeat05, traits = "yield")
+
+## Summarize TDHeat05 grouping by repId.
+summary(TDHeat05, traits = "yield", groupBy = "repId")
 
 }
 \seealso{

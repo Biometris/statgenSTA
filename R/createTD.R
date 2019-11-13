@@ -369,7 +369,10 @@ dropTD <- function(TD,
 #'
 #' @examples
 #' ## Summarize TDHeat05.
-#' summary(object = TDHeat05, traits = "yield")
+#' summary(TDHeat05, traits = "yield")
+#'
+#' ## Summarize TDHeat05 grouping by repId.
+#' summary(TDHeat05, traits = "yield", groupBy = "repId")
 #'
 #' @export
 summary.TD <- function(object,
@@ -425,7 +428,7 @@ summary.TD <- function(object,
   if (!is.null(groupBy)) {
     groups <- unique(trDat[[groupBy]])
   } else {
-    trDat$.tot <- 1
+    trDat[[".tot"]] <- 1
     groupBy <- ".tot"
     groups <- 1
   }
@@ -523,7 +526,8 @@ print.summary.TD <- function(x, ...) {
                 rep(x = 3, times = 4))[whichStat]
   xPrint <- x
   for (i in seq_along(decimals)) {
-    xPrint[i, , ] <- format(x[i, , ], digits = decimals[i], nsmall = decimals[i])
+    xPrint[i, , ] <- format(x[i, , ], digits = decimals[i],
+                            nsmall = decimals[i])
   }
   for (i in 1:ncol(xPrint)) {
     trait <- colnames(xPrint)[i]
@@ -622,11 +626,54 @@ print.summary.TD <- function(x, ...) {
 #' @param traits A character vector indicating the traits to be plotted in
 #' a boxplot. Only used if \code{plotType} = "box" or "cor".
 #' @param output Should the plot be output to the current device? If
-#' \code{FALSE} only a list of ggplot objects is invisibly returnfed.
+#' \code{FALSE} only a list of ggplot objects is invisibly returned.
 #'
 #' @family functions for TD objects
 #'
 #' @import ggplot2
+#'
+#' @examples
+#' data("wheatChl")
+#'
+#' ## Create a TD object.
+#' wheatTD <- createTD(data = wheatChl, genotype = "trt", repId = "rep",
+#'                     subBlock = "bl", rowCoord = "row", colCoord = "col")
+#'
+#' ## Add meta data to be able to plot locations on a map.
+#' wheatMeta <- getMeta(wheatTD)
+#' wheatMeta$trLocation <- c("Cauquenes", rep("Santa Rosa", times = 4))
+#' wheatMeta$trLat <- c(-35.58, rep(-36.32, times = 4))
+#' wheatMeta$trLong <- c(-72.17, rep(-71.55, times = 4))
+#' wheatTD <- setMeta(wheatTD, wheatMeta)
+#'
+#' ### Layout plot.
+#'
+#' ## Plot the layout of one of the trials.
+#' plot(wheatTD, trials = "C_SWS_12")
+#'
+#' ## Highlight some of the genotypes in the layout.
+#' plot(wheatTD, trials = "C_SWS_12", highlight = c("G001", "G002"))
+#'
+#' ### Map plot.
+#'
+#' ## Plot the location of the trials on the map.
+#' plot(wheatTD, plotType = "map")
+#'
+#' ### Box plot.
+#'
+#' ## Create a box plot for GY.
+#' plot(wheatTD, plotType = "box", traits = "GY")
+#'
+#' ## Add coloring by repId to the boxes.
+#' plot(wheatTD, plotType = "box", traits = "GY", colorBy = "repId")
+#'
+#' ## Sort the boxes in descending order.
+#' plot(wheatTD, plotType = "box", traits = "GY", orderBy = "descending")
+#'
+#' ### Correlation plot.
+#'
+#' ## Plot the correlations between trials for GY.
+#' plot(wheatTD, plotType = "cor", traits = "GY")
 #'
 #' @export
 plot.TD <- function(x,
@@ -719,13 +766,18 @@ plot.TD <- function(x,
       if (sum(!is.na(trDat[["highlight."]])) > 0) {
         ## Genotypes to be highlighted get a color.
         ## Everything else the NA color.
-        pTr <- pTr + geom_tile(aes_string(fill = "highlight.")) +
-          labs(fill = "Highlighted") +
+        pTr <- pTr + geom_tile(aes_string(fill = "highlight.",
+                                          color = "color.")) +
+          scale_color_manual(values = "grey75", na.translate = FALSE,
+                             na.value = "transparant") +
           ## Remove NA from scale.
-          scale_fill_discrete(na.translate = FALSE)
+          scale_fill_discrete(na.translate = FALSE) +
+          labs(fill = "Highlighted") +
+          guides(color = "none")
       } else if (plotSubBlock && colorSubBlock) {
         ## Color tiles by subblock.
-        pTr <- pTr + geom_tile(aes_string(fill = "subBlock", color = "color.")) +
+        pTr <- pTr + geom_tile(aes_string(fill = "subBlock",
+                                          color = "color.")) +
           scale_color_manual(values = "grey75", na.translate = FALSE,
                              na.value = "transparant") +
           guides(fill = guide_legend(ncol = 3), color = "none")
@@ -1009,7 +1061,7 @@ plot.TD <- function(x,
 #' Extract metadata from TD objects
 #'
 #' Function for extracting metadata as a data.frame from objects of class TD.
-#' Location, data, design, latitude, longitude, plotWidth and plotLength for
+#' Location, date, design, latitude, longitude, plotWidth and plotLength for
 #' all trials in TD will be extracted and returned as a data.frame.
 #'
 #' @param TD An object of class TD.

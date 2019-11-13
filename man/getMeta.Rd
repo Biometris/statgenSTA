@@ -14,7 +14,7 @@ A data.frame containing the metadata for all trials in TD.
 }
 \description{
 Function for extracting metadata as a data.frame from objects of class TD.
-Location, data, design, latitude, longitude, plotWidth and plotLength for
+Location, date, design, latitude, longitude, plotWidth and plotLength for
 all trials in TD will be extracted and returned as a data.frame.
 }
 \seealso{

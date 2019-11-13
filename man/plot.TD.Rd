@@ -29,7 +29,7 @@ plotting field layouts. Only used if \code{plotType} = "layout" or "box".}
 a boxplot. Only used if \code{plotType} = "box" or "cor".}
 
 \item{output}{Should the plot be output to the current device? If
-\code{FALSE} only a list of ggplot objects is invisibly returnfed.}
+\code{FALSE} only a list of ggplot objects is invisibly returned.}
 }
 \description{
 Plotting function for objects of class TD. Plots either the layout of the
@@ -105,6 +105,50 @@ computing correlations. The order of the trials in the heatmap is determined
 by clustering them.
 }
 
+\examples{
+data("wheatChl")
+
+## Create a TD object.
+wheatTD <- createTD(data = wheatChl, genotype = "trt", repId = "rep",
+                    subBlock = "bl", rowCoord = "row", colCoord = "col")
+
+## Add meta data to be able to plot locations on a map.
+wheatMeta <- getMeta(wheatTD)
+wheatMeta$trLocation <- c("Cauquenes", rep("Santa Rosa", times = 4))
+wheatMeta$trLat <- c(-35.58, rep(-36.32, times = 4))
+wheatMeta$trLong <- c(-72.17, rep(-71.55, times = 4))
+wheatTD <- setMeta(wheatTD, wheatMeta)
+
+### Layout plot.
+
+## Plot the layout of one of the trials.
+plot(wheatTD, trials = "C_SWS_12")
+
+## Highlight some of the genotypes in the layout.
+plot(wheatTD, trials = "C_SWS_12", highlight = c("G001", "G002"))
+
+### Map plot.
+
+## Plot the location of the trials on the map.
+plot(wheatTD, plotType = "map")
+
+### Box plot.
+
+## Create a box plot for GY.
+plot(wheatTD, plotType = "box", traits = "GY")
+
+## Add coloring by repId to the boxes.
+plot(wheatTD, plotType = "box", traits = "GY", colorBy = "repId")
+
+## Sort the boxes in descending order.
+plot(wheatTD, plotType = "box", traits = "GY", orderBy = "descending")
+
+### Correlation plot.
+
+## Plot the correlations between trials for GY.
+plot(wheatTD, plotType = "cor", traits = "GY")
+
+}
 \seealso{
 Other functions for TD objects: 
 \code{\link{TD}},
