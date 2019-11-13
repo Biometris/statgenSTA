@@ -23,9 +23,9 @@
 #' \item{R - varSpat}{Spatial variance components - only for \code{SpATS}.}
 #' \item{F - fitted}{Fitted values for the model with genotype as fixed
 #' component.}
-#' \item{F - resid}{Residuals for the model with genotype as fixed component.}
-#' \item{F - stdRes}{Standardized residuals for the model with genotype as fixed
-#' component}
+#' \item{F - residF}{Residuals for the model with genotype as fixed component.}
+#' \item{F - stdResF}{Standardized residuals for the model with genotype as
+#' fixed component}
 #' \item{R - rMeans}{Fitted values for the model with genotype as random
 #' component.}
 #' \item{R - ranEf}{Random genetic effects.}
@@ -36,7 +36,7 @@
 #' \code{asreml}.}
 #' \item{F - CV}{Coefficient of variation - only for \code{lme4} and
 #' \code{asreml}.}
-#' \item{F - rDf}{Residual degrees of freedom for the model with genotype as
+#' \item{F - rDfF}{Residual degrees of freedom for the model with genotype as
 #' fixed component.}
 #' \item{R - rDfR}{Residual degrees of freedom for the model with genotype as
 #' random component.}
@@ -150,8 +150,8 @@ extractSpATS <- function(SSA,
   useCheckId <- length(grep(pattern = "checkId",
                             x = deparse(mr[[1]]$model$fixed))) > 0
   whatTot <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "heritability",
-               "varCompF", "varCompR", "varGen", "varSpat", "fitted", "resid",
-               "stdRes", "rMeans", "ranEf", "residR", "stdResR", "rDf", "rDfR",
+               "varCompF", "varCompR", "varGen", "varSpat", "fitted", "residF",
+               "stdResF", "rMeans", "ranEf", "residR", "stdResR", "rDfF", "rDfR",
                "effDim", "ratEffDim")
   whatMod <- c("F", "F", "R", "R", "R", "F", "R", "R", "R", "F", "F", "F", "R",
                "R", "R", "R", "F", "R", "R", "R")
@@ -270,21 +270,21 @@ extractSpATS <- function(SSA,
                                           restore = restore)
   }
   ## Extract residuals.
-  if ("resid" %in% what) {
+  if ("residF" %in% what) {
     resVal <- cbind(baseData, sapply(X = traits, FUN = function(trait) {
       resVals <- residuals(mf[[trait]])
       resVals[naTr[[trait]]] <- NA
       resVals
     }))
-    result[["resid"]] <- restoreColNames(renDat = resVal, renamedCols = renCols,
+    result[["residF"]] <- restoreColNames(renDat = resVal, renamedCols = renCols,
                                          restore = restore)
   }
   ## Extract standardized residuals.
-  if ("stdRes" %in% what) {
+  if ("stdResF" %in% what) {
     stdRes <- cbind(baseData, sapply(X = mf, FUN = function(mf0) {
       residuals(mf0) / sd(residuals(mf0), na.rm = TRUE)
     }))
-    result[["stdRes"]] <- restoreColNames(renDat = stdRes, renamedCols = renCols,
+    result[["stdResF"]] <- restoreColNames(renDat = stdRes, renamedCols = renCols,
                                           restore = restore)
   }
   ## Extract rMeans.
@@ -332,8 +332,8 @@ extractSpATS <- function(SSA,
                                            restore = restore)
   }
   ## Extract residual degrees of freedom.
-  if ("rDf" %in% what) {
-    result[["rDf"]] <- sapply(X = mf, FUN = function(mf0) {
+  if ("rDfF" %in% what) {
+    result[["rDfF"]] <- sapply(X = mf, FUN = function(mf0) {
       round(mf0[["nobs"]] - sum(mf0[["eff.dim"]]))
     })
   }
@@ -387,9 +387,9 @@ extractLme4 <- function(SSA,
   renCols <- attr(TD, "renamedCols")
   predicted = SSA$predicted
   whatTot <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ue", "heritability",
-               "varCompF", "varCompR", "varGen", "varErr", "fitted", "resid",
-               "stdRes", "rMeans", "ranEf", "residR", "stdResR", "wald", "CV",
-               "rDf", "rDfR")
+               "varCompF", "varCompR", "varGen", "varErr", "fitted", "residF",
+               "stdResF", "rMeans", "ranEf", "residR", "stdResR", "wald", "CV",
+               "rDfF", "rDfR")
   whatMod <- c("F", "F", "R", "R", "F", "R", "F", "R", "R", "R", "F", "F", "F",
                "R", "R", "R", "R", "F", "F", "F", "R")
   whatSSA <- c(if (!is.null(mf)) "F", if (!is.null(mr)) "R")
@@ -535,13 +535,13 @@ extractLme4 <- function(SSA,
                                           restore = restore)
   }
   ## Extract residuals.
-  if ("resid" %in% what) {
+  if ("residF" %in% what) {
     resVal <- cbind(baseData, sapply(X = mf, FUN = residuals))
-    result[["resid"]] <- restoreColNames(renDat = resVal, renamedCols = renCols,
+    result[["residF"]] <- restoreColNames(renDat = resVal, renamedCols = renCols,
                                          restore = restore)
   }
   ## Extract standardized residuals.
-  if ("stdRes" %in% what) {
+  if ("stdResF" %in% what) {
     stdRes <- cbind(baseData,
                     sapply(X = mf, FUN = function(mf0) {
                       if (inherits(mf0, "lm")) {
@@ -550,7 +550,7 @@ extractLme4 <- function(SSA,
                         stdRes <- residuals(mf0, scaled = TRUE)
                       }
                     }))
-    result[["stdRes"]] <- restoreColNames(renDat = stdRes, renamedCols = renCols,
+    result[["stdResF"]] <- restoreColNames(renDat = stdRes, renamedCols = renCols,
                                           restore = restore)
   }
   ## Compute rMeans.
@@ -608,8 +608,8 @@ extractLme4 <- function(SSA,
       100 * sigma(mf0) / mean(fitted(mf0), na.rm = TRUE)
     })
   }
-  if ("rDf" %in% what) {
-    result[["rDf"]] <- sapply(X = mf, FUN = df.residual)
+  if ("rDfF" %in% what) {
+    result[["rDfF"]] <- sapply(X = mf, FUN = df.residual)
   }
   if ("rDfR" %in% what) {
     result[["rDfR"]] <- sapply(X = mr, FUN = df.residual)
@@ -636,9 +636,9 @@ extractAsreml <- function(SSA,
   renCols <- attr(TD, "renamedCols")
   predicted <- SSA$predicted
   whatTot <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ue", "heritability",
-               "varCompF", "varCompR", "varGen", "varErr", "fitted", "resid",
-               "stdRes", "rMeans", "ranEf", "residR", "stdResR", "wald", "CV",
-               "rDf", "rDfR", "sed", "lsd")
+               "varCompF", "varCompR", "varGen", "varErr", "fitted", "residF",
+               "stdResF", "rMeans", "ranEf", "residR", "stdResR", "wald", "CV",
+               "rDfF", "rDfR", "sed", "lsd")
   whatMod <- c("F", "F", "R", "R", "F", "R", "F", "R", "R", "R", "F", "F", "F",
                "R", "R", "R", "R", "F", "F", "F", "R", "F", "F")
   whatSSA <- c(if (!is.null(mf)) "F", if (!is.null(mr)) "R")
@@ -810,16 +810,16 @@ extractAsreml <- function(SSA,
                                           restore = restore)
   }
   ## Extract residuals.
-  if ("resid" %in% what) {
+  if ("residF" %in% what) {
     resVal <- cbind(baseData, sapply(X = mf, FUN = residuals,
                                      type = "response"))
-    result[["resid"]] <- restoreColNames(renDat = resVal, renamedCols = renCols,
+    result[["residF"]] <- restoreColNames(renDat = resVal, renamedCols = renCols,
                                          restore = restore)
   }
   ## Extract standardized residuals.
-  if ("stdRes" %in% what) {
+  if ("stdResF" %in% what) {
     stdRes <- cbind(baseData, sapply(X = mf, FUN = residuals, type = "stdCond"))
-    result[["stdRes"]] <- restoreColNames(renDat = stdRes, renamedCols = renCols,
+    result[["stdResF"]] <- restoreColNames(renDat = stdRes, renamedCols = renCols,
                                           restore = restore)
   }
   ## Extract rMeans.
@@ -886,8 +886,8 @@ extractAsreml <- function(SSA,
     })
   }
   ## Extract residual degrees of freedom.
-  if ("rDf" %in% what) {
-    result[["rDf"]] <- sapply(X = mf, FUN = "[[", "nedf")
+  if ("rDfF" %in% what) {
+    result[["rDfF"]] <- sapply(X = mf, FUN = "[[", "nedf")
   }
   ## Extract residual degrees of freedom for genotype random.
   if ("rDfR" %in% what) {

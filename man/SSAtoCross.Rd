@@ -58,7 +58,7 @@ myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
                  what = "fixed")
 
 ## Create cross object with BLUEs from myModel using genotypic information
-## from markers.csv in the package.#'
+## from markers.csv in the package.
 cross <- SSAtoCross(myModel, genoFile = system.file("extdata", "markers.csv",
                                                     package = "statgenSSA"))
 

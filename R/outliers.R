@@ -88,8 +88,8 @@ outlierSSA <- function(SSA,
     ## At least one combination of what and trait not skipped.
     ## Set detection to TRUE.
     detection <- TRUE
-    whatExt <- ifelse(what == "fixed", "stdRes", "stdResR")
-    whatExtDf <- ifelse(what == "fixed", "rDf", "rDfR")
+    whatExt <- ifelse(what == "fixed", "stdResF", "stdResR")
+    whatExtDf <- ifelse(what == "fixed", "rDfF", "rDfR")
     stdRes <- extract(SSA, trials = trial, traits = traitsTr,
                       what = whatExt)[[trial]][[whatExt]]
     rDf <- extract(SSA, trials = trial, traits = traitsTr,

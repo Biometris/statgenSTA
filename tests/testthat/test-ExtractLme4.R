@@ -102,10 +102,10 @@ test_that("fitted values are computed correctly", {
 })
 
 test_that("residuals are computed correctly", {
-  expect_is(extLm$resid, "data.frame"	)
-  expect_equal(dim(extLm$resid), c(30, 3))
-  expect_named(extLm$resid, c("genotype", "repId", "t1"))
-  expect_equal(extLm$resid$t1,
+  expect_is(extLm$residF, "data.frame"	)
+  expect_equal(dim(extLm$residF), c(30, 3))
+  expect_named(extLm$residF, c("genotype", "repId", "t1"))
+  expect_equal(extLm$residF$t1,
                c(10.4100152882861, -10.4100152882861, -0.945262503244722,
                  -5.91633231250682, 24.6020800908422, 1.6951658569036,
                  -24.6020800908422, -3.62709315598705, 20.7988344960203,
@@ -119,10 +119,10 @@ test_that("residuals are computed correctly", {
 })
 
 test_that("standardized residuals are computed correctly", {
-  expect_is(extLm$stdRes, "data.frame"	)
-  expect_equal(dim(extLm$stdRes), c(30, 3))
-  expect_named(extLm$stdRes, c("genotype", "repId", "t1"))
-  expect_equal(extLm$stdRes$t1,
+  expect_is(extLm$stdResF, "data.frame"	)
+  expect_equal(dim(extLm$stdResF), c(30, 3))
+  expect_named(extLm$stdResF, c("genotype", "repId", "t1"))
+  expect_equal(extLm$stdResF$t1,
                c(0.953917749122823, -0.953917749122824, -0.0866187661069102,
                  -0.542140837099416, 2.25440215158987, 0.155335871641509,
                  -2.25440215158987, -0.332367287021306, 1.90589320355248,
@@ -213,10 +213,10 @@ test_that("CV is computed correctly", {
 })
 
 test_that("rDf is computed correctly", {
-  expect_is(extLm$rDf, "integer")
-  expect_length(extLm$rDf, 1)
-  expect_named(extLm$rDf, "t1")
-  expect_equivalent(extLm$rDf, 14)
+  expect_is(extLm$rDfF, "integer")
+  expect_length(extLm$rDfF, 1)
+  expect_named(extLm$rDfF, "t1")
+  expect_equivalent(extLm$rDfF, 14)
 })
 
 test_that("rDfR is computed correctly", {
@@ -234,7 +234,7 @@ test_that("correct attributes are added", {
 
 test_that("calculated values are logically correct", {
   ## Fitted + residuals should match raw data.
-  expect_equal(testTD[["E1"]]$t1, extLm$fitted$t1 + extLm$resid$t1)
+  expect_equal(testTD[["E1"]]$t1, extLm$fitted$t1 + extLm$residF$t1)
   expect_equal(testTD[["E1"]]$t1, extLm$rMeans$t1 + extLm$residR$t1)
 })
 

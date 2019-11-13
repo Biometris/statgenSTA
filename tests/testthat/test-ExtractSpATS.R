@@ -107,10 +107,10 @@ test_that("fitted values are computed correctly", {
 })
 
 test_that("residuals are computed correctly", {
-  expect_is(extSp$resid, "data.frame")
-  expect_equal(dim(extSp$resid), c(30, 2))
-  expect_named(extSp$resid, c("genotype", "t1"))
-  expect_equal(extSp$resid$t1,
+  expect_is(extSp$residF, "data.frame")
+  expect_equal(dim(extSp$residF), c(30, 2))
+  expect_named(extSp$residF, c("genotype", "t1"))
+  expect_equal(extSp$residF$t1,
                c(8.80225857606865, -8.80225857606867, -4.26493710041399,
                  -6.63091746943026, 19.3080577979796, -8.21945188052848,
                  -19.3080577979787, -2.69782979511849, 11.1301060224171,
@@ -124,10 +124,10 @@ test_that("residuals are computed correctly", {
 })
 
 test_that("standardized residuals are computed correctly", {
-  expect_is(extSp$stdRes, "data.frame")
-  expect_equal(dim(extSp$stdRes), c(30, 2))
-  expect_named(extSp$stdRes, c("genotype", "t1"))
-  expect_equal(extSp$stdRes$t1,
+  expect_is(extSp$stdResF, "data.frame")
+  expect_equal(dim(extSp$stdResF), c(30, 2))
+  expect_named(extSp$stdResF, c("genotype", "t1"))
+  expect_equal(extSp$stdResF$t1,
                c(1.06281892790892, -1.06281892790892, -0.51496508964015,
                  -0.800642759470036, 2.33132997758598, -0.992448581255369,
                  -2.33132997758588, -0.325746459928379, 1.34389228037666,
@@ -203,11 +203,11 @@ test_that("standardized residuals are computed correctly for genotype random", {
                  -0.476766599199, 0.167294025403286, -0.765783113243793))
 })
 
-test_that("rDf is computed correctly", {
-  expect_is(extSp$rDf, "numeric")
-  expect_length(extSp$rDf, 1)
-  expect_named(extSp$rDf, "t1")
-  expect_equivalent(extSp$rDf, 11)
+test_that("rDfF is computed correctly", {
+  expect_is(extSp$rDfF, "numeric")
+  expect_length(extSp$rDfF, 1)
+  expect_named(extSp$rDfF, "t1")
+  expect_equivalent(extSp$rDfF, 11)
 })
 
 test_that("rDfR is computed correctly", {
@@ -244,6 +244,6 @@ test_that("correct attributes are added", {
 
 test_that("calculated values are logically correct", {
   ## Fitted + residuals should match raw data.
-  expect_equal(testTD[["E1"]]$t1, extSp$fitted$t1 + extSp$resid$t1)
+  expect_equal(testTD[["E1"]]$t1, extSp$fitted$t1 + extSp$residF$t1)
   expect_equal(testTD[["E1"]]$t1, extSp$rMeans$t1 + extSp$residR$t1)
 })

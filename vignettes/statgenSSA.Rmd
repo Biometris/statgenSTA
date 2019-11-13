@@ -312,15 +312,15 @@ R | varGen | genetic variance component |
 R | varErr | residual variance component - only for `lme4` and `asreml` |
 R | varSpat | spatial variance components - only for `SpATS` |
 F | fitted | fitted values for the model with genotype as fixed component |
-F | resid | residuals for the model with genotype as fixed component |
-F | stdRes | standardized residuals for the model with genotype as fixed component |
+F | residF | residuals for the model with genotype as fixed component |
+F | stdResF | standardized residuals for the model with genotype as fixed component |
 R | rMeans | fitted values for the model with genotype as random component |
 R | ranEf | random genetic effects |
 R | residR | residuals for the model with genotype as random component |
 R | stdResR | standardized residuals for the model with genotype as random component |
 F | wald | results of the wald test - only for `lme4` and `asreml` |
 F | CV | Coefficient of Variation - only for `lme4` and `asreml` |
-F | rDf | residual degrees of freedom for the model with genotype as fixed component |
+F | rDfF | residual degrees of freedom for the model with genotype as fixed component |
 R | rDfR | residual degrees of freedom for the model with genotype as random component |
 R | effDim | effective dimensions - only for `SpATS` |
 R | ratEffDim | ratios of the effective dimensions - only for `SpATS` |

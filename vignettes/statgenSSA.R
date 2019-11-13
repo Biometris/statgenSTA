@@ -1,4 +1,4 @@
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(
 collapse = TRUE,
 comment = "#>",
@@ -6,18 +6,18 @@ fig.dim = c(7, 4)
 )
 library(statgenSSA)
 
-## ----createTD------------------------------------------------------------
+## ----createTD-----------------------------------------------------------------
 ## Create a TD object containing the data from Santa Rosa.
 data("wheatChl")
 wheatTD <- createTD(data = wheatChl[wheatChl$trial != "C_SWS_12", ], 
                     genotype = "trt", repId = "rep", subBlock = "bl", 
                     rowCoord = "row", colCoord = "col")
 
-## ----getMeta-------------------------------------------------------------
+## ----getMeta------------------------------------------------------------------
 ## Extract meta data from the TD object. 
 (wheatMeta <- getMeta(TD = wheatTD))
 
-## ----setMeta-------------------------------------------------------------
+## ----setMeta------------------------------------------------------------------
 ## Fill in meta data and add back to the TD object.
 wheatMeta$trLocation <- "Santa Rosa"
 wheatMeta$trDate <- as.Date(rep(c("310811", "310812"), times = 2), "%d%m%y")
@@ -37,63 +37,63 @@ wheatTD <- addTD(TD = wheatTD, data = wheatChl[wheatChl$trial == "C_SWS_12", ],
 ## Inspect the meta data after the extra trial was added.
 getMeta(TD = wheatTD)
 
-## ----TDsum---------------------------------------------------------------
+## ----TDsum--------------------------------------------------------------------
 ## Create a summary for grain yield in SR_FI_11.
 summary(wheatTD, trial = "SR_FI_11", traits = "GY")
 
-## ----TDsumGroup----------------------------------------------------------
+## ----TDsumGroup---------------------------------------------------------------
 ## Create a summary for the two replicates in SR_FI_11.
 summary(wheatTD, trial = "SR_FI_11", traits = "GY", groupBy = "repId")
 
-## ----layoutPlot----------------------------------------------------------
+## ----layoutPlot---------------------------------------------------------------
 plot(wheatTD, trials = "SR_FI_11")
 
-## ----layoutPlotHL--------------------------------------------------------
+## ----layoutPlotHL-------------------------------------------------------------
 ## Plot the layout for SR_FI_11 with genotypes G278 and G279 highlighted.
 plot(wheatTD, trials = "SR_FI_11", highlight = c("G278", "G279"))
 
-## ----layoutPlotSB, fig.dim = c(7, 5)-------------------------------------
+## ----layoutPlotSB, fig.dim = c(7, 5)------------------------------------------
 ## Plot the layout for SR_FI_11, color subBlocks.
 plot(wheatTD, trials = "SR_FI_11", colorSubBlock = TRUE)
 
-## ----layoutPlotSG, fig.dim = c(7, 5)-------------------------------------
+## ----layoutPlotSG, fig.dim = c(7, 5)------------------------------------------
 ## Plot the layout for SR_FI_11, color subBlocks.
 plot(wheatTD, trials = "SR_FI_11", showGeno = TRUE)
 
-## ----mapPlot-------------------------------------------------------------
+## ----mapPlot------------------------------------------------------------------
 ## Plot the locations of the trials on a map.
 plot(wheatTD, plotType = "map")
 
-## ----boxPlot-------------------------------------------------------------
+## ----boxPlot------------------------------------------------------------------
 ## Create a boxplot for grain yield.
 plot(wheatTD, plotType = "box", traits = "GY")
 
-## ----boxPlotGR-----------------------------------------------------------
+## ----boxPlotGR----------------------------------------------------------------
 ## Create a boxplot for grain yield with boxes grouped by year and repIds within
 ## years colored.
 plot(wheatTD, plotType = "box", traits = "GY", groupBy = "year", 
      colorBy = "repId", orderBy = "descending")
 
-## ----corPlot-------------------------------------------------------------
+## ----corPlot------------------------------------------------------------------
 ## Create a correlation plot for grain yield.
 plot(wheatTD, plotType = "cor", traits = "GY")
 
-## ----fitSp, message=FALSE------------------------------------------------
+## ----fitSp, message=FALSE-----------------------------------------------------
 ## Fit a single trial model.
 modWheatSp <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", design = "res.rowcol")
 
-## ----fitSpSm, message=FALSE----------------------------------------------
+## ----fitSpSm, message=FALSE---------------------------------------------------
 ## Fit a single trial model with genotype as random effect.
 modWheatSp2 <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", 
                      what = "random", design = "res.rowcol")
 
-## ----fitSpCtr, message=FALSE---------------------------------------------
+## ----fitSpCtr, message=FALSE--------------------------------------------------
 ## Fit a spatial single trial model using SpATS. 
 ## Manually specify the number of segments for rows and columns.
 modWheatSp3 <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", 
                      design = "res.rowcol", control = list(nSeg = c(20, 20)))
 
-## ----fitAs, message=FALSE, results='hide'--------------------------------
+## ----fitAs, message=FALSE, results='hide'-------------------------------------
 if (requireNamespace("asreml", quietly = TRUE)) {
   ## Fit a spatial single trial model using asreml.
   modWheatAs <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", 
@@ -107,51 +107,51 @@ if (exists("modWheatAs")) {
   print(modWheatAs$SR_FI_11$sumTab$GY, digits = 2, row.names = FALSE)
 }  
 
-## ----fitSum, message=FALSE-----------------------------------------------
+## ----fitSum, message=FALSE----------------------------------------------------
 ## Set nBest to 5 to decrease size of output.
 summary(modWheatSp, nBest = 5)
 
-## ----basePlot------------------------------------------------------------
+## ----basePlot-----------------------------------------------------------------
 ## Base plots for the model with genotype fitted as random effect.
 plot(modWheatSp, what = "random")
 
-## ----spatPlot------------------------------------------------------------
+## ----spatPlot-----------------------------------------------------------------
 ## Spatial plot for the model with genotype fitted as fixed effect.
 plot(modWheatSp, plotType = "spatial")
 
-## ----outDet--------------------------------------------------------------
+## ----outDet-------------------------------------------------------------------
 ## Outlier detection for the model with genotype fitted as random.
 outliers <- outlierSSA(modWheatSp, traits = "GY", what = "random")
 
-## ----outDetCom-----------------------------------------------------------
+## ----outDetCom----------------------------------------------------------------
 ## Outlier detection for the model with genotype fitted as random.
 ## A custom limit is used and commonFactors set to genotype.
 outliers <- outlierSSA(modWheatSp, traits = "GY", what = "random",
                        rLimit = 3.2, commonFactors = "genotype")
 
-## ----modRep, eval=FALSE--------------------------------------------------
+## ----modRep, eval=FALSE-------------------------------------------------------
 #  ## Create a report in the current working directory
 #  report(modWheatSp)
 #  ## Create a report for the model with genotype fitted as random.
 #  report(modWheatSp, outfile = "./myReports/wheatReport.pdf", what = "random")
 
-## ----extBLUEs------------------------------------------------------------
+## ----extBLUEs-----------------------------------------------------------------
 ## Extract BLUEs
 BLUEsWheat <- extract(SSA = modWheatSp, what = "BLUEs")
 ## Extract BLUEs and BLUPs
 predWheat <- extract(SSA = modWheatSp, what = c("BLUEs", "BLUPs"))
 
-## ----extBLUEsKeep--------------------------------------------------------
+## ----extBLUEsKeep-------------------------------------------------------------
 ## Extract BLUEs from the fitted model.
 BLUEsWheat2 <- extract(SSA = modWheatSp, what = "BLUEs", keep = "trial")
 head(BLUEsWheat2[["SR_FI_11"]]$BLUEs)
 
-## ----extFit--------------------------------------------------------------
+## ----extFit-------------------------------------------------------------------
 ## Extract fitted values from the model.
 fitVals <- extract(SSA = modWheatSp, what = "fitted", keep = c("trial", "repId"))
 head(fitVals[["SR_FI_11"]]$fitted)
 
-## ----SSAtoTD, message=FALSE----------------------------------------------
+## ----SSAtoTD, message=FALSE---------------------------------------------------
 ## Fit a model for all trials with genotype as fixed factor.
 modWheatSpTot <- fitTD(TD = wheatTD, traits = "GY", what = "fixed", 
                        design = "res.rowcol")

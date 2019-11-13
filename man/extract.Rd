@@ -69,9 +69,9 @@ and \code{asreml}.}
 \item{R - varSpat}{Spatial variance components - only for \code{SpATS}.}
 \item{F - fitted}{Fitted values for the model with genotype as fixed
 component.}
-\item{F - resid}{Residuals for the model with genotype as fixed component.}
-\item{F - stdRes}{Standardized residuals for the model with genotype as fixed
-component}
+\item{F - residF}{Residuals for the model with genotype as fixed component.}
+\item{F - stdResF}{Standardized residuals for the model with genotype as
+fixed component}
 \item{R - rMeans}{Fitted values for the model with genotype as random
 component.}
 \item{R - ranEf}{Random genetic effects.}
@@ -82,7 +82,7 @@ random component}
 \code{asreml}.}
 \item{F - CV}{Coefficient of variation - only for \code{lme4} and
 \code{asreml}.}
-\item{F - rDf}{Residual degrees of freedom for the model with genotype as
+\item{F - rDfF}{Residual degrees of freedom for the model with genotype as
 fixed component.}
 \item{R - rDfR}{Residual degrees of freedom for the model with genotype as
 random component.}

@@ -103,10 +103,10 @@ if (requireNamespace("asreml", quietly = TRUE)) {
   })
 
   test_that("residuals are computed correctly", {
-    expect_is(extAs$resid, "data.frame")
-    expect_equal(dim(extAs$resid), c(30, 3))
-    expect_named(extAs$resid, c("genotype", "repId", "t1"))
-    expect_equal(extAs$resid$t1,
+    expect_is(extAs$residF, "data.frame")
+    expect_equal(dim(extAs$residF), c(30, 3))
+    expect_named(extAs$residF, c("genotype", "repId", "t1"))
+    expect_equal(extAs$residF$t1,
                  c(10.4099940235012, -10.4099940235012, -0.945258777142314,
                    -5.91635357729179, 24.6020737264621, 1.69516958300599,
                    -24.6020737264629, -3.62706591201722, 20.7988072520505,
@@ -120,10 +120,10 @@ if (requireNamespace("asreml", quietly = TRUE)) {
   })
 
   test_that("standardized residuals are computed correctly", {
-    expect_is(extAs$stdRes, "data.frame")
-    expect_equal(dim(extAs$stdRes), c(30, 3))
-    expect_named(extAs$stdRes, c("genotype", "repId", "t1"))
-    expect_equal(extAs$stdRes$t1,
+    expect_is(extAs$stdResF, "data.frame")
+    expect_equal(dim(extAs$stdResF), c(30, 3))
+    expect_named(extAs$stdResF, c("genotype", "repId", "t1"))
+    expect_equal(extAs$stdResF$t1,
                  c(0.953916675431384, -0.953916675431386, -0.0866185041104054,
                    -0.542143282924636, 2.25440363605238, 0.155336355550531,
                    -2.25440363605246, -0.332365095364224, 1.90589245507956,
@@ -213,11 +213,11 @@ if (requireNamespace("asreml", quietly = TRUE)) {
     expect_equivalent(extAs$CV, 19.285543536136)
   })
 
-  test_that("rDf is computed correctly", {
-    expect_is(extAs$rDf, "integer")
-    expect_length(extAs$rDf, 1)
-    expect_named(extAs$rDf, "t1")
-    expect_equivalent(extAs$rDf, 14)
+  test_that("rDfF is computed correctly", {
+    expect_is(extAs$rDfF, "integer")
+    expect_length(extAs$rDfF, 1)
+    expect_named(extAs$rDfF, "t1")
+    expect_equivalent(extAs$rDfF, 14)
   })
 
   test_that("rDfR is computed correctly", {
@@ -249,7 +249,7 @@ if (requireNamespace("asreml", quietly = TRUE)) {
 
   test_that("calculated values are logically correct", {
     ## Fitted + residuals should match raw data.
-    expect_equal(testTD[["E1"]]$t1, extAs$fitted$t1 + extAs$resid$t1)
+    expect_equal(testTD[["E1"]]$t1, extAs$fitted$t1 + extAs$residF$t1)
     expect_equal(testTD[["E1"]]$t1, extAs$rMeans$t1 + extAs$residR$t1)
   })
 }
