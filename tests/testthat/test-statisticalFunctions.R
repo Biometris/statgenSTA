@@ -28,7 +28,7 @@ test_that("function skewness gives correct results", {
                     c(0.400950835964985, -0.201787119775979))
 })
 
-test_that("function seKurtosis gives correct results", {
+test_that("function seSkewness gives correct results", {
   expect_equal(seSkewness(100), 0.24137977904013)
   expect_warning(seSkew <- seSkewness(2),
                  "the standard error of skewness cannot be calculated")

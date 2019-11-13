@@ -66,6 +66,13 @@ test_that("heritability is computed correctly", {
   expect_equivalent(extSp$heritability, 0.65)
 })
 
+test_that("heritability can be coerced to data.frame correctly", {
+  herit <- as.data.frame(extract(modelSp))
+  expect_is(herit, "data.frame")
+  expect_named(herit, c("trial", "t1"))
+  expect_equal(herit[1, 2], 0.65)
+})
+
 test_that("varGen is computed correctly", {
   expect_is(extSp$varGen, "numeric")
   expect_length(extSp$varGen, 1)
