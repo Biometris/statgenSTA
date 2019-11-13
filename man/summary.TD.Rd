@@ -73,7 +73,6 @@ summary(TDHeat05, traits = "yield", groupBy = "repId")
 Other functions for TD objects: 
 \code{\link{TD}},
 \code{\link{getMeta}()},
-\code{\link{plot.TD}()},
-\code{\link{setMeta}()}
+\code{\link{plot.TD}()}
 }
 \concept{functions for TD objects}

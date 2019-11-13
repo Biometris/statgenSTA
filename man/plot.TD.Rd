@@ -153,7 +153,6 @@ plot(wheatTD, plotType = "cor", traits = "GY")
 Other functions for TD objects: 
 \code{\link{TD}},
 \code{\link{getMeta}()},
-\code{\link{setMeta}()},
 \code{\link{summary.TD}()}
 }
 \concept{functions for TD objects}

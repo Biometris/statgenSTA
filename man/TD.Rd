@@ -200,7 +200,6 @@ TDT2 <- dropTD(TD = TDTot, rmTrials = "T1")
 Other functions for TD objects: 
 \code{\link{getMeta}()},
 \code{\link{plot.TD}()},
-\code{\link{setMeta}()},
 \code{\link{summary.TD}()}
 }
 \concept{functions for TD objects}
