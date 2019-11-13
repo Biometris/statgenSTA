@@ -46,8 +46,8 @@ test_that("option highlight functions properly in TD layout plot", {
   p1 <- plot(testTD, plotType = "layout", highlight = "G1", output = FALSE)
   geoms1 <- sapply(p1[[1]]$layers, function(x) class(x$geom)[1])
   ## Two plots should be highlighted as defined in variable highlight..
-  expect_equal(as.character(p1[[1]]$layers[geoms1 == "GeomTile"][[1]]$mapping),
-               "~highlight.")
+  expect_setequal(as.character(p1[[1]]$layers[geoms1 == "GeomTile"][[1]]$mapping),
+                  c("~highlight.", "~color."))
   expect_equal(sum(!is.na(p1[[1]]$data$highlight.)), 2)
 })
 
@@ -65,8 +65,8 @@ test_that("option highlight overrides colorSubBlock in TD layout plot", {
              colorSubBlock = TRUE, output = FALSE)
   geoms1 <- sapply(p1[[1]]$layers, function(x) class(x$geom)[1])
   ## Two plots should be highlighted as defined in variable highlight..
-  expect_equal(as.character(p1[[1]]$layers[geoms1 == "GeomTile"][[1]]$mapping),
-               "~highlight.")
+  expect_setequal(as.character(p1[[1]]$layers[geoms1 == "GeomTile"][[1]]$mapping),
+                  c("~highlight.", "~color."))
 })
 
 ### TD map plot.
@@ -174,7 +174,7 @@ test_that("checks in plot.SSA function properly", {
   expect_error(plot(modelSp, traits = "t2", outCols = 0),
                "a single numerical value greater than or equal to 1")
   expect_warning(plot(modelSp, traits = "myTr"),
-                "The following traits are not modeled for E1: myTr")
+                 "The following traits are not modeled for E1: myTr")
   modelSp$E1$mRand <- NULL
   expect_warning(plot(modelSp, what = "random"),
                  "No model with genotype random for trial E1 and trait t1")
