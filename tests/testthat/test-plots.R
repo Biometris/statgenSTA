@@ -31,7 +31,6 @@ test_that("TD layout plot skips plots with missing row or column coordinates", {
                  "rowCoord contains missing values")
 })
 
-
 test_that("option showGeno functions properly in TD layout plot", {
   p1 <- plot(testTD, plotType = "layout", showGeno = TRUE, output = FALSE)
   ## Difference with default plot p0 should be the extra GeomText layer.
@@ -217,3 +216,7 @@ test_that("option what in SSA plot functions properly", {
   expect_equal(p2[[1]][[1]][[6]]$labels$x, "Genotypic BLUPs")
 })
 
+test_that("option spaTrend in SSA plot functions properly", {
+  expect_silent(p <- plot(modelSp, plotType = "spatial",
+                          spaTrend = "percentage", output = FALSE))
+})
