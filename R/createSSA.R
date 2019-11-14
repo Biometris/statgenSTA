@@ -260,6 +260,11 @@ print.summary.SSA <- function(x,
 #' If \code{x} contains only one model this model is chosen automatically.
 #' @param plotType A Character string indicating whether \code{base} plots or
 #' \code{spatial} plots should be made.
+#' @param spaTrend A character string indicating how the spatial trend should
+#' be displayed. Either "raw" (original scale), or "percentage". If
+#' "percentage", the estimated spatial trend is scaled (i.e., divided by the
+#' average of the observed response variable of interest across the field) and
+#' results are shown as a percentage.
 #' @param outCols An integer indicating the number of columns to use for
 #' displaying the plots. Usually the default of 2 for base plots and 3 for
 #' spatial plots will be fine, but decreasing the numbers may help for nicer
@@ -279,10 +284,13 @@ print.summary.SSA <- function(x,
 #' ## Create spatial plots.
 #' plot(myModel, what = "fixed", plotType = "spatial")
 #'
+#' ## Create spatial plots showing the spatial trend as percentage.
+#' plot(myModel, what = "fixed", plotType = "spatial", spaTrend = "percentage")
+#'
 #' @family SSA
 #'
 #' @import ggplot2
-#' @importFrom grDevices topo.colors
+#' @importFrom grDevices topo.colors colorRampPalette
 #' @export
 plot.SSA <- function(x,
                      ...,
@@ -290,6 +298,7 @@ plot.SSA <- function(x,
                      traits = NULL,
                      what = NULL,
                      plotType = c("base", "spatial"),
+                     spaTrend = c("raw", "percentage"),
                      outCols = ifelse(plotType == "base", 2, 3),
                      output = TRUE) {
   ## Checks.
@@ -297,6 +306,7 @@ plot.SSA <- function(x,
   chkChar(traits)
   plotType <- match.arg(arg = plotType)
   chkNum(outCols, min = 1, null = FALSE, incl = TRUE)
+  spaTrend <- match.arg(arg = spaTrend)
   dotArgs <- list(...)
   ## Check whether data contains row/col information.
   spatCols <- c("colCoord", "rowCoord")
@@ -490,9 +500,21 @@ plot.SSA <- function(x,
           ## Spatial plot tends to use different tickmarks by default.
           xTicks <-
             ggplot_build(plots[[1]])$layout$panel_params[[1]]$x.major_source
-          plots$p4 <- fieldPlot(plotDat = plotDatSpat, fillVar = "value",
-                                title = legends[4], colors = colors,
-                                xTicks = xTicks)
+          if (spaTrend == "raw") {
+            plots$p4 <- fieldPlot(plotDat = plotDatSpat, fillVar = "value",
+                                  title = legends[4], colors = colors,
+                                  xTicks = xTicks)
+          } else {
+            colorsSp <- colorRampPalette(c("red", "yellow", "blue"),
+                                         space = "Lab")(100)
+            phenoMean <- mean(plotDat[["response"]], na.rm = TRUE)
+            plotDatSpat[["value"]] <- plotDatSpat[["value"]] / phenoMean
+            zlim <- c(-1, 1) * max(c(abs(plotDatSpat[["value"]]), 0.1))
+            plots$p4 <- fieldPlot(plotDat = plotDatSpat, fillVar = "value",
+                                  title = legends[4], zlim = zlim,
+                                  colors = colorsSp, spaTrend = "percentage",
+                                  xTicks = xTicks)
+          }
         }
         plots$p5 <- fieldPlot(plotDat = plotDat, fillVar = "pred",
                               title = legends[5], colors = colors)
@@ -505,8 +527,7 @@ plot.SSA <- function(x,
           scale_y_continuous(expand = c(0, 0)) +
           ## No background. Center and resize title. Resize axis labels.
           theme(panel.background = element_blank(),
-                plot.title = element_text(hjust = 0.5,
-                                          size = 10),
+                plot.title = element_text(hjust = 0.5, size = 10),
                 axis.title = element_text(size = 9)) +
           labs(y = "Frequency", x = legends[5]) +
           ggtitle(legends[6])
@@ -534,24 +555,31 @@ fieldPlot <- function(plotDat,
                       colors,
                       zlim = range(plotDat[fillVar]),
                       xTicks = waiver(),
+                      spaTrend = "raw",
                       ...) {
-  p <- ggplot(data = plotDat,
-              aes_string(x = "colCoord", y = "rowCoord",
-                         fill = fillVar)) +
-    geom_tile() +
+  p <- ggplot(data = plotDat, aes_string(x = "colCoord", y = "rowCoord",
+                                         fill = fillVar)) +
+    geom_tile(na.rm = TRUE) +
     ## Remove empty space between ticks and actual plot.
     scale_x_continuous(expand = c(0, 0), breaks = xTicks) +
     scale_y_continuous(expand = c(0, 0)) +
-    ## Adjust plot colors.
-    scale_fill_gradientn(limits = zlim, colors = colors, na.value = "white") +
     ## No background. Center and resize title. Resize axis labels.
     ## Remove legend title and resize legend entries.
     theme(panel.background = element_blank(),
           plot.title = element_text(hjust = 0.5, size = 10),
           axis.title = element_text(size = 9),
-          legend.title = element_blank(),
-          legend.text = element_text(size = 8, margin = margin(l = 5))) +
+          legend.text = element_text(size = 8)) +
     ggtitle(title)
+  ## Adjust plot colors.
+  if (spaTrend == "raw") {
+    p <- p + scale_fill_gradientn(limits = zlim, colors = colors, name = NULL,
+                                  na.value = "white")
+  } else if (spaTrend == "percentage") {
+    p <- p + scale_fill_gradientn(limits = zlim, colors = colors, name = NULL,
+                                  labels = scales::percent,
+                                  breaks = seq(zlim[1], zlim[2],
+                                               length.out = 5))
+  }
   return(p)
 }
 

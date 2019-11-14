@@ -11,6 +11,7 @@
   traits = NULL,
   what = NULL,
   plotType = c("base", "spatial"),
+  spaTrend = c("raw", "percentage"),
   outCols = ifelse(plotType == "base", 2, 3),
   output = TRUE
 )
@@ -33,6 +34,12 @@ If \code{x} contains only one model this model is chosen automatically.}
 
 \item{plotType}{A Character string indicating whether \code{base} plots or
 \code{spatial} plots should be made.}
+
+\item{spaTrend}{A character string indicating how the spatial trend should
+be displayed. Either "raw" (original scale), or "percentage". If
+"percentage", the estimated spatial trend is scaled (i.e., divided by the
+average of the observed response variable of interest across the field) and
+results are shown as a percentage.}
 
 \item{outCols}{An integer indicating the number of columns to use for
 displaying the plots. Usually the default of 2 for base plots and 3 for
@@ -74,6 +81,9 @@ plot(myModel, what = "fixed", plotType = "base")
 
 ## Create spatial plots.
 plot(myModel, what = "fixed", plotType = "spatial")
+
+## Create spatial plots showing the spatial trend as percentage.
+plot(myModel, what = "fixed", plotType = "spatial", spaTrend = "percentage")
 
 }
 \seealso{

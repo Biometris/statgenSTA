@@ -557,7 +557,6 @@ extractOptSel <- function(what,
   return(extractSel[["result"]])
 }
 
-
 #' Helper function for detecting the version of asreml installed.
 #' This is used wherever the syntax for asreml4 differs from asreml3.
 #'
