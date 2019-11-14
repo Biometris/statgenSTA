@@ -298,34 +298,11 @@ After fitting a model, various results can be extracted or calculated from the f
 
 All results that can be extracted are shown in the table below. The first column shows what model needs to be fitted in order to be able to extract the result. Here F stands for genotype as fixed effect and R for genotype as random effect. In the second column is the result. This is also the value to be used for the parameter `what` in `extract` needed to extract the corresponding result. The last column gives a short description of the result that will be extracted and, where needed, also states for which modeling engines it can be extracted.
 
-model | result | description |
------ | ------ | ------------------------------------------------------------- |
-F | BLUEs | Best Linear Unbiased Estimators |
-F | seBLUES | standard errors of the BLUEs |
-R | BLUPs | Best Linear Unbiased Predictors |
-R | seBLUPs | standard errors of the BLUPs |
-F | ue | unit errors - only for `lme4` and `asreml` |
-R | heritability | broad sense heritability |
-F | varCompF | variance components for the model with genotype as fixed component |
-R | varCompR | variance components for the model with genotype as random component |
-R | varGen | genetic variance component |
-R | varErr | residual variance component - only for `lme4` and `asreml` |
-R | varSpat | spatial variance components - only for `SpATS` |
-F | fitted | fitted values for the model with genotype as fixed component |
-F | residF | residuals for the model with genotype as fixed component |
-F | stdResF | standardized residuals for the model with genotype as fixed component |
-R | rMeans | fitted values for the model with genotype as random component |
-R | ranEf | random genetic effects |
-R | residR | residuals for the model with genotype as random component |
-R | stdResR | standardized residuals for the model with genotype as random component |
-F | wald | results of the wald test - only for `lme4` and `asreml` |
-F | CV | Coefficient of Variation - only for `lme4` and `asreml` |
-F | rDfF | residual degrees of freedom for the model with genotype as fixed component |
-R | rDfR | residual degrees of freedom for the model with genotype as random component |
-R | effDim | effective dimensions - only for `SpATS` |
-R | ratEffDim | ratios of the effective dimensions - only for `SpATS` |
-F | sed | standard error of difference - only for `asreml` |
-F | lsd | least significant difference - only for `asreml` |
+```{r extractOpts, results="as.is", echo=FALSE, out.width = "\\textwidth"}
+## Generate table of options for extract from interal data.
+knitr::kable(statgenSSA:::extractOptions[, 1:3], 
+                     align = c("l", "l", "l", "l"), row.names = FALSE)
+```
 
 Using `what = "all"` in the function call, extracts all results possible for the fitted model. This is also the default.  
 
