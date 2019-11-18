@@ -308,8 +308,6 @@ plot.SSA <- function(x,
   chkNum(outCols, min = 1, null = FALSE, incl = TRUE)
   spaTrend <- match.arg(arg = spaTrend)
   dotArgs <- list(...)
-  ## Check whether data contains row/col information.
-  spatCols <- c("colCoord", "rowCoord")
   p <- setNames(vector(mode = "list", length = length(trials)), trials)
   for (trial in trials) {
     traitsTr <- chkTraits(traits, trial, x[[trial]], err = FALSE)
@@ -317,6 +315,8 @@ plot.SSA <- function(x,
     if (length(traitsTr) == 0) {
       next
     }
+    ## Check row column information in trDat - available, no missings.
+    if (plotType == "spatial" && !chkRowCol(trDat)) next
     if (is.null(what)) {
       what <- ifelse(is.null(x[[trial]]$mFix), "random", "fixed")
     } else {
@@ -331,30 +331,12 @@ plot.SSA <- function(x,
       useCheckId <- FALSE
     }
     if (plotType == "spatial") {
-      mergeCols <- spatCols
+      mergeCols <- c("colCoord", "rowCoord")
     } else {
       mergeCols <- NULL
     }
     if (useCheckId) {
       mergeCols <- c(mergeCols, "checkId")
-    }
-    if (plotType == "spatial") {
-      if (!all(spatCols %in% colnames(trDat))) {
-        warning("Data for trial ", trial, " contains no spatial ",
-                "information.\n Plots for trial ", trial, " skipped.\n",
-                call. = FALSE)
-        next
-      }
-      if (sum(is.na(trDat[["colCoord"]])) > 0) {
-        warning("colCoord contains missing values for ", trial, ".\n",
-                "Plots for trial ", trial, " skipped.\n", call. = FALSE)
-        next
-      }
-      if (sum(is.na(trDat[["colCoord"]])) > 0) {
-        warning("colCoord contains missing values for ", trial, ".\n",
-                "Plots for trial ", trial, " skipped.\n", call. = FALSE)
-        next
-      }
     }
     pTr <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traitsTr) {

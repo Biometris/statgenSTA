@@ -179,7 +179,7 @@ test_that("checks in plot.SSA function properly", {
                  "No model with genotype random for trial E1 and trait t1")
   modelSp$E1$TD$E1$rowCoord <- NULL
   expect_warning(plot(modelSp, plotType = "spatial"),
-                 "Data for trial E1 contains no spatial information")
+                 "rowCoord should be a column in E1")
 })
 
 ### SSA base plot.

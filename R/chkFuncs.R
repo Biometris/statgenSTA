@@ -71,6 +71,11 @@ chkTrials <- function(trials,
   return(trials)
 }
 
+#' Check that traits are within an object for a given trial.
+#' Either throw an error or give a warning depending on err.
+#'
+#' @noRd
+#' @keywords internal
 chkTraits <- function(traits,
                       trial,
                       obj,
@@ -85,10 +90,40 @@ chkTraits <- function(traits,
              paste(errTraits, collapse = ","), "\n")
       } else {
         warning("The following traits are not modeled for ", trial, ": ",
-                paste(errTraits, collapse = ","), "\n", trial, " skipped.")
+                paste(errTraits, collapse = ","), "\n", trial, " skipped.",
+                call. = FALSE)
         traits <- NULL
       }
     }
   }
   return(traits)
+}
+
+#' Check that row and column information is available in data.frame.
+#' Columns should be present and cannot contain NA values.
+#'
+#' @noRd
+#' @keywords internal
+chkRowCol <- function(dat) {
+  trial <- dat[["trial"]][1]
+  rowCol <- TRUE
+  if (!"rowCoord" %in% colnames(dat)) {
+    rowCol <- FALSE
+    warning("rowCoord should be a column in ", trial, ".\n",
+            "Plot skipped.\n", call. = FALSE)
+  } else if (sum(is.na(dat[["rowCoord"]])) > 0) {
+    rowCol <- FALSE
+    warning("rowCoord contains missing values for ", trial, ".\n",
+            "Plot skipped.\n", call. = FALSE)
+  }
+  if (!"colCoord" %in% colnames(dat)) {
+    rowCol <- FALSE
+    warning("colCoord should be a column in ", trial, ".\n",
+            "Plot skipped.\n", call. = FALSE)
+  } else if (sum(is.na(dat[["colCoord"]])) > 0) {
+    rowCol <- FALSE
+    warning("colCoord contains missing values for ", trial, ".\n",
+            "Plot skipped.\n", call. = FALSE)
+  }
+  return(rowCol)
 }

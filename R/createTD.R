@@ -697,26 +697,7 @@ plot.TD <- function(x,
     p <- setNames(vector(mode = "list", length = length(trials)), trials)
     for (trial in trials) {
       trDat <- x[[trial]]
-      if (!"rowCoord" %in% colnames(trDat)) {
-        warning("rowCoord should be a column in ", trial, ".\n",
-                "Plot skipped.\n", call. = FALSE)
-        next
-      }
-      if (sum(is.na(trDat[["rowCoord"]])) > 0) {
-        warning("rowCoord contains missing values for ", trial, ".\n",
-                "Plot skipped.\n", call. = FALSE)
-        next
-      }
-      if (!"colCoord" %in% colnames(trDat)) {
-        warning("colCoord should be a column in ", trial, ".\n",
-                "Plot skipped.\n", call. = FALSE)
-        next
-      }
-      if (sum(is.na(trDat[["colCoord"]])) > 0) {
-        warning("colCoord contains missing values for ", trial, ".\n",
-                "Plot skipped.\n", call. = FALSE)
-        next
-      }
+      if (!chkRowCol(trDat)) next
       if (length(highlight) > 0) {
         trDat[["highlight."]] <- ifelse(trDat[["genotype"]] %in% highlight,
                                    as.character(trDat[["genotype"]]), NA)
