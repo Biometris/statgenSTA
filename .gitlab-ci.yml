@@ -77,3 +77,8 @@ coverage:
     - Rscript -e 'covr::package_coverage(line_exclusions = "R/fitTDAsreml.R", function_exclusions = c("extractAsreml", "createReport"))'
     - Rscript -e 'covr::gitlab()'
   coverage: '/Coverage:\s*(\d+.\d+\%)/'
+  artifacts:
+    when: always
+    paths:
+      - public
+    expire_in: '1 month'
