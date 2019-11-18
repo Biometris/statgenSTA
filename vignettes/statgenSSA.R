@@ -119,6 +119,11 @@ plot(modWheatSp, what = "random")
 ## Spatial plot for the model with genotype fitted as fixed effect.
 plot(modWheatSp, plotType = "spatial")
 
+## ----spatPlotPerc-------------------------------------------------------------
+## Spatial plot for the model with genotype fitted as fixed effect.
+## Display the spatial trend as a percentage.
+plot(modWheatSp, plotType = "spatial", spaTrend = "percentage")
+
 ## ----outDet-------------------------------------------------------------------
 ## Outlier detection for the model with genotype fitted as random.
 outliers <- outlierSSA(modWheatSp, traits = "GY", what = "random")
@@ -134,6 +139,11 @@ outliers <- outlierSSA(modWheatSp, traits = "GY", what = "random",
 #  report(modWheatSp)
 #  ## Create a report for the model with genotype fitted as random.
 #  report(modWheatSp, outfile = "./myReports/wheatReport.pdf", what = "random")
+
+## ----extractOpts, results="as.is", echo=FALSE, out.width = "\\textwidth"------
+## Generate table of options for extract from internal data.
+knitr::kable(statgenSSA:::extractOptions[, 1:3], 
+                     align = c("l", "l", "l", "l"), row.names = FALSE)
 
 ## ----extBLUEs-----------------------------------------------------------------
 ## Extract BLUEs

@@ -248,10 +248,15 @@ Two types of plots can be made for fitted models. The first is a series of four 
 plot(modWheatSp, what = "random")
 ```
 
-The second type of plot consists of five plots, spatial plots of the raw data, fitted values, residuals and either BLUEs or BLUPs, and a histogram of the BLUEs or BLUPs. If SpATS was used for modeling an extra plot with the fitted spatial trend is included. The call for creating these plots differs from the base plots only by an extra parameter `plotType = "spatial"`. Note that spatial plots can only be made if spatial information, i.e. `rowCoord` and `colCoord`, is available in the `TD` object.
+The second type of plot consists of five plots, spatial plots of the raw data, fitted values, residuals and either BLUEs or BLUPs, and a histogram of the BLUEs or BLUPs. If SpATS was used for modeling an extra plot with the fitted spatial trend is included. The spatial trend can be displayed on the original scale (`spaTrend = "raw"`) or as percentega (`spaTrend = "percentage"`). In the latter case the spatial trend is scaled (i.e., divided by the average of the observed response variable of interest across the field) and displayed as percentage. The call for creating these plots differs from the base plots only by an extra parameter `plotType = "spatial"`. Note that spatial plots can only be made if spatial information, i.e. `rowCoord` and `colCoord`, is available in the `TD` object.
 ```{r spatPlot}
 ## Spatial plot for the model with genotype fitted as fixed effect.
 plot(modWheatSp, plotType = "spatial")
+```
+```{r spatPlotPerc}
+## Spatial plot for the model with genotype fitted as fixed effect.
+## Display the spatial trend as a percentage.
+plot(modWheatSp, plotType = "spatial", spaTrend = "percentage")
 ```
 
 ## Outlier detection
@@ -273,7 +278,6 @@ To get an idea of the magnitude of the outliers the parameter commonFactors can 
 outliers <- outlierSSA(modWheatSp, traits = "GY", what = "random",
                        rLimit = 3.2, commonFactors = "genotype")
 ```
-
 
 ## Model reports
 
@@ -299,7 +303,7 @@ After fitting a model, various results can be extracted or calculated from the f
 All results that can be extracted are shown in the table below. The first column shows what model needs to be fitted in order to be able to extract the result. Here F stands for genotype as fixed effect and R for genotype as random effect. In the second column is the result. This is also the value to be used for the parameter `what` in `extract` needed to extract the corresponding result. The last column gives a short description of the result that will be extracted and, where needed, also states for which modeling engines it can be extracted.
 
 ```{r extractOpts, results="as.is", echo=FALSE, out.width = "\\textwidth"}
-## Generate table of options for extract from interal data.
+## Generate table of options for extract from internal data.
 knitr::kable(statgenSSA:::extractOptions[, 1:3], 
                      align = c("l", "l", "l", "l"), row.names = FALSE)
 ```
