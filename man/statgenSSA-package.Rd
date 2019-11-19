@@ -13,7 +13,7 @@ The statgen packages, commissioned by the Generation Challenge
     phenotypic analysis of field trials using spatial models.
     Some functions have been created to be used in conjunction with the R 
     package 'asreml' for the 'ASReml' software, which can be obtained upon 
-    purchase from 'VSN' international (<http://www.vsni.co.uk/software/asreml>).
+    purchase from 'VSN' international (<http://www.vsni.co.uk/software/asreml-r>).
 }
 \author{
 \strong{Maintainer}: Bart-Jan van Rossum \email{bart-jan.vanrossum@wur.nl}
