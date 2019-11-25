@@ -6,8 +6,9 @@
 #' of freedom for the model. This value is then restricted to the interval
 #' 2..4. Alternatively a custom limit may be provided.\cr
 #' If \code{verbose = TRUE} a summary is printed of outliers and observations
-#' that have the same value for \code{commonFactors}. The latter ones will be
-#' marked as similar to distinguish them from the former ones.
+#' that have the same value for \code{commonFactors}. The column outlier in the
+#' output can be used to distinguish real outliers from observations included
+#' because of their commonFactors.
 #'
 #' @param SSA An object of class \code{SSA}.
 #' @param trials A character vector specifying the trials for which outliers
@@ -122,8 +123,8 @@ outlierSSA <- function(SSA,
           outTrt <- outTrt[!is.na(outTrt[["res"]]) &
                                     abs(outTrt[["res"]]) > rLimit, ]
         }
-        ## Add columns similar and trait to output.
-        outTrt[["similar"]] <- abs(outTrt[["res"]]) <= rLimit
+        ## Add columns outlier and trait to output.
+        outTrt[["outlier"]] <- abs(outTrt[["res"]]) > rLimit
         outTrt[["trait"]] <- trait
         ## Add column value with value of trait.
         ## Leave actual trait column as well for ease of judging outliers.
@@ -150,7 +151,7 @@ outlierSSA <- function(SSA,
     if (!is.null(outTot)) {
       cat(paste("Large standardized residuals.\n\n"))
       print(format(outTot[c("trial", "genotype", "trait", "value", "res",
-                            "similar")], quote = FALSE), row.names = FALSE)
+                            "outlier")], quote = FALSE), row.names = FALSE)
     } else {
       cat("No large standardized residuals.\n")
     }

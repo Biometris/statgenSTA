@@ -72,7 +72,7 @@ test_that("option commonFactors functions properly", {
                      commonFactors = "subBlock", verbose = FALSE)
   expect_length(out1$indicator[["E1"]][["t1"]], 4)
   expect_equal(nrow(out1$outliers), 12)
-  expect_equal(sum(out1$outliers$similar), 8)
+  expect_equal(sum(out1$outliers$outlier), 4)
 })
 
 test_that("option verbose functions properly", {

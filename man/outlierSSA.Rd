@@ -55,8 +55,9 @@ Function to identify observations with standardized residuals exceeding
 of freedom for the model. This value is then restricted to the interval
 2..4. Alternatively a custom limit may be provided.\cr
 If \code{verbose = TRUE} a summary is printed of outliers and observations
-that have the same value for \code{commonFactors}. The latter ones will be
-marked as similar to distinguish them from the former ones.
+that have the same value for \code{commonFactors}. The column outlier in the
+output can be used to distinguish real outliers from observations included
+because of their commonFactors.
 }
 \examples{
 ## Fit a model using lme4.
