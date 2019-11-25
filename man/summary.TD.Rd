@@ -11,7 +11,7 @@
   traits,
   groupBy = NULL,
   what = if (!is.null(groupBy)) {     c("nObs", "mean", "sd") } else {     c("nObs",
-    "nMiss", "mean", "median", "min", "max", "lowerQ", "upperQ", "var") }
+    "nMiss", "mean", "median", "min", "max", "firstQ", "thirdQ", "var") }
 )
 }
 \arguments{
@@ -38,8 +38,8 @@ Possible options are:
 \item{min}{The minimum.}
 \item{max}{The maximum.}
 \item{range}{The range (maximum - minimum).}
-\item{lowerQ}{The lower (25\%) quantile.}
-\item{upperQ}{The upper (75\%) quantile.}
+\item{firstQ}{The first (25\%) quantile.}
+\item{thirdQ}{The third (75\%) quantile.}
 \item{sd}{The standard deviation.}
 \item{seMean}{The standard error of mean.}
 \item{var}{The variance.}

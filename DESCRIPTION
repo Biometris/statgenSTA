@@ -2,7 +2,7 @@ Package: statgenSSA
 Type: Package
 Title: Single Site Analysis (SSA) of Field Trials
 Version: 0.0.5.3
-Date: 2019-11-01
+Date: 2019-11-25
 Authors@R: c(person(given = "Bart-Jan", 
                     family = "van Rossum", 
                     email = "bart-jan.vanrossum@wur.nl", 
@@ -14,6 +14,10 @@ Authors@R: c(person(given = "Bart-Jan",
              person(given = "Martin", 
                     family = "Boer",
                     role = "ctb"),
+             person(given = "Marcos",
+                    family = "Malosetti",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0002-8150-1397")),
              person(given = "Daniela", 
                     family = "Bustos-Korts",
                     role = "ctb",
@@ -21,36 +25,56 @@ Authors@R: c(person(given = "Bart-Jan",
              person(given = "Emilie", 
                     family = "Millet",
                     role = "ctb",
-                    comment = c(ORCID = "0000-0002-2913-4892"))
+                    comment = c(ORCID = "0000-0002-2913-4892")),
+             person(given = "Joao", 
+                    family = "Paulo",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0002-4180-0763")),
+             person(given = "Maikel", 
+                    family = "Verouden",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0002-4893-3323")),
+             person(given = "Willem", 
+                    family = "Kruijer",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0001-7179-1733")),
+             person(given = "Ron", 
+                    family = "Wehrens",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0002-8798-5599")),
+             person(given = "Choazhi", 
+                    family = "Zheng",
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0001-6030-3933"))
             )
-Description: The statgen packages, commissioned by the Generation Challenge 
-    Program (GCP), are being developed to streamline the analysis of typical 
-    plant breeding experiments, including both phenotypic analysis of field 
-    trials and genotype-by-environment analysis. statgenSSA can be used for 
-    phenotypic analysis of field trials using spatial models.
-    Some functions have been created to be used in conjunction with the R 
-    package 'asreml' for the 'ASReml' software, which can be obtained upon 
-    purchase from 'VSN' international (<http://www.vsni.co.uk/software/asreml-r>).
+Description: The statgen packages, developed by Biometris, are developed to 
+    streamline the analysis of typical plant breeding experiments, including 
+    both phenotypic analysis of field trials and genotype-by-environment 
+    analysis. statgenSSA can be used for phenotypic analysis of field trials 
+    using spatial models. Some functions have been created to be used in 
+    conjunction with the R package 'asreml' for the 'ASReml' software, which 
+    can be obtained upon purchase from 'VSN' international 
+    (<http://www.vsni.co.uk/software/asreml-r>).
 License: GPL
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.0
+RoxygenNote: 7.0.1
 Depends: R (>= 3.3)
 Imports: 
     emmeans,
     ggplot2 (>= 3.0),
+    ggrepel,
+    gridExtra,
     knitr,
     lme4,
-    maps,
     mapproj,
+    maps,
     methods,
     qtl,
     reshape2,
-    SpATS (>= 1.0-10),
-    xtable,
-    gridExtra,
     scales,
-    ggrepel
+    SpATS (>= 1.0-10),
+    xtable
 Suggests: asreml(>= 3.0),
     rmarkdown,
     testthat,

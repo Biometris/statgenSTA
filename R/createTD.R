@@ -347,8 +347,8 @@ dropTD <- function(TD,
 #' \item{min}{The minimum.}
 #' \item{max}{The maximum.}
 #' \item{range}{The range (maximum - minimum).}
-#' \item{lowerQ}{The lower (25\%) quantile.}
-#' \item{upperQ}{The upper (75\%) quantile.}
+#' \item{firstQ}{The first (25\%) quantile.}
+#' \item{thirdQ}{The third (75\%) quantile.}
 #' \item{sd}{The standard deviation.}
 #' \item{seMean}{The standard error of mean.}
 #' \item{var}{The variance.}
@@ -385,17 +385,17 @@ summary.TD <- function(object,
                          c("nObs", "mean", "sd")
                        } else {
                          c("nObs", "nMiss", "mean", "median", "min", "max",
-                           "lowerQ", "upperQ", "var")
+                           "firstQ", "thirdQ", "var")
                        }) {
   allStat <- data.frame(stat = c("nVals", "nObs", "nMiss", "mean", "median",
-                                 "min","max", "range", "lowerQ", "upperQ", "sd",
+                                 "min","max", "range", "firstQ", "thirdQ", "sd",
                                  "seMean", "var", "seVar", "CV", "sum", "sumSq",
                                  "uncorSumSq", "skew", "seSkew", "kurt",
                                  "seKurt"),
                         name = c("Number of values", "Number of observations",
                                  "Number of missing values", "Mean", "Median",
-                                 "Min", "Max", "Range", "Lower quartile",
-                                 "Upper quartile", "Standard deviation",
+                                 "Min", "Max", "Range", "First quantile",
+                                 "Third quantile", "Standard deviation",
                                  "Standard error of mean", "Variance",
                                  "Standard error of variance",
                                  "Coefficient of variation", "Sum of values",
@@ -463,11 +463,11 @@ summary.TD <- function(object,
       if ("range" %in% what) {
         stats["range", i, j] <- diff(range(trDatGr, na.rm = TRUE))
       }
-      if ("lowerQ" %in% what) {
-        stats["lowerQ", i, j] <- quantile(trDatGr, prob = .25, na.rm = TRUE)
+      if ("firstQ" %in% what) {
+        stats["firstQ", i, j] <- quantile(trDatGr, prob = .25, na.rm = TRUE)
       }
-      if ("upperQ" %in% what) {
-        stats["upperQ", i, j] <- quantile(trDatGr, prob = .75, na.rm = TRUE)
+      if ("thirdQ" %in% what) {
+        stats["thirdQ", i, j] <- quantile(trDatGr, prob = .75, na.rm = TRUE)
       }
       if ("sd" %in% what) {
         stats["sd", i, j] <- sd(trDatGr, na.rm = TRUE)
