@@ -80,7 +80,8 @@ outlierSSA <- function(SSA,
       what <- match.arg(arg = what, choices = c("fixed", "random"))
     }
     whatMod <- c("mFix", "mRand")[what == c("fixed", "random")]
-    if (is.null(SSA[[trial]][[whatMod]])) {
+    if (is.null(SSA[[trial]][[whatMod]]) ||
+        is.null(unlist(SSA[[trial]][[whatMod]], recursive = FALSE))) {
       warning("Model with genotype ", what, " not available for trial ",
               trial, ".\nOutlier detection skipped.")
       return(NULL)
