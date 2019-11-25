@@ -73,6 +73,20 @@ test_that("heritability can be coerced to data.frame correctly", {
   expect_equal(herit[1, 2], 0.65)
 })
 
+test_that("heritability can be coerced to data.frame correctly when one trait contains only NA", {
+  testTD$E2 <- testTD$E1
+  testTD$E1[["t3"]] <- NA
+  testTD$E2[["trial"]] <- "E2"
+  testTD$E2[["t4"]] <- NA
+  modelSp <- suppressWarnings(fitTD(testTD, design = "rowcol", what = "random",
+                                    traits = c("t1", "t2", "t3", "t4")))
+  herit <- as.data.frame(extract(modelSp))
+  expect_is(herit, "data.frame")
+  expect_named(herit, c("trial", "t1", "t2", "t4", "t3"))
+  expect_equivalent(herit[1, 2:5], c(0.65, 0.01, 0.09, NA))
+  expect_equivalent(herit[2, 2:5], c(0.65, 0.01, NA, 0.34))
+})
+
 test_that("varGen is computed correctly", {
   expect_is(extSp$varGen, "numeric")
   expect_length(extSp$varGen, 1)
