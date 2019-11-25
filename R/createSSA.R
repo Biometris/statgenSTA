@@ -386,7 +386,7 @@ plot.SSA <- function(x,
           geom_histogram(fill = "cyan", col = "black", bins = 10,
                          boundary = 0) +
           scale_y_continuous(labels = function(x) {paste0(100 * x, "%")}) +
-          labs(y = "Percent of Total", x = "Residuals")
+          labs(y = "Frequency", x = "Residuals")
         ## Plot QQ plot of residuals.
         plots$p2 <- ggplot(data = plotDat,
                            aes_string(sample = "residuals")) +
