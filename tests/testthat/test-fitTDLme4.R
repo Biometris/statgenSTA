@@ -85,9 +85,9 @@ test_that("option useCheckId produces expected output structure", {
   expect_true("checkId" %in% colnames(modelLmCi[["E1"]]$mFix$t1$model))
 })
 
-test_that("option trySpatial produces expected output structure", {
+test_that("option spatial produces expected output structure", {
   expect_warning(fitTD(testTD, design = "rowcol", traits = "t1",
-                       trySpatial = TRUE, engine = "lme4"),
+                       spatial = TRUE, engine = "lme4"),
                  "Spatial models can only be fitted using SpATS or asreml.")
 })
 

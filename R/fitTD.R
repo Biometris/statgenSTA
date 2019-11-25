@@ -28,7 +28,7 @@
 #' \code{PSANOVA(colCoord, rowCoord, nseg = nSeg, nest.div = 2)}
 #' where\cr \code{nSeg = (number of columns / 2, number of rows / 2)}. nseg and
 #' nest.div can be modified using the \code{control} parameter.\cr\cr
-#' When \code{asreml} is used for modeling and \code{trySpatial} is \code{TRUE}
+#' When \code{asreml} is used for modeling and \code{spatial} is \code{TRUE}
 #' six models are fitted with different random terms and covariance structure.
 #' The best model is determined based on a goodness-of-fit criterion, either
 #' AIC or BIC. This can be set using the control parameter \code{criterion},
@@ -72,9 +72,9 @@
 #' extra fixed effects in the model.
 #' @param useCheckId Should checkId be used as a fixed effect in the model?\cr
 #' If \code{TRUE}, \code{TD} has to contain a column 'checkId'.
-#' @param trySpatial Should spatial models be tried? Spatial models can
+#' @param spatial Should spatial models be tried? Spatial models can
 #' only be fitted with SpATS and asreml. If SpATS is used for modeling, only
-#' spatial models can be fitted and trySpatial is always set to \code{TRUE}. If
+#' spatial models can be fitted and spatial is always set to \code{TRUE}. If
 #' asreml is used, fitting spatial models is optional.
 #' @param engine A string specifying the name of the mixed modeling engine to
 #' use, either "SpATS", "lme4" or "asreml." For spatial models, "SpaTS" is used
@@ -166,7 +166,7 @@ fitTD = function(TD,
                  what = c("fixed", "random"),
                  covariates = NULL,
                  useCheckId = FALSE,
-                 trySpatial = FALSE,
+                 spatial = FALSE,
                  engine = NA,
                  control = NULL,
                  progress = FALSE,
@@ -180,7 +180,7 @@ fitTD = function(TD,
     ## Checks.
     checkOut <- modelChecks(TD = TD, trial = trial, design = design,
                             traits = traits, what = what,
-                            covariates = covariates, trySpatial = trySpatial,
+                            covariates = covariates, spatial = spatial,
                             engine = engine, useCheckId = useCheckId,
                             control = control)
     ## Convert output to variables.
@@ -194,7 +194,7 @@ fitTD = function(TD,
                      args = list(TD = TD[trial], trial = trial, traits = traits,
                                  what = what, covariates = covariates,
                                  useCheckId = useCheckId,
-                                 trySpatial = trySpatial, design = design,
+                                 spatial = spatial, design = design,
                                  control = control, checks = FALSE,
                                  ... = ...))
     return(model)
@@ -212,7 +212,7 @@ modelChecks <- function(TD,
                         traits,
                         what = c("fixed", "random"),
                         covariates,
-                        trySpatial,
+                        spatial,
                         engine,
                         useCheckId,
                         control) {
@@ -241,8 +241,8 @@ modelChecks <- function(TD,
   if (!all(hasName(x = TD[[trial]], name = covariates))) {
     stop("All covariates should be columns in ", trial, ".\n")
   }
-  if (!is.logical(trySpatial) || length(trySpatial) > 1) {
-    stop("trySpatial should be a single logical value.\n")
+  if (!is.logical(spatial) || length(spatial) > 1) {
+    stop("spatial should be a single logical value.\n")
   }
   if (!is.na(engine) && (!is.character(engine) || length(engine) > 1 ||
                          !engine %in% engines)) {
@@ -264,7 +264,7 @@ modelChecks <- function(TD,
     stop("asreml cannot fit models when trait contains white space.\n",
          "Rename your trait or use SpATS or lme4 instead.\n")
   }
-  if (trySpatial && engine == "lme4") {
+  if (spatial && engine == "lme4") {
     warning("Spatial models can only be fitted using SpATS or asreml.\n",
             "Defaulting to SpATS.", call. = FALSE)
     engine <- "SpATS"

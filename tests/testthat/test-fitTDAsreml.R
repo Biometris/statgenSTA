@@ -84,11 +84,11 @@ if (requireNamespace("asreml", quietly = TRUE)) {
     }
   })
 
-  ### trySpatial.
+  ### spatial.
 
-  test_that("option trySpatial produces expected output structure", {
+  test_that("option spatial produces expected output structure", {
     modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1",
-                       trySpatial = TRUE, engine = "asreml")
+                       spatial = TRUE, engine = "asreml")
     expect_SSA(modelAsTs)
     expect_SSAMod(modelAsTs, "mRand")
     expect_SSAMod(modelAsTs, "mFix")
@@ -98,26 +98,26 @@ if (requireNamespace("asreml", quietly = TRUE)) {
     expect_equal(modelAsTs[["E1"]]$spatial$t1, "none")
   })
 
-  test_that("option trySpatial functions properly with missing data", {
+  test_that("option spatial functions properly with missing data", {
     testTD$E1 <- testTD$E1[-1, ]
     expect_silent(modelAsTs <- fitTD(testTD, design = "res.ibd", traits = "t1",
-                                     trySpatial = TRUE, engine = "asreml"))
+                                     spatial = TRUE, engine = "asreml"))
   })
 
-  test_that("option trySpatial functions properly with extra data", {
+  test_that("option spatial functions properly with extra data", {
     testTD$E1 <- rbind(testTD$E1, testTD$E1[1, ])
     expect_warning(modelAsTs <- fitTD(testTD, design = "res.ibd", traits = "t1",
-                                      trySpatial = TRUE, engine = "asreml"),
+                                      spatial = TRUE, engine = "asreml"),
                    "There should only be one plot at each combination of")
   })
 
-  test_that("option criterion functions properly for asreml trySpatial", {
+  test_that("option criterion functions properly for asreml spatial", {
     expect_warning(fitTD(testTD, design = "ibd", traits = "t1",
-                         trySpatial = TRUE, engine = "asreml",
+                         spatial = TRUE, engine = "asreml",
                          control = list(criterion = 1)),
                    "Invalid value for control parameter criterion")
     modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1",
-                       trySpatial = TRUE, engine = "asreml",
+                       spatial = TRUE, engine = "asreml",
                        control = list(criterion = "BIC"))
     expect_equal(modelAsTs[["E1"]]$spatial$t1, "none")
   })
@@ -136,7 +136,7 @@ if (requireNamespace("asreml", quietly = TRUE)) {
     expect_SSA(modelAs)
     expect_warning(modelAs2 <- fitTD(testTD, design = "rowcol",
                                      traits = c("t1", "t2"), engine = "asreml",
-                                     trySpatial = TRUE),
+                                     spatial = TRUE),
                    "Error in asreml")
     expect_SSA(modelAs2)
   })
@@ -146,7 +146,7 @@ if (requireNamespace("asreml", quietly = TRUE)) {
     ## fitTD should be able to handle this.
     testTD[["E1"]][["t 2"]] <- testTD[["E1"]][["t2"]]
     expect_error(modelAs <- fitTD(testTD, design = "rowcol", engine = "asreml",
-                                   traits = c("t1", "t 2")),
+                                  traits = c("t1", "t 2")),
                  "asreml cannot fit models when trait contains white space")
   })
 }

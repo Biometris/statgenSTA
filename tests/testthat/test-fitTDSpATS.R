@@ -115,14 +115,13 @@ test_that("option useCheckId produces expected output structure", {
                     x = deparse(modelSpCi[["E1"]]$mFix$t1$model$fixed)))
 })
 
-test_that("option trySpatial produces expected output structure", {
+test_that("option spatial produces expected output structure", {
   modelSp <- fitTD(testTD, design = "rowcol", traits = "t1")
-  modelSpTs <- fitTD(testTD, design = "rowcol", traits = "t1",
-                     trySpatial = TRUE)
+  modelSpTs <- fitTD(testTD, design = "rowcol", traits = "t1", spatial = TRUE)
   expect_SSA(modelSpTs)
   expect_SSAMod(modelSpTs, "mRand")
   expect_SSAMod(modelSpTs, "mFix")
-  ## SpATS should use trySpatial as default. Timestamp will be different.
+  ## SpATS should use spatial as default. Timestamp will be different.
   expect_equivalent(modelSp, modelSpTs)
 })
 
@@ -202,8 +201,8 @@ test_that("Model checks function properly", {
                      covariates = "myCovar"),
                "All covariates should be columns in E1")
   expect_error(fitTD(testTD, trial = "E1", traits = "t1", design = "rowcol",
-                     trySpatial = 1),
-               "trySpatial should be a single logical value")
+                     spatial = 1),
+               "spatial should be a single logical value")
   expect_error(fitTD(testTD, trial = "E1", traits = "t1", design = "rowcol",
                      engine = "myEng"),
                "engine should be one of SpATS, lme4, asreml")

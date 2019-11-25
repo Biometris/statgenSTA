@@ -14,7 +14,7 @@ fitTDSpATS <- function(TD,
                        what = c("fixed", "random"),
                        covariates = NULL,
                        useCheckId = FALSE,
-                       trySpatial = FALSE,
+                       spatial = FALSE,
                        design = "rowcol",
                        control = NULL,
                        checks = TRUE,
@@ -29,7 +29,7 @@ fitTDSpATS <- function(TD,
     ## Checks.
     checkOut <- modelChecks(TD = TD, trial = trial, design = design,
                             traits = traits, what = what,
-                            covariates = covariates, trySpatial = trySpatial,
+                            covariates = covariates, spatial = spatial,
                             engine = "SpATS", useCheckId = useCheckId,
                             control = control)
     ## Convert output to variables.

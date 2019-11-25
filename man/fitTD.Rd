@@ -12,7 +12,7 @@ fitTD(
   what = c("fixed", "random"),
   covariates = NULL,
   useCheckId = FALSE,
-  trySpatial = FALSE,
+  spatial = FALSE,
   engine = NA,
   control = NULL,
   progress = FALSE,
@@ -41,9 +41,9 @@ extra fixed effects in the model.}
 \item{useCheckId}{Should checkId be used as a fixed effect in the model?\cr
 If \code{TRUE}, \code{TD} has to contain a column 'checkId'.}
 
-\item{trySpatial}{Should spatial models be tried? Spatial models can
+\item{spatial}{Should spatial models be tried? Spatial models can
 only be fitted with SpATS and asreml. If SpATS is used for modeling, only
-spatial models can be fitted and trySpatial is always set to \code{TRUE}. If
+spatial models can be fitted and spatial is always set to \code{TRUE}. If
 asreml is used, fitting spatial models is optional.}
 
 \item{engine}{A string specifying the name of the mixed modeling engine to
@@ -114,7 +114,7 @@ in the model. This term is constructed using the function
 \code{PSANOVA(colCoord, rowCoord, nseg = nSeg, nest.div = 2)}
 where\cr \code{nSeg = (number of columns / 2, number of rows / 2)}. nseg and
 nest.div can be modified using the \code{control} parameter.\cr\cr
-When \code{asreml} is used for modeling and \code{trySpatial} is \code{TRUE}
+When \code{asreml} is used for modeling and \code{spatial} is \code{TRUE}
 six models are fitted with different random terms and covariance structure.
 The best model is determined based on a goodness-of-fit criterion, either
 AIC or BIC. This can be set using the control parameter \code{criterion},

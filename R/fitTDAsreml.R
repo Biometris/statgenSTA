@@ -15,7 +15,7 @@ fitTDAsreml <- function(TD,
                         covariates = NULL,
                         useCheckId = FALSE,
                         design = "rowcol",
-                        trySpatial = FALSE,
+                        spatial = FALSE,
                         control = NULL,
                         checks = TRUE,
                         ...) {
@@ -29,7 +29,7 @@ fitTDAsreml <- function(TD,
     ## Checks.
     checkOut <- modelChecks(TD = TD, trial = trial, design = design,
                             traits = traits, what = what,
-                            covariates = covariates, trySpatial = trySpatial,
+                            covariates = covariates, spatial = spatial,
                             engine = "asreml", useCheckId = useCheckId,
                             control = control)
     ## Convert output to variables.
@@ -47,7 +47,7 @@ fitTDAsreml <- function(TD,
     randEff <- character()
   }
   # Check if spatial models can be fitted.
-  if (trySpatial) {
+  if (spatial) {
     ## Set default value for criterion
     criterion = "AIC"
     if ("criterion" %in% names(control)) {
@@ -68,7 +68,7 @@ fitTDAsreml <- function(TD,
       warning("There should only be one plot at each combination of",
               if (useRepIdFix) "replicate,", "row and column.\n",
               "Spatial models will not be tried")
-      trySpatial <- FALSE
+      spatial <- FALSE
     }
   }
   ## Construct formula for fixed part.
@@ -86,7 +86,7 @@ fitTDAsreml <- function(TD,
   } else {
     randomForm <- character()
   }
-  if (!trySpatial) {
+  if (!spatial) {
     ## Increase max number of iterations for asreml.
     maxIter <- 200
     ## Create empty base lists.
@@ -220,7 +220,7 @@ fitTDAsreml <- function(TD,
                 mFix = if ("fixed" %in% what) mf else NULL, TD = TDOut,
                 traits = traits, design = design, spatial = spatial,
                 engine = "asreml", predicted = "genotype", sumTab = sumTab))
-  } else {# trySpatial
+  } else {# spatial
     regular <- min(repTab) == 1 && max(repTab) == 1
     return(bestSpatMod(TD = TD[trial], traits = traits, what = what,
                        regular = TRUE, criterion = criterion,
