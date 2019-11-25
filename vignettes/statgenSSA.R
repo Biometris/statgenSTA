@@ -79,7 +79,7 @@ plot(wheatTD, plotType = "box", traits = "GY", groupBy = "year",
 plot(wheatTD, plotType = "cor", traits = "GY")
 
 ## ----fitSp, message=FALSE-----------------------------------------------------
-## Fit a single trial model.
+## Fit a single trial model using a model based on a residual row column design.
 modWheatSp <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", design = "res.rowcol")
 
 ## ----fitSpSm, message=FALSE---------------------------------------------------
@@ -97,7 +97,7 @@ modWheatSp3 <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY",
 if (requireNamespace("asreml", quietly = TRUE)) {
   ## Fit a spatial single trial model using asreml.
   modWheatAs <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", 
-                      design = "res.rowcol", trySpatial = TRUE, engine = "asreml",
+                      design = "res.rowcol", spatial = TRUE, engine = "asreml",
                       control = list(criterion = "BIC"))
 }
 
@@ -113,7 +113,7 @@ summary(modWheatSp, nBest = 5)
 
 ## ----basePlot-----------------------------------------------------------------
 ## Base plots for the model with genotype fitted as random effect.
-plot(modWheatSp, what = "random")
+plot(modWheatSp, plotType = "base", what = "random")
 
 ## ----spatPlot-----------------------------------------------------------------
 ## Spatial plot for the model with genotype fitted as fixed effect.
@@ -142,8 +142,9 @@ outliers <- outlierSSA(modWheatSp, traits = "GY", what = "random",
 
 ## ----extractOpts, results="as.is", echo=FALSE, out.width = "\\textwidth"------
 ## Generate table of options for extract from internal data.
-knitr::kable(statgenSSA:::extractOptions[, 1:3], 
-                     align = c("l", "l", "l", "l"), row.names = FALSE)
+optsTab <- statgenSSA:::extractOptions[, c("result", "model", "description")]
+optsTab <- optsTab[order(optsTab[["model"]]), ]
+knitr::kable(optsTab, align = c("l", "l", "l", "l"), row.names = FALSE)
 
 ## ----extBLUEs-----------------------------------------------------------------
 ## Extract BLUEs
