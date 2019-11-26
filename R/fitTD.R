@@ -83,7 +83,7 @@
 #' actual fitting functions. Currently \code{nSeg} and \code{nestDiv} are valid
 #' parameters when fitting a model using SpATS. They pass a value to nseg and
 #' nest.div in \code{\link[SpATS]{PSANOVA}} respectively. For \code{nSeg} also a
-#' named list can be supplied containing values for nSeg per environment.\cr
+#' named list can be supplied containing values for nSeg per trial.\cr
 #' \code{criterion} is a valid parameter when fitting a spatial model using
 #' asreml. It may be used to pass a goodness-of-fit criterion for comparing
 #' different spatial models. See also in details. Other parameters are ignored.

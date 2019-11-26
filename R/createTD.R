@@ -1027,7 +1027,7 @@ plot.TD <- function(x,
               ## Center title.
               plot.title = element_text(hjust = 0.5)) +
         ## No axis and legend titles.
-        labs(title = paste("Correlations of environments for", trait),
+        labs(title = paste("Correlations of trials for", trait),
              x = "", y = "", fill = "") +
         ## Equal coordinates to get a square sized plot.
         coord_equal()

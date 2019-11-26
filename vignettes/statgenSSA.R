@@ -144,7 +144,7 @@ outliers <- outlierSSA(modWheatSp, traits = "GY", what = "random",
 ## Generate table of options for extract from internal data.
 optsTab <- statgenSSA:::extractOptions[, c("result", "model", "description")]
 optsTab <- optsTab[order(optsTab[["model"]]), ]
-knitr::kable(optsTab, align = c("l", "l", "l", "l"), row.names = FALSE)
+knitr::kable(optsTab, align = c("llll"), row.names = FALSE)
 
 ## ----extBLUEs-----------------------------------------------------------------
 ## Extract BLUEs
