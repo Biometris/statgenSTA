@@ -412,11 +412,11 @@ plot.SSA <- function(x,
         }
         pTr[[trait]] <- plots
       } else if (plotType == "spatial") {
+        yMin <- min(plotDat[["rowCoord"]])
+        yMax <- max(plotDat[["rowCoord"]])
+        xMin <- min(plotDat[["colCoord"]])
+        xMax <- max(plotDat[["colCoord"]])
         if (x[[trial]]$engine == "SpATS") {
-          yMin <- min(plotDat[["rowCoord"]])
-          yMax <- max(plotDat[["rowCoord"]])
-          xMin <- min(plotDat[["colCoord"]])
-          xMax <- max(plotDat[["colCoord"]])
           ## Execute this part first since it needs plotData without missings
           ## removed.
           ## Code mimickes code from SpATS package but is adapted to create a
