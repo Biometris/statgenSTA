@@ -374,6 +374,7 @@ renameRows <- function(dat) {
                "repId", "Replicate",
                "rowId", "Row",
                "colId", "Col",
+               "rowId:colId", "Row:Col",
                "subBlock", "Block",
                "repId:rowId", "Row(replicate)",
                "repId:colId", "Col(replicate)",
