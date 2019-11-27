@@ -702,6 +702,9 @@ extractAsreml <- function(SSA,
       } else {
         mfPred$predictions$vcov
       }
+      ## Remove NA genotype.
+      ## Introduced by adding extra rows/columns to do spatial analysis.
+      V <- V[!is.na(levels(TD[["genotype"]])), !is.na(levels(TD[["genotype"]]))]
       ## Remove columns and rows containing NA.
       VMiss <- apply(X = V, MARGIN = 2, FUN = anyNA)
       V <- V[!VMiss, !VMiss]
@@ -769,26 +772,33 @@ extractAsreml <- function(SSA,
   }
   ## Extract fitted values.
   if ("fitted" %in% what) {
-    fitVal <- cbind(baseData, sapply(X = mf, FUN = fitted))
+    fitVal <- cbind(baseData, sapply(X = mf, FUN = function(mf0) {
+      fitted(mf0)[!is.na(as.character(mf0$mf$genotype))]
+    }))
     result[["fitted"]] <- restoreColNames(renDat = fitVal, renamedCols = renCols,
                                           restore = restore)
   }
   ## Extract residuals.
   if ("residF" %in% what) {
-    resVal <- cbind(baseData, sapply(X = mf, FUN = residuals,
-                                     type = "response"))
+    resVal <- cbind(baseData, sapply(X = mf, FUN = function(mf0) {
+      residuals(mf0, type = "response")[!is.na(as.character(mf0$mf$genotype))]
+    }))
     result[["residF"]] <- restoreColNames(renDat = resVal, renamedCols = renCols,
                                           restore = restore)
   }
   ## Extract standardized residuals.
   if ("stdResF" %in% what) {
-    stdRes <- cbind(baseData, sapply(X = mf, FUN = residuals, type = "stdCond"))
+    stdRes <- cbind(baseData, sapply(X = mf, FUN = function(mf0) {
+      residuals(mf0, type = "stdCond")[!is.na(as.character(mf0$mf$genotype))]
+    }))
     result[["stdResF"]] <- restoreColNames(renDat = stdRes, renamedCols = renCols,
                                            restore = restore)
   }
   ## Extract rMeans.
   if ("rMeans" %in% what) {
-    rMeans <- cbind(baseData, sapply(X = mr, FUN = fitted))
+    rMeans <- cbind(baseData, sapply(X = mr, FUN = function(mr0) {
+      fitted(mr0)[!is.na(as.character(mr0$mf$genotype))]
+    }))
     result[["rMeans"]] <- restoreColNames(renDat = rMeans, renamedCols = renCols,
                                           restore = restore)
   }
@@ -813,15 +823,18 @@ extractAsreml <- function(SSA,
   }
   ## Extract residuals for genotype random.
   if ("residR" %in% what) {
-    resVal <- cbind(baseData, sapply(X = mr, FUN = residuals,
-                                     type = "response"))
+    resVal <- cbind(baseData, sapply(X = mr, FUN = function(mr0) {
+      residuals(mr0, type = "response")[!is.na(as.character(mr0$mf$genotype))]
+    }))
     result[["residR"]] <- restoreColNames(renDat = resVal,
                                           renamedCols = renCols,
                                           restore = restore)
   }
   ## Extract standardized residuals.
   if ("stdResR" %in% what) {
-    stdRes <- cbind(baseData, sapply(X = mr, FUN = residuals, type = "stdCond"))
+    stdRes <- cbind(baseData, sapply(X = mr, FUN = function(mr0) {
+      residuals(mr0, type = "stdCond")[!is.na(as.character(mr0$mf$genotype))]
+    }))
     result[["stdResR"]] <- restoreColNames(renDat = stdRes,
                                            renamedCols = renCols,
                                            restore = restore)
@@ -899,9 +912,14 @@ createBaseData <- function(TD,
   ## selected keep columns.
   baseData <- TD[, colnames(TD) %in% c(predicted, ifelse(useRepId, "repId", ""),
                                        keep), drop = FALSE]
+  ## Remove NA values for predicted.
+  ## Possibly inserted when adding empty lines for missing row/column info.
+  baseData <- baseData[!is.na(as.character(baseData[[predicted]])), ,
+                       drop = FALSE]
   ## Create baseData for predictions with predicted variable(s).
   if (bdPred) {
-    baseDataPred <- unique(TD[!is.na(TD[[predicted]]), predicted, drop = FALSE])
+    baseDataPred <- unique(TD[!is.na(as.character(TD[[predicted]])),
+                              predicted, drop = FALSE])
     ## Add columns in keep one-by-one. Only data that is constant within
     ## predicted is actually kept. Other columns are dropped with a warning.
     for (col in keep) {
