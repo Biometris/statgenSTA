@@ -78,6 +78,5 @@ Imports:
 Suggests: asreml(>= 3.0),
     rmarkdown,
     testthat,
-    tibble,
-    covr
+    tibble
 VignetteBuilder: knitr

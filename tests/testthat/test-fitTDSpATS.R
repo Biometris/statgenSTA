@@ -215,6 +215,8 @@ expect_SSA <- function(SSA) {
 #                "colId should be a column in E1")
 # })
 
+options(warn = 2)
+testTD[["E1"]][["t 2"]] <- testTD[["E1"]][["t2"]]
 modelSp <- fitTD(testTD, design = "rowcol", engine = "SpATS",
                  traits = c("t1", "t 2"))
 
