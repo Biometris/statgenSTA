@@ -215,13 +215,14 @@ test_that("Model checks function properly", {
                "colId should be a column in E1")
 })
 
-options(warn = 2)
 testTD[["E1"]][["t 2"]] <- testTD[["E1"]][["t2"]]
 testTD[["E1"]][["t 2"]] <- NULL
 
 modelSp <- fitTD(testTD, design = "rowcol", engine = "SpATS",
                  # traits = c("t1", "t 2"))
                  traits = c("t1"))
+
+options(warn = 2)
 
 modelSp <- fitTD(testTD, design = "rowcol", engine = "SpATS",
                  # traits = c("t1", "t 2"))
