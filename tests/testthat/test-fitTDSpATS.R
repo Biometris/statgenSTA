@@ -176,16 +176,6 @@ test_that("Trial with missing data is handled properly when fitting models", {
   expect_SSA(modelSp)
 })
 
-test_that("Fitting models functions properly when trait contains space", {
-  ## Create a trait with a space in its name.
-  ## fitTD should be able to handle this.
-  #testTD[["E1"]][["t 2"]] <- testTD[["E1"]][["t2"]]
-  #expect_silent(modelSp <- fitTD(testTD, design = "rowcol", engine = "SpATS",
-  #                               traits = c("t1")))
-  modelSp <- fitTD(testTD, design = "rowcol", traits = "t1")
-  expect_SSA(modelSp)
-})
-
 test_that("Design is modified when replicates contain only 1 distinct value", {
   ## Set replicates to 1 for 1 field to test that design is changed to
   ## corresponding design without replicates.
@@ -223,4 +213,13 @@ test_that("Model checks function properly", {
   testTD$E1$colCoord <- NULL
   expect_error(fitTD(testTD, trial = "E1", traits = "t1", design = "rowcol"),
                "colId should be a column in E1")
+})
+
+test_that("Fitting models functions properly when trait contains space", {
+  ## Create a trait with a space in its name.
+  ## fitTD should be able to handle this.
+  testTD[["E1"]][["t 2"]] <- testTD[["E1"]][["t2"]]
+  modelSp <- fitTD(testTD, design = "rowcol", engine = "SpATS",
+                   traits = c("t1", "t 2"))
+  expect_SSA(modelSp)
 })
