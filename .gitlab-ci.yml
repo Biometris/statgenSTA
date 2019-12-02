@@ -12,7 +12,6 @@ before_script:
   - echo '.libPaths("'${R_LIBS_USER}'")' > .Rprofile
   ## set GITLAB_PAT.
   - echo 'GITLAB_PAT='$GITLAB_PAT > .Renviron
-  - echo '_R_CLASS_MATRIX_ARRAY_=false' >> .Renviron
 
 R-devel:
   stage: build
