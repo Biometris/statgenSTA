@@ -1,4 +1,4 @@
 library(testthat)
 library(statgenSSA)
 
-test_check("statgenSSA", filter = "fitTDSpATS")
+test_check("statgenSSA")
