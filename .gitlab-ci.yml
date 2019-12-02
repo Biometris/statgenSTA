@@ -18,6 +18,7 @@ R-devel:
   allow_failure: true
   script:
     - Rscriptdevel -e 'sessionInfo()'
+    - Rscriptdevel -e '.libPaths()'
     ## Install missing and outdated packages.
     - Rscriptdevel -e 'source(".gitlab-ci.R"); pkgsUpdate()'
     ## Build package.
