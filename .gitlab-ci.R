@@ -19,6 +19,6 @@ pkgsUpdate <- function(quiet = TRUE,
   cat("INSTALLED:\n")
   instld <- as.data.frame(installed.packages())
   rownames(instld) <- NULL
-  print(instld[, c("Package", "Version")])
+  print(instld[, c("Package", "Version", "Built")])
   return(invisible(TRUE))
 }
