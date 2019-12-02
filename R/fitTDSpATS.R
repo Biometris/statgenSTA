@@ -94,10 +94,7 @@ fitTDSpATS <- function(TD,
   } else {
     randomForm <- NULL
   }
-  cat(traits)
-  message(traits)
   if ("random" %in% what) {
-    cat(traits)
     mr <- sapply(X = traits, FUN = function(trait) {
       SpATS::SpATS(response = trait, genotype = "genotype",
                    genotype.as.random = TRUE,
