@@ -98,9 +98,9 @@ fitTDSpATS <- function(TD,
     mr <- sapply(X = traits, FUN = function(trait) {
       ## Fit model with genotype random.
       modTrR <- tryCatchExt({
-        # if (all(is.na(TDTr[[trait]]))) {
-        #   stop("Only NA values for trait ", trait, " in trial ", trial, ".\n")
-        # }
+        if (all(is.na(TDTr[[trait]]))) {
+          stop("Only NA values for trait ", trait, " in trial ", trial, ".\n")
+        }
         SpATS::SpATS(response = trait, genotype = "genotype",
                      genotype.as.random = TRUE,
                      spatial = ~ SpATS::PSANOVA(colCoord, rowCoord,
@@ -129,11 +129,21 @@ fitTDSpATS <- function(TD,
   }
   if ("fixed" %in% what) {
     mf <- sapply(X = traits, FUN = function(trait) {
+
+      SpATS::SpATS(response = trait, genotype = "genotype",
+                   genotype.as.random = FALSE,
+                   spatial = ~ SpATS::PSANOVA(colCoord, rowCoord,
+                                              nseg = nSeg,
+                                              nest.div = nestDiv),
+                   fixed = fixedForm, random = randomForm, data = TDTr,
+                   control = list(monitoring = 0), ...)
+
+
       ## Fit model with genotype fixed.
       modTrF <- tryCatchExt({
-        # if (all(is.na(TDTr[[trait]]))) {
-        #   stop("Only NA values for trait ", trait, " in trial ", trial, ".\n")
-        # }
+        if (all(is.na(TDTr[[trait]]))) {
+          stop("Only NA values for trait ", trait, " in trial ", trial, ".\n")
+        }
         SpATS::SpATS(response = trait, genotype = "genotype",
                      genotype.as.random = FALSE,
                      spatial = ~ SpATS::PSANOVA(colCoord, rowCoord,
