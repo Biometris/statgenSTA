@@ -155,9 +155,9 @@ summary(myModel1)
 ## Create base plots of the results.
 plot(myModel1)
 
-\dontrun{
 ## Create a pdf report summarizing results.
-report(myModel1, outfile = "./testReports/reportModelLme4.pdf")
+\donttest{
+report(myModel1, outfile = tempfile(fileext = ".pdf"))
 }
 
 ## Fit model using SpATS.
@@ -167,17 +167,19 @@ summary(myModel2)
 
 ## Create spatial plots of the results.
 plot(myModel2, plotType = "spatial")
-
-\dontrun{
-report(myModel2, outfile = "./testReports/reportModelSpATS.pdf")
+\donttest{
+report(myModel2, outfile = tempfile(fileext = ".pdf"))
 }
 
 ## Fit model using asreml.
-\dontrun{
-myModel3 <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
-                      what = "fixed", engine = "asreml")
-summary(myModel3)
-report(myModel3, outfile = "./testReports/reportModelAsreml.pdf")
+if (requireNamespace("asreml")) {
+  myModel3 <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
+                   what = "fixed", engine = "asreml")
+  summary(myModel3)
+
+  \donttest{
+  report(myModel3, outfile = tempfile(fileext = ".pdf"))
+  }
 }
 }
 \references{

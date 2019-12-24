@@ -9,3 +9,4 @@
 ^.apt$
 ^ci
 cran-comments.md
+^CRAN-RELEASE$

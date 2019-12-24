@@ -601,16 +601,18 @@ fieldPlot <- function(plotDat,
 #' @examples
 #' ## Fit model using lme4.
 #' myModel1 <- fitTD(TD = TDHeat05, design = "ibd", traits = "yield")
-#' \dontrun{
+
 #' ## Create a pdf report summarizing the results for the model with genotype
 #' ## as fixed factor.
-#' report(myModel1, outfile = "./testReports/reportModelLme4.pdf",
-#'        what = "fixed")
+#' \donttest{
+#' report(myModel1, outfile = tempfile(fileext = ".pdf"), what = "fixed")
+#' }
+#'
 #' ## Create two pdf report summarizing the results for the model with genotype
 #' ## as fixed factor and for the model with genotype as random factor. Order
 #' ## the results in ascending order.
-#' report(myModel1, outfile = "./testReports/reportModelLme4.pdf",
-#'       descending = FALSE)
+#' \donttest{
+#' report(myModel1, outfile = tempfile(fileext = ".pdf"), descending = FALSE)
 #' }
 #'
 #' @family SSA
