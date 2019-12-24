@@ -1,9 +1,21 @@
+## Resubmission
+
+* Now using tempfile() for writing output files in examples.
+Still put them under \donttest because of time constraints.
+* Added pdflatex to SystemRequirements.
+
+----
+
 ## Test environments
-* local Windows 10 install, R 3.6.1
-* Debian 10 (on gitlab-ci), R 3.6.1
+
+* local Windows 10 install, R 3.6.2
+* Debian (on gitlab-ci), R 3.6.1
 * R-hub (devel and release)
 
+----
+
 ## R CMD check results
+
 There were no ERRORs or WARNINGs.
 
 There were 2 NOTES:
