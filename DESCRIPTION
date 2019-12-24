@@ -1,8 +1,8 @@
 Package: statgenSSA
 Type: Package
 Title: Single Site Analysis (SSA) of Field Trials
-Version: 1.0.0
-Date: 2019-11-28
+Version: 1.0.1
+Date: 2019-12-24
 Authors@R: c(person(given = "Bart-Jan", 
                     family = "van Rossum", 
                     email = "bart-jan.vanrossum@wur.nl", 
@@ -58,7 +58,7 @@ Description: The statgen packages, developed by Biometris, are developed to
 License: GPL
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.1
+RoxygenNote: 7.0.2
 Depends: R (>= 3.3)
 Imports: 
     emmeans,
@@ -79,4 +79,5 @@ Suggests: asreml(>= 3.0),
     rmarkdown,
     testthat,
     tibble
+SystemRequirements: pdflatex
 VignetteBuilder: knitr
