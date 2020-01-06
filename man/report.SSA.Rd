@@ -60,7 +60,9 @@ Sys.which("pdflatex").
 myModel1 <- fitTD(TD = TDHeat05, design = "ibd", traits = "yield")
 ## Create a pdf report summarizing the results for the model with genotype
 ## as fixed factor.
+\donttest{
 report(myModel1, outfile = tempfile(fileext = ".pdf"), what = "fixed")
+}
 
 ## Create two pdf report summarizing the results for the model with genotype
 ## as fixed factor and for the model with genotype as random factor. Order

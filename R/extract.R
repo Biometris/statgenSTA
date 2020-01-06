@@ -773,7 +773,7 @@ extractAsreml <- function(SSA,
   ## Extract fitted values.
   if ("fitted" %in% what) {
     fitVal <- cbind(baseData, sapply(X = mf, FUN = function(mf0) {
-      fitted(mf0)[!is.na(as.character(mf0$mf$genotype))]
+      fitted(mf0)[!is.na(as.character(mf0$call$data[["genotype"]]))]
     }))
     result[["fitted"]] <- restoreColNames(renDat = fitVal, renamedCols = renCols,
                                           restore = restore)
@@ -781,7 +781,7 @@ extractAsreml <- function(SSA,
   ## Extract residuals.
   if ("residF" %in% what) {
     resVal <- cbind(baseData, sapply(X = mf, FUN = function(mf0) {
-      residuals(mf0, type = "response")[!is.na(as.character(mf0$mf$genotype))]
+      residuals(mf0, type = "response")[!is.na(as.character(mf0$call$data[["genotype"]]))]
     }))
     result[["residF"]] <- restoreColNames(renDat = resVal, renamedCols = renCols,
                                           restore = restore)
@@ -789,7 +789,7 @@ extractAsreml <- function(SSA,
   ## Extract standardized residuals.
   if ("stdResF" %in% what) {
     stdRes <- cbind(baseData, sapply(X = mf, FUN = function(mf0) {
-      residuals(mf0, type = "stdCond")[!is.na(as.character(mf0$mf$genotype))]
+      residuals(mf0, type = "stdCond")[!is.na(as.character(mf0$call$data[["genotype"]]))]
     }))
     result[["stdResF"]] <- restoreColNames(renDat = stdRes, renamedCols = renCols,
                                            restore = restore)
@@ -797,7 +797,7 @@ extractAsreml <- function(SSA,
   ## Extract rMeans.
   if ("rMeans" %in% what) {
     rMeans <- cbind(baseData, sapply(X = mr, FUN = function(mr0) {
-      fitted(mr0)[!is.na(as.character(mr0$mf$genotype))]
+      fitted(mr0)[!is.na(as.character(mr0$call$data[["genotype"]]))]
     }))
     result[["rMeans"]] <- restoreColNames(renDat = rMeans, renamedCols = renCols,
                                           restore = restore)
@@ -824,7 +824,7 @@ extractAsreml <- function(SSA,
   ## Extract residuals for genotype random.
   if ("residR" %in% what) {
     resVal <- cbind(baseData, sapply(X = mr, FUN = function(mr0) {
-      residuals(mr0, type = "response")[!is.na(as.character(mr0$mf$genotype))]
+      residuals(mr0, type = "response")[!is.na(as.character(mr0$call$data[["genotype"]]))]
     }))
     result[["residR"]] <- restoreColNames(renDat = resVal,
                                           renamedCols = renCols,
@@ -833,7 +833,7 @@ extractAsreml <- function(SSA,
   ## Extract standardized residuals.
   if ("stdResR" %in% what) {
     stdRes <- cbind(baseData, sapply(X = mr, FUN = function(mr0) {
-      residuals(mr0, type = "stdCond")[!is.na(as.character(mr0$mf$genotype))]
+      residuals(mr0, type = "stdCond")[!is.na(as.character(mr0$call$data[["genotype"]]))]
     }))
     result[["stdResR"]] <- restoreColNames(renDat = stdRes,
                                            renamedCols = renCols,

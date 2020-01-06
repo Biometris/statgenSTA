@@ -172,7 +172,7 @@ report(myModel2, outfile = tempfile(fileext = ".pdf"))
 }
 
 ## Fit model using asreml.
-if (requireNamespace("asreml")) {
+if (requireNamespace("asreml", quietly = TRUE)) {
   myModel3 <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
                    what = "fixed", engine = "asreml")
   summary(myModel3)
