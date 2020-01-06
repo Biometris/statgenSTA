@@ -134,7 +134,7 @@ fitTDLme4 <- function(TD,
     attr(x = TDTr, which = "renamedCols")
   spatial <- setNames(rep(FALSE, times = length(traits)), traits)
   sumTab <- setNames(vector(mode = "list", length = length(traits)), traits)
-  ## Construct SSA object.
+  ## Construct STA object.
   return(list(mRand = if ("random" %in% what) mr else NULL,
               mFix = if ("fixed" %in% what) mf else NULL, TD = TDOut,
               traits = traits, design = design, spatial = spatial,

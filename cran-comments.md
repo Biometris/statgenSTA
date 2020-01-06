@@ -27,7 +27,7 @@ There were 2 NOTES:
     Possibly mis-spelled words in DESCRIPTION:
     Biometris (50:49)
     statgen (50:18)
-    statgenSSA (53:15)
+    statgenSTA (53:15)
     
     Suggests or Enhances not in mainstream repositories: asreml
     

@@ -48,7 +48,7 @@
 #' \item{all}{All available statistics.}
 #' }
 #'
-#' @param SSA An object of class SSA.
+#' @param STA An object of class STA.
 #' @param trials A character vector of trials for which the statistics should be
 #' computed. If not supplied, statistics are computed for all trials that have
 #' been modeled.
@@ -90,40 +90,40 @@
 #'
 #' @importFrom utils capture.output
 #' @export
-extract <- function(SSA,
-                    trials = names(SSA),
+extract <- function(STA,
+                    trials = names(STA),
                     traits = NULL,
                     what = "all",
                     keep = NULL,
                     restoreColNames = FALSE) {
   ## Checks.
-  if (missing(SSA) || !inherits(SSA, "SSA")) {
-    stop("SSA has to be an object of class SSA.\n")
+  if (missing(STA) || !inherits(STA, "STA")) {
+    stop("STA has to be an object of class STA.\n")
   }
-  trials <- chkTrials(trials, SSA)
+  trials <- chkTrials(trials, STA)
   chkChar(traits)
   chkChar(keep)
   resTot <- sapply(X = trials, FUN = function(trial) {
-    SSATr <- SSA[[trial]]
-    traitsTr <- chkTraits(traits, trial, SSATr)
-    if (!all(keep %in% colnames(SSATr$TD[[trial]]))) {
+    STATr <- STA[[trial]]
+    traitsTr <- chkTraits(traits, trial, STATr)
+    if (!all(keep %in% colnames(STATr$TD[[trial]]))) {
       stop("All keep should be columns in ", trial, ".\n")
     }
     traitsTr <- traitsTr[sapply(X = traitsTr, FUN = function(trait) {
-      !is.null(SSATr$mRand[[trait]]) || !is.null(SSATr$mFix[[trait]])})]
+      !is.null(STATr$mRand[[trait]]) || !is.null(STATr$mFix[[trait]])})]
     if (length(traitsTr) == 0) {
       return(NULL)
     }
-    engine <- SSATr$engine
+    engine <- STATr$engine
     ## Set useRepId to TRUE when it is used as fixed effect in the model.
-    useRepId <- SSATr$design %in% c("res.ibd", "res.rowcol", "rcbd")
+    useRepId <- STATr$design %in% c("res.ibd", "res.rowcol", "rcbd")
     ## Extract statistics from fitted model.
     result <- do.call(what = paste0("extract", tools::toTitleCase(engine)),
-                      args = list(SSA = SSATr, traits = traitsTr, what = what,
+                      args = list(STA = STATr, traits = traitsTr, what = what,
                                   useRepId = useRepId, keep = keep,
                                   restore = restoreColNames))
     attr(x = result, which = "traits") <- traitsTr
-    attr(x = result, which = "design") <- SSATr$design
+    attr(x = result, which = "design") <- STATr$design
     attr(x = result, which = "engine") <- engine
     return(result)
   }, simplify = FALSE)
@@ -136,17 +136,17 @@ extract <- function(SSA,
 #' @noRd
 #' @importFrom SpATS predict.SpATS
 #' @keywords internal
-extractSpATS <- function(SSA,
+extractSpATS <- function(STA,
                          traits = NULL,
                          what = "all",
                          keep = NULL,
                          useRepId,
                          restore = FALSE) {
-  mf <- SSA$mFix[names(SSA$mFix) %in% traits]
-  mr <- SSA$mRand[names(SSA$mRand) %in% traits]
-  TD <- SSA$TD[[1]]
+  mf <- STA$mFix[names(STA$mFix) %in% traits]
+  mr <- STA$mRand[names(STA$mRand) %in% traits]
+  TD <- STA$TD[[1]]
   renCols <- attr(TD, "renamedCols")
-  predicted <- SSA$predicted
+  predicted <- STA$predicted
   useCheckId <- length(grep(pattern = "checkId",
                             x = deparse(mr[[1]]$model$fixed))) > 0
   whatPred <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ranEf")
@@ -363,17 +363,17 @@ extractSpATS <- function(SSA,
 #'
 #' @noRd
 #' @keywords internal
-extractLme4 <- function(SSA,
+extractLme4 <- function(STA,
                         traits = NULL,
                         what = "all",
                         keep = NULL,
                         useRepId,
                         restore = FALSE) {
-  mf <- SSA$mFix[names(SSA$mFix) %in% traits]
-  mr <- SSA$mRand[names(SSA$mRand) %in% traits]
-  TD <- SSA$TD[[1]]
+  mf <- STA$mFix[names(STA$mFix) %in% traits]
+  mr <- STA$mRand[names(STA$mRand) %in% traits]
+  TD <- STA$TD[[1]]
   renCols <- attr(TD, "renamedCols")
-  predicted = SSA$predicted
+  predicted = STA$predicted
   whatPred <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ranEf")
   what <- extractOptSel(what = what, fixed = !is.null(mf),
                         random = !is.null(mr), engine = "lme4")
@@ -597,7 +597,7 @@ extractLme4 <- function(SSA,
 #'
 #' @noRd
 #' @keywords internal
-extractAsreml <- function(SSA,
+extractAsreml <- function(STA,
                           traits = NULL,
                           what = "all",
                           keep = NULL,
@@ -606,11 +606,11 @@ extractAsreml <- function(SSA,
   if (!requireNamespace("asreml", quietly = TRUE)) {
     stop("asreml cannot be successfully loaded.\n")
   }
-  mf <- SSA$mFix[names(SSA$mFix) %in% traits]
-  mr <- SSA$mRand[names(SSA$mRand) %in% traits]
-  TD <- SSA$TD[[1]]
+  mf <- STA$mFix[names(STA$mFix) %in% traits]
+  mr <- STA$mRand[names(STA$mRand) %in% traits]
+  TD <- STA$TD[[1]]
   renCols <- attr(TD, "renamedCols")
-  predicted <- SSA$predicted
+  predicted <- STA$predicted
   whatPred <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ranEf")
   what <- extractOptSel(what = what, fixed = !is.null(mf),
                         random = !is.null(mr), engine = "asreml")

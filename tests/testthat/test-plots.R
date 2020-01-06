@@ -162,10 +162,10 @@ test_that("TD correlation plot gives correct output types", {
                           output = FALSE))
 })
 
-### SSA plots.
+### STA plots.
 
 modelSp <- fitTD(TD = testTD, design = "rowcol", traits = "t1")
-test_that("checks in plot.SSA function properly", {
+test_that("checks in plot.STA function properly", {
   expect_error(plot(modelSp, trials = 2),
                "trials has to be a character vector defining trials in modelSp")
   expect_error(plot(modelSp, traits = 1),
@@ -182,9 +182,9 @@ test_that("checks in plot.SSA function properly", {
                  "rowCoord should be a column in E1")
 })
 
-### SSA base plot.
+### STA base plot.
 
-test_that("SSA base plot gives correct output types", {
+test_that("STA base plot gives correct output types", {
   p1 <- plot(modelSp, traits = "t1")
   expect_is(p1, "list")
   expect_length(p1, 1)
@@ -195,9 +195,9 @@ test_that("SSA base plot gives correct output types", {
   lapply(X = p1[[1]][[1]], FUN = expect_is, "ggplot")
 })
 
-### SSA spatial plot.
+### STA spatial plot.
 
-test_that("SSA spatial plot gives correct output types", {
+test_that("STA spatial plot gives correct output types", {
   p1 <- plot(modelSp, plotType = "spatial", traits = "t1")
   expect_is(p1, "list")
   expect_length(p1, 1)
@@ -208,7 +208,7 @@ test_that("SSA spatial plot gives correct output types", {
   lapply(X = p1[[1]][[1]], FUN = expect_is, "ggplot")
 })
 
-test_that("option what in SSA plot functions properly", {
+test_that("option what in STA plot functions properly", {
   p1 <- plot(modelSp, what = "random", output = FALSE)
   p2 <- plot(modelSp, plotType = "spatial", what = "random", output = FALSE)
   expect_is(p1, "list")
@@ -216,7 +216,7 @@ test_that("option what in SSA plot functions properly", {
   expect_equal(p2[[1]][[1]][[6]]$labels$x, "Genotypic BLUPs")
 })
 
-test_that("option spaTrend in SSA plot functions properly", {
+test_that("option spaTrend in STA plot functions properly", {
   expect_silent(p <- plot(modelSp, plotType = "spatial",
                           spaTrend = "percentage", output = FALSE))
 })

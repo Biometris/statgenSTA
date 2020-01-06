@@ -2,7 +2,7 @@ context("extract general options")
 
 modelLm <- fitTD(testTD, design = "rcbd", traits = "t1", engine = "lme4")
 test_that("checks in extract function properly", {
-  expect_error(extract(1), "SSA has to be an object of class SSA")
+  expect_error(extract(1), "STA has to be an object of class STA")
   expect_error(extract(modelLm, traits = 1),
                "traits should be NULL or a character vector")
   expect_error(extract(modelLm, keep = 1),

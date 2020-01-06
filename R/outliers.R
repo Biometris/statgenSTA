@@ -1,4 +1,4 @@
-#' Identifying outliers in objects of class SSA
+#' Identifying outliers in objects of class STA
 #'
 #' Function to identify observations with standardized residuals exceeding
 #' \code{rLimit}. If not provided \code{rLimit} is computed as
@@ -10,7 +10,7 @@
 #' output can be used to distinguish real outliers from observations included
 #' because of their commonFactors.
 #'
-#' @param SSA An object of class \code{SSA}.
+#' @param STA An object of class \code{STA}.
 #' @param trials A character vector specifying the trials for which outliers
 #' should be identified. If \code{trials = NULL}, all trials are included.
 #' @param traits A character vector specifying the names of the traits for
@@ -18,7 +18,7 @@
 #' @param what A character string indicating whether the outliers should be
 #' identified for the fitted model with genotype as fixed
 #' (\code{what = "fixed"})or genotype as random (\code{what = "random"}) factor.
-#' If \code{SSA} contains only one model this model is chosen automatically.
+#' If \code{STA} contains only one model this model is chosen automatically.
 #' @param rLimit A numerical value used for determining when a value is
 #' considered an outlier. All observations with standardized residuals
 #' exceeding \code{rLimit} will be marked as outliers.
@@ -42,10 +42,10 @@
 #'                 engine = "lme4")
 #'
 #' ## Detect outliers in the standardized residuals of the fitted model.
-#' outliers <- outlierSSA(SSA = myModel, traits = "yield")
+#' outliers <- outlierSTA(STA = myModel, traits = "yield")
 #'
 #' @export
-outlierSSA <- function(SSA,
+outlierSTA <- function(STA,
                        trials = NULL,
                        traits = NULL,
                        what = NULL,
@@ -53,10 +53,10 @@ outlierSSA <- function(SSA,
                        commonFactors = NULL,
                        verbose = TRUE) {
   ## Checks.
-  if (missing(SSA) || !inherits(SSA, "SSA")) {
-    stop("SSA should be a valid object of class SSA.\n")
+  if (missing(STA) || !inherits(STA, "STA")) {
+    stop("STA should be a valid object of class STA.\n")
   }
-  trials <- chkTrials(trials, SSA)
+  trials <- chkTrials(trials, STA)
   chkChar(traits)
   chkNum(rLimit, min = 0)
   chkChar(commonFactors)
@@ -66,23 +66,23 @@ outlierSSA <- function(SSA,
     detection <- FALSE
     ## Checks.
     if (!is.null(commonFactors) && (
-      !all(hasName(x = SSA[[trial]]$TD[[trial]], name = commonFactors)))) {
+      !all(hasName(x = STA[[trial]]$TD[[trial]], name = commonFactors)))) {
       stop("commonFactors has to be a character vector defining columns in TD.\n")
     }
     ## Check that traits are available for current trial.
-    traitsTr <- chkTraits(traits, trial, SSA[[trial]], err = FALSE)
+    traitsTr <- chkTraits(traits, trial, STA[[trial]], err = FALSE)
     if (length(traitsTr) == 0) {
       ## Return NULL to be able to rbind everything together in the end.
       return(NULL)
     }
     if (is.null(what)) {
-      what <- ifelse(is.null(SSA[[trial]]$mFix), "random", "fixed")
+      what <- ifelse(is.null(STA[[trial]]$mFix), "random", "fixed")
     } else {
       what <- match.arg(arg = what, choices = c("fixed", "random"))
     }
     whatMod <- c("mFix", "mRand")[what == c("fixed", "random")]
-    if (is.null(SSA[[trial]][[whatMod]]) ||
-        is.null(unlist(SSA[[trial]][[whatMod]], recursive = FALSE))) {
+    if (is.null(STA[[trial]][[whatMod]]) ||
+        is.null(unlist(STA[[trial]][[whatMod]], recursive = FALSE))) {
       warning("Model with genotype ", what, " not available for trial ",
               trial, ".\nOutlier detection skipped.")
       return(NULL)
@@ -92,9 +92,9 @@ outlierSSA <- function(SSA,
     detection <- TRUE
     whatExt <- ifelse(what == "fixed", "stdResF", "stdResR")
     whatExtDf <- ifelse(what == "fixed", "rDfF", "rDfR")
-    stdRes <- extract(SSA, trials = trial, traits = traitsTr,
+    stdRes <- extract(STA, trials = trial, traits = traitsTr,
                       what = whatExt)[[trial]][[whatExt]]
-    rDf <- extract(SSA, trials = trial, traits = traitsTr,
+    rDf <- extract(STA, trials = trial, traits = traitsTr,
                    what = whatExtDf)[[trial]][[whatExtDf]]
     ## Create empty data.frame for storing results.
     outTr <- indicatorTr <- setNames(vector(mode = "list",
@@ -106,7 +106,7 @@ outlierSSA <- function(SSA,
       if (is.null(rLimit)) {
         rLimit <- min(max(2, qnorm(p = 1 - 0.5 / rDf[trait])), 4)
       }
-      datTr <- SSA[[trial]]$TD[[trial]]
+      datTr <- STA[[trial]]$TD[[trial]]
       ## Compute outliers.
       if (any(abs(na.omit(stdResTr[[trait]])) > rLimit)) {
         ## Rename column for easier joining.

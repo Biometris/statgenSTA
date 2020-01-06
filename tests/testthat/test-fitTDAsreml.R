@@ -2,38 +2,38 @@ context("Modeling")
 
 if (requireNamespace("asreml", quietly = TRUE)) {
   ## Helper function for testing base structure that has to be consistent
-  ## for all SSA objects independent of engine and options.
-  expect_SSA <- function(SSA) {
-    test_that(paste(deparse(substitute(SSA)), "has correct SSA structure"), {
-      expect_is(SSA, "SSA")
-      for (tr in names(SSA)) {
-        expect_length(SSA[[tr]], 9)
-        expect_named(SSA[[tr]], c("mRand", "mFix", "TD", "traits", "design",
+  ## for all STA objects independent of engine and options.
+  expect_STA <- function(STA) {
+    test_that(paste(deparse(substitute(STA)), "has correct STA structure"), {
+      expect_is(STA, "STA")
+      for (tr in names(STA)) {
+        expect_length(STA[[tr]], 9)
+        expect_named(STA[[tr]], c("mRand", "mFix", "TD", "traits", "design",
                                   "spatial", "engine", "predicted", "sumTab"))
-        expect_is(SSA[[tr]]$TD, "TD")
+        expect_is(STA[[tr]]$TD, "TD")
       }
     })
   }
 
   ## Helper function for testing base structure for fitted models within an
-  ## SSA object. Param class is used to indicate the output type of the fitted
-  ## model. Normally this is identical to the engine in SSA but for lme4 this
+  ## STA object. Param class is used to indicate the output type of the fitted
+  ## model. Normally this is identical to the engine in STA but for lme4 this
   ## can vary depending on the fitted model.
-  expect_SSAMod <- function(SSA,
+  expect_STAMod <- function(STA,
                             what,
                             class = NULL) {
     if (is.null(class)) {
-      class <- SSA[[1]]$engine
+      class <- STA[[1]]$engine
     }
-    for (tr in names(SSA)) {
-      SSAMod <- SSA[[tr]][[what]]
-      test_that(paste(deparse(substitute(what)), "in", deparse(substitute(SSA)),
+    for (tr in names(STA)) {
+      STAMod <- STA[[tr]][[what]]
+      test_that(paste(deparse(substitute(what)), "in", deparse(substitute(STA)),
                       "has correct structure"), {
-                        expect_is(SSAMod, "list")
-                        expect_length(SSAMod, length(SSA[[tr]]$traits))
-                        expect_named(SSAMod, SSA[[tr]]$traits)
-                        for (trait in SSA[[tr]]$traits) {
-                          expect_is(SSAMod[[trait]], class)
+                        expect_is(STAMod, "list")
+                        expect_length(STAMod, length(STA[[tr]]$traits))
+                        expect_named(STAMod, STA[[tr]]$traits)
+                        for (trait in STA[[tr]]$traits) {
+                          expect_is(STAMod[[trait]], class)
                         }
                       })
     }
@@ -41,9 +41,9 @@ if (requireNamespace("asreml", quietly = TRUE)) {
 
   test_that("running models creates objects with correct structure", {
     modelAs <- fitTD(testTD, design = "rcbd", traits = "t1", engine = "asreml")
-    expect_SSA(modelAs)
-    expect_SSAMod(modelAs, "mRand")
-    expect_SSAMod(modelAs, "mFix")
+    expect_STA(modelAs)
+    expect_STAMod(modelAs, "mRand")
+    expect_STAMod(modelAs, "mFix")
     expect_equal(modelAs[["E1"]]$traits, "t1")
     expect_equal(modelAs[["E1"]]$design, "rcbd")
     expect_false(modelAs[["E1"]]$spatial[["t1"]])
@@ -53,13 +53,13 @@ if (requireNamespace("asreml", quietly = TRUE)) {
   test_that("option what produces expected output", {
     modelAsF <- fitTD(testTD, design = "rowcol", traits = "t1", what = "fixed",
                       engine = "asreml")
-    expect_SSA(modelAsF)
+    expect_STA(modelAsF)
     expect_null(modelAsF[["E1"]]$mRand)
-    expect_SSAMod(modelAsF, "mFix")
+    expect_STAMod(modelAsF, "mFix")
     modelAsR <- fitTD(testTD, design = "rowcol", traits = "t1", what = "random",
                       engine = "asreml")
-    expect_SSA(modelAsR)
-    expect_SSAMod(modelAsR, "mRand")
+    expect_STA(modelAsR)
+    expect_STAMod(modelAsR, "mRand")
     expect_null(modelAsR[["E1"]]$mFix)
   })
 
@@ -68,9 +68,9 @@ if (requireNamespace("asreml", quietly = TRUE)) {
   test_that("option covariates produces expected output structure", {
     modelAsCov <- fitTD(testTD, design = "rowcol", traits = "t1",
                         covariates = "repId", engine = "asreml")
-    expect_SSA(modelAsCov)
-    expect_SSAMod(modelAsCov, "mRand")
-    expect_SSAMod(modelAsCov, "mFix")
+    expect_STA(modelAsCov)
+    expect_STAMod(modelAsCov, "mRand")
+    expect_STAMod(modelAsCov, "mFix")
     if (asreml4()) {
       expect_true(grepl(pattern = "repId",
                         x = deparse(modelAsCov[["E1"]]$mRand$t1$formulae$fixed)))
@@ -89,9 +89,9 @@ if (requireNamespace("asreml", quietly = TRUE)) {
   test_that("option spatial produces expected output structure", {
     modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1",
                        spatial = TRUE, engine = "asreml")
-    expect_SSA(modelAsTs)
-    expect_SSAMod(modelAsTs, "mRand")
-    expect_SSAMod(modelAsTs, "mFix")
+    expect_STA(modelAsTs)
+    expect_STAMod(modelAsTs, "mRand")
+    expect_STAMod(modelAsTs, "mFix")
     expect_is(modelAsTs[["E1"]]$spatial, "list")
     expect_length(modelAsTs[["E1"]]$spatial, 1)
     expect_named(modelAsTs[["E1"]]$spatial, "t1")
@@ -133,12 +133,12 @@ if (requireNamespace("asreml", quietly = TRUE)) {
     expect_warning(modelAs <- fitTD(testTD, design = "rowcol",
                                     traits = c("t1", "t2"), engine = "asreml"),
                    "Error in asreml")
-    expect_SSA(modelAs)
+    expect_STA(modelAs)
     expect_warning(modelAs2 <- fitTD(testTD, design = "rowcol",
                                      traits = c("t1", "t2"), engine = "asreml",
                                      spatial = TRUE),
                    "Error in asreml")
-    expect_SSA(modelAs2)
+    expect_STA(modelAs2)
   })
 
   test_that("Fitting models functions properly when trait contains space", {

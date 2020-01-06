@@ -88,7 +88,7 @@ useCheckId <- (engine == "SpATS" && length(grep(pattern = "checkId",
 %-------------------------------------------------------------------------------
 <<label=general, echo=FALSE, results="asis">>=
 bgItems <- c(format(attr(x, "timestamp"), "%y-%m-%d %H:%M:%S"),
-             as.character(packageVersion("statgenSSA")),
+             as.character(packageVersion("statgenSTA")),
              engine)
 names(bgItems) <- c("Analysis done on",
                     "Pipeline version",

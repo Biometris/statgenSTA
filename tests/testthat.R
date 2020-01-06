@@ -1,4 +1,4 @@
 library(testthat)
-library(statgenSSA)
+library(statgenSTA)
 
-test_check("statgenSSA")
+test_check("statgenSTA")

@@ -1,8 +1,8 @@
-Package: statgenSSA
+Package: statgenSTA
 Type: Package
-Title: Single Site Analysis (SSA) of Field Trials
-Version: 1.0.1
-Date: 2019-12-24
+Title: Single Trial Analysis (STA) of Field Trials
+Version: 1.0.0
+Date: 2019-01-07
 Authors@R: c(person(given = "Bart-Jan", 
                     family = "van Rossum", 
                     email = "bart-jan.vanrossum@wur.nl", 
@@ -50,7 +50,7 @@ Authors@R: c(person(given = "Bart-Jan",
 Description: The statgen packages, developed by Biometris, are developed to 
     streamline the analysis of typical plant breeding experiments, including 
     both phenotypic analysis of field trials and genotype-by-environment 
-    analysis. statgenSSA can be used for phenotypic analysis of field trials 
+    analysis. statgenSTA can be used for phenotypic analysis of field trials 
     using spatial models. Some functions have been created to be used in 
     conjunction with the R package 'asreml' for the 'ASReml' software, which 
     can be obtained upon purchase from 'VSN' international 

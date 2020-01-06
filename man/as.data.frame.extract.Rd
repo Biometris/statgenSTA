@@ -17,6 +17,6 @@ the data.frame.}
 \item{...}{Ignored.}
 }
 \description{
-Function for coercing heritabilities extracted from an SSA object to a
+Function for coercing heritabilities extracted from an STA object to a
 data.frame for nicer printing and easier post processing.
 }

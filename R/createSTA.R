@@ -1,6 +1,6 @@
-#' S3 class SSA
+#' S3 class STA
 #'
-#' Function for creating objects of S3 class Single Site Analysis (SSA).\cr
+#' Function for creating objects of S3 class Single Site Analysis (STA).\cr
 #' \code{\link{summary}}, \code{\link{plot}} and \code{\link{report}}
 #' methods are available.
 #'
@@ -24,31 +24,31 @@
 #'
 #' @noRd
 #' @keywords internal
-createSSA <- function(models) {
-  SSA <- structure(models,
-                   class = c("SSA", "list"),
+createSTA <- function(models) {
+  STA <- structure(models,
+                   class = c("STA", "list"),
                    timestamp = Sys.time())
-  return(SSA)
+  return(STA)
 }
 
-#' Function for extracting for objects of class SSA that keeps class.
+#' Function for extracting for objects of class STA that keeps class.
 #'
 #' @noRd
 #' @keywords internal
-`[.SSA` <- function(x, i, ...) {
+`[.STA` <- function(x, i, ...) {
   r <- NextMethod("[")
   attr(r, "class") <- attr(x, "class")
   attr(r, "timestamp") <- attr(x, "timestamp")
   return(r)
 }
 
-#' Summarizing objects of class \code{SSA}
+#' Summarizing objects of class \code{STA}
 #'
-#' \code{summary} method for class \code{SSA}.
+#' \code{summary} method for class \code{STA}.
 #'
-#' @param object An object of class \code{SSA}.
+#' @param object An object of class \code{STA}.
 #' @param trials A character vector indicating the trial to summarize. If
-#' \code{trial = NULL} a summary is made of all trials in the \code{SSA} object.
+#' \code{trial = NULL} a summary is made of all trials in the \code{STA} object.
 #' If a single trial is selected a full summary for this trial is created. For
 #' multiple trials a summary table with the most importantant statistics is
 #' returned.
@@ -70,10 +70,10 @@ createSSA <- function(models) {
 #' ## Print a summary of the fitted model.
 #' summary(myModel)
 #'
-#' @family SSA
+#' @family STA
 #'
 #' @export
-summary.SSA <- function(object,
+summary.STA <- function(object,
                         trials = NULL,
                         trait = NULL,
                         nBest = 20,
@@ -107,7 +107,7 @@ summary.SSA <- function(object,
   }
   ## If multiple trials supplied just create a table of BLUEs/BLUPs
   if (length(trials) > 1) {
-    predTD <- SSAtoTD(object, what = sortBy, traits = trait)
+    predTD <- STAtoTD(object, what = sortBy, traits = trait)
     ## Create summary table with default statistics.
     ## Transpose to get trials in rows, stats in columns.
     sumTab <- t(sapply(X = names(predTD), FUN = function(trial) {
@@ -117,7 +117,7 @@ summary.SSA <- function(object,
     sumTab <- sumTab[order(sumTab[, colnames(sumTab) == "Mean"],
                            decreasing = TRUE), ]
     return(structure(list(sumTab = sumTab, what = sortBy, trait = trait),
-                     class = c("summary.SSA")))
+                     class = c("summary.STA")))
   } else {
     ## Get summary stats for raw data.
     TD <- object[[trials]]$TD
@@ -171,23 +171,23 @@ summary.SSA <- function(object,
                           meanTab = meanTab, heritability = extr$heritability,
                           sed = data.frame("s.e.d" = extr$sed),
                           lsd = data.frame("l.s.d." = extr$lsd)),
-                     class = c("summary.SSA")))
+                     class = c("summary.STA")))
   }
 }
 
-#' Printing summazed objects of class SSA
+#' Printing summazed objects of class STA
 #'
-#' \code{print} method for object of class summary.SSA created by summarizing
-#' objects of class SSA.
+#' \code{print} method for object of class summary.STA created by summarizing
+#' objects of class STA.
 #'
-#' @param x An object of class \code{summary.SSA}
+#' @param x An object of class \code{summary.STA}
 #' @param digits An integer indicating the number of significant digits for
 #' printing.
 #' @param ... Further arguments passed to \code{\link[stats]{printCoefmat}}.
 #'
 #' @noRd
 #' @export
-print.summary.SSA <- function(x,
+print.summary.STA <- function(x,
                               digits = max(getOption("digits") - 2, 3),
                               ...) {
   if (!is.null(x$sumTab)) {
@@ -227,7 +227,7 @@ print.summary.SSA <- function(x,
   }
 }
 
-#' Plot function for class SSA
+#' Plot function for class STA
 #'
 #' This function draws either four base plots:
 #' \itemize{
@@ -248,7 +248,7 @@ print.summary.SSA <- function(x,
 #' Spatial plots can only be made if the data contains both row and column
 #' information.
 #'
-#' @param x An object of class SSA.
+#' @param x An object of class STA.
 #' @param ... Further graphical parameters.
 #' @param trials A character vector indicating the trials to plot. If
 #' \code{trials = NULL}, all trials are plotted.
@@ -287,12 +287,12 @@ print.summary.SSA <- function(x,
 #' ## Create spatial plots showing the spatial trend as percentage.
 #' plot(myModel, what = "fixed", plotType = "spatial", spaTrend = "percentage")
 #'
-#' @family SSA
+#' @family STA
 #'
 #' @import ggplot2
 #' @importFrom grDevices topo.colors colorRampPalette
 #' @export
-plot.SSA <- function(x,
+plot.STA <- function(x,
                      ...,
                      trials = NULL,
                      traits = NULL,
@@ -340,7 +340,7 @@ plot.SSA <- function(x,
     }
     pTr <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traitsTr) {
-      ## Extract the model to plot from the SSA object.
+      ## Extract the model to plot from the STA object.
       if (what == "fixed") {
         model <- x[[trial]]$mFix[[trait]]
       } else if (what == "random") {
@@ -565,7 +565,7 @@ fieldPlot <- function(plotDat,
   return(p)
 }
 
-#' Report method for class SSA
+#' Report method for class STA
 #'
 #' pdf reports will be created containing a summary of the results of the
 #' fitted model(s). For all selected trails and traits a separate pdf file will
@@ -576,7 +576,7 @@ fieldPlot <- function(plotDat,
 #' an installation of LaTeX is requiered. Checking for this is done with
 #' Sys.which("pdflatex").
 #'
-#' @param x An object of class SSA.
+#' @param x An object of class STA.
 #' @param ... Further arguments passed to the report function.
 #' @param trials A character vector indicating the trials to report. If
 #' \code{trials = NULL}, all trials are reported.
@@ -593,7 +593,7 @@ fieldPlot <- function(plotDat,
 #' are therefore disallowed. Relative paths are possible though.
 #' @param what A character vector indicating whether the fitted model with
 #' genotype as fixed or genotype as random factor should be reported. By
-#' default all fitted models in the SSA object are reported.
+#' default all fitted models in the STA object are reported.
 #'
 #' @return A pdf report and the .tex file and figures folder that can be used
 #' to recreate the report.
@@ -615,10 +615,10 @@ fieldPlot <- function(plotDat,
 #' report(myModel1, outfile = tempfile(fileext = ".pdf"), descending = FALSE)
 #' }
 #'
-#' @family SSA
+#' @family STA
 #'
 #' @export
-report.SSA <- function(x,
+report.STA <- function(x,
                        ...,
                        trials = NULL,
                        traits = NULL,
@@ -673,9 +673,9 @@ report.SSA <- function(x,
   } # End loop over trials.
 }
 
-#' Convert SSA to Cross
+#' Convert STA to Cross
 #'
-#' Convert an SSA object to a cross object from package qtl. Genotypic
+#' Convert an STA object to a cross object from package qtl. Genotypic
 #' information should be available in a .csv file.\cr
 #' The only way to create an object of class cross is by importing both the
 #' phenotypic and the genotypic data from external files. Therefore the
@@ -686,9 +686,9 @@ report.SSA <- function(x,
 #' imported into a cross object using the read.cross function in the qtl
 #' package.
 #'
-#' @param SSA An object of class \code{SSA}.
+#' @param STA An object of class \code{STA}.
 #' @param trial A character string indicating the trial to be exported. If
-#' \code{NULL} and \code{SSA} contains only one trial, that trial is exported.
+#' \code{NULL} and \code{STA} contains only one trial, that trial is exported.
 #' @param traits A character string containing the traits to be exported. If
 #' \code{NULL}, all traits for the selected trial are exported.
 #' @param what A character string containing the statistics to be exported as
@@ -714,12 +714,12 @@ report.SSA <- function(x,
 #'
 #' ## Create cross object with BLUEs from myModel using genotypic information
 #' ## from markers.csv in the package.
-#' cross <- SSAtoCross(myModel, genoFile = system.file("extdata", "markers.csv",
-#'                                                     package = "statgenSSA"))
+#' cross <- STAtoCross(myModel, genoFile = system.file("extdata", "markers.csv",
+#'                                                     package = "statgenSTA"))
 #'
-#' @family SSA
+#' @family STA
 #' @export
-SSAtoCross <- function(SSA,
+STAtoCross <- function(STA,
                        trial = NULL,
                        traits = NULL,
                        what = c("BLUEs", "BLUPs"),
@@ -727,26 +727,26 @@ SSAtoCross <- function(SSA,
                        genotypes = c("A", "H", "B", "D", "C"),
                        ...) {
   ## Checks
-  if (!inherits(SSA, "SSA")) {
-    stop("SSA is not a valid object of class SSA.\n")
+  if (!inherits(STA, "STA")) {
+    stop("STA is not a valid object of class STA.\n")
   }
-  if (is.null(trial) && length(SSA) > 1) {
-    stop("No trial provided but multiple trials found in SSA object.\n")
+  if (is.null(trial) && length(STA) > 1) {
+    stop("No trial provided but multiple trials found in STA object.\n")
   }
   if (!is.null(trial) && (!is.character(trial) || length(trial) > 1 ||
-                          !trial %in% names(SSA))) {
-    stop("trial has to be a single character string defining a trial in SSA.\n")
+                          !trial %in% names(STA))) {
+    stop("trial has to be a single character string defining a trial in STA.\n")
   }
   if (is.null(trial)) {
-    trial <- names(SSA)
+    trial <- names(STA)
   }
-  traits <- chkTraits(traits, trial, SSA[[trial]])
+  traits <- chkTraits(traits, trial, STA[[trial]])
   what <- match.arg(what)
   if (!is.character(genoFile) || length(genoFile) > 1 || !file.exists(genoFile)) {
     stop("genoFile is not a valid filename.\n")
   }
   ## Extract predictions from the model.
-  pred <- extract(SSA, traits = traits, what = what)[[trial]][[what]]
+  pred <- extract(STA, traits = traits, what = what)[[trial]][[what]]
   ## Rename first column to match first column in genoFile.
   colnames(pred)[1] <- colnames(utils::read.csv(genoFile, nrow = 1))[1]
   ## Write predictions to temporary file.
@@ -761,26 +761,26 @@ SSAtoCross <- function(SSA,
   return(cross)
 }
 
-#' Convert SSA to TD
+#' Convert STA to TD
 #'
-#' Convert an SSA object to a TD object.\cr
-#' To be able to use the output of a single site analysis in
+#' Convert an STA object to a TD object.\cr
+#' To be able to use the output of a single trial analysis in
 #' Genotype-by-Environment (GxE) analysis the output first needs to be converted
 #' back to an TD object. This function does exactly that. It extracts BLUEs,
-#' BLUPs and their standard errors from the SSA object and creates a new TD
+#' BLUPs and their standard errors from the STA object and creates a new TD
 #' object using these. Also a column "wt" (weigth) may also be added. Weights
 #' are then calculated as 1/(SE BLUEs) ^ 2.
 #'
-#' Trial information for the trials in the SSA object will be copied from the
+#' Trial information for the trials in the STA object will be copied from the
 #' original TD object on which the modeling was done.
 #'
-#' @param SSA An object of class \code{SSA}.
+#' @param STA An object of class \code{STA}.
 #' @param what A character string containing the statistics to be included as
 #' traits in the TD object. Multiple statistics can be included in which case
 #' they will appear as \code{statistic_trait} in the output
 #' @param traits A character string containing the traits to be included in the
 #' TD object. If \code{NULL}, all traits are exported.
-#' @param keep Columns from the TD object used as input for the SSA model to
+#' @param keep Columns from the TD object used as input for the STA model to
 #' be copied to the output. see \code{\link{extract}} for possible columns to
 #' copy. If if it is available in \code{TD}, the column \code{trial} will always
 #' be copied.
@@ -795,34 +795,34 @@ SSAtoCross <- function(SSA,
 #'                       what = "fixed")
 #'
 #' ## Create TD object from the fitted model with BLUEs and standard errors.
-#' myTD <- SSAtoTD(myModel)
+#' myTD <- STAtoTD(myModel)
 #'
 #' ## Add a weight column in the output.
-#' myTDWt <- SSAtoTD(myModel, addWt = TRUE)
+#' myTDWt <- STAtoTD(myModel, addWt = TRUE)
 #'
-#' @family SSA
+#' @family STA
 #'
 #' @export
-SSAtoTD <- function(SSA,
+STAtoTD <- function(STA,
                     what = c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs"),
                     traits = NULL,
                     keep = NULL,
                     addWt = FALSE) {
   ## Checks.
-  if (missing(SSA) || !inherits(SSA, "SSA")) {
-    stop("SSA is not a valid object of class SSA.\n")
+  if (missing(STA) || !inherits(STA, "STA")) {
+    stop("STA is not a valid object of class STA.\n")
   }
   if (!is.null(traits) && (!is.character(traits) ||
-                           !all(traits %in% colnames(SSA[[1]]$TD[[1]])))) {
+                           !all(traits %in% colnames(STA[[1]]$TD[[1]])))) {
     stop("traits has to be a character vector defining columns in TD.\n")
   }
   what <- match.arg(what, several.ok = TRUE)
-  if (any(c("BLUEs", "seBLUEs") %in% what) && is.null(SSA[[1]]$mFix)) {
+  if (any(c("BLUEs", "seBLUEs") %in% what) && is.null(STA[[1]]$mFix)) {
     warning("BLUEs and seBLUEs can only be extracted if a model with ",
             "genotype fixed is fitted\nRemoving them from what", call. = FALSE)
     what <- setdiff(what, c("BLUEs", "seBLUEs"))
   }
-  if (any(c("BLUPs", "seBLUPs") %in% what) && is.null(SSA[[1]]$mRand)) {
+  if (any(c("BLUPs", "seBLUPs") %in% what) && is.null(STA[[1]]$mRand)) {
     warning("BLUPs and seBLUPs can only be extracted if a model with ",
             "genotype random is fitted\nRemoving them from what", call. = FALSE)
     what <- setdiff(what , c("BLUPs", "seBLUPs"))
@@ -830,7 +830,7 @@ SSAtoTD <- function(SSA,
   if (length(what) == 0) {
     stop("No statistics left to extract.")
   }
-  if (addWt && is.null(SSA[[1]]$mFix)) {
+  if (addWt && is.null(STA[[1]]$mFix)) {
     warning("Weights can only be added if a model with genotype fixed is ",
             "fitted.\naddWt set to FALSE", call. = FALSE)
     addWt <- FALSE
@@ -841,16 +841,16 @@ SSAtoTD <- function(SSA,
     what <- c(what, "seBLUEs")
   }
   if (is.null(traits)) {
-    traits <- SSA[[1]]$traits
+    traits <- STA[[1]]$traits
   }
-  if (!"trial" %in% keep && hasName(x = SSA[[1]]$TD[[1]], name = "trial")) {
+  if (!"trial" %in% keep && hasName(x = STA[[1]]$TD[[1]], name = "trial")) {
     keep <- c(keep, "trial")
   }
   ## Create a list of data.frames with all statistics per trial.
-  predTrTot <- lapply(X = names(SSA), FUN = function(trial) {
+  predTrTot <- lapply(X = names(STA), FUN = function(trial) {
     ## Extract predictions from the model.
     predLst <- unlist(lapply(X = traits, FUN = function(trait) {
-      extract(SSA, trials = trial, traits = trait, what = what, keep = keep)
+      extract(STA, trials = trial, traits = trait, what = what, keep = keep)
     }), recursive = FALSE)
     if (length(what) + addWt > 1) {
       ## Rename columns if more than one column per trait will appear in the

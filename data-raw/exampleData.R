@@ -2,7 +2,7 @@
 
 # Read raw data
 SB_Yield <- read.csv(system.file("extdata", "SB_yield.csv",
-                                 package = "statgenSSA"),
+                                 package = "statgenSTA"),
                      stringsAsFactors = FALSE, na.strings = c("NA", "*"))
 # Restrict to HEAT05
 Heat05 <- SB_Yield[SB_Yield[["Env"]] == "HEAT05", ]
@@ -18,7 +18,7 @@ usethis::use_data(TDHeat05, overwrite = TRUE)
 
 # Read raw data
 F2Maize <- read.csv(system.file("extdata", "F2maize_pheno.csv",
-                                package = "statgenSSA"),
+                                package = "statgenSTA"),
                     stringsAsFactors = FALSE)
 # Create object of class TD
 TDMaize <- createTD(data = F2Maize, genotype = "genotype.", trial = "env.")
@@ -63,9 +63,9 @@ usethis::use_data(testData, testTD, extractOptions,
 ## Create data for vignette.
 # Read raw data.
 dat2011 <- read.delim(system.file("extdata", "pheno_data2011.txt",
-                                  package = "statgenSSA"))
+                                  package = "statgenSTA"))
 dat2012 <- read.delim(system.file("extdata", "pheno_data2012.txt",
-                                  package = "statgenSSA"))
+                                  package = "statgenSTA"))
 # Split data into separate year/trials.
 dat2011_1 <- dat2011[, 1:11]
 dat2011_1[["trial"]] <- "SR_FI_11"

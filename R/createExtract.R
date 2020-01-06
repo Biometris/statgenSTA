@@ -14,7 +14,7 @@ createExtract <- function(result,
 
 #' Coerce extracted heritabilities to data.frame
 #'
-#' Function for coercing heritabilities extracted from an SSA object to a
+#' Function for coercing heritabilities extracted from an STA object to a
 #' data.frame for nicer printing and easier post processing.
 #'
 #' @param x An object of class extract.

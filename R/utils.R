@@ -229,7 +229,7 @@ seKurtosis <- function(n) {
 #' @param x An \code{R} object
 #' @param ... Further arguments to be passed on to specific report functions.
 #'
-#' @seealso \code{\link{report.SSA}}
+#' @seealso \code{\link{report.STA}}
 #'
 #' @export
 report <- function(x,
@@ -288,7 +288,7 @@ createReport <- function(x,
   ## Construct the output name of the .tex file
   outTex <- file.path(outDir, paste0(outBase, "tex"))
   ## Get the report file from the directory where the package is installed.
-  reportFile <- system.file("reports", reportName, package = "statgenSSA")
+  reportFile <- system.file("reports", reportName, package = "statgenSTA")
   ## Save knitr options for reset when exiting function.
   knitrOptsOrig <- knitr::opts_chunk$get()
   on.exit(knitr::opts_chunk$set(knitrOptsOrig))
@@ -334,12 +334,12 @@ createReport <- function(x,
   ## A .csv file might be created in the package directory.
   ## This file is moved to the proper output location.
   if (file.exists(system.file("reports", paste0(outBase, "csv"),
-                              package = "statgenSSA"))) {
+                              package = "statgenSTA"))) {
     file.copy(system.file("reports", paste0(outBase, "csv"),
-                          package = "statgenSSA"),
+                          package = "statgenSTA"),
               file.path(outDir, paste0(outBase, "csv")), overwrite = TRUE)
     unlink(system.file("reports", paste0(outBase, "csv"),
-                       package = "statgenSSA"))
+                       package = "statgenSTA"))
   }
 }
 

@@ -15,5 +15,5 @@ report(x, ...)
 Base method for creating a .pdf and .tex report from an \code{R} object.
 }
 \seealso{
-\code{\link{report.SSA}}
+\code{\link{report.STA}}
 }

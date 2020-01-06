@@ -5,8 +5,8 @@
 \title{Extract statistics from Fitted Models}
 \usage{
 extract(
-  SSA,
-  trials = names(SSA),
+  STA,
+  trials = names(STA),
   traits = NULL,
   what = "all",
   keep = NULL,
@@ -14,7 +14,7 @@ extract(
 )
 }
 \arguments{
-\item{SSA}{An object of class SSA.}
+\item{STA}{An object of class STA.}
 
 \item{trials}{A character vector of trials for which the statistics should be
 computed. If not supplied, statistics are computed for all trials that have

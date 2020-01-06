@@ -215,7 +215,7 @@ fitTDAsreml <- function(TD,
     TDOut <- createTD(data = TDTr)
     attr(x = TDOut[[trial]], which = "renamedCols") <-
       attr(x = TDTr, which = "renamedCols")
-    ## Construct SSA object.
+    ## Construct STA object.
     return(list(mRand = if ("random" %in% what) mr else NULL,
                 mFix = if ("fixed" %in% what) mf else NULL, TD = TDOut,
                 traits = traits, design = design, spatial = spatial,
