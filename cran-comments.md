@@ -1,15 +1,14 @@
 ## Resubmission
 
-* Now using tempfile() for writing output files in examples.
-Still put them under \donttest because of time constraints.
-* Added pdflatex to SystemRequirements.
+* Updated date field in DESCRIPTION
+* Cleaned up Readme
 
 ----
 
 ## Test environments
 
 * local Windows 10 install, R 3.6.2
-* Debian (on gitlab-ci), R 3.6.1
+* Debian (on gitlab-ci), R 3.6.2
 * R-hub (devel and release)
 
 ----
@@ -23,17 +22,10 @@ There were 2 NOTES:
   * checking CRAN incoming feasibility ... NOTE    
     Maintainer: 'Bart-Jan van Rossum <bart-jan.vanrossum@wur.nl>'
     New submission
-    
-    Possibly mis-spelled words in DESCRIPTION:
-    Biometris (50:49)
-    statgen (50:18)
-    statgenSTA (53:15)
-    
+  
     Suggests or Enhances not in mainstream repositories: asreml
     
     - First submission of the package
-    
-    - Mis-spelled words are names
     
     - asreml is a commercial R package that is used as one of three alternatives for modeling data.
   

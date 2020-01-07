@@ -34,7 +34,7 @@ will be named \code{wt_trait}.}
 }
 \description{
 Convert an STA object to a TD object.\cr
-To be able to use the output of a single site analysis in
+To be able to use the output of a single trial analysis in
 Genotype-by-Environment (GxE) analysis the output first needs to be converted
 back to an TD object. This function does exactly that. It extracts BLUEs,
 BLUPs and their standard errors from the STA object and creates a new TD
