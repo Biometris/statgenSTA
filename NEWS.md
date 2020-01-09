@@ -1,3 +1,3 @@
-# statgenSTA 1.0.1
+# statgenSTA 1.0.2
 
 * Initial CRAN version

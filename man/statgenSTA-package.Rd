@@ -6,14 +6,13 @@
 \alias{statgenSTA-package}
 \title{statgenSTA: Single Trial Analysis (STA) of Field Trials}
 \description{
-The statgen packages, developed by Biometris, are developed to 
-    streamline the analysis of typical plant breeding experiments, including 
-    both phenotypic analysis of field trials and genotype-by-environment 
-    analysis. statgenSTA can be used for phenotypic analysis of field trials 
-    using spatial models. Some functions have been created to be used in 
-    conjunction with the R package 'asreml' for the 'ASReml' software, which 
-    can be obtained upon purchase from 'VSN' international 
-    (<http://www.vsni.co.uk/software/asreml-r>).
+Phenotypic analysis of field trials using mixed models with and 
+    without spatial components. One of a series of statistical genetic packages 
+    for streamlining the analysis of typical plant breeding experiments developed
+    by Biometris.
+    Some functions have been created to be used in conjunction with the R 
+    package 'asreml' for the 'ASReml' software, which can be obtained upon 
+    purchase from 'VSN' international (<http://www.vsni.co.uk/software/asreml-r>).
 }
 \author{
 \strong{Maintainer}: Bart-Jan van Rossum \email{bart-jan.vanrossum@wur.nl}

@@ -1,7 +1,6 @@
 ## Resubmission
 
-* Updated date field in DESCRIPTION
-* Cleaned up Readme
+* Updated package description in DESCRIPTION
 
 ----
 
@@ -25,10 +24,10 @@ There were 2 NOTES:
   
     Suggests or Enhances not in mainstream repositories: asreml
     
-    - First submission of the package
+    - First submission of the package.
     
     - asreml is a commercial R package that is used as one of three alternatives for modeling data.
-  
+
   * checking package dependencies ... NOTE  
     Package suggested but not available for checking: 'asreml'
     
