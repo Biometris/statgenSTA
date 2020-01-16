@@ -7,7 +7,7 @@
 \method{plot}{TD}(
   x,
   ...,
-  plotType = c("layout", "map", "box", "cor"),
+  plotType = c("layout", "map", "box", "cor", "scatter"),
   trials = names(x),
   traits = NULL,
   output = TRUE

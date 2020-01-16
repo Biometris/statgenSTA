@@ -679,7 +679,7 @@ print.summary.TD <- function(x, ...) {
 #' @export
 plot.TD <- function(x,
                     ...,
-                    plotType = c("layout", "map", "box", "cor"),
+                    plotType = c("layout", "map", "box", "cor", "scatter"),
                     trials = names(x),
                     traits = NULL,
                     output = TRUE) {
@@ -700,7 +700,7 @@ plot.TD <- function(x,
       if (!chkRowCol(trDat)) next
       if (length(highlight) > 0) {
         trDat[["highlight."]] <- ifelse(trDat[["genotype"]] %in% highlight,
-                                   as.character(trDat[["genotype"]]), NA)
+                                        as.character(trDat[["genotype"]]), NA)
       }
       trLoc <- attr(trDat, "trLocation")
       plotRep <- hasName(x = trDat, name = "repId")
@@ -1037,6 +1037,104 @@ plot.TD <- function(x,
       p[[trait]] <- pTr
       if (output) {
         plot(pTr)
+      }
+    }
+  } else if (plotType == "scatter") {
+    if (length(trials) == 1) {
+      stop("At least two trials requiered for a scatter plot.\n")
+    }
+    chkChar(traits, null = FALSE)
+    p <- setNames(vector(mode = "list", length = length(traits)), traits)
+    for (trait in traits) {
+      ## Create a single data.frame from x with only columns genotype, trial
+      ## and trait.
+      ## trials where trait is not measured/available are removed by setting
+      ## them to NULL.
+      plotDat <- Reduce(f = rbind, x = lapply(X = x, FUN = function(trial) {
+        if (!hasName(x = trial, name = trait)) {
+          NULL
+        } else {
+          trial[c("genotype", "trial", trait)]
+        }
+      }))
+      if (is.null(plotDat)) {
+        warning(trait, " isn't a column in any of the trials.\n",
+                "Plot skipped.\n", call. = FALSE)
+        next
+      }
+      ## Create table with values trait per genotype per trial.
+      ## If TD already contains BLUEs/BLUPs taking means doesn't do anything
+      ## but it is needed for raw data where there can be replicates.
+      plotTab <- as.data.frame(tapply(plotDat[[trait]],
+                                      INDEX = list(plotDat[["genotype"]],
+                                                   plotDat[["trial"]]),
+                                      FUN = mean, na.rm = TRUE))
+      ## Create plots containing histograms.
+      ## Used further on to replace diagonal plot in plot matrix.
+      histPlots <- lapply(X = trials, FUN = function(trial) {
+        binWidth <- diff(range(plotTab[[trial]], na.rm = TRUE)) / 10
+        p <- ggplot(plotTab, aes_string(x = trial,
+                                        y = "(..count..)/sum(..count..)")) +
+          geom_histogram(na.rm = TRUE, binwidth = binWidth, boundary = 0) +
+          scale_x_continuous(limits = range(plotTab, na.rm = TRUE))
+      })
+      ## Y-axis should be the same for all histograms.
+      ## Build histograms and extract axis informattion.
+      yMax <- max(sapply(X = histPlots, FUN = function(hp) {
+        max(ggplot_build(hp)$data[[1]][["ymax"]])
+      }))
+      ## Add scaling for y-axis to histograms
+      ## Convert to grobs for easier use later on.
+      histGrobs <- lapply(X = histPlots, FUN = function(hp) {
+        hp <- hp + scale_y_continuous(labels = function(x) {
+          paste0(100 * x, "%")
+        }, limits = c(0, yMax))
+        ggplotGrob(hp)
+      })
+      ## Add genotype to plotTab so reshape can be used.
+      plotTab[["genotype"]] <- rownames(plotTab)
+      ## Reshape to get data in format suitable for ggplot.
+      plotTab <- reshape2::melt(plotTab, id.vars = "genotype",
+                                value.name = trait, variable.name = "trial")
+      ## Merge to itself to create a full data set.
+      plotTab <- merge(plotTab, plotTab, by = "genotype")
+      ## Create a facet plot containing only scatterplots.
+      scatterBase <- ggplot(data = plotTab,
+                            aes_string(x = "GY.x", y = "GY.y")) +
+        geom_point(na.rm = TRUE) +
+        facet_grid(facets = c("trial.y", "trial.x")) +
+        labs(title = paste("Scatterplots of trials for", trait),
+             x = "", y = "") +
+        theme(plot.title = element_text(hjust = 0.5))
+      ## Convert to grobs to enable modifying.
+      scatterGrob <- ggplotGrob(scatterBase)
+      ## Get grobs containing plot panels.
+      panels <- scatterGrob$layout$name[grepl(pattern = "panel",
+                                              x = scatterGrob$layout$name)]
+      splitPanels <- strsplit(x = panels, split = "-")
+      ## Upper right panels need to be set to zeroGrob to make them empty.
+      nullPanels <- panels[sapply(X = splitPanels, FUN = function(pan) {
+        as.numeric(pan[2]) < as.numeric(pan[3])
+      })]
+      for (np in nullPanels) {
+        scatterGrob$grobs[[which(scatterGrob$layout$name == np)]] <- zeroGrob()
+      }
+      ## Set diagonal panels to histograms calculated before.
+      histPanels <- panels[sapply(X = splitPanels, FUN = function(pan) {
+        as.numeric(pan[2]) == as.numeric(pan[3])
+      })]
+      for (i in seq_along(histPanels)) {
+        hg <- histGrobs[[i]]
+        ## Replace grob by panel grob from histogram.
+        scatterGrob$grobs[[which(scatterGrob$layout$name == histPanels[i])]] <-
+          hg$grobs[[which(hg$layout$name == "panel")]]
+      }
+      ## Replace top left axis in the matrix by y axis from the first histogram.
+      scatterGrob$grobs[[which(scatterGrob$layout$name == "axis-l-1")]] <-
+        histGrobs[[1]]$grobs[[which(histGrobs[[1]]$layout$name == "axis-l")]]
+      p[[trait]] <- scatterGrob
+      if (output) {
+        plot(scatterGrob)
       }
     }
   }
