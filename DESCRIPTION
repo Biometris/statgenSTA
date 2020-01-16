@@ -68,7 +68,6 @@ Imports:
     lme4,
     mapproj,
     maps,
-    methods,
     qtl,
     reshape2,
     scales,
