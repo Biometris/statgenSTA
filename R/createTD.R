@@ -554,9 +554,9 @@ print.summary.TD <- function(x, ...) {
 #'
 #' Plotting function for objects of class TD. Plots either the layout of the
 #' different trials within the TD object or locates the trials on a map. Also a
-#' boxplot can be made for selected traits and trials and a plot of correlations
-#' between trials. A detailed description and optional extra parameters of the
-#' different plots is given in the sections below.
+#' boxplot can be made for selected traits and trials, a plot of correlations
+#' between trials and a scatter plot matrix. A detailed description and optional
+#' extra parameters of the different plots is given in the sections below.
 #'
 #' @section Layout Plot:
 #' Plots the layout of the selected trials (all available trials by default).
@@ -587,7 +587,8 @@ print.summary.TD <- function(x, ...) {
 #' which the trials are located will be plotted on a single map and the
 #' location of the trials will be indicated on this map. The actual plot is
 #' made using ggplot, but for getting the data for the borders of the countries
-#' the maps package is needed. Extra parameter options:
+#' the maps package is needed.\cr
+#' Extra parameter options:
 #' \describe{
 #' \item{minLatRange}{A positive numerical value indicating the minimum range
 #' (in degrees) for the latitude on the plotted map. Defaults to 10.}
@@ -616,6 +617,24 @@ print.summary.TD <- function(x, ...) {
 #' genotypes are replicated within trials genotypic means are taken before
 #' computing correlations. The order of the trials in the heatmap is determined
 #' by clustering them.
+#'
+#' @section Scatter Plot:
+#' Draws a scatter plot matrix per selected trait. If genotypes are replicated
+#' within trials genotypic means are taken before plotting. The lower left of
+#' the matix contains scatter plots between trials. The diagonal contains
+#' histograms of the data per trial.\cr
+#' Extra parameter options:
+#' \describe{
+#' \item{colorBy}{A character string indicating a column in \code{TD} by which
+#' the genotypes in the scatter plots are colored.}
+#' \item{trialOrder}{A character vector indicating the order of the trials in
+#' the plot matrix (left to right and top to bottom). This vector should be a
+#' permutation of all trials plotted.}
+#' \item{addCorr}{A character string indicating the position of the correlation
+#' diplayed in each plot, either "tl" for top left, "tr", for top right, "bl"
+#' for bottom left or "br" for bottom right. If \code{NULL}, the default, then
+#' no correlation is added to the plot.}
+#' }
 #'
 #' @param x An object of class TD.
 #' @param ... Extra plot options. Described per plotType in their respective
@@ -675,6 +694,14 @@ print.summary.TD <- function(x, ...) {
 #'
 #' ## Plot the correlations between trials for GY.
 #' plot(wheatTD, plotType = "cor", traits = "GY")
+#'
+#' ### Scatter plot
+#'
+#' ## Plot scatter plot for GY.
+#' plot(wheatTD, plotType = "scatter", traits = "GY")
+#'
+#' ## Add correlations to top left corner of plots.
+#' plot(wheatTD, plotType = "scatter", traits = "GY", addCorr = "tl")
 #'
 #' @export
 plot.TD <- function(x,
