@@ -1089,20 +1089,23 @@ plot.TD <- function(x,
       ## trials where trait is not measured/available are removed by setting
       ## them to NULL.
       plotDat <- Reduce(f = rbind, x = lapply(X = x, FUN = function(trial) {
-        if (!hasName(x = trial, name = trait)) {
+        if (!hasName(x = trial, name = trait) || all(is.na(trial[[trait]]))) {
           NULL
         } else {
           trial[c("genotype", "trial", trait, colorBy)]
         }
       }))
-      if (is.null(plotDat)) {
-        warning(trait, " isn't a column in any of the trials.\n",
+      plotDat <- droplevels(plotDat)
+      if (nlevels(plotDat[["trial"]]) < 2) {
+        warning(trait, " has no valid observations for a least two trials.\n",
                 "Plot skipped.\n", call. = FALSE)
         next
       }
       if (!is.null(trialOrder)) {
-        plotDat[["trial"]] <- factor(plotDat[["trial"]], levels = trialOrder)
-        trials <- trialOrder
+        ## Reorder trials.
+        ## First restict reordering to trials left after removing NA trials.
+        trialOrderTr <- trialOrder[trialOrder %in% levels(plotDat[["trial"]])]
+        plotDat[["trial"]] <- factor(plotDat[["trial"]], trialOrderTr)
       }
       ## Create table with values trait per genotype per trial.
       ## If TD already contains BLUEs/BLUPs taking means doesn't do anything
@@ -1132,7 +1135,7 @@ plot.TD <- function(x,
       }
       ## Create plots containing histograms.
       ## Used further on to replace diagonal plot in plot matrix.
-      histPlots <- lapply(X = trials, FUN = function(trial) {
+      histPlots <- lapply(X = levels(plotDat[["trial"]]), FUN = function(trial) {
         binWidth <- diff(range(plotTab[[trial]], na.rm = TRUE)) / 10
         ggplot(plotTab, aes_string(x = trial,
                                    y = "(..count..)/sum(..count..)")) +
