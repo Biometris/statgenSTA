@@ -1043,6 +1043,7 @@ plot.TD <- function(x,
     if (length(trials) == 1) {
       stop("At least two trials requiered for a scatter plot.\n")
     }
+    chkChar(traits, null = FALSE)
     colorBy <- dotArgs$colorBy
     if (!is.null(colorBy)) {
       chkChar(colorBy, len = 1, null = FALSE)
@@ -1052,7 +1053,8 @@ plot.TD <- function(x,
     }))) {
       stop("colorBy should be a column in TD.\n")
     }
-    chkChar(traits, null = FALSE)
+    trialOrder <- dotArgs$trialOrder
+    addCorr <- match.arg(dotArgs$addCorr, choices = c("tl", "bl", "tr", "br"))
     p <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traits) {
       ## Create a single data.frame from x with only columns genotype, trial
@@ -1071,18 +1073,42 @@ plot.TD <- function(x,
                 "Plot skipped.\n", call. = FALSE)
         next
       }
+      if (!is.null(trialOrder)) {
+        plotDat[["trial"]] <- factor(plotDat[["trial"]], levels = trialOrder)
+        trials <- trialOrder
+      }
       ## Create table with values trait per genotype per trial.
       ## If TD already contains BLUEs/BLUPs taking means doesn't do anything
       ## but it is needed for raw data where there can be replicates.
-      indexVars <- list(plotDat[["genotype"]], plotDat[["trial"]])
-      plotTab <- as.data.frame(tapply(plotDat[[trait]], INDEX = indexVars,
+      plotTab <- as.data.frame(tapply(plotDat[[trait]],
+                                      INDEX = list(plotDat[["genotype"]],
+                                                   plotDat[["trial"]]),
                                       FUN = mean, na.rm = TRUE))
+      if (!is.null(addCorr)) {
+        ## Compute correlations for annotation.
+        corMat <- cor(plotTab, use = "pairwise.complete.obs")
+        ## Melt to get the proper format for ggplot.
+        meltedCorMat <- reshape2::melt(corMat)
+        ## If trial names consist of only numbers melt converts them to numeric.
+        ## This gives problems with plotting, so reconvert them to factor.
+        if (is.numeric(meltedCorMat[["Var1"]])) {
+          meltedCorMat[["Var1"]] <- factor(meltedCorMat[["Var1"]],
+                                           levels = rownames(corMat))
+          meltedCorMat[["Var2"]] <- factor(meltedCorMat[["Var2"]],
+                                           levels = rownames(corMat))
+        }
+        ## Set position for annotation.
+        ## Using Inf and -Inf for positions independent of scale.
+        meltedCorMat[["x"]] <- ifelse(addCorr %in% c("tl", "bl"), -Inf, Inf)
+        meltedCorMat[["y"]] <- ifelse(addCorr %in% c("br", "bl"), -Inf, Inf)
+        colnames(meltedCorMat)[1:2] <- c("trial.x", "trial.y")
+      }
       ## Create plots containing histograms.
       ## Used further on to replace diagonal plot in plot matrix.
       histPlots <- lapply(X = trials, FUN = function(trial) {
         binWidth <- diff(range(plotTab[[trial]], na.rm = TRUE)) / 10
-        p <- ggplot(plotTab, aes_string(x = trial,
-                                        y = "(..count..)/sum(..count..)")) +
+        ggplot(plotTab, aes_string(x = trial,
+                                   y = "(..count..)/sum(..count..)")) +
           geom_histogram(na.rm = TRUE, binwidth = binWidth, boundary = 0) +
           scale_x_continuous(limits = range(plotTab, na.rm = TRUE))
       })
@@ -1122,6 +1148,15 @@ plot.TD <- function(x,
         theme(plot.title = element_text(hjust = 0.5),
               legend.position = c(1, 1),
               legend.justification = c(1.5, 1.5))
+      if (!is.null(addCorr)) {
+        ## Add correlation annotated in the corner of the plot.
+        scatterBase <- scatterBase +
+          geom_text(data = meltedCorMat,
+                    aes_string(x = "x", y = "y",
+                               label = "paste('rho ==', round(value, 2))"),
+                    hjust = "inward", vjust = "inward", parse = TRUE,
+                    inherit.aes = FALSE)
+      }
       ## Convert to grobs to enable modifying.
       scatterGrob <- ggplotGrob(scatterBase)
       ## Get grobs containing plot panels.
