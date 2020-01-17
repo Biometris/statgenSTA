@@ -1081,7 +1081,8 @@ plot.TD <- function(x,
       stop("colorBy should be a column in TD.\n")
     }
     trialOrder <- dotArgs$trialOrder
-    if (!all(trialOrder %in% trials) || !all(trials %in% trialOrder)) {
+    if (!is.null(trialOrder) &&
+                 (!all(trialOrder %in% trials) || !all(trials %in% trialOrder))) {
       stop("trials and trialOrder should contain exactly the same trials.\n")
     }
     addCorr <- match.arg(dotArgs$addCorr, choices = c("tl", "bl", "tr", "br"))
