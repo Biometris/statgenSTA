@@ -1043,6 +1043,15 @@ plot.TD <- function(x,
     if (length(trials) == 1) {
       stop("At least two trials requiered for a scatter plot.\n")
     }
+    colorBy <- dotArgs$colorBy
+    if (!is.null(colorBy)) {
+      chkChar(colorBy, len = 1, null = FALSE)
+    }
+    if (!is.null(colorBy) && !all(sapply(X = x, FUN = function(trial) {
+      hasName(x = trial, name = colorBy)
+    }))) {
+      stop("colorBy should be a column in TD.\n")
+    }
     chkChar(traits, null = FALSE)
     p <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traits) {
@@ -1054,7 +1063,7 @@ plot.TD <- function(x,
         if (!hasName(x = trial, name = trait)) {
           NULL
         } else {
-          trial[c("genotype", "trial", trait)]
+          trial[c("genotype", "trial", trait, colorBy)]
         }
       }))
       if (is.null(plotDat)) {
@@ -1065,9 +1074,8 @@ plot.TD <- function(x,
       ## Create table with values trait per genotype per trial.
       ## If TD already contains BLUEs/BLUPs taking means doesn't do anything
       ## but it is needed for raw data where there can be replicates.
-      plotTab <- as.data.frame(tapply(plotDat[[trait]],
-                                      INDEX = list(plotDat[["genotype"]],
-                                                   plotDat[["trial"]]),
+      indexVars <- list(plotDat[["genotype"]], plotDat[["trial"]])
+      plotTab <- as.data.frame(tapply(plotDat[[trait]], INDEX = indexVars,
                                       FUN = mean, na.rm = TRUE))
       ## Create plots containing histograms.
       ## Used further on to replace diagonal plot in plot matrix.
@@ -1096,16 +1104,24 @@ plot.TD <- function(x,
       ## Reshape to get data in format suitable for ggplot.
       plotTab <- reshape2::melt(plotTab, id.vars = "genotype",
                                 value.name = trait, variable.name = "trial")
+      if (!is.null(colorBy)) {
+        plotTab <- merge(plotTab, unique(plotDat[c("genotype", colorBy)]))
+      }
       ## Merge to itself to create a full data set.
-      plotTab <- merge(plotTab, plotTab, by = "genotype")
+      plotTab <- merge(plotTab, plotTab, by = c("genotype", colorBy))
       ## Create a facet plot containing only scatterplots.
       scatterBase <- ggplot(data = plotTab,
-                            aes_string(x = "GY.x", y = "GY.y")) +
+                            aes_string(x = paste0(trait, ".x"),
+                                       y = paste0(trait, ".y"),
+                                       color = if (is.null(colorBy)) NULL else
+                                         paste0("`", colorBy, "`"))) +
         geom_point(na.rm = TRUE) +
         facet_grid(facets = c("trial.y", "trial.x")) +
         labs(title = paste("Scatterplots of trials for", trait),
              x = "", y = "") +
-        theme(plot.title = element_text(hjust = 0.5))
+        theme(plot.title = element_text(hjust = 0.5),
+              legend.position = c(1, 1),
+              legend.justification = c(1.5, 1.5))
       ## Convert to grobs to enable modifying.
       scatterGrob <- ggplotGrob(scatterBase)
       ## Get grobs containing plot panels.
