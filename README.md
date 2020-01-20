@@ -1,5 +1,8 @@
+[![](http://www.r-pkg.org/badges/version/statgenSTA)](http://www.r-pkg.org/pkg/statgenSTA)
+[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/statgenSTA)](http://www.r-pkg.org/pkg/statgenSTA)
+
 statgenSTA
-================
+==========
 
 R package for single trial analysis
 
