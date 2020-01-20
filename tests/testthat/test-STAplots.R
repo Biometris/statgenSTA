@@ -1,4 +1,4 @@
-context("Plots")
+context("STA Plots")
 
 ## Testing the exact plot output is difficult but since also the ggplot
 ## objects on which the plots are based are invisibly returned at least some

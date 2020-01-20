@@ -1,4 +1,4 @@
-context("Plots")
+context("TD Plots")
 
 ## Testing the exact plot output is difficult but since also the ggplot
 ## objects on which the plots are based are invisibly returned at least some
@@ -160,4 +160,50 @@ test_that("TD correlation plot gives correct output types", {
   }
   expect_silent(p <- plot(TDMaize2, plotType = "cor", traits = "yld",
                           output = FALSE))
+})
+
+### TD scatter plot.
+
+test_that("TD scatter plot gives correct output types", {
+  expect_error(plot(testTD, plotType = "scatter", traits = "trait"),
+               "At least two trials requiered for a scatter plot")
+  expect_error(plot(TDMaize, plotType = "scatter", traits = 1),
+               "traits should be a character vector")
+  expect_warning(plot(TDMaize, plotType = "scatter", traits = "trait"),
+                 "has no valid observations for a least two trials")
+  p <- plot(TDMaize, plotType = "scatter", traits = "yld")
+  expect_is(p, "list")
+  expect_length(p, 1)
+  expect_is(p[[1]], "gtable")
+})
+
+test_that("option colorBy functions properly for TD box plot", {
+  expect_error(plot(TDMaize, plotType = "scatter", traits = "t1", colorBy = 1),
+               "colorBy should be a character string")
+  expect_error(plot(TDMaize, plotType = "scatter", traits = "t1",
+                    colorBy = "grp"), "colorBy should be a column in TD")
+})
+
+test_that("option addCorr functions properly for TD box plot", {
+  expect_error(plot(TDMaize, plotType = "scatter", traits = "t1",
+                    addCorr = TRUE),
+               "must be NULL or a character vector")
+  expect_silent(p <- plot(TDMaize, plotType = "scatter", traits = "yld",
+                          addCorr = "tl"))
+  ## melting data in the plot function caused an error when trials have a
+  ## numerical value. This should not be the case.
+  TDMaize2 <- TDMaize
+  for (trial in seq_along(TDMaize2)) {
+    levels(TDMaize2[[trial]][["trial"]]) <- 1:8
+    names(TDMaize2) <- 1:8
+  }
+  expect_silent(plot(TDMaize2, plotType = "scatter", traits = "yld"))
+})
+
+test_that("option trialOrder functions properly for TD box plot", {
+  expect_error(plot(TDMaize, plotType = "scatter", traits = "t1",
+                    trialOrder = 1),
+               "trials and trialOrder should contain exactly the same trials")
+  expect_silent(p <- plot(TDMaize, plotType = "scatter", traits = "yld",
+                          trialOrder = rev(names(TDMaize))))
 })
