@@ -1085,7 +1085,15 @@ plot.TD <- function(x,
                  (!all(trialOrder %in% trials) || !all(trials %in% trialOrder))) {
       stop("trials and trialOrder should contain exactly the same trials.\n")
     }
-    addCorr <- match.arg(dotArgs$addCorr, choices = c("tl", "bl", "tr", "br"))
+    addCorr <- dotArgs$addCorr
+    if (!is.null(addCorr)) {
+      addCorr <- match.arg(addCorr, choices = c("tl", "bl", "tr", "br"))
+    }
+    ## Create list of colors for histograms.
+    ## Outside trait loop to assure identical coloring of trials.
+    histCols <- setNames(hcl.colors(length(trials),
+                                    palette = hcl.pals("qualitative")[1]),
+                         trials)
     p <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traits) {
       ## Create a single data.frame from x with only columns genotype, trial
@@ -1143,7 +1151,8 @@ plot.TD <- function(x,
         binWidth <- diff(range(plotTab[[trial]], na.rm = TRUE)) / 10
         ggplot(plotTab, aes_string(x = trial,
                                    y = "(..count..)/sum(..count..)")) +
-          geom_histogram(na.rm = TRUE, binwidth = binWidth, boundary = 0) +
+          geom_histogram(na.rm = TRUE, binwidth = binWidth, boundary = 0,
+                         fill = histCols[trial]) +
           scale_x_continuous(limits = range(plotTab, na.rm = TRUE))
       })
       ## Y-axis should be the same for all histograms.
