@@ -1093,7 +1093,7 @@ plot.TD <- function(x,
     ## Outside trait loop to assure identical coloring of trials.
     histCols <- setNames(hcl.colors(length(trials),
                                     palette = hcl.pals("qualitative")[1]),
-                         trials)
+                         paste0("t", trials))
     p <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traits) {
       ## Create a single data.frame from x with only columns genotype, trial
@@ -1107,8 +1107,10 @@ plot.TD <- function(x,
           trial[c("genotype", "trial", trait, colorBy)]
         }
       }))
-      plotDat <- droplevels(plotDat)
-      if (nlevels(plotDat[["trial"]]) < 2) {
+      if (!is.null(plotDat)) {
+        plotDat <- droplevels(plotDat)
+      }
+      if (is.null(plotDat) || nlevels(plotDat[["trial"]]) < 2) {
         warning(trait, " has no valid observations for a least two trials.\n",
                 "Plot skipped.\n", call. = FALSE)
         next
@@ -1147,7 +1149,9 @@ plot.TD <- function(x,
       }
       ## Create plots containing histograms.
       ## Used further on to replace diagonal plot in plot matrix.
-      histPlots <- lapply(X = levels(plotDat[["trial"]]), FUN = function(trial) {
+      histVars <- paste0("t", colnames(plotTab))
+      histPlots <- lapply(X = histVars, FUN = function(trial) {
+        colnames(plotTab) <- paste0("t", colnames(plotTab))
         binWidth <- diff(range(plotTab[[trial]], na.rm = TRUE)) / 10
         ggplot(plotTab, aes_string(x = trial,
                                    y = "(..count..)/sum(..count..)")) +
