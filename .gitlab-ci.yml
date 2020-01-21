@@ -11,14 +11,15 @@ before_script:
   ## Add R_LIBS_USER to libpaths.
   - mkdir -p $R_LIBS_USER
   - echo '.libPaths("'${R_LIBS_USER}'")' > .Rprofile
-  ## set GITLAB_PAT.
-  - echo 'GITLAB_PAT='$GITLAB_PAT > .Renviron
+    ## Set NOT_CRAN to true to enable test under skip_on_cran.
+  - echo 'Sys.setenv(NOT_CRAN="true")' >> .Rprofile
+  ## Make sure pdflatex is on the system path.
+  - echo 'tinytex:::tweak_path()' >> .Rprofile
 
 R-release:
   stage: build
   allow_failure: false
   script:
-    - Rscript -e 'sessionInfo()'
     ## Install missing and outdated packages.
     - Rscript -e 'source(".gitlab-ci.R"); pkgsUpdate()'
     ## Build package.
@@ -40,9 +41,6 @@ R-devel:
   image: docker-registry.wur.nl/rossu027/r-develasreml:latest
   allow_failure: true
   script:
-    ## Debugging information.
-    - Rscriptdevel -e 'sessionInfo()'
-    - Rscriptdevel -e '.libPaths()'
     ## Install missing and outdated packages.
     - Rscriptdevel -e 'source(".gitlab-ci.R"); pkgsUpdate()'
     ## Build package.
@@ -73,9 +71,6 @@ coverage:
   only:
     - develop
     - master
-  before_script:
-    ## Add R_LIBS_USER to libpaths.
-    - echo '.libPaths("'${R_LIBS_USER}'")' > .Rprofile
   script:
     - Rscript -e 'covr::package_coverage()'
   coverage: '/Coverage:\s*(\d+.\d+\%)/'
