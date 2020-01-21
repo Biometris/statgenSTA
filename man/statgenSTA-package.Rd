@@ -14,6 +14,14 @@ Phenotypic analysis of field trials using mixed models with and
     package 'asreml' for the 'ASReml' software, which can be obtained upon 
     purchase from 'VSN' international (<http://www.vsni.co.uk/software/asreml-r>).
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/Biometris/statgenSTA/}
+  \item Report bugs at \url{https://github.com/Biometris/statgenSTA/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Bart-Jan van Rossum \email{bart-jan.vanrossum@wur.nl}
 

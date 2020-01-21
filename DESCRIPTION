@@ -79,3 +79,5 @@ Suggests: asreml(>= 3.0),
     tibble
 SystemRequirements: pdflatex
 VignetteBuilder: knitr
+URL: https://github.com/Biometris/statgenSTA/
+BugReports: https://github.com/Biometris/statgenSTA/issues
