@@ -1096,6 +1096,9 @@ plot.TD <- function(x,
                          paste0("t", trials))
     p <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traits) {
+      ## Create plot title.
+      plotTitle <- ifelse(!is.null(dotArgs$title), dotArgs$title,
+                          paste("Scatterplots of trials for", trait))
       ## Create a single data.frame from x with only columns genotype, trial
       ## and trait.
       ## trials where trait is not measured/available are removed by setting
@@ -1190,8 +1193,7 @@ plot.TD <- function(x,
                                          paste0("`", colorBy, "`"))) +
         geom_point(na.rm = TRUE) +
         facet_grid(facets = c("trial.y", "trial.x")) +
-        labs(title = paste("Scatterplots of trials for", trait),
-             x = "", y = "") +
+        labs(title = plotTitle, x = "", y = "") +
         theme(plot.title = element_text(hjust = 0.5),
               legend.position = c(1, 1),
               legend.justification = c(1.5, 1.5))
