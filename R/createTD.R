@@ -703,6 +703,7 @@ print.summary.TD <- function(x, ...) {
 #' ## Add correlations to top left corner of plots.
 #' plot(wheatTD, plotType = "scatter", traits = "GY", addCorr = "tl")
 #'
+#' @importFrom grDevices hcl.colors hcl.pals
 #' @export
 plot.TD <- function(x,
                     ...,
