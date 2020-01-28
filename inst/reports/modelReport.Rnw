@@ -11,7 +11,7 @@
 % Set linespace, usage \doublespacing \singlespacing \onehalfspacing
 \usepackage{setspace}%
 % Set palatino font with small caps as default
-\usepackage[sc]{mathpazo}%
+%\usepackage[sc]{mathpazo}%
 % Rotation tools, including rotated full-page floats.
 \usepackage{rotating}%
 % Create subfigures
