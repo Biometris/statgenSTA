@@ -40,7 +40,7 @@ boldRow <- function(x) {
 % End article header
 
 % For left aligning captions
-\captionsetup{justification=raggedright,singlelinecheck=false}
+%\captionsetup{justification=raggedright,singlelinecheck=false}
 
 % Start Document
 %-------------------------------------------------------------------------------
