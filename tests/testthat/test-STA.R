@@ -183,13 +183,15 @@ test_that("checks in report.STA function properly", {
                  "Model with genotype random not available for")
 })
 
+report(modelSp, trial = "E1", trait = "t1",
+       outfile =  tempfile(fileext = ".pdf"))
 test_that("function report.STA functions properly" ,{
   ## Reporting doesn't work on cran because of usage of pdflatex.
   skip_on_cran()
   tmpFile <- tempfile(fileext = ".pdf")
   expect_silent(report(modelSp, trial = "E1", trait = "t1", outfile = tmpFile))
-  #expect_true(file.exists(paste0(tools::file_path_sans_ext(tmpFile),
-  #                               "_E1_t1_fixed.pdf")))
+  expect_true(file.exists(paste0(tools::file_path_sans_ext(tmpFile),
+                                 "_E1_t1_fixed.pdf")))
   expect_true(file.exists(paste0(tools::file_path_sans_ext(tmpFile),
                                  "_E1_t1_fixed.tex")))
 })
