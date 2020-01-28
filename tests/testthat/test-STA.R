@@ -61,7 +61,6 @@ test_that("option sortBy functions properly for summary.STA", {
 test_that("summary.STA produces correct output for multiple trials", {
   testTD[["E2"]] <- testTD[["E1"]]
   testTD[["E2"]][["trial"]] <- "E2"
-  modelSp <- fitTD(testTD, design = "rowcol", traits = "t1")
   sumSp <- summary(modelSp, traits = "t1")
   expect_length(sumSp, 3)
   expect_is(sumSp$sumTab, "matrix")
@@ -85,15 +84,15 @@ test_that("subsetting STA objects works correctly", {
 ### Print summary.
 
 test_that("print.summary.STA functions properly", {
-  sumSp <- capture.output(print(summary(modelSp)))
-  sumSp2 <- capture.output(print(summary(modelSp, nBest = NA)))
+  sumSp <- capture.output(summary(modelSp))
+  sumSp2 <- capture.output(summary(modelSp, nBest = NA))
   expect_true(all(c("Summary statistics for t1 in E1  ",
                     "Estimated heritability ",
                     "Predicted means (BLUEs & BLUPs) ") %in% sumSp))
   expect_false(any(grepl("Best", sumSp2)))
   skip_on_cran()
   modelAs <- fitTD(testTD, design = "rowcol", traits = "t1", engine = "asreml")
-  sumAs <- capture.output(print(summary(modelAs)))
+  sumAs <- capture.output(summary(modelAs))
   expect_true(all(c("Standard Error of Difference (genotype modeled as fixed effect) ",
                     "Least Significant Difference (genotype modeled as fixed effect) ") %in%
                     sumAs))
@@ -103,7 +102,7 @@ test_that("print.summary.STA functions properly for multiple trials", {
   testTD[["E2"]] <- testTD[["E1"]]
   testTD[["E2"]][["trial"]] <- "E2"
   modelSp <- fitTD(testTD, design = "rowcol", traits = "t1")
-  sumSp <- capture.output(print(summary(modelSp)))
+  sumSp <- capture.output(summary(modelSp))
   expect_true("Summary statistics for BLUEs of t1 " %in% sumSp)
 })
 
@@ -186,13 +185,10 @@ test_that("checks in report.STA function properly", {
 test_that("function report.STA functions properly" ,{
   ## Reporting doesn't work on cran because of usage of pdflatex.
   skip_on_cran()
-  testTD[["E2"]] <- testTD[["E1"]]
-  testTD[["E2"]][["trial"]] <- factor("E2")
-  modelSp <- fitTD(testTD, design = "rowcol", traits = c("t1", "t2"))
   tmpFile = tempfile(fileext = ".pdf")
   expect_silent(report(modelSp, trial = "E1", trait = "t1", outfile = tmpFile))
-  expect_true(file.exists(gsub(pattern = ".pdf",
-                               replacement = "_E1_t1_fixed.pdf", x = tmpFile)))
-  expect_true(file.exists(gsub(pattern = ".pdf",
-                               replacement = "_E1_t1_fixed.tex", x = tmpFile)))
+  expect_true(file.exists(paste0(tools::file_path_sans_ext(tmpFile),
+                                 "_E1_t1_fixed.pdf")))
+  expect_true(file.exists(paste0(tools::file_path_sans_ext(tmpFile),
+                                 "_E1_t1_fixed.tex")))
 })
