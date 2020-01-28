@@ -1,21 +1,27 @@
 %-------------------------------------------------------------------------------
-%	Packages and other Document configurations
+%	Packages and other document configurations.
 %-------------------------------------------------------------------------------
 \documentclass[a4paper,11pt]{article}
-% Package declaration
+% Package declaration.
 %-------------------------------------------------------------------------------
-% Specify input encoding
+% Specify input encoding.
 \usepackage[utf8]{inputenc}
-% For A4 paper set all margins to 3cm
+% For A4 paper set all margins to 3cm.
 \usepackage[paper=a4paper,left=1.5cm,top=2cm,right=1.5cm,bottom=2cm]{geometry}
-% Set linespace, usage \doublespacing \singlespacing \onehalfspacing
+% Set linespace, usage \doublespacing \singlespacing \onehalfspacing.
 \usepackage{setspace}
-% For alignment of captions
+% Set palatino font with small caps as default.
+\usepackage[sc]{mathpazo}
+% For alignment of captions.
 \usepackage{caption}
 % For multiple columns.
 \usepackage{multicol}
+% For adding time to the document.
+\usepackage{datetime}
+% For left aligning captions
+\captionsetup{justification=raggedright,singlelinecheck=false}
 
-% Load required packages
+% Load required R packages.
 <<label=setup, include=FALSE, cache=FALSE>>=
 lapply(list("SpATS"), library, character.only = TRUE)
 trial <- list(...)$trial
@@ -27,7 +33,7 @@ boldRow <- function(x) {
 }
 @
 
-% Start Article header
+% Start header
 %-------------------------------------------------------------------------------
 % Title
 \title{Single trial analysis for \Sexpr{escapeLatex(trait)} in \Sexpr{escapeLatex(trial)}}
@@ -37,10 +43,7 @@ boldRow <- function(x) {
 % Dates
 \date{\vspace{-5ex}}
 %-------------------------------------------------------------------------------
-% End article header
-
-% For left aligning captions
-%\captionsetup{justification=raggedright,singlelinecheck=false}
+% End header
 
 % Start Document
 %-------------------------------------------------------------------------------
