@@ -183,8 +183,6 @@ test_that("checks in report.STA function properly", {
                  "Model with genotype random not available for")
 })
 
-report(modelSp, trial = "E1", trait = "t1",
-       outfile =  tempfile(fileext = ".pdf"))
 test_that("function report.STA functions properly" ,{
   ## Reporting doesn't work on cran because of usage of pdflatex.
   skip_on_cran()

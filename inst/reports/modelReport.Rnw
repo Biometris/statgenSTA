@@ -7,21 +7,9 @@
 % Specify input encoding
 \usepackage[utf8]{inputenc}
 % For A4 paper set all margins to 3cm
-\usepackage[paper=a4paper,left=1.5cm,top=2cm,right=1.5cm,bottom=2cm]{geometry}%
+\usepackage[paper=a4paper,left=1.5cm,top=2cm,right=1.5cm,bottom=2cm]{geometry}
 % Set linespace, usage \doublespacing \singlespacing \onehalfspacing
-\usepackage{setspace}%
-% Set palatino font with small caps as default
-%\usepackage[sc]{mathpazo}%
-% Rotation tools, including rotated full-page floats.
-\usepackage{rotating}%
-% Create subfigures
-\usepackage{subfigure}%
-% Extensive support for hypertext in LaTeX
-\usepackage{hyperref}%
-% For adding bookmarks to the document
-\usepackage{bookmark}%
-% For adding time to the document
-\usepackage{datetime}
+\usepackage{setspace}
 % For alignment of captions
 \usepackage{caption}
 % For multiple columns.
@@ -42,7 +30,7 @@ boldRow <- function(x) {
 % Start Article header
 %-------------------------------------------------------------------------------
 % Title
-\title{Single trial analysis for \Sexpr{escapeLatex(trait)} in \Sexpr{escapeLatex(trial)}}%
+\title{Single trial analysis for \Sexpr{escapeLatex(trait)} in \Sexpr{escapeLatex(trial)}}
 % Authors
 \author{\vspace{-5ex}}
 %-------------------------------------------------------------------------------
@@ -91,7 +79,7 @@ bgItems <- c(format(attr(x, "timestamp"), "%y-%m-%d %H:%M:%S"),
              as.character(packageVersion("statgenSTA")),
              engine)
 names(bgItems) <- c("Analysis done on",
-                    "Pipeline version",
+                    "statgenSTA version",
                     "Mixed model engine")
 print(xtable::xtable(x = data.frame(bgItems), label = "general",
                      align = c("l", "l")),
@@ -162,8 +150,7 @@ if (engine == "SpATS") {
 modSum <- as.data.frame(summary(x[[trial]]$TD, traits = trait)[, 1, 1])
 modSum <- modSum[!is.na(modSum[[1]]), , drop = FALSE]
 print(xtable::xtable(x = modSum,
-                     caption = "Size of the dataset and eight number descriptives",
-                     label = "modelSummary", align = c("l", "r")),
+                     caption = "Size of the dataset and eight number descriptives", label = "modelSummary", align = c("l", "r")),
       latex.environments = "flushleft", caption.placement = "top",
       include.rownames = TRUE, include.colnames = FALSE)
 @
