@@ -447,11 +447,14 @@ plot.STA <- function(x,
             spatTr$fit
           ## Melt to get the data in ggplot shape. Rows and columns in the
           ## spatial trend coming from SpATS are swapped so therefore use t()
-          plotDatSpat <- reshape2::melt(t(spatTrDat),
-                                        varnames = c("colCoord", "rowCoord"))
+          spatTrDat <- as.data.frame(t(spatTrDat))
+          plotDatSpat <- reshape(spatTrDat, direction = "long",
+                                 varying = list(rowCoord = colnames(spatTrDat)),
+                                 timevar = "rowCoord", idvar = "colCoord",
+                                 v.names = "value")
           ## Add true values for columns and rows for plotting.
-          plotDatSpat$colCoord <- spatTr$col.p
-          plotDatSpat$rowCoord <- rep(x = spatTr$row.p, each = p1 * nCol)
+          plotDatSpat[["colCoord"]] <- spatTr$col.p
+          plotDatSpat[["rowCoord"]] <- rep(x = spatTr$row.p, each = p1 * nCol)
           ## Remove missings from data.
           plotDatSpat <- remove_missing(plotDatSpat, na.rm = TRUE)
         }

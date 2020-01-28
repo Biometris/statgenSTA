@@ -69,7 +69,6 @@ Imports:
     mapproj,
     maps,
     qtl,
-    reshape2,
     scales,
     SpATS (>= 1.0-10),
     xtable

@@ -995,23 +995,26 @@ plot.TD <- function(x,
       ordClust <- order.dendrogram(as.dendrogram(corClust))
       ## Reorder according to clusters.
       corMat <- corMat[ordClust, ordClust]
-      ## Melt to get the proper format for ggplot.
-      meltedCorMat <- reshape2::melt(corMat)
-      ## If trial names consist of only numbers melt converts them to numeric.
+      ## Convert corMat to data.frame to prevent crash when reshaping.
+      corMat <- as.data.frame(corMat)
+      ## Convert correlation matrix to long format for ggplot.
+      meltedCorMat <- reshape(corMat, direction = "long",
+                              varying = list(genotype = colnames(corMat)),
+                              ids = rownames(corMat), idvar = "trial1",
+                              times = colnames(corMat), timevar = "trial2",
+                              v.names = "cor")
+      ## Reshape converts trial columns to character.
       ## This gives problems with plotting, so reconvert them to factor.
-      if (is.numeric(meltedCorMat[["Var1"]])) {
-        meltedCorMat[["Var1"]] <- factor(meltedCorMat[["Var1"]],
+      meltedCorMat[["trial1"]] <- factor(meltedCorMat[["trial1"]],
                                          levels = rownames(corMat))
-        meltedCorMat[["Var2"]] <- factor(meltedCorMat[["Var2"]],
+      meltedCorMat[["trial2"]] <- factor(meltedCorMat[["trial2"]],
                                          levels = rownames(corMat))
-      }
-      ## Remove top left of the plot. Only plotting a bottom right triangle.
-      ## Diagonal is removed as well.
-      meltedCorMat <- meltedCorMat[as.numeric(meltedCorMat$Var1) >
-                                     as.numeric(meltedCorMat$Var2), ]
+      ## Select bottom right triangle for correlations and top for variances.
+      meltedCorMatLow <- meltedCorMat[as.numeric(meltedCorMat[["trial1"]]) >
+                                        as.numeric(meltedCorMat[["trial2"]]), ]
       ## Create plot.
-      pTr <- ggplot(data = meltedCorMat, aes_string("Var1", "Var2")) +
-        geom_tile(aes_string(fill = "value"), color = "grey50") +
+      pTr <- ggplot(data = meltedCorMatLow, aes_string("trial1", "trial2")) +
+        geom_tile(aes_string(fill = "cor"), color = "grey50") +
         ## Create a gradient scale.
         scale_fill_gradient2(low = "blue", high = "red", mid = "white",
                              na.value = "grey", limit = c(-1, 1)) +
