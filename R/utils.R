@@ -319,12 +319,8 @@ createReport <- function(x,
          }, linux = {
            ## Construct shell command for changing directory.
            cmdDir <- paste("cd", outDir)
-           #system(command = paste(cmdDir, ";", cmdRun1, "> /dev/null 2>&1"))
-           #system(command = paste(cmdDir, ";", cmdRun2, "> /dev/null"))
-
-           system(command = paste(cmdDir, ";", cmdRun1))
-           system(command = paste(cmdDir, ";", cmdRun2))
-
+           system(command = paste(cmdDir, ";", cmdRun1, "> /dev/null 2>&1"))
+           system(command = paste(cmdDir, ";", cmdRun2, "> /dev/null"))
          }, darwin = {
            ## Construct shell command for changing directory.
            cmdDir <- paste("cd", outDir)

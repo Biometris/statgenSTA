@@ -6,12 +6,23 @@
 %-------------------------------------------------------------------------------
 % Specify input encoding.
 \usepackage[utf8]{inputenc}
-% For A4 paper set all margins to 3cm.
+
+% For A4 paper set all margins.
 \usepackage[paper=a4paper,left=1.5cm,top=2cm,right=1.5cm,bottom=2cm]{geometry}
 % Set linespace, usage \doublespacing \singlespacing \onehalfspacing.
 \usepackage{setspace}
 % Set palatino font with small caps as default.
 \usepackage[sc]{mathpazo}
+% Rotation tools, including rotated full-page floats.
+\usepackage{rotating}
+% Create subfigures.
+\usepackage{subfigure}
+% Extensive support for hypertext in LaTeX.
+\usepackage{hyperref}
+% For adding bookmarks to the document.
+\usepackage{bookmark}
+% For adding time to the document.
+\usepackage{datetime}
 % For alignment of captions.
 \usepackage{caption}
 % For multiple columns.

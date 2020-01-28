@@ -13,9 +13,6 @@ before_script:
   - echo '.libPaths("'${R_LIBS_USER}'")' > .Rprofile
     ## Set NOT_CRAN to true to enable test under skip_on_cran.
   - echo 'Sys.setenv(NOT_CRAN="true")' >> .Rprofile
-  ## Make sure pdflatex is on the system path.
-  - echo 'tinytex:::tweak_path()' >> .Rprofile
-  - echo 'tinytex:::tlmgr_install(c("setspace", "mathpazo","datetime"))' >> .Rprofile
 
 R-release:
   stage: build
