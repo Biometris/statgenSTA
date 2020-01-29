@@ -176,6 +176,10 @@ test_that("checks in report.STA function properly", {
                "trials has to be a character vector defining trials in modelSp")
   expect_error(report(modelSp, traits = 1),
                "traits should be NULL or a character vector")
+  expect_error(report(modelSp, trial = "E1", trait = "t1", outfile = "tmp.pd"),
+               "Invalid output filename provided")
+  expect_error(report(modelSp, trial = "E1", trait = "t1", outfile = "t m.pdf"),
+               "outfile path cannot contain spaces")
   expect_warning(report(modelSp, traits = "t5"),
                  "The following traits are not modeled for E1: t5")
   modelSp2a <- fitTD(testTD, design = "rowcol", traits = "t1", what = "fixed")
@@ -192,4 +196,7 @@ test_that("function report.STA functions properly" ,{
                                  "_E1_t1_fixed.pdf")))
   expect_true(file.exists(paste0(tools::file_path_sans_ext(tmpFile),
                                  "_E1_t1_fixed.tex")))
+  expect_silent(report(modelSp, trial = "E1", trait = "t1"))
+  ## Cleanup.
+  unlink(c("modelReport_*", "figures"), recursive = TRUE)
 })

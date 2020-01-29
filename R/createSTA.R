@@ -632,6 +632,10 @@ report.STA <- function(x,
   if (nchar(Sys.which("pdflatex")) == 0) {
     stop("An installation of LaTeX is required to create a pdf report.\n")
   }
+  if (!is.null(outfile) && (!is.character(outfile) || length(outfile) > 1 ||
+                            tools::file_ext(outfile) != "pdf")) {
+    stop("Invalid output filename provided.\n")
+  }
   trials <- chkTrials(trials, x)
   chkChar(traits)
   ## Generate a single timestamp for all files.
@@ -659,7 +663,7 @@ report.STA <- function(x,
         ## report name has to be adapted.
         if (!is.null(outfile)) {
           ## Add trial and trait info before file extension.
-          outExt <- tools::file_ext("test.pdf")
+          outExt <- tools::file_ext(outfile)
           outLen <- nchar(outfile)
           outfileTr <- paste0(substring(text = outfile, first = 1,
                                         last = outLen - nchar(outExt) - 1),
