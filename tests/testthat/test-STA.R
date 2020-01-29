@@ -187,7 +187,7 @@ test_that("checks in report.STA function properly", {
                  "Model with genotype random not available for")
 })
 
-test_that("function report.STA functions properly" ,{
+test_that("function report.STA functions properly", {
   ## Reporting doesn't work on cran because of usage of pdflatex.
   skip_on_cran()
   tmpFile <- tempfile(fileext = ".pdf")
