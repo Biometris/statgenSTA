@@ -243,6 +243,7 @@ report <- function(x,
 #' @keywords internal
 createReport <- function(x,
                          reportName,
+                         reportPackage,
                          outfile,
                          ...) {
   ## Check provided outfile
@@ -288,7 +289,7 @@ createReport <- function(x,
   ## Construct the output name of the .tex file
   outTex <- file.path(outDir, paste0(outBase, "tex"))
   ## Get the report file from the directory where the package is installed.
-  reportFile <- system.file("reports", reportName, package = "statgenSTA")
+  reportFile <- system.file("reports", reportName, package = reportPackage)
   ## Save knitr options for reset when exiting function.
   knitrOptsOrig <- knitr::opts_chunk$get()
   on.exit(knitr::opts_chunk$set(knitrOptsOrig))

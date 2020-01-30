@@ -673,8 +673,8 @@ report.STA <- function(x,
                               "_", timeStamp, ".pdf")
         }
         createReport(x = modTr, reportName = "modelReport.Rnw",
-                     outfile = outfileTr, ..., trial = trial, trait = trait,
-                     descending = descending)
+                     reportPackage = "statgenSTA", outfile = outfileTr, ...,
+                     trial = trial, trait = trait, descending = descending)
       } # End loop over traits.
     } # End loop over what.
   } # End loop over trials.
