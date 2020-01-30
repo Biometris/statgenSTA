@@ -178,10 +178,19 @@ plot(wheatTD, plotType = "box", traits = "GY", groupBy = "year",
 
 ### Correlation plot {#corPlot}
 
-The last plot that can be made is a plot of the correlations between the fields for a specified trait. The order of the plotted fields is determined by clustering them and plotting closely related field close to each other.
+Another plot that can be made is a plot of the correlations between the fields for a specified trait. The order of the plotted fields is determined by clustering them and plotting closely related field close to each other.
 ```{r corPlot}
 ## Create a correlation plot for grain yield.
 plot(wheatTD, plotType = "cor", traits = "GY")
+```
+
+### Scatter plot matrix {#scatPlot}
+
+Finally a scatter plot matrix can be made. The lower left of the matix contains scatter plots between trials. The diagonal contains histograms of the data per trial.
+
+```{r scatPlot, fig.dim = c(7, 7)}
+## Create a scatter plot matrix for grain yield.
+plot(wheatTD, plotType = "scatter", traits = "GY")
 ```
 
 ----
