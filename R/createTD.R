@@ -1083,7 +1083,7 @@ plot.TD <- function(x,
     }
     trialOrder <- dotArgs$trialOrder
     if (!is.null(trialOrder) &&
-                 (!all(trialOrder %in% trials) || !all(trials %in% trialOrder))) {
+        (!all(trialOrder %in% trials) || !all(trials %in% trialOrder))) {
       stop("trials and trialOrder should contain exactly the same trials.\n")
     }
     addCorr <- dotArgs$addCorr
@@ -1121,7 +1121,7 @@ plot.TD <- function(x,
       }
       if (!is.null(trialOrder)) {
         ## Reorder trials.
-        ## First restict reordering to trials left after removing NA trials.
+        ## First restrict reordering to trials left after removing NA trials.
         trialOrderTr <- trialOrder[trialOrder %in% levels(plotDat[["trial"]])]
         plotDat[["trial"]] <- factor(plotDat[["trial"]], trialOrderTr)
       }
@@ -1132,24 +1132,32 @@ plot.TD <- function(x,
                                       INDEX = list(plotDat[["genotype"]],
                                                    plotDat[["trial"]]),
                                       FUN = mean, na.rm = TRUE))
+      plotRange <- range(unlist(plotTab), na.rm = TRUE)
       if (!is.null(addCorr)) {
         ## Compute correlations for annotation.
         corMat <- cor(plotTab, use = "pairwise.complete.obs")
-        ## Melt to get the proper format for ggplot.
-        meltedCorMat <- reshape2::melt(corMat)
-        ## If trial names consist of only numbers melt converts them to numeric.
+        ## Convert corMat to data.frame to prevent crash when reshaping.
+        corMat <- as.data.frame(corMat)
+        ## Convert correlation matrix to long format for ggplot.
+        meltedCorMat <- reshape(corMat, direction = "long",
+                                varying = list(genotype = colnames(corMat)),
+                                ids = rownames(corMat), idvar = "trial1",
+                                times = colnames(corMat), timevar = "trial2",
+                                v.names = "cor")
+        ## Reshape converts trial columns to character.
         ## This gives problems with plotting, so reconvert them to factor.
-        if (is.numeric(meltedCorMat[["Var1"]])) {
-          meltedCorMat[["Var1"]] <- factor(meltedCorMat[["Var1"]],
+        meltedCorMat[["trial1"]] <- factor(meltedCorMat[["trial1"]],
                                            levels = rownames(corMat))
-          meltedCorMat[["Var2"]] <- factor(meltedCorMat[["Var2"]],
+        meltedCorMat[["trial2"]] <- factor(meltedCorMat[["trial2"]],
                                            levels = rownames(corMat))
-        }
         ## Set position for annotation.
         ## Using Inf and -Inf for positions independent of scale.
-        meltedCorMat[["x"]] <- ifelse(addCorr %in% c("tl", "bl"), -Inf, Inf)
-        meltedCorMat[["y"]] <- ifelse(addCorr %in% c("br", "bl"), -Inf, Inf)
-        colnames(meltedCorMat)[1:2] <- c("trial.x", "trial.y")
+        minPos <- plotRange[1] + 0.03 * plotRange[1] * sign(plotRange[1])
+        maxPos <- plotRange[2] - 0.03 * plotRange[2] * sign(plotRange[2])
+        meltedCorMat[["x"]] <- ifelse(addCorr %in% c("tl", "bl"), minPos, maxPos)
+        meltedCorMat[["y"]] <- ifelse(addCorr %in% c("br", "bl"), minPos, maxPos)
+        colnames(meltedCorMat)[colnames(meltedCorMat) == "trial1"] <- "trial.x"
+        colnames(meltedCorMat)[colnames(meltedCorMat) == "trial2"] <- "trial.y"
       }
       ## Create plots containing histograms.
       ## Used further on to replace diagonal plot in plot matrix.
@@ -1160,27 +1168,32 @@ plot.TD <- function(x,
         ggplot(plotTab, aes_string(x = trial,
                                    y = "(..count..)/sum(..count..)")) +
           geom_histogram(na.rm = TRUE, binwidth = binWidth, boundary = 0,
-                         fill = histCols[trial]) +
-          scale_x_continuous(limits = range(plotTab, na.rm = TRUE))
+                         fill = histCols[trial], color = "grey50") +
+          scale_x_continuous(limits = range(plotTab, na.rm = TRUE)) +
+          theme(panel.background = element_blank(),
+                panel.grid = element_blank(),
+                panel.border = element_rect(color = "black", fill = NA))
       })
       ## Y-axis should be the same for all histograms.
-      ## Build histograms and extract axis informattion.
+      ## Build histograms and extract axis information.
       yMax <- max(sapply(X = histPlots, FUN = function(hp) {
         max(ggplot_build(hp)$data[[1]][["ymax"]])
       }))
       ## Add scaling for y-axis to histograms
       ## Convert to grobs for easier use later on.
       histGrobs <- lapply(X = histPlots, FUN = function(hp) {
-        hp <- hp + scale_y_continuous(labels = function(x) {
-          paste0(100 * x, "%")
-        }, limits = c(0, yMax))
+        hp <- hp + scale_y_continuous(expand = c(0, 0, 0, 0.05),
+                                      labels = function(x) {
+                                        paste0(100 * x, "%")
+                                      }, limits = c(0, yMax))
         ggplotGrob(hp)
       })
-      ## Add genotype to plotTab so reshape can be used.
-      plotTab[["genotype"]] <- rownames(plotTab)
       ## Reshape to get data in format suitable for ggplot.
-      plotTab <- reshape2::melt(plotTab, id.vars = "genotype",
-                                value.name = trait, variable.name = "trial")
+      plotTab <- reshape(plotTab, direction = "long",
+                         varying = colnames(plotTab),
+                         timevar = "trial", times = colnames(plotTab),
+                         idvar = "genotype", ids = rownames(plotTab),
+                         v.names = trait)
       if (!is.null(colorBy)) {
         plotTab <- merge(plotTab, unique(plotDat[c("genotype", colorBy)]))
       }
@@ -1193,19 +1206,25 @@ plot.TD <- function(x,
                                        color = if (is.null(colorBy)) NULL else
                                          paste0("`", colorBy, "`"))) +
         geom_point(na.rm = TRUE) +
+        scale_x_continuous(breaks = scales::breaks_extended(n = 3)) +
+        scale_y_continuous(breaks = scales::breaks_extended(n = 3)) +
         facet_grid(facets = c("trial.y", "trial.x")) +
         labs(title = plotTitle, x = "", y = "") +
         theme(plot.title = element_text(hjust = 0.5),
               legend.position = c(1, 1),
-              legend.justification = c(1.5, 1.5))
+              legend.justification = c(1.5, 1.5),
+              aspect.ratio = 1,
+              panel.background = element_rect(fill = "white"),
+              panel.grid = element_blank(),
+              panel.border = element_rect(color = "black", fill = NA))
       if (!is.null(addCorr)) {
         ## Add correlation annotated in the corner of the plot.
         scatterBase <- scatterBase +
           geom_text(data = meltedCorMat,
                     aes_string(x = "x", y = "y",
-                               label = "paste('rho ==', round(value, 2))"),
-                    hjust = "inward", vjust = "inward", parse = TRUE,
-                    inherit.aes = FALSE)
+                               label = "paste('rho ==', round(cor, 2))"),
+                    color = "red", hjust = "inward", vjust = "inward",
+                    parse = TRUE, inherit.aes = FALSE)
       }
       ## Convert to grobs to enable modifying.
       scatterGrob <- ggplotGrob(scatterBase)
@@ -1235,7 +1254,8 @@ plot.TD <- function(x,
         histGrobs[[1]]$grobs[[which(histGrobs[[1]]$layout$name == "axis-l")]]
       p[[trait]] <- scatterGrob
       if (output) {
-        plot(scatterGrob)
+        grid::grid.newpage()
+        grid::grid.draw(scatterGrob)
       }
     }
   }
