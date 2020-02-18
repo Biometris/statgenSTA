@@ -382,28 +382,40 @@ plot.STA <- function(x,
         plots$p1 <- ggplot(data = plotDat,
                            aes_string(x = "residuals",
                                       y = "(..count..)/sum(..count..)")) +
-          geom_histogram(fill = "cyan", col = "black", bins = 10,
+          geom_histogram(fill = "darkgrey", color = "grey50", bins = 10,
                          boundary = 0) +
-          scale_y_continuous(labels = function(x) {paste0(100 * x, "%")}) +
-          labs(y = "Frequency", x = "Residuals")
+          scale_y_continuous(expand = c(0, 0, 0, 0.05),
+                             labels = function(x) {paste0(100 * x, "%")}) +
+          labs(y = "Frequency", x = "Residuals") +
+          theme(panel.background = element_blank(),
+                panel.grid = element_blank(),
+                panel.border = element_rect(color = "black", fill = NA))
         ## Plot QQ plot of residuals.
-        plots$p2 <- ggplot(data = plotDat,
-                           aes_string(sample = "residuals")) +
-          stat_qq(col = "blue") +
-          labs(y = "Residuals", x = "Normal quantiles")
+        plots$p2 <- ggplot(data = plotDat, aes_string(sample = "residuals")) +
+          stat_qq(shape = 1, alpha = 0.7) +
+          labs(y = "Residuals", x = "Normal quantiles") +
+          theme(panel.background = element_blank(),
+                panel.grid = element_blank(),
+                panel.border = element_rect(color = "black", fill = NA))
         ## Plot residuals vs fitted values.
         plots$p3 <- ggplot(data = plotDat,
                            aes_string(x = "fitted", y = "residuals")) +
-          geom_point(col = "blue", shape = 1) +
-          geom_smooth(method = "loess", col = "red") +
+          geom_point(shape = 1, alpha = 0.7) +
+          geom_smooth(method = "loess", color = "red") +
           geom_hline(yintercept = 0) +
-          labs(y = "Residuals", x = "Fitted values")
+          labs(y = "Residuals", x = "Fitted values") +
+          theme(panel.background = element_blank(),
+                panel.grid = element_blank(),
+                panel.border = element_rect(color = "black", fill = NA))
         ## Plot absolute value of residuals vs fitted values.
         plots$p4 <- ggplot(data = plotDat,
                            aes_string(x = "fitted", y = "abs(residuals)")) +
-          geom_point(col = "blue", shape = 1) +
-          geom_smooth(method = "loess", col = "red") +
-          labs(y = "|Residuals|", x = "Fitted values")
+          geom_point(shape = 1, alpha = 0.7) +
+          geom_smooth(method = "loess", color = "red") +
+          labs(y = "|Residuals|", x = "Fitted values") +
+          theme(panel.background = element_blank(),
+                panel.grid = element_blank(),
+                panel.border = element_rect(color = "black", fill = NA))
         if (output) {
           ## do.call is needed since grid.arrange doesn't accept lists as input.
           do.call(gridExtra::grid.arrange,
@@ -504,7 +516,7 @@ plot.STA <- function(x,
                               title = legends[5], colors = colors)
         plots$p6 <- ggplot(data = plotDat) +
           geom_histogram(aes(x = residuals),
-                         fill = "white", col = "black", bins = 10,
+                         fill = "white", color = "black", bins = 10,
                          boundary = 0, na.rm = TRUE) +
           ## Remove empty space between ticks and actual plot.
           scale_x_continuous(expand = c(0, 0)) +
@@ -528,6 +540,9 @@ plot.STA <- function(x,
   }# end for trials.
   invisible(p)
 }
+
+# darkgrey ----------------------------------------------------------------
+
 
 #' Helper function for creating field plots.
 #'

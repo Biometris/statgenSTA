@@ -968,11 +968,18 @@ plot.TD <- function(x,
       ## Create boxplot.
       pTr <- ggplot(plotDat, aes_string(x = paste0("`", xVar, "`"),
                                         y = paste0("`", trait, "`"),
-                                        fill = if (is.null(colorBy)) NULL else
+                                        fill = if (is.null(colorBy)) 1 else
                                           paste0("`", colorBy, "`"))) +
-        geom_boxplot(na.rm = TRUE) +
-        theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+        theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+              panel.background = element_blank(),
+              panel.grid = element_blank(),
+              panel.border = element_rect(color = "black", fill = NA)) +
         labs(x = xVar, y = trait)
+        if (is.null(colorBy)) {
+          pTr <- pTr + geom_boxplot(na.rm = TRUE, fill = "darkgrey")
+        } else {
+          pTr <- pTr + geom_boxplot(na.rm = TRUE)
+        }
       p[[trait]] <- pTr
       if (output) {
         plot(pTr)
@@ -1201,7 +1208,6 @@ plot.TD <- function(x,
                                        y = paste0(trait, ".y"),
                                        color = if (is.null(colorBy)) NULL else
                                          paste0("`", colorBy, "`"))) +
-        geom_point(na.rm = TRUE) +
         scale_x_continuous(breaks = scales::breaks_extended(n = 3)) +
         scale_y_continuous(breaks = scales::breaks_extended(n = 3)) +
         facet_grid(facets = c("trial.y", "trial.x")) +
@@ -1213,6 +1219,12 @@ plot.TD <- function(x,
               panel.background = element_rect(fill = "white"),
               panel.grid = element_blank(),
               panel.border = element_rect(color = "black", fill = NA))
+      if (is.null(colorBy)) {
+        scatterBase <- scatterBase +
+          geom_point(na.rm = TRUE, color = "darkgrey", shape = 1)
+      } else {
+        scatterBase <- scatterBase + geom_point(na.rm = TRUE, shape = 1)
+      }
       if (!is.null(addCorr)) {
         ## Add correlation annotated in the corner of the plot.
         scatterBase <- scatterBase +
