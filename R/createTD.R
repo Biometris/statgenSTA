@@ -650,8 +650,6 @@ print.summary.TD <- function(x, ...) {
 #'
 #' @family functions for TD objects
 #'
-#' @import ggplot2
-#'
 #' @examples
 #' data("wheatChl")
 #'
@@ -768,10 +766,8 @@ plot.TD <- function(x,
         theme(panel.background = element_blank(),
               plot.title = element_text(hjust = 0.5)) +
         ## Move ticks to edge of the plot.
-        scale_x_continuous(breaks = scales::pretty_breaks(),
-                           expand = c(0, 0)) +
-        scale_y_continuous(breaks = scales::pretty_breaks(),
-                           expand = c(0, 0)) +
+        scale_x_continuous(breaks = scales::pretty_breaks(), expand = c(0, 0)) +
+        scale_y_continuous(breaks = scales::pretty_breaks(), expand = c(0, 0)) +
         ggtitle(trLoc)
       if (sum(!is.na(trDat[["highlight."]])) > 0) {
         ## Genotypes to be highlighted get a color.
@@ -882,7 +878,7 @@ plot.TD <- function(x,
     ## Add 10% to edges of map so locations are not on the absolute edge.
     longR <- longR + c(-0.1, 0.1) * diff(longR)
     latR <- latR + c(-0.1, 0.1) * diff(latR)
-    ## Create data useable by ggplot geom_polygon.
+    ## Create data usable by ggplot geom_polygon.
     mapDat <- mapData(xLim = longR, yLim = latR)
     p <- ggplot(mapDat, aes_string(x = "long", y = "lat")) +
       geom_polygon(aes_string(group = "group"), fill = "white",

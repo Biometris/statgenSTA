@@ -289,7 +289,6 @@ print.summary.STA <- function(x,
 #'
 #' @family STA
 #'
-#' @import ggplot2
 #' @importFrom grDevices topo.colors colorRampPalette
 #' @export
 plot.STA <- function(x,

@@ -3,5 +3,8 @@
 
 #' @importFrom xtable xtable
 #' @importFrom graphics plot
-#' @import stats
+#' @import stats ggplot2
 NULL
+
+
+

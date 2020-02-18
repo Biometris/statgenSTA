@@ -186,7 +186,7 @@ plot(wheatTD, plotType = "cor", traits = "GY")
 
 ### Scatter plot matrix {#scatPlot}
 
-Finally a scatter plot matrix can be made. The lower left of the matix contains scatter plots between trials. The diagonal contains histograms of the data per trial. It is possible to add the correlation between environments in the scatter plots by specifying `addCorr`. `addCorr` takes the values "tl" (top left), "tr" (top right), "bl" (bottom left) or "br" (bottom right). This indicates where the correlation is placed in each of the scatter plots. It is possible to color the genotypes in the plots by a variable in the TD object by sepecifying `colorBy`.
+Finally a scatter plot matrix can be made. The lower left of the matrix contains scatter plots between trials. The diagonal contains histograms of the data per trial. It is possible to calculate the correlation between environments and print it in the scatter plots by specifying `addCorr`. `addCorr` takes the values "tl" (top left), "tr" (top right), "bl" (bottom left) or "br" (bottom right). This indicates where the correlation is placed in each of the scatter plots. It is possible to color the genotypes in the plots by a variable in the TD object by specifying `colorBy`.
 
 ```{r scatPlot, fig.dim = c(7, 7)}
 ## Create a scatter plot matrix for grain yield.
