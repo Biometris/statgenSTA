@@ -1,6 +1,6 @@
-## Resubmission
+## Minor release
 
-* Updated package description in DESCRIPTION
+* Added an extra plotType for TD objects.
 
 ----
 
@@ -19,13 +19,9 @@ There were no ERRORs or WARNINGs.
 There were 2 NOTES:
 
   * checking CRAN incoming feasibility ... NOTE    
-    Maintainer: 'Bart-Jan van Rossum <bart-jan.vanrossum@wur.nl>'
-    New submission
-  
+
     Suggests or Enhances not in mainstream repositories: asreml
-    
-    - First submission of the package.
-    
+
     - asreml is a commercial R package that is used as one of three alternatives for modeling data.
 
   * checking package dependencies ... NOTE  
