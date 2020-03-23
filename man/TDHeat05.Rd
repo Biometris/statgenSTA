@@ -4,7 +4,8 @@
 \name{TDHeat05}
 \alias{TDHeat05}
 \title{Field data for a wheat experiment in Mexico}
-\format{A TD object, a list containing a data.frame with the following
+\format{
+A TD object, a list containing a data.frame with the following
 columns:
 \describe{
   \item{trial}{trial, a combination of watering regime, year and nitrogen
@@ -18,7 +19,8 @@ columns:
   \item{yield}{yield in grams per square meter}
   \item{rowCoord}{row within the field (as numerical value)}
   \item{colCoord}{column within the field (as numerical value)}
-}}
+}
+}
 \usage{
 TDHeat05
 }

@@ -4,7 +4,8 @@
 \name{wheatChl}
 \alias{wheatChl}
 \title{Field data for a wheat experiment in Chili}
-\format{A data.frame with 4000 rows and 11 columns:
+\format{
+A data.frame with 4000 rows and 11 columns:
 \describe{
   \item{rep}{replicate}
   \item{bl}{block id}
@@ -20,7 +21,8 @@
   selected spikes per plot}
   \item{trial}{trial, a combination of location and year}
   \item{year}{year}
-}}
+}
+}
 \source{
 \url{http://www.g3journal.org/content/3/12/2105/}
 }
