@@ -1,4 +1,4 @@
-# statgenSTA 1.0.3.1
+# statgenSTA 1.0.4
 
 * Patch release to handle new defaults in lme4. No user visual changes.
 
