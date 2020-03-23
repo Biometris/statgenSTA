@@ -1,12 +1,12 @@
-## Minor release
+## Patch release to comply with changes in upcoming version of lme4
 
-* Added an extra plotType for TD objects.
+* Updated package tests.
 
 ----
 
 ## Test environments
 
-* local Windows 10 install, R 3.6.2
+* local Windows 10 install, R 3.6.3
 * Debian (on gitlab-ci), R 3.6.2
 * R-hub (devel and release)
 
