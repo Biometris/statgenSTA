@@ -56,7 +56,9 @@ test_that("option rLimit funtions properly", {
   expect_length(out1$indicator[["E1"]][["t1"]], 4)
   expect_equal(nrow(out1$outliers), 4)
   expect_equal(out1$outliers$res, c(1.73562640255469, -1.73562640255469,
-                                    1.48592104460245, -1.48592104460245))
+                                    1.48592104460245, -1.48592104460245),
+               ## Added tolerance for new defaults in lme4-1.2-23.
+               tolerance = 1e-5)
 })
 
 test_that("option rLimit funtions properly for multiple traits", {
@@ -83,5 +85,5 @@ test_that("option verbose functions properly", {
                                                  rLimit = 2, verbose = TRUE))
   expect_equal(printOut1, "No large standardized residuals.")
   expect_true("Large standardized residuals." %in% printOut2)
-  expect_true(any(grepl(pattern = "2.031948", x = printOut2)))
+  expect_true(any(grepl(pattern = "2.03194", x = printOut2)))
 })

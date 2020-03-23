@@ -39,7 +39,9 @@ test_that("BLUPs are computed correctly", {
                  78.782186152954, 71.4581788473301, 86.250208473882,
                  74.3336372034972, 96.4663783059564, 97.6386714469136,
                  89.7203348906718, 107.261269942022, 80.3930840926121,
-                 67.0564901563448, 87.9106694220613, 65.955895091741))
+                 67.0564901563448, 87.9106694220613, 65.955895091741),
+               ## Added tolerance for new defaults in lme4-1.2-23.
+               tolerance = 1e-6)
 })
 
 test_that("SE of BLUPs are computed correctly", {
@@ -60,28 +62,36 @@ test_that("heritability is computed correctly", {
   expect_is(extLm$heritability, "numeric")
   expect_length(extLm$heritability, 1)
   expect_named(extLm$heritability, "t1")
-  expect_equivalent(extLm$heritability, 0.642345528552063)
+  expect_equivalent(extLm$heritability, 0.642345528552063,
+                    ## Added tolerance for new defaults in lme4-1.2-23.
+                    tolerance = 1e-7)
 })
 
 test_that("heritability can be coerced to data.frame correctly", {
   herit <- as.data.frame(extract(modelLm))
   expect_is(herit, "data.frame")
   expect_named(herit, c("trial", "t1"))
-  expect_equal(herit[1, 2], 0.642345528552063)
+  expect_equal(herit[1, 2], 0.642345528552063,
+               ## Added tolerance for new defaults in lme4-1.2-23.
+               tolerance = 1e-7)
 })
 
 test_that("varGen is computed correctly", {
   expect_is(extLm$varGen, "numeric")
   expect_length(extLm$varGen, 1)
   expect_named(extLm$varGen, "t1")
-  expect_equivalent(extLm$varGen, 229.165420190978)
+  expect_equivalent(extLm$varGen, 229.165420190978,
+                    ## Added tolerance for new defaults in lme4-1.2-23.
+                    tolerance = 1e-5)
 })
 
 test_that("varErr is computed correctly", {
   expect_is(extLm$varErr, "numeric")
   expect_length(extLm$varErr, 1)
   expect_named(extLm$varErr, "t1")
-  expect_equivalent(extLm$varErr, 255.196101130501)
+  expect_equivalent(extLm$varErr, 255.196101130501,
+                    ## Added tolerance for new defaults in lme4-1.2-23.
+                    tolerance = 1e-5)
 })
 
 test_that("fitted values are computed correctly", {
@@ -149,7 +159,9 @@ test_that("rMeans are computed correctly", {
                  85.4498237269603, 68.6077358298793, 71.3270013200564,
                  83.6401582583497, 93.9908460543834, 83.0526973166656,
                  71.2766271154225, 70.0631260397857, 90.5207196375936,
-                 61.6853839280295, 81.9796973101705, 84.6635952563236))
+                 61.6853839280295, 81.9796973101705, 84.6635952563236),
+               ## Added tolerance for new defaults in lme4-1.2-23.
+               tolerance = 1e-6)
 })
 
 test_that("random effects are computed correctly", {
@@ -161,7 +173,9 @@ test_that("random effects are computed correctly", {
                  -4.0511328809707, -11.3751401865946, 3.4168894399573,
                  -8.49968183042749, 13.6330592720316, 14.8053524129889,
                  6.88701585674711, 24.4279509080973, -2.44023494131264,
-                 -15.7768288775799, 5.07735038813658, -16.8774239421837))
+                 -15.7768288775799, 5.07735038813658, -16.8774239421837),
+               ## Added tolerance for new defaults in lme4-1.2-23.
+               tolerance = 1e-6)
 })
 
 test_that("residuals are computed correctly for genotype random", {
@@ -178,7 +192,9 @@ test_that("residuals are computed correctly for genotype random", {
                  12.0555175109147, -4.11690276048239, -2.86811957907051,
                  -17.9717936142719, -4.38621210872478, -11.0525190303783,
                  -3.11164302640525, -6.42774213775611, 1.83398864410209,
-                 -12.3006993004884, 1.97102199993141, -20.5570066050481))
+                 -12.3006993004884, 1.97102199993141, -20.5570066050481),
+               ## Added tolerance for new defaults in lme4-1.2-23.
+               tolerance = 1e-6)
 })
 
 test_that("standardized residuals are computed correctly", {
@@ -195,7 +211,9 @@ test_that("standardized residuals are computed correctly", {
                  0.754655672282605, -0.257711377186513, -0.179539593150667,
                  -1.12500487679799, -0.274569701772401, -0.691869608395895,
                  -0.194783762527766, -0.402366141464758, 0.114804688551982,
-                 -0.770003651170667, 0.123382752428119, -1.28683498038181))
+                 -0.770003651170667, 0.123382752428119, -1.28683498038181),
+               ## Added tolerance for new defaults in lme4-1.2-23.
+               tolerance = 1e-6)
 })
 
 test_that("Waldtest is computed correctly", {

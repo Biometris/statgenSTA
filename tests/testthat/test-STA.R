@@ -32,7 +32,9 @@ test_that("summary.STA produces correct output for lme4", {
   expect_null(sumLm$selSpatMod)
   expect_equal(nrow(sumLm$stats), 9)
   expect_equal(dim(sumLm$meanTab), c(15, 4))
-  expect_equivalent(sumLm$heritability, 0.444115736298294)
+  expect_equivalent(sumLm$heritability, 0.444115736298294,
+                    ## Added tolerance for new defaults in lme4-1.2-23.
+                    tolerance = 1e-5)
   expect_equal(nrow(sumLm$sed), 0)
   expect_equal(nrow(sumLm$lsd), 0)
 })
