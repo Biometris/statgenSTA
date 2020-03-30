@@ -401,7 +401,7 @@ plot.STA <- function(x,
         plots$p3 <- ggplot(data = plotDat,
                            aes_string(x = "fitted", y = "residuals")) +
           geom_point(shape = 1, alpha = 0.7) +
-          geom_smooth(method = "loess", color = "red") +
+          geom_smooth(method = "loess", formula = "y ~ x", color = "red") +
           geom_hline(yintercept = 0) +
           labs(y = "Residuals", x = "Fitted values") +
           theme(panel.background = element_blank(),
@@ -411,7 +411,7 @@ plot.STA <- function(x,
         plots$p4 <- ggplot(data = plotDat,
                            aes_string(x = "fitted", y = "abs(residuals)")) +
           geom_point(shape = 1, alpha = 0.7) +
-          geom_smooth(method = "loess", color = "red") +
+          geom_smooth(method = "loess", formula = "y ~ x", color = "red") +
           labs(y = "|Residuals|", x = "Fitted values") +
           theme(panel.background = element_blank(),
                 panel.grid = element_blank(),
