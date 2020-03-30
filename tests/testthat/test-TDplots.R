@@ -207,3 +207,10 @@ test_that("option trialOrder functions properly for TD box plot", {
   expect_silent(p <- plot(TDMaize, plotType = "scatter", traits = "yld",
                           trialOrder = rev(names(TDMaize))))
 })
+
+test_that("scatterPlot works correctly for trials with non-syntactic names", {
+  TDMaize2 <- TDMaize
+  levels(TDMaize2$HN96b[["trial"]])[1] <- "HN-96b"
+  names(TDMaize2)[1] <- "HN-96b"
+  expect_silent(plot(TDMaize2, plotType = "scatter", traits = "yld"))
+})

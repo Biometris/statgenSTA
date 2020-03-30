@@ -1097,7 +1097,7 @@ plot.TD <- function(x,
     ## Outside trait loop to assure identical coloring of trials.
     histCols <- setNames(hcl.colors(length(trials),
                                     palette = hcl.pals("qualitative")[1]),
-                         paste0("t", trials))
+                         make.names(paste0("t", trials)))
     p <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traits) {
       ## Create plot title.
@@ -1164,9 +1164,9 @@ plot.TD <- function(x,
       }
       ## Create plots containing histograms.
       ## Used further on to replace diagonal plot in plot matrix.
-      histVars <- paste0("t", colnames(plotTab))
+      histVars <- make.names(paste0("t", colnames(plotTab)))
       histPlots <- lapply(X = histVars, FUN = function(trial) {
-        colnames(plotTab) <- paste0("t", colnames(plotTab))
+        colnames(plotTab) <- make.names(paste0("t", colnames(plotTab)))
         binWidth <- diff(range(plotTab[[trial]], na.rm = TRUE)) / 10
         ggplot(plotTab, aes_string(x = trial,
                                    y = "(..count..)/sum(..count..)")) +
