@@ -84,7 +84,7 @@ outlierSTA <- function(STA,
     if (is.null(STA[[trial]][[whatMod]]) ||
         is.null(unlist(STA[[trial]][[whatMod]], recursive = FALSE))) {
       warning("Model with genotype ", what, " not available for trial ",
-              trial, ".\nOutlier detection skipped.")
+              trial, ".\nOutlier detection skipped.", call. = FALSE)
       return(NULL)
     }
     ## At least one combination of what and trait not skipped.
