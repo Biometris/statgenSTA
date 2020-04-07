@@ -702,6 +702,7 @@ print.summary.TD <- function(x, ...) {
 #' plot(wheatTD, plotType = "scatter", traits = "GY", addCorr = "tl")
 #'
 #' @importFrom grDevices hcl.colors hcl.pals
+#' @importFrom utils combn
 #' @export
 plot.TD <- function(x,
                     ...,
@@ -975,11 +976,11 @@ plot.TD <- function(x,
               panel.grid = element_blank(),
               panel.border = element_rect(color = "black", fill = NA)) +
         labs(x = xVar, y = trait)
-        if (is.null(colorBy)) {
-          pTr <- pTr + geom_boxplot(na.rm = TRUE, fill = "darkgrey")
-        } else {
-          pTr <- pTr + geom_boxplot(na.rm = TRUE)
-        }
+      if (is.null(colorBy)) {
+        pTr <- pTr + geom_boxplot(na.rm = TRUE, fill = "darkgrey")
+      } else {
+        pTr <- pTr + geom_boxplot(na.rm = TRUE)
+      }
       p[[trait]] <- pTr
       if (output) {
         plot(pTr)
@@ -1013,9 +1014,43 @@ plot.TD <- function(x,
       ## but it is needed for raw data where there can be replicates.
       plotTab <- tapply(plotDat[[trait]],
                         INDEX = list(plotDat$genotype, plotDat$trial),
-                        FUN = mean, na.rm = TRUE)
+                        FUN = function(x) {
+                          meanGT <- mean(x, na.rm = TRUE)
+                          ifelse(is.nan(meanGT), NA, meanGT)
+                        })
+      ## Get number of observation on which correlation will be based.
+      corBase <- as.data.frame(t(combn(x = levels(plotDat[["trial"]]), m = 2)))
+      corBase <- cbind(corBase,
+                       combn(x = levels(plotDat[["trial"]]), m = 2,
+                             FUN = function(trials) {
+                               sum(!is.na(rowSums(plotTab[, trials])))
+                             }))
+      ## Warn if number of observations below 10 for combinations of trials.
+      ## Results get unreliable.
+      corWarn <- corBase[corBase[[3]] < 11, ]
+      nWarn <- nrow(corWarn)
+      if (nWarn > 10) {
+        warning("The correlation between ", nWarn, " sets of trials was ",
+                "calculated with less than 10 genotypes.\n", call. = FALSE)
+      } else if (nWarn > 0) {
+        warning(sapply(X = 1:nWarn, FUN = function(i) {
+          paste("The correlation between trials", corWarn[i, 1], "and",
+                corWarn[i, 2], "was calculated with only", corWarn[i, 1],
+                "genoypes.\n", call. = FALSE)
+        }))
+      }
       ## Create a correlation matrix.
-      corMat <- cor(plotTab, use = "pairwise.complete.obs")
+      corMat <- tryCatchExt(cor(plotTab, use = "pairwise.complete.obs"))
+      if (!is.null(corMat$error)) {
+        stop(corMat$error)
+      } else if (!is.null(supprWarn(corMat$warning, "deviation is zero"))) {
+        warning(corMat$warning)
+      }
+      corMat <- corMat$value
+      ## hclust doesn't allow missing values.
+      if (any(is.na(corMat))) {
+        stop("There are trials with no common genotypes. Clustering impossible.\n")
+      }
       ## Remove rows and columns with only NA.
       corKeep <- sapply(X = 1:ncol(corMat), FUN = function(i) {
         any(!is.na(corMat[, i]))
