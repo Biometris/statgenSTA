@@ -84,7 +84,7 @@ plot(wheatTD, plotType = "cor", traits = "GY")
 plot(wheatTD, plotType = "scatter", traits = "GY", addCorr = "tl")
 
 ## ----fitSp, message=FALSE-----------------------------------------------------
-## Fit a single trial model using a model based on a residual row column design.
+## Fit a single trial model using a model based on a resovable row column design.
 modWheatSp <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", design = "res.rowcol")
 
 ## ----fitSpSm, message=FALSE---------------------------------------------------

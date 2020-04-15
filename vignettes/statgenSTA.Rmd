@@ -221,7 +221,7 @@ If SpATS is used as modeling engine, an extra spatial term is always included in
 
 Using the `TD` object wheatTD from the previous section, a model for the trial SR_FI_11 and trait GY can now be fitted on the data. The trial was set up using a resolvable row column design. This is specified in `fitTD` using the parameter `design`. Since `engine` is not supplied as a parameter, SpATS is used for fitting the model.
 ```{r fitSp, message=FALSE}
-## Fit a single trial model using a model based on a residual row column design.
+## Fit a single trial model using a model based on a resovable row column design.
 modWheatSp <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", design = "res.rowcol")
 ```
 Note that by not supplying the `what` argument to the function, two models are fitted, one with genotype as a fixed effect and one with genotype as a random effect. The results of both these models are stored in the `STA` object `modWheatSp`. This is very useful for extracting different results from the model later on. A trade-off is that fitting two models takes more time than fitting only one so when fitting models on large datasets it is sensible to explicitly define `what` if only a subset of the results is needed as output.
