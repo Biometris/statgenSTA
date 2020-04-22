@@ -217,6 +217,20 @@ createTD <- function(data,
   ## always doing so.
   if (all(hasName(data, c("rowCoord", "colCoord")))) {
     data <- data[order(data[["rowCoord"]], data[["colCoord"]]), ]
+    ## Check that row column combinations are unique within trials.
+    if (hasName(data, "trial")) {
+      rowColTab <- table(data[["trial"]], data[["rowCoord"]],
+                         data[["colCoord"]])
+      if (any(rowColTab > 1)) {
+        warning("Combinations of row and column coordinates should be unique ",
+                "within trials.\n")
+      }
+    } else {
+      rowColTab <- table(data[["rowCoord"]], data[["colCoord"]])
+      if (any(rowColTab > 1)) {
+        warning("Combinations of row and column coordinates should be unique.\n")
+      }
+    }
   }
   if (hasName(data, "trial")) {
     listData <- split(x = data, f = droplevels(data$trial))

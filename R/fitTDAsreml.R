@@ -65,8 +65,8 @@ fitTDAsreml <- function(TD,
       repTab <- table(TDTr$rowId, TDTr$colId)
     }
     if (max(repTab) > 1) {
-      warning("There should only be one plot at each combination of",
-              if (useRepIdFix) "replicate,", "row and column.\n",
+      warning("There should only be one plot at each combination of ",
+              if (useRepIdFix) "replicate, ", "row and column.\n",
               "Spatial models will not be tried")
       spatial <- FALSE
     }

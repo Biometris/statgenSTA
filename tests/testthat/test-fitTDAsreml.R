@@ -106,8 +106,8 @@ if (requireNamespace("asreml", quietly = TRUE)) {
 
   test_that("option spatial functions properly with extra data", {
     testTD$E1 <- rbind(testTD$E1, testTD$E1[1, ])
-    expect_warning(modelAsTs <- fitTD(testTD, design = "res.ibd", traits = "t1",
-                                      spatial = TRUE, engine = "asreml"),
+    expect_warning(fitTD(testTD, design = "res.ibd", traits = "t1",
+                         spatial = TRUE, engine = "asreml"),
                    "There should only be one plot at each combination of")
   })
 
