@@ -377,45 +377,57 @@ plot.STA <- function(x,
       plotTitle <- ifelse(!is.null(dotArgs$title), dotArgs$title,
                           paste("Trial:", trial, "Trait:", trait))
       if (plotType == "base") {
-        plotDat <- remove_missing(plotDat, na.rm = TRUE)
+        plotDat <- ggplot2::remove_missing(plotDat, na.rm = TRUE)
         ## Plot histogram of residuals.
-        plots$p1 <- ggplot(data = plotDat,
-                           aes_string(x = "residuals",
-                                      y = "(..count..)/sum(..count..)")) +
-          geom_histogram(fill = "darkgrey", color = "grey50", bins = 10,
-                         boundary = 0) +
-          scale_y_continuous(expand = c(0, 0, 0, 0.05),
-                             labels = function(x) {paste0(100 * x, "%")}) +
-          labs(y = "Frequency", x = "Residuals") +
-          theme(panel.background = element_blank(),
-                panel.grid = element_blank(),
-                panel.border = element_rect(color = "black", fill = NA))
+        plots$p1 <-
+          ggplot2::ggplot(data = plotDat,
+                          ggplot2::aes_string(x = "residuals",
+                                              y = "(..count..)/sum(..count..)")) +
+          ggplot2::geom_histogram(fill = "darkgrey", color = "grey50", bins = 10,
+                                  boundary = 0) +
+          ggplot2::scale_y_continuous(expand = c(0, 0, 0, 0.05),
+                                      labels = function(x) {paste0(100 * x, "%")}) +
+          ggplot2::labs(y = "Frequency", x = "Residuals") +
+          ggplot2::theme(panel.background = ggplot2::element_blank(),
+                         panel.grid = ggplot2::element_blank(),
+                         panel.border = ggplot2::element_rect(color = "black",
+                                                              fill = NA))
         ## Plot QQ plot of residuals.
-        plots$p2 <- ggplot(data = plotDat, aes_string(sample = "residuals")) +
-          stat_qq(shape = 1, alpha = 0.7) +
-          labs(y = "Residuals", x = "Normal quantiles") +
-          theme(panel.background = element_blank(),
-                panel.grid = element_blank(),
-                panel.border = element_rect(color = "black", fill = NA))
+        plots$p2 <-
+          ggplot2::ggplot(data = plotDat,
+                          ggplot2::aes_string(sample = "residuals")) +
+          ggplot2::stat_qq(shape = 1, alpha = 0.7) +
+          ggplot2::labs(y = "Residuals", x = "Normal quantiles") +
+          ggplot2::theme(panel.background = ggplot2::element_blank(),
+                         panel.grid = ggplot2::element_blank(),
+                         panel.border = ggplot2::element_rect(color = "black",
+                                                              fill = NA))
         ## Plot residuals vs fitted values.
-        plots$p3 <- ggplot(data = plotDat,
-                           aes_string(x = "fitted", y = "residuals")) +
-          geom_point(shape = 1, alpha = 0.7) +
-          geom_smooth(method = "loess", formula = "y ~ x", color = "red") +
-          geom_hline(yintercept = 0) +
-          labs(y = "Residuals", x = "Fitted values") +
-          theme(panel.background = element_blank(),
-                panel.grid = element_blank(),
-                panel.border = element_rect(color = "black", fill = NA))
+        plots$p3 <-
+          ggplot2::ggplot(data = plotDat,
+                          ggplot2::aes_string(x = "fitted", y = "residuals")) +
+          ggplot2::geom_point(shape = 1, alpha = 0.7) +
+          ggplot2::geom_smooth(method = "loess", formula = "y ~ x",
+                               color = "red") +
+          ggplot2::geom_hline(yintercept = 0) +
+          ggplot2::labs(y = "Residuals", x = "Fitted values") +
+          ggplot2::theme(panel.background = ggplot2::element_blank(),
+                         panel.grid = ggplot2::element_blank(),
+                         panel.border = ggplot2::element_rect(color = "black",
+                                                              fill = NA))
         ## Plot absolute value of residuals vs fitted values.
-        plots$p4 <- ggplot(data = plotDat,
-                           aes_string(x = "fitted", y = "abs(residuals)")) +
-          geom_point(shape = 1, alpha = 0.7) +
-          geom_smooth(method = "loess", formula = "y ~ x", color = "red") +
-          labs(y = "|Residuals|", x = "Fitted values") +
-          theme(panel.background = element_blank(),
-                panel.grid = element_blank(),
-                panel.border = element_rect(color = "black", fill = NA))
+        plots$p4 <-
+          ggplot2::ggplot(data = plotDat,
+                          ggplot2::aes_string(x = "fitted",
+                                              y = "abs(residuals)")) +
+          ggplot2::geom_point(shape = 1, alpha = 0.7) +
+          ggplot2::geom_smooth(method = "loess", formula = "y ~ x",
+                               color = "red") +
+          ggplot2::labs(y = "|Residuals|", x = "Fitted values") +
+          ggplot2::theme(panel.background = ggplot2::element_blank(),
+                         panel.grid = ggplot2::element_blank(),
+                         panel.border = ggplot2::element_rect(color = "black",
+                                                              fill = NA))
         if (output) {
           ## do.call is needed since grid.arrange doesn't accept lists as input.
           do.call(gridExtra::grid.arrange,
@@ -467,12 +479,12 @@ plot.STA <- function(x,
           plotDatSpat[["colCoord"]] <- spatTr$col.p
           plotDatSpat[["rowCoord"]] <- rep(x = spatTr$row.p, each = p1 * nCol)
           ## Remove missings from data.
-          plotDatSpat <- remove_missing(plotDatSpat, na.rm = TRUE)
+          plotDatSpat <- ggplot2::remove_missing(plotDatSpat, na.rm = TRUE)
         }
         ## Create data.frame with all rows columns in field.
         ## Full missing rows/columns are included.
         ## If not geom_tile just fills the empty columns by expanding the
-        ## neighbouring colums (or rows).
+        ## neighboring colums (or rows).
         fullGrid <- expand.grid(colCoord = xMin:xMax, rowCoord = yMin:yMax)
         plotDat <- merge(fullGrid, plotDat, all.x = TRUE)
         ## Code taken from plot.SpATS and simplified.
@@ -495,7 +507,7 @@ plot.STA <- function(x,
           ## Get tickmarks from first plot to be used as ticks.
           ## Spatial plot tends to use different tickmarks by default.
           xTicks <-
-            ggplot_build(plots[[1]])$layout$panel_params[[1]]$x.major_source
+            ggplot2::ggplot_build(plots[[1]])$layout$panel_params[[1]]$x.major_source
           if (spaTrend == "raw") {
             plots$p4 <- fieldPlot(plotDat = plotDatSpat, fillVar = "value",
                                   title = legends[4], colors = colors,
@@ -514,19 +526,21 @@ plot.STA <- function(x,
         }
         plots$p5 <- fieldPlot(plotDat = plotDat, fillVar = "pred",
                               title = legends[5], colors = colors)
-        plots$p6 <- ggplot(data = plotDat) +
-          geom_histogram(aes(x = residuals),
-                         fill = "white", color = "black", bins = 10,
-                         boundary = 0, na.rm = TRUE) +
+        plots$p6 <-
+          ggplot2::ggplot(data = plotDat) +
+          ggplot2::geom_histogram(ggplot2::aes(x = residuals),
+                                  fill = "white", color = "black", bins = 10,
+                                  boundary = 0, na.rm = TRUE) +
           ## Remove empty space between ticks and actual plot.
-          scale_x_continuous(expand = c(0, 0)) +
-          scale_y_continuous(expand = c(0, 0)) +
+          ggplot2::scale_x_continuous(expand = c(0, 0)) +
+          ggplot2::scale_y_continuous(expand = c(0, 0)) +
           ## No background. Center and resize title. Resize axis labels.
-          theme(panel.background = element_blank(),
-                plot.title = element_text(hjust = 0.5, size = 10),
-                axis.title = element_text(size = 9)) +
-          labs(y = "Frequency", x = legends[5]) +
-          ggtitle(legends[6])
+          ggplot2::theme(panel.background = ggplot2::element_blank(),
+                         plot.title = ggplot2::element_text(hjust = 0.5,
+                                                            size = 10),
+                         axis.title = ggplot2::element_text(size = 9)) +
+          ggplot2::labs(y = "Frequency", x = legends[5]) +
+          ggplot2::ggtitle(legends[6])
         if (output) {
           ## do.call is needed since grid.arrange doesn't accept lists as input.
           do.call(gridExtra::grid.arrange,
@@ -541,9 +555,6 @@ plot.STA <- function(x,
   invisible(p)
 }
 
-# darkgrey ----------------------------------------------------------------
-
-
 #' Helper function for creating field plots.
 #'
 #' @noRd
@@ -553,31 +564,33 @@ fieldPlot <- function(plotDat,
                       title,
                       colors,
                       zlim = range(plotDat[fillVar]),
-                      xTicks = waiver(),
+                      xTicks = ggplot2::waiver(),
                       spaTrend = "raw",
                       ...) {
-  p <- ggplot(data = plotDat, aes_string(x = "colCoord", y = "rowCoord",
-                                         fill = fillVar)) +
-    geom_tile(na.rm = TRUE) +
+  p <- ggplot2::ggplot(data = plotDat,
+                       ggplot2::aes_string(x = "colCoord", y = "rowCoord",
+                                           fill = fillVar)) +
+    ggplot2::geom_tile(na.rm = TRUE) +
     ## Remove empty space between ticks and actual plot.
-    scale_x_continuous(expand = c(0, 0), breaks = xTicks) +
-    scale_y_continuous(expand = c(0, 0)) +
+    ggplot2::scale_x_continuous(expand = c(0, 0), breaks = xTicks) +
+    ggplot2::scale_y_continuous(expand = c(0, 0)) +
     ## No background. Center and resize title. Resize axis labels.
     ## Remove legend title and resize legend entries.
-    theme(panel.background = element_blank(),
-          plot.title = element_text(hjust = 0.5, size = 10),
-          axis.title = element_text(size = 9),
-          legend.text = element_text(size = 8)) +
-    ggtitle(title)
+    ggplot2::theme(panel.background = ggplot2::element_blank(),
+                   plot.title = ggplot2::element_text(hjust = 0.5, size = 10),
+                   axis.title = ggplot2::element_text(size = 9),
+                   legend.text = ggplot2::element_text(size = 8)) +
+    ggplot2::ggtitle(title)
   ## Adjust plot colors.
   if (spaTrend == "raw") {
-    p <- p + scale_fill_gradientn(limits = zlim, colors = colors, name = NULL,
-                                  na.value = "white")
+    p <- p + ggplot2::scale_fill_gradientn(limits = zlim, colors = colors,
+                                           name = NULL, na.value = "white")
   } else if (spaTrend == "percentage") {
-    p <- p + scale_fill_gradientn(limits = zlim, colors = colors, name = NULL,
-                                  labels = scales::percent,
-                                  breaks = seq(zlim[1], zlim[2],
-                                               length.out = 5))
+    p <- p + ggplot2::scale_fill_gradientn(limits = zlim, colors = colors,
+                                           name = NULL,
+                                           labels = scales::percent,
+                                           breaks = seq(zlim[1], zlim[2],
+                                                        length.out = 5))
   }
   return(p)
 }

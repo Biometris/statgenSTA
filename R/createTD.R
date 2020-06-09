@@ -773,41 +773,49 @@ plot.TD <- function(x,
         repBord <- calcPlotBorders(trDat = trDat, bordVar = "repId")
       }
       ## Create base plot.
-      pTr <- ggplot(data = trDat, aes_string(x = "colCoord", y = "rowCoord")) +
-        coord_fixed(ratio = aspect,
-                    xlim = range(trDat[["colCoord"]]) + c(-0.5, 0.5),
-                    ylim = range(trDat[["rowCoord"]]) + c(-0.5, 0.5),
-                    clip = "off") +
-        theme(panel.background = element_blank(),
-              plot.title = element_text(hjust = 0.5)) +
+      pTr <-
+        ggplot2::ggplot(data = trDat,
+                        ggplot2::aes_string(x = "colCoord", y = "rowCoord")) +
+        ggplot2::coord_fixed(ratio = aspect,
+                             xlim = range(trDat[["colCoord"]]) + c(-0.5, 0.5),
+                             ylim = range(trDat[["rowCoord"]]) + c(-0.5, 0.5),
+                             clip = "off") +
+        ggplot2::theme(panel.background = ggplot2::element_blank(),
+                       plot.title = ggplot2::element_text(hjust = 0.5)) +
         ## Move ticks to edge of the plot.
-        scale_x_continuous(breaks = scales::pretty_breaks(), expand = c(0, 0)) +
-        scale_y_continuous(breaks = scales::pretty_breaks(), expand = c(0, 0)) +
-        ggtitle(trLoc)
+        ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(),
+                                    expand = c(0, 0)) +
+        ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(),
+                                    expand = c(0, 0)) +
+        ggplot2::ggtitle(trLoc)
       if (sum(!is.na(trDat[["highlight."]])) > 0) {
         ## Genotypes to be highlighted get a color.
         ## Everything else the NA color.
-        pTr <- pTr + geom_tile(aes_string(fill = "highlight.",
-                                          color = "color.")) +
-          scale_color_manual(values = "grey75", na.translate = FALSE,
-                             na.value = "transparant") +
+        pTr <- pTr +
+          ggplot2::geom_tile(ggplot2::aes_string(fill = "highlight.",
+                                                 color = "color.")) +
+          ggplot2::scale_color_manual(values = "grey75", na.translate = FALSE,
+                                      na.value = "transparant") +
           ## Remove NA from scale.
-          scale_fill_discrete(na.translate = FALSE) +
-          labs(fill = "Highlighted") +
-          guides(color = "none")
+          ggplot2::scale_fill_discrete(na.translate = FALSE) +
+          ggplot2::labs(fill = "Highlighted") +
+          ggplot2::guides(color = "none")
       } else if (plotSubBlock && colorSubBlock) {
         ## Color tiles by subblock.
-        pTr <- pTr + geom_tile(aes_string(fill = "subBlock",
-                                          color = "color.")) +
-          scale_color_manual(values = "grey75", na.translate = FALSE,
-                             na.value = "transparant") +
-          guides(fill = guide_legend(ncol = 3), color = "none")
+        pTr <- pTr +
+          ggplot2::geom_tile(ggplot2::aes_string(fill = "subBlock",
+                                                 color = "color.")) +
+          ggplot2::scale_color_manual(values = "grey75", na.translate = FALSE,
+                                      na.value = "transparant") +
+          ggplot2::guides(fill = ggplot2::guide_legend(ncol = 3), color = "none")
       } else {
         ## No subblocks and no hightlights so just a single fill color.
-        pTr <- pTr + geom_tile(aes_string(color = "color."), fill = "white") +
-          scale_color_manual(values = "grey75", na.translate = FALSE,
-                             na.value = "transparant") +
-          guides(color = "none")
+        pTr <- pTr +
+          ggplot2::geom_tile(ggplot2::aes_string(color = "color."),
+                             fill = "white") +
+          ggplot2::scale_color_manual(values = "grey75", na.translate = FALSE,
+                                      na.value = "transparant") +
+          ggplot2::guides(color = "none")
       }
       ## Create data for lines between subBlocks.
       if (plotSubBlock) {
@@ -815,42 +823,53 @@ plot.TD <- function(x,
         ## Add horizontal and vertical lines as segment.
         ## adding/subtracting 0.5 assures plotting at the borders of
         ## the tiles.
-        pTr <- pTr + geom_segment(aes_string(x = "x - 0.5", xend = "x - 0.5",
-                                             y = "y - 0.5", yend = "y + 0.5",
-                                             linetype = "'subBlocks'"),
-                                  data = subBlockBord$vertW, size = 0.4) +
-          geom_segment(aes_string(x = "x - 0.5", xend = "x + 0.5",
-                                  y = "y - 0.5", yend = "y - 0.5"),
-                       data = subBlockBord$horW, size = 0.4)
+        pTr <- pTr +
+          ggplot2::geom_segment(ggplot2::aes_string(x = "x - 0.5",
+                                                    xend = "x - 0.5",
+                                                    y = "y - 0.5",
+                                                    yend = "y + 0.5",
+                                                    linetype = "'subBlocks'"),
+                                data = subBlockBord$vertW, size = 0.4) +
+          ggplot2::geom_segment(ggplot2::aes_string(x = "x - 0.5",
+                                                    xend = "x + 0.5",
+                                                    y = "y - 0.5",
+                                                    yend = "y - 0.5"),
+                                data = subBlockBord$horW, size = 0.4)
       }
       if (showGeno) {
         ## Add names of genotypes to the center of the tiles.
-        pTr <- pTr + geom_text(aes_string(label = "genotype"),
-                               size = 2, check_overlap = TRUE)
+        pTr <- pTr +
+          ggplot2::geom_text(ggplot2::aes_string(label = "genotype"),
+                             size = 2, check_overlap = TRUE)
       }
       if (plotRep) {
         ## Add lines for replicates.
         ## Add horizontal and vertical lines as segment.
         ## adding/subtracting 0.5 assures plotting at the borders of
         ## the tiles.
-        pTr <- pTr +  geom_segment(aes_string(x = "x - 0.5", xend = "x - 0.5",
-                                              y = "y - 0.5", yend = "y + 0.5",
-                                              linetype = "'replicates'"),
-                                   data = repBord$vertW, size = 1) +
-          geom_segment(aes_string(x = "x - 0.5", xend = "x + 0.5",
-                                  y = "y - 0.5", yend = "y - 0.5"),
-                       data = repBord$horW, size = 1)
+        pTr <- pTr +
+          ggplot2::geom_segment(ggplot2::aes_string(x = "x - 0.5",
+                                                    xend = "x - 0.5",
+                                                    y = "y - 0.5",
+                                                    yend = "y + 0.5",
+                                                    linetype = "'replicates'"),
+                                data = repBord$vertW, size = 1) +
+          ggplot2::geom_segment(ggplot2::aes_string(x = "x - 0.5",
+                                                    xend = "x + 0.5",
+                                                    y = "y - 0.5",
+                                                    yend = "y - 0.5"),
+                                data = repBord$horW, size = 1)
       }
       if (plotSubBlock || plotRep) {
         shwVals <- c(plotRep, plotSubBlock)
         pTr <- pTr +
           ## Add a legend entry for replicates and subBlocks.
-          scale_linetype_manual(c("replicates", "subBlocks")[shwVals],
-                                values = c("replicates" = "solid",
-                                           "subBlocks" = "solid")[shwVals],
-                                name = element_blank()) +
-          guides(linetype = guide_legend(override.aes =
-                                           list(size = c(1, 0.4)[shwVals])))
+          ggplot2::scale_linetype_manual(c("replicates", "subBlocks")[shwVals],
+                                         values = c("replicates" = "solid",
+                                                    "subBlocks" = "solid")[shwVals],
+                                         name = ggplot2::element_blank()) +
+          ggplot2::guides(linetype = ggplot2::guide_legend(override.aes =
+                                                             list(size = c(1, 0.4)[shwVals])))
       }
       p[[trial]] <- pTr
       if (output) {
@@ -895,23 +914,23 @@ plot.TD <- function(x,
     latR <- latR + c(-0.1, 0.1) * diff(latR)
     ## Create data usable by ggplot geom_polygon.
     mapDat <- mapData(xLim = longR, yLim = latR)
-    p <- ggplot(mapDat, aes_string(x = "long", y = "lat")) +
-      geom_polygon(aes_string(group = "group"), fill = "white",
-                   color = "black") +
+    p <- ggplot2::ggplot(mapDat, ggplot2::aes_string(x = "long", y = "lat")) +
+      ggplot2::geom_polygon(ggplot2::aes_string(group = "group"), fill = "white",
+                            color = "black") +
       ## Add a proper map projection.
-      coord_map(clip = "on", xlim = longR, ylim = latR) +
+      ggplot2::coord_map(clip = "on", xlim = longR, ylim = latR) +
       ## Add trial locations.
-      geom_point(data = locs) +
-      ggrepel::geom_text_repel(aes_string(label = "name"), data = locs,
+      ggplot2::geom_point(data = locs) +
+      ggrepel::geom_text_repel(ggplot2::aes_string(label = "name"), data = locs,
                                color = "red", size = 3,
                                nudge_x = 0.01 * diff(longR),
                                nudge_y = 0.04 * diff(latR)) +
-      theme(plot.title = element_text(hjust = 0.5),
-            panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            ## Empty space left represents water areas. Color blue.
-            panel.background = element_rect(fill = "steelblue2")) +
-      ggtitle("Trial locations")
+      ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
+                     panel.grid.major = ggplot2::element_blank(),
+                     panel.grid.minor = ggplot2::element_blank(),
+                     ## Empty space left represents water areas. Color blue.
+                     panel.background = ggplot2::element_rect(fill = "steelblue2")) +
+      ggplot2::ggtitle("Trial locations")
     if (output) {
       plot(p)
     }
@@ -981,19 +1000,23 @@ plot.TD <- function(x,
         plotDat[colorBy] <- factor(plotDat[[colorBy]])
       }
       ## Create boxplot.
-      pTr <- ggplot(plotDat, aes_string(x = paste0("`", xVar, "`"),
-                                        y = paste0("`", trait, "`"),
-                                        fill = if (is.null(colorBy)) 1 else
-                                          paste0("`", colorBy, "`"))) +
-        theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
-              panel.background = element_blank(),
-              panel.grid = element_blank(),
-              panel.border = element_rect(color = "black", fill = NA)) +
-        labs(x = xVar, y = trait)
+      pTr <- ggplot2::ggplot(plotDat,
+                             ggplot2::aes_string(x = paste0("`", xVar, "`"),
+                                                 y = paste0("`", trait, "`"),
+                                                 fill = if (is.null(colorBy)) 1 else
+                                                   paste0("`", colorBy, "`"))) +
+        ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90,
+                                                           vjust = 0.5,
+                                                           hjust = 1),
+                       panel.background = ggplot2::element_blank(),
+                       panel.grid = ggplot2::element_blank(),
+                       panel.border = ggplot2::element_rect(color = "black",
+                                                            fill = NA)) +
+        ggplot2::labs(x = xVar, y = trait)
       if (is.null(colorBy)) {
-        pTr <- pTr + geom_boxplot(na.rm = TRUE, fill = "darkgrey")
+        pTr <- pTr + ggplot2::geom_boxplot(na.rm = TRUE, fill = "darkgrey")
       } else {
-        pTr <- pTr + geom_boxplot(na.rm = TRUE)
+        pTr <- pTr + ggplot2::geom_boxplot(na.rm = TRUE)
       }
       p[[trait]] <- pTr
       if (output) {
@@ -1093,27 +1116,30 @@ plot.TD <- function(x,
       meltedCorMatLow <- meltedCorMat[as.numeric(meltedCorMat[["trial1"]]) >
                                         as.numeric(meltedCorMat[["trial2"]]), ]
       ## Create plot.
-      pTr <- ggplot(data = meltedCorMatLow, aes_string("trial1", "trial2")) +
-        geom_tile(aes_string(fill = "cor"), color = "grey50") +
+      pTr <- ggplot2::ggplot(data = meltedCorMatLow,
+                             ggplot2::aes_string("trial1", "trial2")) +
+        ggplot2::geom_tile(ggplot2::aes_string(fill = "cor"),
+                           color = "grey50") +
         ## Create a gradient scale.
-        scale_fill_gradient2(low = "blue", high = "red", mid = "white",
-                             na.value = "grey", limit = c(-1, 1)) +
+        ggplot2::scale_fill_gradient2(low = "blue", high = "red", mid = "white",
+                                      na.value = "grey", limit = c(-1, 1)) +
         ## Move y-axis to the right for easier reading.
-        scale_y_discrete(position = "right") +
+        ggplot2::scale_y_discrete(position = "right") +
         ## Remove grid behind empty bit of triangle.
-        theme(panel.background = element_blank(),
-              panel.grid = element_blank(),
-              axis.ticks = element_blank(),
-              axis.text.x = element_text(angle = 45, vjust = 1, size = 6,
-                                         hjust = 1),
-              axis.text.y = element_text(size = 6),
-              ## Center title.
-              plot.title = element_text(hjust = 0.5)) +
+        ggplot2::theme(panel.background = ggplot2::element_blank(),
+                       panel.grid = ggplot2::element_blank(),
+                       axis.ticks = ggplot2::element_blank(),
+                       axis.text.x = ggplot2::element_text(angle = 45,
+                                                           vjust = 1, size = 6,
+                                                           hjust = 1),
+                       axis.text.y = ggplot2::element_text(size = 6),
+                       ## Center title.
+                       plot.title = ggplot2::element_text(hjust = 0.5)) +
         ## No axis and legend titles.
-        labs(title = paste("Correlations of trials for", trait),
-             x = "", y = "", fill = "") +
+        ggplot2::labs(title = paste("Correlations of trials for", trait),
+                      x = "", y = "", fill = "") +
         ## Equal coordinates to get a square sized plot.
-        coord_equal()
+        ggplot2::coord_equal()
       p[[trait]] <- pTr
       if (output) {
         plot(pTr)
@@ -1217,28 +1243,31 @@ plot.TD <- function(x,
       histPlots <- lapply(X = histVars, FUN = function(trial) {
         colnames(plotTab) <- make.names(paste0("t", colnames(plotTab)))
         binWidth <- diff(range(plotTab[[trial]], na.rm = TRUE)) / 10
-        ggplot(plotTab, aes_string(x = trial,
-                                   y = "(..count..)/sum(..count..)")) +
-          geom_histogram(na.rm = TRUE, binwidth = binWidth, boundary = 0,
-                         fill = histCols[trial], color = "grey50") +
-          scale_x_continuous(limits = range(plotTab, na.rm = TRUE)) +
-          theme(panel.background = element_blank(),
-                panel.grid = element_blank(),
-                panel.border = element_rect(color = "black", fill = NA))
+        ggplot2::ggplot(plotTab,
+                        ggplot2::aes_string(x = trial,
+                                            y = "(..count..)/sum(..count..)")) +
+          ggplot2::geom_histogram(na.rm = TRUE, binwidth = binWidth,
+                                  boundary = 0, fill = histCols[trial],
+                                  color = "grey50") +
+          ggplot2::scale_x_continuous(limits = range(plotTab, na.rm = TRUE)) +
+          ggplot2::theme(panel.background = ggplot2::element_blank(),
+                         panel.grid = ggplot2::element_blank(),
+                         panel.border = ggplot2::element_rect(color = "black",
+                                                              fill = NA))
       })
       ## Y-axis should be the same for all histograms.
       ## Build histograms and extract axis information.
       yMax <- max(sapply(X = histPlots, FUN = function(hp) {
-        max(ggplot_build(hp)$data[[1]][["ymax"]])
+        max(ggplot2::ggplot_build(hp)$data[[1]][["ymax"]])
       }))
       ## Add scaling for y-axis to histograms
       ## Convert to grobs for easier use later on.
       histGrobs <- lapply(X = histPlots, FUN = function(hp) {
-        hp <- hp + scale_y_continuous(expand = c(0, 0, 0, 0.05),
-                                      labels = function(x) {
-                                        paste0(100 * x, "%")
-                                      }, limits = c(0, yMax))
-        ggplotGrob(hp)
+        hp <- hp + ggplot2::scale_y_continuous(expand = c(0, 0, 0, 0.05),
+                                               labels = function(x) {
+                                                 paste0(100 * x, "%")
+                                               }, limits = c(0, yMax))
+        ggplot2::ggplotGrob(hp)
       })
       ## Reshape to get data in format suitable for ggplot.
       plotTab <- reshape(plotTab, direction = "long",
@@ -1252,39 +1281,41 @@ plot.TD <- function(x,
       ## Merge to itself to create a full data set.
       plotTab <- merge(plotTab, plotTab, by = c("genotype", colorBy))
       ## Create a facet plot containing only scatterplots.
-      scatterBase <- ggplot(data = plotTab,
-                            aes_string(x = paste0(trait, ".x"),
-                                       y = paste0(trait, ".y"),
-                                       color = if (is.null(colorBy)) NULL else
-                                         paste0("`", colorBy, "`"))) +
-        scale_x_continuous(breaks = scales::breaks_extended(n = 3)) +
-        scale_y_continuous(breaks = scales::breaks_extended(n = 3)) +
-        facet_grid(facets = c("trial.y", "trial.x")) +
-        labs(title = plotTitle, x = "", y = "") +
-        theme(plot.title = element_text(hjust = 0.5),
-              legend.position = c(1, 1),
-              legend.justification = c(1.5, 1.5),
-              aspect.ratio = 1,
-              panel.background = element_rect(fill = "white"),
-              panel.grid = element_blank(),
-              panel.border = element_rect(color = "black", fill = NA))
+      scatterBase <-
+        ggplot2::ggplot(data = plotTab,
+                        ggplot2::aes_string(x = paste0(trait, ".x"),
+                                            y = paste0(trait, ".y"),
+                                            color = if (is.null(colorBy)) NULL else
+                                              paste0("`", colorBy, "`"))) +
+        ggplot2::scale_x_continuous(breaks = scales::breaks_extended(n = 3)) +
+        ggplot2::scale_y_continuous(breaks = scales::breaks_extended(n = 3)) +
+        ggplot2::facet_grid(facets = c("trial.y", "trial.x")) +
+        ggplot2::labs(title = plotTitle, x = "", y = "") +
+        ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
+                       legend.position = c(1, 1),
+                       legend.justification = c(1.5, 1.5),
+                       aspect.ratio = 1,
+                       panel.background = ggplot2::element_rect(fill = "white"),
+                       panel.grid = ggplot2::element_blank(),
+                       panel.border = ggplot2::element_rect(color = "black",
+                                                            fill = NA))
       if (is.null(colorBy)) {
         scatterBase <- scatterBase +
-          geom_point(na.rm = TRUE, color = "darkgrey", shape = 1)
+          ggplot2::geom_point(na.rm = TRUE, color = "darkgrey", shape = 1)
       } else {
-        scatterBase <- scatterBase + geom_point(na.rm = TRUE, shape = 1)
+        scatterBase <- scatterBase + ggplot2::geom_point(na.rm = TRUE, shape = 1)
       }
       if (!is.null(addCorr)) {
         ## Add correlation annotated in the corner of the plot.
         scatterBase <- scatterBase +
-          geom_text(data = meltedCorMat,
-                    aes_string(x = "x", y = "y",
-                               label = "paste('rho ==', round(cor, 2))"),
-                    color = "red", hjust = "inward", vjust = "inward",
-                    parse = TRUE, inherit.aes = FALSE)
+          ggplot2::geom_text(data = meltedCorMat,
+                             ggplot2::aes_string(x = "x", y = "y",
+                                                 label = "paste('rho ==', round(cor, 2))"),
+                             color = "red", hjust = "inward", vjust = "inward",
+                             parse = TRUE, inherit.aes = FALSE)
       }
       ## Convert to grobs to enable modifying.
-      scatterGrob <- ggplotGrob(scatterBase)
+      scatterGrob <- ggplot2::ggplotGrob(scatterBase)
       ## Get grobs containing plot panels.
       panels <- scatterGrob$layout$name[grepl(pattern = "panel",
                                               x = scatterGrob$layout$name)]
@@ -1294,7 +1325,8 @@ plot.TD <- function(x,
         as.numeric(pan[2]) < as.numeric(pan[3])
       })]
       for (np in nullPanels) {
-        scatterGrob$grobs[[which(scatterGrob$layout$name == np)]] <- zeroGrob()
+        scatterGrob$grobs[[which(scatterGrob$layout$name == np)]] <-
+          ggplot2::zeroGrob()
       }
       ## Set diagonal panels to histograms calculated before.
       histPanels <- panels[sapply(X = splitPanels, FUN = function(pan) {
