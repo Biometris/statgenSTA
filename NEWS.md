@@ -1,3 +1,11 @@
+# statgenSTA 1.0.4.1
+
+* Fixed bug that crashed scatter plot for trials with no overlapping genotypes.
+* Check added for unique row x column combinations when creating TD object.
+* Some warning messages have been made more clear.
+* Full ggplot2 is no longer imported.
+* Checking change in last iteration is now working correctly for asreml4.
+
 # statgenSTA 1.0.4
 
 * Patch release to handle new defaults in lme4. No user visual changes.
