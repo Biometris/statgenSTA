@@ -1148,7 +1148,7 @@ plot.TD <- function(x,
     }
   } else if (plotType == "scatter") {
     if (length(trials) == 1) {
-      stop("At least two trials requiered for a scatter plot.\n")
+      stop("At least two trials are requiered for a scatter plot.\n")
     }
     chkChar(traits, null = FALSE)
     colorGenoBy <- dotArgs$colorGenoBy
@@ -1159,6 +1159,15 @@ plot.TD <- function(x,
       hasName(x = trial, name = colorGenoBy)
     }))) {
       stop("colorGenoBy should be a column in TD.\n")
+    }
+    colorTrialBy <- dotArgs$colorTrialBy
+    if (!is.null(colorTrialBy)) {
+      chkChar(colorTrialBy, len = 1, null = FALSE)
+    }
+    if (!is.null(colorTrialBy) && !all(sapply(X = x, FUN = function(trial) {
+      hasName(x = trial, name = colorTrialBy)
+    }))) {
+      stop("colorTrialBy should be a column in TD.\n")
     }
     trialOrder <- dotArgs$trialOrder
     if (!is.null(trialOrder) &&
@@ -1171,9 +1180,17 @@ plot.TD <- function(x,
     }
     ## Create list of colors for histograms.
     ## Outside trait loop to assure identical coloring of trials.
-    histCols <- setNames(hcl.colors(length(trials),
-                                    palette = hcl.pals("qualitative")[1]),
-                         make.names(paste0("t", trials)))
+    if (!is.null(colorTrialBy)) {
+      colorTrialDat <- unique(do.call(rbind, lapply(X = x, FUN = `[`,
+                                                    c("trial", colorTrialBy))))
+      colorTrialGroups <- unique(colorTrialDat[[2]])
+      colorTrialColors <- setNames(hcl.colors(length(colorTrialGroups),
+                                              palette = hcl.pals("diverging")[1]),
+                                   colorTrialGroups)
+      histCols <- setNames(colorTrialColors[match(colorTrialDat[[2]],
+                                                  colorTrialGroups)],
+                           make.names(paste0("t", colorTrialDat[[1]])))
+    }
     p <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traits) {
       ## Create plot title.
@@ -1248,7 +1265,9 @@ plot.TD <- function(x,
                         ggplot2::aes_string(x = trial,
                                             y = "(..count..)/sum(..count..)")) +
           ggplot2::geom_histogram(na.rm = TRUE, binwidth = binWidth,
-                                  boundary = 0, fill = histCols[trial],
+                                  boundary = 0,
+                                  fill = if (is.null(colorTrialBy)) "grey50" else
+                                    histCols[trial],
                                   color = "grey50") +
           ggplot2::scale_x_continuous(limits = range(plotTab, na.rm = TRUE)) +
           ggplot2::theme(panel.background = ggplot2::element_blank(),
@@ -1281,6 +1300,11 @@ plot.TD <- function(x,
       }
       ## Merge to itself to create a full data set.
       plotTab <- merge(plotTab, plotTab, by = c("genotype", colorGenoBy))
+      if (!is.null(colorTrialBy)) {
+        legendDat <- merge(colorTrialDat, colorTrialColors, by.x = colorTrialBy,
+                           by.y = "row.names")
+        plotTab <- merge(plotTab, legendDat, by.x = "trial.y", by.y = "trial")
+      }
       ## Create a facet plot containing only scatterplots.
       scatterBase <-
         ggplot2::ggplot(data = plotTab,
@@ -1293,8 +1317,6 @@ plot.TD <- function(x,
         ggplot2::facet_grid(facets = c("trial.y", "trial.x")) +
         ggplot2::labs(title = plotTitle, x = "", y = "") +
         ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
-                       legend.position = c(1, 1),
-                       legend.justification = c(1.5, 1.5),
                        aspect.ratio = 1,
                        panel.background = ggplot2::element_rect(fill = "white"),
                        panel.grid = ggplot2::element_blank(),
@@ -1304,7 +1326,16 @@ plot.TD <- function(x,
         scatterBase <- scatterBase +
           ggplot2::geom_point(na.rm = TRUE, color = "darkgrey", shape = 1)
       } else {
-        scatterBase <- scatterBase + ggplot2::geom_point(na.rm = TRUE, shape = 1)
+        scatterBase <- scatterBase +
+          ggplot2::geom_point(na.rm = TRUE, shape = 1)
+      }
+      if (!is.null(colorTrialBy)) {
+        scatterBase <- scatterBase +
+          ggplot2::geom_point(ggplot2::aes_string(fill = colorTrialBy),
+                              color = NA, na.rm = TRUE) +
+          ggplot2::scale_fill_discrete(labels = names(colorTrialColors)) +
+          ggplot2::guides(fill = ggplot2::guide_legend(override.aes =
+                                                         list(color = colorTrialColors)))
       }
       if (!is.null(addCorr)) {
         ## Add correlation annotated in the corner of the plot.

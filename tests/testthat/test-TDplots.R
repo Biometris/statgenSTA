@@ -167,7 +167,7 @@ test_that("TD correlation plot gives correct output types", {
 
 test_that("TD scatter plot gives correct output types", {
   expect_error(plot(testTD, plotType = "scatter", traits = "trait"),
-               "At least two trials requiered for a scatter plot")
+               "At least two trials are requiered for a scatter plot")
   expect_error(plot(TDMaize, plotType = "scatter", traits = 1),
                "traits should be a character vector")
   expect_warning(plot(TDMaize, plotType = "scatter", traits = "trait"),
@@ -178,7 +178,7 @@ test_that("TD scatter plot gives correct output types", {
   expect_is(p[[1]], "gtable")
 })
 
-test_that("option colorGenoBy functions properly for TD box plot", {
+test_that("option colorGenoBy functions properly for TD scatter plot", {
   expect_error(plot(TDMaize, plotType = "scatter", traits = "t1",
                     colorGenoBy = 1),
                "colorGenoBy should be a character string")
@@ -203,7 +203,7 @@ test_that("option addCorr functions properly for TD box plot", {
   expect_silent(plot(TDMaize2, plotType = "scatter", traits = "yld"))
 })
 
-test_that("option trialOrder functions properly for TD box plot", {
+test_that("option trialOrder functions properly for TD scatter plot", {
   expect_error(plot(TDMaize, plotType = "scatter", traits = "t1",
                     trialOrder = 1),
                "trials and trialOrder should contain exactly the same trials")
