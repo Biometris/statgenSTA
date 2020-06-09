@@ -617,9 +617,9 @@ print.summary.TD <- function(x, ...) {
 #' \item{groupBy}{A character string indicating a column in \code{TD} by which
 #' the boxes in the plot should be grouped. By default the boxes are grouped
 #' per trial.}
-#' \item{colorBy}{A character string indicating a column in \code{TD} by which
-#' the boxes are colored. Coloring will be done within the groups indicated by
-#' the \code{groupBy} parameter.}
+#' \item{colorTrialBy}{A character string indicating a column in \code{TD} by
+#' which the boxes are colored. Coloring will be done within the groups
+#' indicated by the \code{groupBy} parameter.}
 #' \item{orderBy}{A character string indicating the way the boxes should be
 #' ordered. Either "alphabetic" for alphabetical ordering of the groups,
 #' "ascending" for ordering by ascending mean, or "descending" for ordering by
@@ -639,8 +639,8 @@ print.summary.TD <- function(x, ...) {
 #' histograms of the data per trial.\cr
 #' Extra parameter options:
 #' \describe{
-#' \item{colorBy}{A character string indicating a column in \code{TD} by which
-#' the genotypes in the scatter plots are colored.}
+#' \item{colorGenoBy}{A character string indicating a column in \code{TD} by
+#' which the genotypes in the scatter plots are colored.}
 #' \item{trialOrder}{A character vector indicating the order of the trials in
 #' the plot matrix (left to right and top to bottom). This vector should be a
 #' permutation of all trials plotted.}
@@ -697,7 +697,7 @@ print.summary.TD <- function(x, ...) {
 #' plot(wheatTD, plotType = "box", traits = "GY")
 #'
 #' ## Add coloring by repId to the boxes.
-#' plot(wheatTD, plotType = "box", traits = "GY", colorBy = "repId")
+#' plot(wheatTD, plotType = "box", traits = "GY", colorTrialBy = "repId")
 #'
 #' ## Sort the boxes in descending order.
 #' plot(wheatTD, plotType = "box", traits = "GY", orderBy = "descending")
@@ -945,14 +945,14 @@ plot.TD <- function(x,
     }))) {
       stop("groupBy should be a column in TD.\n")
     }
-    colorBy <- dotArgs$colorBy
-    if (!is.null(colorBy)) {
-      chkChar(colorBy, len = 1, null = FALSE)
+    colorTrialBy <- dotArgs$colorTrialBy
+    if (!is.null(colorTrialBy)) {
+      chkChar(colorTrialBy, len = 1, null = FALSE)
     }
-    if (!is.null(colorBy) && !all(sapply(X = x, FUN = function(trial) {
-      hasName(x = trial, name = colorBy)
+    if (!is.null(colorTrialBy) && !all(sapply(X = x, FUN = function(trial) {
+      hasName(x = trial, name = colorTrialBy)
     }))) {
-      stop("colorBy should be a column in TD.\n")
+      stop("colorTrialBy should be a column in TD.\n")
     }
     orderBy <- dotArgs$orderBy
     if (!is.null(orderBy)) {
@@ -976,7 +976,8 @@ plot.TD <- function(x,
           if (!hasName(x = trial, name = "trial")) {
             trial[["trial"]] <- names(x)
           }
-          trial[c(trait, "genotype", xVar, if (!is.null(colorBy)) colorBy)]
+          trial[c(trait, "genotype", xVar,
+                  if (!is.null(colorTrialBy)) colorTrialBy)]
         }
       }))
       if (is.null(plotDat)) {
@@ -995,16 +996,16 @@ plot.TD <- function(x,
           plotDat[xVar] <- factor(plotDat[[xVar]], levels = rev(levels(levNw)))
         }
       }
-      ## Colorby is ignored in plot if it is not a factor.
-      if (!is.null(colorBy) && !is.factor(plotDat[colorBy])) {
-        plotDat[colorBy] <- factor(plotDat[[colorBy]])
+      ## colorTrialBy is ignored in plot if it is not a factor.
+      if (!is.null(colorTrialBy) && !is.factor(plotDat[colorTrialBy])) {
+        plotDat[colorTrialBy] <- factor(plotDat[[colorTrialBy]])
       }
       ## Create boxplot.
       pTr <- ggplot2::ggplot(plotDat,
                              ggplot2::aes_string(x = paste0("`", xVar, "`"),
                                                  y = paste0("`", trait, "`"),
-                                                 fill = if (is.null(colorBy)) 1 else
-                                                   paste0("`", colorBy, "`"))) +
+                                                 fill = if (is.null(colorTrialBy)) 1 else
+                                                   paste0("`", colorTrialBy, "`"))) +
         ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90,
                                                            vjust = 0.5,
                                                            hjust = 1),
@@ -1013,7 +1014,7 @@ plot.TD <- function(x,
                        panel.border = ggplot2::element_rect(color = "black",
                                                             fill = NA)) +
         ggplot2::labs(x = xVar, y = trait)
-      if (is.null(colorBy)) {
+      if (is.null(colorTrialBy)) {
         pTr <- pTr + ggplot2::geom_boxplot(na.rm = TRUE, fill = "darkgrey")
       } else {
         pTr <- pTr + ggplot2::geom_boxplot(na.rm = TRUE)
@@ -1150,14 +1151,14 @@ plot.TD <- function(x,
       stop("At least two trials requiered for a scatter plot.\n")
     }
     chkChar(traits, null = FALSE)
-    colorBy <- dotArgs$colorBy
-    if (!is.null(colorBy)) {
-      chkChar(colorBy, len = 1, null = FALSE)
+    colorGenoBy <- dotArgs$colorGenoBy
+    if (!is.null(colorGenoBy)) {
+      chkChar(colorGenoBy, len = 1, null = FALSE)
     }
-    if (!is.null(colorBy) && !all(sapply(X = x, FUN = function(trial) {
-      hasName(x = trial, name = colorBy)
+    if (!is.null(colorGenoBy) && !all(sapply(X = x, FUN = function(trial) {
+      hasName(x = trial, name = colorGenoBy)
     }))) {
-      stop("colorBy should be a column in TD.\n")
+      stop("colorGenoBy should be a column in TD.\n")
     }
     trialOrder <- dotArgs$trialOrder
     if (!is.null(trialOrder) &&
@@ -1186,7 +1187,7 @@ plot.TD <- function(x,
         if (!hasName(x = trial, name = trait) || all(is.na(trial[[trait]]))) {
           NULL
         } else {
-          trial[c("genotype", "trial", trait, colorBy)]
+          trial[c("genotype", "trial", trait, colorGenoBy)]
         }
       }))
       if (!is.null(plotDat)) {
@@ -1275,18 +1276,18 @@ plot.TD <- function(x,
                          timevar = "trial", times = colnames(plotTab),
                          idvar = "genotype", ids = rownames(plotTab),
                          v.names = trait)
-      if (!is.null(colorBy)) {
-        plotTab <- merge(plotTab, unique(plotDat[c("genotype", colorBy)]))
+      if (!is.null(colorGenoBy)) {
+        plotTab <- merge(plotTab, unique(plotDat[c("genotype", colorGenoBy)]))
       }
       ## Merge to itself to create a full data set.
-      plotTab <- merge(plotTab, plotTab, by = c("genotype", colorBy))
+      plotTab <- merge(plotTab, plotTab, by = c("genotype", colorGenoBy))
       ## Create a facet plot containing only scatterplots.
       scatterBase <-
         ggplot2::ggplot(data = plotTab,
                         ggplot2::aes_string(x = paste0(trait, ".x"),
                                             y = paste0(trait, ".y"),
-                                            color = if (is.null(colorBy)) NULL else
-                                              paste0("`", colorBy, "`"))) +
+                                            color = if (is.null(colorGenoBy)) NULL else
+                                              paste0("`", colorGenoBy, "`"))) +
         ggplot2::scale_x_continuous(breaks = scales::breaks_extended(n = 3)) +
         ggplot2::scale_y_continuous(breaks = scales::breaks_extended(n = 3)) +
         ggplot2::facet_grid(facets = c("trial.y", "trial.x")) +
@@ -1299,7 +1300,7 @@ plot.TD <- function(x,
                        panel.grid = ggplot2::element_blank(),
                        panel.border = ggplot2::element_rect(color = "black",
                                                             fill = NA))
-      if (is.null(colorBy)) {
+      if (is.null(colorGenoBy)) {
         scatterBase <- scatterBase +
           ggplot2::geom_point(na.rm = TRUE, color = "darkgrey", shape = 1)
       } else {

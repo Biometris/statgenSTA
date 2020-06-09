@@ -72,7 +72,7 @@ plot(wheatTD, plotType = "box", traits = "GY")
 ## Create a boxplot for grain yield with boxes grouped by year and repIds within
 ## years colored.
 plot(wheatTD, plotType = "box", traits = "GY", groupBy = "year", 
-     colorBy = "repId", orderBy = "descending")
+     colorTrialBy = "repId", orderBy = "descending")
 
 ## ----corPlot------------------------------------------------------------------
 ## Create a correlation plot for grain yield.

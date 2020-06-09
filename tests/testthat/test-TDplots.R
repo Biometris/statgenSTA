@@ -111,12 +111,13 @@ test_that("option groupBy functions properly for TD box plot", {
   expect_true("~repId" %in% as.character(p$t1$mapping))
 })
 
-test_that("option colorBy functions properly for TD box plot", {
-  expect_error(plot(testTD, plotType = "box", traits = "t1", colorBy = 1),
-               "colorBy should be a character string")
-  expect_error(plot(testTD, plotType = "box", traits = "t1", colorBy = "grp"),
-               "colorBy should be a column in TD")
-  p <- plot(testTD, plotType = "box", traits = "t1", colorBy = "repId",
+test_that("option colorTrialBy functions properly for TD box plot", {
+  expect_error(plot(testTD, plotType = "box", traits = "t1", colorTrialBy = 1),
+               "colorTrialBy should be a character string")
+  expect_error(plot(testTD, plotType = "box", traits = "t1",
+                    colorTrialBy = "grp"),
+               "colorTrialBy should be a column in TD")
+  p <- plot(testTD, plotType = "box", traits = "t1", colorTrialBy = "repId",
             output = FALSE)
   expect_true(all(c("~repId", "~trial") %in% as.character(p$t1$mapping)))
 })
@@ -177,11 +178,13 @@ test_that("TD scatter plot gives correct output types", {
   expect_is(p[[1]], "gtable")
 })
 
-test_that("option colorBy functions properly for TD box plot", {
-  expect_error(plot(TDMaize, plotType = "scatter", traits = "t1", colorBy = 1),
-               "colorBy should be a character string")
+test_that("option colorGenoBy functions properly for TD box plot", {
   expect_error(plot(TDMaize, plotType = "scatter", traits = "t1",
-                    colorBy = "grp"), "colorBy should be a column in TD")
+                    colorGenoBy = 1),
+               "colorGenoBy should be a character string")
+  expect_error(plot(TDMaize, plotType = "scatter", traits = "t1",
+                    colorGenoBy = "grp"),
+               "colorGenoBy should be a column in TD")
 })
 
 test_that("option addCorr functions properly for TD box plot", {
