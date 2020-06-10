@@ -1304,6 +1304,8 @@ plot.TD <- function(x,
         legendDat <- merge(colorTrialDat, colorTrialColors, by.x = colorTrialBy,
                            by.y = "row.names")
         plotTab <- merge(plotTab, legendDat, by.x = "trial.y", by.y = "trial")
+        colnames(plotTab)[colnames(plotTab) == colnames(legendDat)[2]] <-
+          colorTrialBy
       }
       ## Create a facet plot containing only scatterplots.
       scatterBase <-
