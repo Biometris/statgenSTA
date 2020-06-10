@@ -187,6 +187,17 @@ test_that("option colorGenoBy functions properly for TD scatter plot", {
                "colorGenoBy should be a column in TD")
 })
 
+test_that("option colorTrialBy functions properly for TD scatter plot", {
+  expect_error(plot(TDMaize, plotType = "scatter", traits = "t1",
+                    colorTrialBy = 1),
+               "colorTrialBy should be a character string")
+  expect_error(plot(TDMaize, plotType = "scatter", traits = "t1",
+                    colorTrialBy = "grp"),
+               "colorTrialBy should be a column in TD")
+  expect_silent(plot(TDMaize, plotType = "scatter", traits = "yld",
+                     colorTrialBy = "trial"))
+})
+
 test_that("option addCorr functions properly for TD box plot", {
   expect_error(plot(TDMaize, plotType = "scatter", traits = "t1",
                     addCorr = TRUE),
