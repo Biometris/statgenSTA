@@ -168,7 +168,7 @@ createTD <- function(data,
   renameCols <- c("genotype", "trial", "loc", "year", "repId", "plotId",
                   "subBlock", "rowId", "colId", "rowCoord", "colCoord",
                   "checkId")
-  ## First rename duplicate colums and add duplicated columns to data
+  ## First rename duplicate columns and add duplicated columns to data.
   renameFrom <- as.character(sapply(X = renameCols, FUN = function(x) {
     get(x)
   }))
@@ -189,6 +189,14 @@ createTD <- function(data,
   ## Rename columns.
   for (i in 1:length(renameCols)) {
     cols[cols == renameFrom[i]] <- renameCols[i]
+  }
+  ## Check for duplicates in cols.
+  ## When there are renaming is attempted to an existing column.
+  dupCols <- cols[duplicated(cols)]
+  if (length(dupCols) > 0) {
+    stop("The following columns already exist in the input data:\n",
+         paste(dupCols, collapse = ","), "\n",
+         "Renaming another column to one of these is imposseble.\n")
   }
   colnames(data) <- cols
   ## Convert columns to factor if neccessary.

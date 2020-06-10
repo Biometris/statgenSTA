@@ -7,12 +7,17 @@ test_that("createTD creates objects of class TD", {
 })
 
 test_that("renaming columns 'one to one' works properly in createTD", {
+  testData2 <- testData
+  colnames(testData2)[colnames(testData2) == "block"] <- "trial"
+  expect_error(createTD(data = testData, genotype = "a"), "has to be NULL or")
+  expect_error(createTD(data = testData2, trial = "field"),
+               "following columns already exist in the input data")
+
   expect_equal(colnames(createTD(data = testData, genotype = "seed")[[1]])[1:2],
                c("genotype", "family"))
   expect_equal(colnames(createTD(data = testData, genotype = "seed",
                                  trial = "field")[[1]])[1:3],
                c("genotype", "family", "trial"))
-  expect_error(createTD(data = testData, genotype = "a"), "has to be NULL or")
 })
 
 test_that("renaming columns 'one to many' works properly in createTD", {
