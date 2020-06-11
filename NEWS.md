@@ -1,6 +1,7 @@
 # statgenSTA 1.0.4.1
 
 * Option colorBy in plot functions is renamed to colorTrialBy and colorGenoBy for a clear distinction between what is actually colored. For the TD scatter plot both options are now available.
+* Fixed bug where tick marks disappeared in spatial plot.
 * Fixed bug that crashed scatter plot for trials with no overlapping genotypes.
 * Check added for unique row x column combinations when creating TD object.
 * Some warning messages have been made more clear.
