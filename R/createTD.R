@@ -1081,9 +1081,9 @@ plot.TD <- function(x,
       } else if (nWarn > 0) {
         warning(sapply(X = 1:nWarn, FUN = function(i) {
           paste("The correlation between trials", corWarn[i, 1], "and",
-                corWarn[i, 2], "was calculated with only", corWarn[i, 1],
-                "genoypes.\n", call. = FALSE)
-        }))
+                corWarn[i, 2], "was calculated with only", corWarn[i, 3],
+                "genoypes.\n")
+        }), call. = FALSE)
       }
       ## Create a correlation matrix.
       corMat <- tryCatchExt(cor(plotTab, use = "pairwise.complete.obs"))
