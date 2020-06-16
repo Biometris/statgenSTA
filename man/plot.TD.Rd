@@ -73,6 +73,8 @@ made using ggplot, but for getting the data for the borders of the countries
 the maps package is needed.\cr
 Extra parameter options:
 \describe{
+\item{colorTrialBy}{A character string indicating a column in \code{TD} by
+which the trials on the map are colored.}
 \item{minLatRange}{A positive numerical value indicating the minimum range
 (in degrees) for the latitude on the plotted map. Defaults to 10.}
 \item{minLongRange}{A positive numerical value indicating the minimum range

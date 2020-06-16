@@ -88,6 +88,16 @@ test_that("options minLatRange and minLongRange function properly for TD map plo
   expect_equal(p$coordinates$limits$y, c(39.97, 63.97))
 })
 
+test_that("option colorTrialBy functions properly for TD map plot", {
+  expect_error(plot(TDHeat05, plotType = "map", colorTrialBy = 1),
+               "colorTrialBy should be a character string")
+  expect_error(plot(TDHeat05, plotType = "map", colorTrialBy = "grp"),
+               "colorTrialBy should be a column in TD")
+  expect_error(plot(TDHeat05, plotType = "map", colorTrialBy = "Plot"),
+               "colorTrialBy should be unique within each trial")
+  expect_silent(plot(TDHeat05, plotType = "map", colorTrialBy = "trial"))
+})
+
 ### TD box plot.
 
 test_that("TD box plot gives correct output types", {

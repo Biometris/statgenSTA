@@ -612,6 +612,8 @@ print.summary.TD <- function(x, ...) {
 #' the maps package is needed.\cr
 #' Extra parameter options:
 #' \describe{
+#' \item{colorTrialBy}{A character string indicating a column in \code{TD} by
+#' which the trials on the map are colored.}
 #' \item{minLatRange}{A positive numerical value indicating the minimum range
 #' (in degrees) for the latitude on the plotted map. Defaults to 10.}
 #' \item{minLongRange}{A positive numerical value indicating the minimum range
@@ -885,15 +887,28 @@ plot.TD <- function(x,
       }
     }
   } else if (plotType == "map") {
-    ## Create a data.frame for plotting trials.
-    ## Population has a random value but if left out nothing is plotted.
-    locs <- setNames(getMeta(x)[c("trLocation", "trLat", "trLong")],
-                     c("name", "lat", "long"))
-    locs <- unique(locs[!is.na(locs$lat) & !is.na(locs$long), ])
-    if (nrow(locs) == 0) {
-      stop("At least one trial should have latitude and longitude ",
-           "for plotting on map.\n")
+    ## Checks for colorTrialBy.
+    colorTrialBy <- dotArgs$colorTrialBy
+    if (!is.null(colorTrialBy)) {
+      chkChar(colorTrialBy, len = 1, null = FALSE)
+      if (!all(sapply(X = x, FUN = function(trial) {
+        hasName(x = trial, name = colorTrialBy)
+      }))) {
+        stop("colorTrialBy should be a column in TD.\n")
+      }
+      colorTrialGroups <- do.call(rbind, lapply(X = x, FUN = function(trial) {
+        ## Assure that coloring by trial is possible by using unique within
+        ## column selection. Not doing so results in a column named trial.1
+        ## causing problems when referring to trial later on.
+        colorTrial <- unique(trial[, unique(c("trial", colorTrialBy)),
+                                   drop = FALSE])
+        if (nrow(colorTrial) != 1) {
+          stop("colorTrialBy should be unique within each trial.\n")
+        }
+        return(colorTrial)
+      }))
     }
+    ## Check for latitude and longitude.
     minLatRange <- dotArgs$minLatRange
     minLongRange <- dotArgs$minLongRange
     if (!is.null(minLatRange) && (!is.numeric(minLatRange) ||
@@ -910,6 +925,22 @@ plot.TD <- function(x,
     if (is.null(minLongRange)) {
       minLongRange <- 5
     }
+    ## Create a data.frame for plotting trials.
+    ## Population has a random value but if left out nothing is plotted.
+    locs <- setNames(getMeta(x)[c("trLocation", "trLat", "trLong")],
+                     c("name", "lat", "long"))
+    ## Merge groups for coloring text.
+    if (!is.null(colorTrialBy)) {
+      locs <- merge(locs, colorTrialGroups, by = "row.names")
+      if (any(table(unique(locs[c("name", colorTrialBy)])) > 1)) {
+        stop("colorTrialBy should be unique within locations.\n")
+      }
+    }
+    locs <- unique(locs[!is.na(locs$lat) & !is.na(locs$long), ])
+    if (nrow(locs) == 0) {
+      stop("At least one trial should have latitude and longitude ",
+           "for plotting on map.\n")
+    }
     ## Set minimum range for latitude and longitude.
     latR <- range(locs$lat)
     latR <- latR +
@@ -922,6 +953,15 @@ plot.TD <- function(x,
     latR <- latR + c(-0.1, 0.1) * diff(latR)
     ## Create data usable by ggplot geom_polygon.
     mapDat <- mapData(xLim = longR, yLim = latR)
+    ## Set text options in a list to be able to specify color groups and
+    ## red as default color.
+    textArgs <- list(mapping = ggplot2::aes_string(label = "name",
+                                                   color = colorTrialBy),
+                     data = locs, size = 3, nudge_x = 0.01 * diff(longR),
+                     nudge_y = 0.04 * diff(latR))
+    if (is.null(colorTrialBy)) {
+      textArgs <- c(textArgs, list(color = "red"))
+    }
     p <- ggplot2::ggplot(mapDat, ggplot2::aes_string(x = "long", y = "lat")) +
       ggplot2::geom_polygon(ggplot2::aes_string(group = "group"), fill = "white",
                             color = "black") +
@@ -929,10 +969,7 @@ plot.TD <- function(x,
       ggplot2::coord_map(clip = "on", xlim = longR, ylim = latR) +
       ## Add trial locations.
       ggplot2::geom_point(data = locs) +
-      ggrepel::geom_text_repel(ggplot2::aes_string(label = "name"), data = locs,
-                               color = "red", size = 3,
-                               nudge_x = 0.01 * diff(longR),
-                               nudge_y = 0.04 * diff(latR)) +
+      do.call(ggrepel::geom_text_repel, args = textArgs) +
       ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
                      panel.grid.major = ggplot2::element_blank(),
                      panel.grid.minor = ggplot2::element_blank(),
