@@ -203,7 +203,7 @@ createTD <- function(data,
   factorCols <-  c("genotype", "trial", "loc", "year", "repId", "subBlock",
                    "plotId", "rowId", "colId", "checkId")
   for (factorCol in factorCols) {
-    if (hasName(data, factorCol)) {
+    if (hasName(data, factorCol) && !is.factor(data[[factorCol]])) {
       data[cols == factorCol] <- as.factor(data[, cols == factorCol])
     }
   }
@@ -241,7 +241,7 @@ createTD <- function(data,
     }
   }
   if (hasName(data, "trial")) {
-    listData <- split(x = data, f = droplevels(data$trial))
+    listData <- split(x = data, f = data[["trial"]], drop = TRUE)
   } else {
     listData <- setNames(list(data), dataName)
   }
