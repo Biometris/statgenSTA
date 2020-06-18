@@ -291,7 +291,7 @@ bestSpatMod <- function(TD,
   mr <- mf <- spatial <- sumTab <- setNames(vector(mode = "list",
                                                    length = length(traits)),
                                             traits)
-  btCols <- c("spatial", "random", "AIC", "BIC", "row", "col", "error",
+  btCols <- c("spatial", "random", "AIC", "BIC", "h2", "row", "col", "error",
               "correlated error", "converge")
   for (trait in traits) {
     ## Reset criterion to Inf.
@@ -388,6 +388,22 @@ bestSpatMod <- function(TD,
                                        "rowId:colId!R", "rowCoord:colCoord!R",
                                        "iexp(rowCoord,colCoord)!R"), ]
         }
+        ## Compute heritability and add to summary table.
+        varGen <- if (asreml4()) {
+          unname(mrTrait$vparameters["genotype"] * mrTrait$sigma2)
+        } else {
+          unname(mrTrait$gammas[pattern = "genotype!genotype.var"] *
+                   mrTrait$sigma2)
+        }
+        mrPred <- predictAsreml(model = mrTrait, classify = "genotype",
+                                vcov = FALSE, TD = TDTr, only = "genotype",
+                                sed = TRUE)
+        sedSq <- if (asreml4()) {
+          mrPred$sed ^ 2
+        } else {
+          mrPred$predictions$sed ^ 2
+        }
+        modSum[i, "h2"] <- 1 - mean(sedSq[lower.tri(sedSq)]) / (2 * varGen)
         ## If current model is better than best so far based on chosen criterion
         ## define best model as current model.
         if (mrTrait$converge) {

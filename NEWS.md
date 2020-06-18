@@ -2,6 +2,7 @@
 
 * Option colorBy in plot functions is renamed to colorTrialBy and colorGenoBy for a clear distinction between what is actually colored. For the TD scatter plot both options are now available.
 * Options colorTrialBy is added to map plots. This gives the possibility for coloring groups of trials on a map.
+* Summary of spatial models fitted using asreml now has an extra column showing heritability.
 * Levels of factor columns are no longer reordered when creating a TD object. 
 * Fixed bug where tick marks disappeared in spatial plot.
 * Fixed bug that crashed scatter plot for trials with no overlapping genotypes.
