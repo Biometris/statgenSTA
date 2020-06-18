@@ -291,7 +291,7 @@ bestSpatMod <- function(TD,
   mr <- mf <- spatial <- sumTab <- setNames(vector(mode = "list",
                                                    length = length(traits)),
                                             traits)
-  btCols <- c("spatial", "random", "AIC", "BIC", "h2", "row", "col", "error",
+  btCols <- c("spatial", "random", "AIC", "BIC", "H2", "row", "col", "error",
               "correlated error", "converge")
   for (trait in traits) {
     ## Reset criterion to Inf.
@@ -403,7 +403,7 @@ bestSpatMod <- function(TD,
         } else {
           mrPred$predictions$sed ^ 2
         }
-        modSum[i, "h2"] <- 1 - mean(sedSq[lower.tri(sedSq)]) / (2 * varGen)
+        modSum[i, "H2"] <- 1 - mean(sedSq[lower.tri(sedSq)]) / (2 * varGen)
         ## If current model is better than best so far based on chosen criterion
         ## define best model as current model.
         if (mrTrait$converge) {
