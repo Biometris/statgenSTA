@@ -17,8 +17,10 @@
 #' \item{Add meta data - the trial meta data are added as attributes to the
 #' different output items. The function parameters starting with "tr" provide
 #' the meta data. Their values will be recycled if needed, so by setting a
-#' single "trDesign", all trials will get the same design. The meta data can be
-#' changed later on using \code{getMeta} and \code{setMeta}}
+#' single "trDesign", all trials will get the same design. For trLat, trLong,
+#' trDesign and trDate a column in \code{data} that contains the information
+#' can be specified as well. The meta data can be changed later on using
+#' \code{getMeta} and \code{setMeta}}
 #' }
 #' \code{addTD}\cr
 #' Function for adding extra trial data to an existing object of class TD. The
@@ -71,18 +73,22 @@
 #' summaries. If no locations are provided, first the column loc is considered.
 #' If this contains one unique value for a trial this is used as trLocation.
 #' Otherwise the trialname is used.
-#' @param trDate An optional date vector indicating the dates of the trials.
-#' @param trDesign An optional character vector indicating the designs of the
-#' trials. Either "none" (no (known) design), "ibd" (incomplete-block design),
-#' "res.ibd" (resolvable incomplete-block design), "rcbd" (randomized complete
-#' block design), "rowcol" (row-column design) or "res.rowcol" (resolvable
-#' row-column design).
-#' @param trLat An optional numerical vector indicating the latitudes of the
-#' trials on a scale of -90 to 90. If \code{trLat} is not provided latitude will
-#' be taken from \code{lat}.
-#' @param trLong An optional numerical vector indicating the longitudes of the
-#' trials on a scale of -180 to 180. If \code{trLong} is not provided longitude
-#' will be taken from \code{long}.
+#' @param trDate An optional character string indicating the column in
+#' \code{data} that contains the date of the trial or a date vector indicating
+#' the dates of the trials.
+#' @param trDesign An optional character string indicating the column in
+#' \code{data} that contains the design of the trial or a character vector
+#' indicating the designs of the trials. Either "none" (no (known) design), "
+#' ibd" (incomplete-block design), "res.ibd" (resolvable incomplete-block
+#' design), "rcbd" (randomized complete block design), "rowcol" (row-column
+#' design) or "res.rowcol" (resolvable row-column design).
+#' @param trLat An optional character string indicating the column in \code{data}
+#' that contains the latitude of the trial or a numerical vector indicating the
+#' latitudes of the trials on a scale of -90 to 90.
+#' @param trLong An optional character string indicating the column in
+#' \code{data} that contains the latitude of the trial or a numerical vector
+#' indicating the longitudes of the trials on a scale of -180 to 180. If
+#' \code{trLong} is not provided longitude will be taken from \code{long}.
 #' @param trPlWidth An optional positive numerical vector indicating the
 #' widths of the plots.
 #' @param trPlLength An optional positive numerical vector indicating the
@@ -168,7 +174,8 @@ createTD <- function(data,
       stop(deparse(param), " has to be NULL or a column in data.\n")
     }
   }
-  checkTDMeta(trPlWidth = trPlWidth, trPlLength = trPlLength)
+  checkTDMeta(trDesign = trDesign, trPlWidth = trPlWidth,
+              trPlLength = trPlLength)
   ## Create list of reserved column names for renaming columns.
   renameCols <- c("genotype", "trial", "loc", "year", "repId", "plotId",
                   "subBlock", "rowId", "colId", "rowCoord", "colCoord",
