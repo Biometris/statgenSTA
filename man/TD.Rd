@@ -135,12 +135,6 @@ lengths of the plots.}
 \item{TD}{An object of class TD which should be modified.}
 
 \item{rmTrials}{A character vector of trials that should be removed.}
-
-\item{lat}{An optional character string indicating the column in \code{data}
-that contains the latitude of the trial.}
-
-\item{long}{An optional character string indicating the column in \code{data}
-that contains the longitude of the trial.}
 }
 \value{
 An object of class TD, a list of data.frames with renamed columns

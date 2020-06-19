@@ -64,10 +64,6 @@
 #' be the same as colCoord.
 #' @param checkId An optional character string indicating the column in
 #' \code{data} that contains the check IDs.
-#' @param lat An optional character string indicating the column in \code{data}
-#' that contains the latitude of the trial.
-#' @param long An optional character string indicating the column in \code{data}
-#' that contains the longitude of the trial.
 #' @param trLocation An optional character vector indicating the locations of
 #' the trials. This will be used as default names when creating plots and
 #' summaries. If no locations are provided, first the column loc is considered.
