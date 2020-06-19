@@ -168,8 +168,7 @@ createTD <- function(data,
       stop(deparse(param), " has to be NULL or a column in data.\n")
     }
   }
-  checkTDMeta(trDesign = trDesign, trPlWidth = trPlWidth,
-              trPlLength = trPlLength)
+  checkTDMeta(trPlWidth = trPlWidth, trPlLength = trPlLength)
   ## Create list of reserved column names for renaming columns.
   renameCols <- c("genotype", "trial", "loc", "year", "repId", "plotId",
                   "subBlock", "rowId", "colId", "rowCoord", "colCoord",
@@ -252,8 +251,9 @@ createTD <- function(data,
     listData <- setNames(list(data), dataName)
   }
   ## Define meta data to set from input variables.
-  meta <- c("trLocation", "trDate", "trDesign", "trLat", "trLong",
-            "trPlWidth", "trPlLength")
+  ## trLat, trLong, trDate and trDesign might be defined from variables so
+  ## are treated differently.
+  meta <- c("trLocation", "trPlWidth", "trPlLength")
   ## Expand input values for meta variables to number of trials.
   metaVals <- sapply(X = meta, FUN = function(m) {
     if (!is.null(get(m))) {
@@ -284,10 +284,12 @@ createTD <- function(data,
         attr(x = listData[[tr]], which = "trLocation") <- tr
       }
     }
-    ## If latitude and longitude are empty add them from columns lat and long
-    ## when these are available.
+    ## If trLat or trLong are specifying a column in the data set meta data
+    ## to the value for this column. To do so the value has to be unique within
+    ## each trial.
     trLatDat <- trLat
     if (!is.null(trLat) && hasName(x = listData[[tr]], name = trLat)) {
+      ## Set trLatDat to value within trial and check for uniqueness.
       trLatDat <- unique(listData[[tr]][[trLat]])
       if (!length(trLatDat) == 1) {
         stop("trLat not unique for ", tr, ".\n")
@@ -295,14 +297,39 @@ createTD <- function(data,
     }
     trLongDat <- trLong
     if (!is.null(trLong) && hasName(x = listData[[tr]], name = trLong)) {
+      ## Set trLongDat to value within trial and check for uniqueness.
       trLongDat <- unique(listData[[tr]][[trLong]])
       if (!length(trLongDat) == 1) {
-        stop("trLat not unique for ", tr, ".\n")
+        stop("trLong not unique for ", tr, ".\n")
       }
     }
+    ## Check that combination of latitude and longitude set is valid.
     chkLatLong(trLatDat, trLongDat)
     attr(x = listData[[tr]], which = "trLat") <- trLatDat
     attr(x = listData[[tr]], which = "trLong") <- trLongDat
+    ## If trDate is specifying a column in the data set meta data to the value
+    ## for this column. To do so the value has to be unique within each trial.
+    trDateDat <- trDate
+    if (!is.null(trDate) && hasName(x = listData[[tr]], name = trDate)) {
+      ## Set trDateDat to value within trial and check for uniqueness.
+      trDateDat <- unique(listData[[tr]][[trDate]])
+      if (!length(trDateDat) == 1) {
+        stop("trDate not unique for ", tr, ".\n")
+      }
+    }
+    attr(x = listData[[tr]], which = "trDate") <- trDateDat
+    ## If trDesign is specifying a column in the data set meta data to the value
+    ## for this column. To do so the value has to be unique within each trial.
+    trDesignDat <- trDesign
+    if (!is.null(trDesign) && hasName(x = listData[[tr]], name = trDesign)) {
+      ## Set trDateDat to value within trial and check for uniqueness.
+      trDesignDat <- unique(listData[[tr]][[trDesign]])
+      if (!length(trDesignDat) == 1) {
+        stop("trDesign not unique for ", tr, ".\n")
+      }
+    }
+    chkDesign(trDesignDat)
+    attr(x = listData[[tr]], which = "trDesign") <- trDesignDat
     ## Add a list of columns that have been renamed as attribute to TD.
     attr(x = listData[[tr]], which = "renamedCols") <-
       if (nrow(renamed) > 0) renamed else NULL
@@ -1600,11 +1627,7 @@ checkTDMeta <- function(trLocation = NULL,
                         trLong = NULL,
                         trPlWidth = NULL,
                         trPlLength = NULL) {
-  if (!is.null(trDesign)) {
-    trDesign <- match.arg(trDesign, choices = c("none", "ibd", "res.ibd",
-                                                "rcbd", "rowcol", "res.rowcol"),
-                          several.ok = TRUE)
-  }
+  chkDesign(trDesign)
   chkLatLong(trLat, trLong)
   if (!is.null(trPlWidth) && (!is.numeric(trPlWidth) || any(trPlWidth < 0))) {
     stop("trPlWidth should be a positive numerical vector.\n", call. = FALSE)
@@ -1614,6 +1637,15 @@ checkTDMeta <- function(trLocation = NULL,
   }
 }
 
+#' Helper function for checking design.
+#'
+#' @noRd
+#' @keywords internal
+chkDesign <- function(design) {
+  match.arg(design, choices = c("none", "ibd", "res.ibd", "rcbd", "rowcol",
+                                "res.rowcol"),
+            several.ok = TRUE)
+}
 #' Helper function for checking latitude and longitude.
 #'
 #' @noRd
