@@ -130,7 +130,7 @@ test_that("checkTDMeta functions properly", {
   expect_error(checkTDMeta(trLong = -200), "between -180 and 180")
   expect_silent(checkTDMeta(trLong = 120))
   expect_warning(checkTDMeta(trLat = 0, trLong = 0),
-               "trLat and trLong should all match a known land location")
+               "latitude and longitude should all match a known land location")
   expect_silent(checkTDMeta(trLat = 53, trLong = 0))
   expect_error(checkTDMeta(trPlWidth = c(-1, 1, 2)), "a positive numerical")
   expect_silent(checkTDMeta(trPlWidth = c(1, 1, 2)))

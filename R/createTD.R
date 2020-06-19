@@ -62,6 +62,10 @@
 #' be the same as colCoord.
 #' @param checkId An optional character string indicating the column in
 #' \code{data} that contains the check IDs.
+#' @param lat An optional character string indicating the column in \code{data}
+#' that contains the latitude of the trial.
+#' @param long An optional character string indicating the column in \code{data}
+#' that contains the longitude of the trial.
 #' @param trLocation An optional character vector indicating the locations of
 #' the trials. This will be used as default names when creating plots and
 #' summaries. If no locations are provided, first the column loc is considered.
@@ -74,9 +78,11 @@
 #' block design), "rowcol" (row-column design) or "res.rowcol" (resolvable
 #' row-column design).
 #' @param trLat An optional numerical vector indicating the latitudes of the
-#' trials on a scale of -90 to 90.
+#' trials on a scale of -90 to 90. If \code{trLat} is not provided latitude will
+#' be taken from \code{lat}.
 #' @param trLong An optional numerical vector indicating the longitudes of the
-#' trials on a scale of -180 to 180.
+#' trials on a scale of -180 to 180. If \code{trLong} is not provided longitude
+#' will be taken from \code{long}.
 #' @param trPlWidth An optional positive numerical vector indicating the
 #' widths of the plots.
 #' @param trPlLength An optional positive numerical vector indicating the
@@ -162,8 +168,8 @@ createTD <- function(data,
       stop(deparse(param), " has to be NULL or a column in data.\n")
     }
   }
-  checkTDMeta(trDesign = trDesign, trLat = trLat, trLong = trLong,
-              trPlWidth = trPlWidth, trPlLength = trPlLength)
+  checkTDMeta(trDesign = trDesign, trPlWidth = trPlWidth,
+              trPlLength = trPlLength)
   ## Create list of reserved column names for renaming columns.
   renameCols <- c("genotype", "trial", "loc", "year", "repId", "plotId",
                   "subBlock", "rowId", "colId", "rowCoord", "colCoord",
@@ -221,7 +227,7 @@ createTD <- function(data,
     }
   }
   ## Sort data by rowCoord and colCoord.
-  ## This is only needed for spatial modeling with asreml but doesn't harm
+  ## This is only needed for spatial modeling with asreml but it doesn't harm
   ## always doing so.
   if (all(hasName(data, c("rowCoord", "colCoord")))) {
     data <- data[order(data[["rowCoord"]], data[["colCoord"]]), ]
@@ -270,7 +276,7 @@ createTD <- function(data,
     ## Location should always be filled since it is used in plot titles as
     ## well. Use trial name as default value.
     if (is.null(trLocation)) {
-      if (hasName(x = listData[[tr]], name = "loc") &
+      if (hasName(x = listData[[tr]], name = "loc") &&
           length(unique(listData[[tr]][["loc"]])) == 1) {
         attr(x = listData[[tr]],
              which = "trLocation") <- as.character(listData[[tr]][["loc"]][1])
@@ -278,6 +284,25 @@ createTD <- function(data,
         attr(x = listData[[tr]], which = "trLocation") <- tr
       }
     }
+    ## If latitude and longitude are empty add them from columns lat and long
+    ## when these are available.
+    trLatDat <- trLat
+    if (!is.null(trLat) && hasName(x = listData[[tr]], name = trLat)) {
+      trLatDat <- unique(listData[[tr]][[trLat]])
+      if (!length(trLatDat) == 1) {
+        stop("trLat not unique for ", tr, ".\n")
+      }
+    }
+    trLongDat <- trLong
+    if (!is.null(trLong) && hasName(x = listData[[tr]], name = trLong)) {
+      trLongDat <- unique(listData[[tr]][[trLong]])
+      if (!length(trLongDat) == 1) {
+        stop("trLat not unique for ", tr, ".\n")
+      }
+    }
+    chkLatLong(trLatDat, trLongDat)
+    attr(x = listData[[tr]], which = "trLat") <- trLatDat
+    attr(x = listData[[tr]], which = "trLong") <- trLongDat
     ## Add a list of columns that have been renamed as attribute to TD.
     attr(x = listData[[tr]], which = "renamedCols") <-
       if (nrow(renamed) > 0) renamed else NULL
@@ -1580,24 +1605,7 @@ checkTDMeta <- function(trLocation = NULL,
                                                 "rcbd", "rowcol", "res.rowcol"),
                           several.ok = TRUE)
   }
-  if (!is.null(trLat) && (!is.numeric(trLat) || any(abs(trLat) > 90))) {
-    stop("trLat should be a numerical vector between -90 and 90.\n",
-         call. = FALSE)
-  }
-  if (!is.null(trLong) && (!is.numeric(trLong) || any(abs(trLong) > 180))) {
-    stop("trLat should be a numerical vector between -180 and 180.\n",
-         call. = FALSE)
-  }
-  if (!is.null(trLat) && !is.null(trLong)) {
-    locLen <- max(length(trLat), length(trLong))
-    ## Check that coordinates point to a proper location so plotting can be done.
-    loc <- maps::map.where(x = rep(x = trLong, length.out = locLen),
-                           y = rep(x = trLat, length.out = locLen))
-    if (length(loc) > 0 && anyNA(loc)) {
-      warning("Values for trLat and trLong should all match a known land ",
-              "location.\n", call. = FALSE)
-    }
-  }
+  chkLatLong(trLat, trLong)
   if (!is.null(trPlWidth) && (!is.numeric(trPlWidth) || any(trPlWidth < 0))) {
     stop("trPlWidth should be a positive numerical vector.\n", call. = FALSE)
   }
@@ -1605,3 +1613,30 @@ checkTDMeta <- function(trLocation = NULL,
     stop("trPlLength should be a positive numerical vector.\n", call. = FALSE)
   }
 }
+
+#' Helper function for checking latitude and longitude.
+#'
+#' @noRd
+#' @keywords internal
+chkLatLong <- function(lat,
+                       long) {
+  if (!is.null(lat) && (!is.numeric(lat) || any(abs(lat) > 90))) {
+    stop("lat should be a numerical vector with values between -90 and 90.\n",
+         call. = FALSE)
+  }
+  if (!is.null(long) && (!is.numeric(long) || any(abs(long) > 180))) {
+    stop("long should be a numerical vector with values between -180 and 180.\n",
+         call. = FALSE)
+  }
+  if (!is.null(lat) && !is.null(long)) {
+    locLen <- max(length(lat), length(long))
+    ## Check that coordinates point to a proper location so plotting can be done.
+    loc <- maps::map.where(x = rep(x = long, length.out = locLen),
+                           y = rep(x = lat, length.out = locLen))
+    if (length(loc) > 0 && anyNA(loc)) {
+      warning("Values for latitude and longitude should all match a known ",
+              "land location.\n", call. = FALSE)
+    }
+  }
+}
+

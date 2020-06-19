@@ -115,10 +115,12 @@ block design), "rowcol" (row-column design) or "res.rowcol" (resolvable
 row-column design).}
 
 \item{trLat}{An optional numerical vector indicating the latitudes of the
-trials on a scale of -90 to 90.}
+trials on a scale of -90 to 90. If \code{trLat} is not provided latitude will
+be taken from \code{lat}.}
 
 \item{trLong}{An optional numerical vector indicating the longitudes of the
-trials on a scale of -180 to 180.}
+trials on a scale of -180 to 180. If \code{trLong} is not provided longitude
+will be taken from \code{long}.}
 
 \item{trPlWidth}{An optional positive numerical vector indicating the
 widths of the plots.}
@@ -129,6 +131,12 @@ lengths of the plots.}
 \item{TD}{An object of class TD which should be modified.}
 
 \item{rmTrials}{A character vector of trials that should be removed.}
+
+\item{lat}{An optional character string indicating the column in \code{data}
+that contains the latitude of the trial.}
+
+\item{long}{An optional character string indicating the column in \code{data}
+that contains the longitude of the trial.}
 }
 \value{
 An object of class TD, a list of data.frames with renamed columns
