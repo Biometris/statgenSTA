@@ -1,8 +1,8 @@
 Package: statgenSTA
 Type: Package
 Title: Single Trial Analysis (STA) of Field Trials
-Version: 1.0.4.1
-Date: 2020-03-30
+Version: 1.0.5
+Date: 2020-06-23
 Authors@R: c(person(given = "Bart-Jan", 
                     family = "van Rossum", 
                     email = "bart-jan.vanrossum@wur.nl", 

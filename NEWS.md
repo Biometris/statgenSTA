@@ -1,4 +1,4 @@
-# statgenSTA 1.0.4.1
+# statgenSTA 1.0.5
 
 * Option colorBy in plot functions is renamed to colorTrialBy and colorGenoBy for a clear distinction between what is actually colored. For the TD scatter plot both options are now available.
 * Options colorTrialBy is added to map plots. This gives the possibility for coloring groups of trials on a map.
