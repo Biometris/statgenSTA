@@ -1,13 +1,11 @@
-## Patch release to comply with changes in upcoming version of lme4
-
-* Updated package tests.
+## Release with several extensions to plot functions, improved checks on input data, and some bug fixes.
 
 ----
 
 ## Test environments
 
-* local Windows 10 install, R 3.6.3
-* Debian (on gitlab-ci), R 3.6.2
+* local Windows 10 install, R 4.0.2
+* Debian (on gitlab-ci), R 3.6.3
 * R-hub (devel and release)
 
 ----
