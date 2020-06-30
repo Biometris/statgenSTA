@@ -795,6 +795,8 @@ plot.TD <- function(x,
   trials <- chkTrials(trials, x)
   plotType <- match.arg(plotType)
   dotArgs <- list(...)
+  ## Restrict x to trials.
+  x <- dropTD(x, names(x)[!names(x) %in% trials])
   if (plotType == "layout") {
     showGeno <- isTRUE(dotArgs$showGeno)
     highlight <- dotArgs$highlight
@@ -1144,6 +1146,7 @@ plot.TD <- function(x,
           trial[c("genotype", "trial", trait)]
         }
       }))
+      plotDat <- droplevels(plotDat)
       if (is.null(plotDat)) {
         warning(trait, " isn't a column in any of the trials.\n",
                 "Plot skipped.\n", call. = FALSE)
