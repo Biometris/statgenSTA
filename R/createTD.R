@@ -1022,13 +1022,14 @@ plot.TD <- function(x,
     ## Population has a random value but if left out nothing is plotted.
     locs <- setNames(getMeta(x)[c("trLocation", "trLat", "trLong")],
                      c("name", "lat", "long"))
+    locs[["trial"]] <- rownames(locs)
     ## Merge groups for coloring text.
-    locs <- merge(locs, colorTrialDat, by.x = "row.names", by.y = "trial")
+    locs <- merge(locs, colorTrialDat, by.x = "trial")
     if (any(table(unique(locs[c("name", colorTrialBy)])) > 1)) {
       stop("colorTrialBy should be unique within locations.\n")
     }
     ## Drop Row.names column created when merging.
-    locs <- unique(locs[!is.na(locs$lat) & !is.na(locs$long), -1])
+    locs <- unique(locs[!is.na(locs$lat) & !is.na(locs$long), ])
     if (nrow(locs) == 0) {
       stop("At least one trial should have latitude and longitude ",
            "for plotting on map.\n")
@@ -1122,14 +1123,14 @@ plot.TD <- function(x,
                   if (!is.null(colorTrialBy)) colorTrialBy)]
         }
       }))
-      if (is.null(colorTrialBy)) {
-        plotDat[[".colorTrialBy"]] <- factor(1)
-        colorTrialBy <- ".colorTrialBy"
-      }
       if (is.null(plotDat)) {
         warning(trait, " isn't a column in any of the trials.\n",
                 "Plot skipped.\n", call. = FALSE)
         next
+      }
+      if (is.null(colorTrialBy)) {
+        plotDat[[".colorTrialBy"]] <- factor(1)
+        colorTrialBy <- ".colorTrialBy"
       }
       ## colorTrialBy is ignored in plot if it is not a factor.
       if (!is.null(colorTrialBy) && !is.factor(plotDat[colorTrialBy])) {
@@ -1205,12 +1206,12 @@ plot.TD <- function(x,
           trial[c("genotype", "trial", trait)]
         }
       }))
-      plotDat <- droplevels(plotDat)
       if (is.null(plotDat)) {
         warning(trait, " isn't a column in any of the trials.\n",
                 "Plot skipped.\n", call. = FALSE)
         next
       }
+      plotDat <- droplevels(plotDat)
       ## Create table with values trait per genotype per trial.
       ## If TD already contains BLUEs/BLUPs taking means doesn't do anything
       ## but it is needed for raw data where there can be replicates.
