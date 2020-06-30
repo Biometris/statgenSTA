@@ -1,5 +1,7 @@
 # statgenSTA 1.0.5
 
+* Default colors for genotypes and trials have been improved. User specific default colors may now be set in the R options "statgen.colGeno" (for genotypes) and "statgen.colTrial" (for trials).
+* New options colGeno and colTrial have been added to the relevent plot functions for TD objects. These options can be used to specify the colors for genotypes (colGeno) and trials (colTrial) in the plots.
 * Option trials in plot function for TD object is now respected for all types of plots.
 
 # statgenSTA 1.0.5
