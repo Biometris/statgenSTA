@@ -708,6 +708,10 @@ print.summary.TD <- function(x, ...) {
 #' which the genotypes in the scatter plots are colored.}
 #' \item{colGeno}{A character vector with plot colors for the genotypes. A
 #' single color when \code{colorGenoBy = NULL}, a vector of colors otherwise.}
+#' \item{colorTrialBy}{A character string indicating a column in \code{TD} by
+#' which the trials in the histograms are colored.}
+#' \item{colTrial}{A character vector with plot colors for the trials. A
+#' single color when \code{colorTrialBy = NULL}, a vector of colors otherwise.}
 #' \item{trialOrder}{A character vector indicating the order of the trials in
 #' the plot matrix (left to right and top to bottom). This vector should be a
 #' permutation of all trials plotted.}
@@ -1276,6 +1280,8 @@ plot.TD <- function(x,
     }))) {
       stop("colorTrialBy should be a column in TD.\n")
     }
+    colTrial <- dotArgs$colTrial
+    chkChar(colTrial)
     trialOrder <- dotArgs$trialOrder
     if (!is.null(trialOrder) &&
         (!all(trialOrder %in% trials) || !all(trials %in% trialOrder))) {
@@ -1290,14 +1296,36 @@ plot.TD <- function(x,
     if (!is.null(colorTrialBy)) {
       colorTrialDat <- unique(do.call(rbind, lapply(X = x, FUN = `[`,
                                                     c("trial", colorTrialBy))))
-      colorTrialGroups <- unique(colorTrialDat[[2]])
-      colorTrialColors <- setNames(hcl.colors(length(colorTrialGroups),
-                                              palette = hcl.pals("diverging")[1]),
-                                   colorTrialGroups)
-      histCols <- setNames(colorTrialColors[match(colorTrialDat[[2]],
-                                                  colorTrialGroups)],
-                           make.names(paste0("t", colorTrialDat[[1]])))
+    } else {
+      colorTrialDat <- unique(do.call(rbind, lapply(X = x, FUN = `[`, "trial")))
+      colorTrialDat[[".colorTrialBy"]] <- factor(1)
+      colorTrialBy <- ".colorTrialBy"
     }
+    colorTrialGroups <- unique(colorTrialDat[[2]])
+    nColTrial <- length(colorTrialGroups)
+    if (length(colTrial) == 0) {
+      ## Defaults to black for one color for trials.
+      ## For more than one colors from statgen.trialColors are used.
+      ## Fall back to topo.colors if number of colors in option is too small.
+      if (nColTrial == 1) {
+        colTrial <- "grey50"
+      } else if (length(getOption("statgen.trialColors")) >= nColTrial) {
+        colTrial <- getOption("statgen.trialColors")[1:nColTrial]
+      } else {
+        colTrial <- topo.colors(nColTrial)
+      }
+    } else {
+      nColTrialArg <- length(colTrial)
+      if (nColTrialArg != nColTrial) {
+        stop("Number of colors provided doesn't match number of trial ",
+             "groups:\n", nColTrialArg, " colors provided, ", nColTrial,
+             " groups in data.\n")
+      }
+    }
+    colorTrialColors <- setNames(colTrial, colorTrialGroups)
+    histCols <- setNames(colorTrialColors[match(colorTrialDat[[2]],
+                                                colorTrialGroups)],
+                         make.names(paste0("t", colorTrialDat[[1]])))
     p <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traits) {
       ## Create plot title.
@@ -1373,9 +1401,7 @@ plot.TD <- function(x,
                         ggplot2::aes_string(x = trial,
                                             y = "(..count..)/sum(..count..)")) +
           ggplot2::geom_histogram(na.rm = TRUE, binwidth = binWidth,
-                                  boundary = 0,
-                                  fill = if (is.null(colorTrialBy)) "grey50" else
-                                    histCols[trial],
+                                  boundary = 0, fill = histCols[trial],
                                   color = "grey50") +
           ggplot2::scale_x_continuous(limits = range(plotTab, na.rm = TRUE)) +
           ggplot2::theme(panel.background = ggplot2::element_blank(),
@@ -1411,7 +1437,7 @@ plot.TD <- function(x,
       }
       ## Merge to itself to create a full data set.
       plotTab <- merge(plotTab, plotTab, by = c("genotype", colorGenoBy))
-      if (!is.null(colorTrialBy)) {
+      if (colorTrialBy != ".colorTrialBy") {
         legendDat <- merge(colorTrialDat, colorTrialColors, by.x = colorTrialBy,
                            by.y = "row.names")
         plotTab <- merge(plotTab, legendDat, by.x = "trial.y", by.y = "trial")
@@ -1457,7 +1483,7 @@ plot.TD <- function(x,
                        panel.grid = ggplot2::element_blank(),
                        panel.border = ggplot2::element_rect(color = "black",
                                                             fill = NA))
-      if (!is.null(colorTrialBy)) {
+      if (colorTrialBy != ".colorTrialBy") {
         scatterBase <- scatterBase +
           ggplot2::geom_point(ggplot2::aes_string(fill = colorTrialBy),
                               color = NA, na.rm = TRUE) +

@@ -120,6 +120,10 @@ Extra parameter options:
 which the genotypes in the scatter plots are colored.}
 \item{colGeno}{A character vector with plot colors for the genotypes. A
 single color when \code{colorGenoBy = NULL}, a vector of colors otherwise.}
+\item{colorTrialBy}{A character string indicating a column in \code{TD} by
+which the trials in the histograms are colored.}
+\item{colTrial}{A character vector with plot colors for the trials. A
+single color when \code{colorTrialBy = NULL}, a vector of colors otherwise.}
 \item{trialOrder}{A character vector indicating the order of the trials in
 the plot matrix (left to right and top to bottom). This vector should be a
 permutation of all trials plotted.}
