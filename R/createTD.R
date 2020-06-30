@@ -952,6 +952,8 @@ plot.TD <- function(x,
   } else if (plotType == "map") {
     ## Checks for colorTrialBy.
     colorTrialBy <- dotArgs$colorTrialBy
+    colTrial <- dotArgs$colTrial
+    chkChar(colTrial)
     if (!is.null(colorTrialBy)) {
       chkChar(colorTrialBy, len = 1, null = FALSE)
       if (!all(sapply(X = x, FUN = function(trial) {
@@ -959,7 +961,7 @@ plot.TD <- function(x,
       }))) {
         stop("colorTrialBy should be a column in TD.\n")
       }
-      colorTrialGroups <- do.call(rbind, lapply(X = x, FUN = function(trial) {
+      colorTrialDat <- do.call(rbind, lapply(X = x, FUN = function(trial) {
         ## Assure that coloring by trial is possible by using unique within
         ## column selection. Not doing so results in a column named trial.1
         ## causing problems when referring to trial later on.
@@ -970,6 +972,30 @@ plot.TD <- function(x,
         }
         return(colorTrial)
       }))
+    } else {
+      colorTrialDat <- unique(do.call(rbind, lapply(X = x, FUN = `[`, "trial")))
+      colorTrialDat[[".colorTrialBy"]] <- factor(1)
+      colorTrialBy <- ".colorTrialBy"
+    }
+    nColTrial <- nlevels(colorTrialDat[[colorTrialBy]])
+    if (length(colTrial) == 0) {
+      ## Defaults to black for one color for trials.
+      ## For more than one colors from statgen.trialColors are used.
+      ## Fall back to topo.colors if number of colors in option is too small.
+      if (nColTrial == 1) {
+        colTrial <- "red"
+      } else if (length(getOption("statgen.trialColors")) >= nColTrial) {
+        colTrial <- getOption("statgen.trialColors")[1:nColTrial]
+      } else {
+        colTrial <- topo.colors(nColTrial)
+      }
+    } else {
+      nColTrialArg <- length(colTrial)
+      if (nColTrialArg != nColTrial) {
+        stop("Number of colors provided doesn't match number of trial ",
+             "groups:\n", nColTrialArg, " colors provided, ", nColTrial,
+             " groups in data.\n")
+      }
     }
     ## Check for latitude and longitude.
     minLatRange <- dotArgs$minLatRange
@@ -993,13 +1019,12 @@ plot.TD <- function(x,
     locs <- setNames(getMeta(x)[c("trLocation", "trLat", "trLong")],
                      c("name", "lat", "long"))
     ## Merge groups for coloring text.
-    if (!is.null(colorTrialBy)) {
-      locs <- merge(locs, colorTrialGroups, by = "row.names")
-      if (any(table(unique(locs[c("name", colorTrialBy)])) > 1)) {
-        stop("colorTrialBy should be unique within locations.\n")
-      }
+    locs <- merge(locs, colorTrialDat, by.x = "row.names", by.y = "trial")
+    if (any(table(unique(locs[c("name", colorTrialBy)])) > 1)) {
+      stop("colorTrialBy should be unique within locations.\n")
     }
-    locs <- unique(locs[!is.na(locs$lat) & !is.na(locs$long), ])
+    ## Drop Row.names column created when merging.
+    locs <- unique(locs[!is.na(locs$lat) & !is.na(locs$long), -1])
     if (nrow(locs) == 0) {
       stop("At least one trial should have latitude and longitude ",
            "for plotting on map.\n")
@@ -1022,9 +1047,6 @@ plot.TD <- function(x,
                                                    color = colorTrialBy),
                      data = locs, size = 3, nudge_x = 0.01 * diff(longR),
                      nudge_y = 0.04 * diff(latR))
-    if (is.null(colorTrialBy)) {
-      textArgs <- c(textArgs, list(color = "red"))
-    }
     p <- ggplot2::ggplot(mapDat, ggplot2::aes_string(x = "long", y = "lat")) +
       ggplot2::geom_polygon(ggplot2::aes_string(group = "group"), fill = "white",
                             color = "black") +
@@ -1032,7 +1054,13 @@ plot.TD <- function(x,
       ggplot2::coord_map(clip = "on", xlim = longR, ylim = latR) +
       ## Add trial locations.
       ggplot2::geom_point(data = locs) +
-      do.call(ggrepel::geom_text_repel, args = textArgs) +
+      ggrepel::geom_text_repel(mapping = ggplot2::aes_string(label = "name",
+                                                             color = colorTrialBy),
+                               data = locs, size = 3,
+                               nudge_x = 0.01 * diff(longR),
+                               nudge_y = 0.04 * diff(latR),
+                               show.legend = colorTrialBy != ".colorTrialBy") +
+      ggplot2::scale_color_manual(values = colTrial) +
       ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
                      panel.grid.major = ggplot2::element_blank(),
                      panel.grid.minor = ggplot2::element_blank(),
