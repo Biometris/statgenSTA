@@ -669,6 +669,8 @@ print.summary.TD <- function(x, ...) {
 #' \describe{
 #' \item{colorTrialBy}{A character string indicating a column in \code{TD} by
 #' which the trials on the map are colored.}
+#' \item{colTrial}{A character vector with plot colors for the trials. A
+#' single color when \code{colorTrialBy = NULL}, a vector of colors otherwise.}
 #' \item{minLatRange}{A positive numerical value indicating the minimum range
 #' (in degrees) for the latitude on the plotted map. Defaults to 10.}
 #' \item{minLongRange}{A positive numerical value indicating the minimum range
@@ -685,6 +687,8 @@ print.summary.TD <- function(x, ...) {
 #' \item{colorTrialBy}{A character string indicating a column in \code{TD} by
 #' which the boxes are colored. Coloring will be done within the groups
 #' indicated by the \code{groupBy} parameter.}
+#' \item{colTrial}{A character vector with plot colors for the trials. A
+#' single color when \code{colorTrialBy = NULL}, a vector of colors otherwise.}
 #' \item{orderBy}{A character string indicating the way the boxes should be
 #' ordered. Either "alphabetic" for alphabetical ordering of the groups,
 #' "ascending" for ordering by ascending mean, or "descending" for ordering by
@@ -1090,6 +1094,8 @@ plot.TD <- function(x,
     }))) {
       stop("colorTrialBy should be a column in TD.\n")
     }
+    colTrial <- dotArgs$colTrial
+    chkChar(colTrial)
     orderBy <- dotArgs$orderBy
     if (!is.null(orderBy)) {
       orderBy <- match.arg(orderBy, choices = c("alphabetic", "ascending",
@@ -1116,10 +1122,38 @@ plot.TD <- function(x,
                   if (!is.null(colorTrialBy)) colorTrialBy)]
         }
       }))
+      if (is.null(colorTrialBy)) {
+        plotDat[[".colorTrialBy"]] <- factor(1)
+        colorTrialBy <- ".colorTrialBy"
+      }
       if (is.null(plotDat)) {
         warning(trait, " isn't a column in any of the trials.\n",
                 "Plot skipped.\n", call. = FALSE)
         next
+      }
+      ## colorTrialBy is ignored in plot if it is not a factor.
+      if (!is.null(colorTrialBy) && !is.factor(plotDat[colorTrialBy])) {
+        plotDat[colorTrialBy] <- factor(plotDat[[colorTrialBy]])
+      }
+      nColTrial <- nlevels(plotDat[[colorTrialBy]])
+      if (length(colTrial) == 0) {
+        ## Defaults to darkgrey for one color for trials.
+        ## For more than one colors from statgen.trialColors are used.
+        ## Fall back to topo.colors if number of colors in option is too small.
+        if (nColTrial == 1) {
+          colTrial <- "darkgrey"
+        } else if (length(getOption("statgen.trialColors")) >= nColTrial) {
+          colTrial <- getOption("statgen.trialColors")[1:nColTrial]
+        } else {
+          colTrial <- topo.colors(nColTrial)
+        }
+      } else {
+        nColTrialArg <- length(colTrial)
+        if (nColTrialArg != nColTrial) {
+          stop("Number of colors provided doesn't match number of trial ",
+               "groups:\n", nColTrialArg, " colors provided, ", nColTrial,
+               " groups in data.\n")
+        }
       }
       if (orderBy != "alphabetic") {
         ## Reorder levels in trial so plotting is done according to orderBy.
@@ -1132,16 +1166,14 @@ plot.TD <- function(x,
           plotDat[xVar] <- factor(plotDat[[xVar]], levels = rev(levels(levNw)))
         }
       }
-      ## colorTrialBy is ignored in plot if it is not a factor.
-      if (!is.null(colorTrialBy) && !is.factor(plotDat[colorTrialBy])) {
-        plotDat[colorTrialBy] <- factor(plotDat[[colorTrialBy]])
-      }
       ## Create boxplot.
       pTr <- ggplot2::ggplot(plotDat,
                              ggplot2::aes_string(x = paste0("`", xVar, "`"),
                                                  y = paste0("`", trait, "`"),
-                                                 fill = if (is.null(colorTrialBy)) 1 else
-                                                   paste0("`", colorTrialBy, "`"))) +
+                                                 fill = colorTrialBy)) +
+        ggplot2::geom_boxplot(na.rm = TRUE,
+                              show.legend = colorTrialBy != ".colorTrialBy") +
+        ggplot2::scale_fill_manual(values = colTrial) +
         ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90,
                                                            vjust = 0.5,
                                                            hjust = 1),
@@ -1150,11 +1182,6 @@ plot.TD <- function(x,
                        panel.border = ggplot2::element_rect(color = "black",
                                                             fill = NA)) +
         ggplot2::labs(x = xVar, y = trait)
-      if (is.null(colorTrialBy)) {
-        pTr <- pTr + ggplot2::geom_boxplot(na.rm = TRUE, fill = "darkgrey")
-      } else {
-        pTr <- pTr + ggplot2::geom_boxplot(na.rm = TRUE)
-      }
       p[[trait]] <- pTr
       if (output) {
         plot(pTr)

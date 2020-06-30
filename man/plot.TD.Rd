@@ -75,6 +75,8 @@ Extra parameter options:
 \describe{
 \item{colorTrialBy}{A character string indicating a column in \code{TD} by
 which the trials on the map are colored.}
+\item{colTrial}{A character vector with plot colors for the trials. A
+single color when \code{colorTrialBy = NULL}, a vector of colors otherwise.}
 \item{minLatRange}{A positive numerical value indicating the minimum range
 (in degrees) for the latitude on the plotted map. Defaults to 10.}
 \item{minLongRange}{A positive numerical value indicating the minimum range
@@ -93,6 +95,8 @@ per trial.}
 \item{colorTrialBy}{A character string indicating a column in \code{TD} by
 which the boxes are colored. Coloring will be done within the groups
 indicated by the \code{groupBy} parameter.}
+\item{colTrial}{A character vector with plot colors for the trials. A
+single color when \code{colorTrialBy = NULL}, a vector of colors otherwise.}
 \item{orderBy}{A character string indicating the way the boxes should be
 ordered. Either "alphabetic" for alphabetical ordering of the groups,
 "ascending" for ordering by ascending mean, or "descending" for ordering by
