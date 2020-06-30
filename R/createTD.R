@@ -706,6 +706,8 @@ print.summary.TD <- function(x, ...) {
 #' \describe{
 #' \item{colorGenoBy}{A character string indicating a column in \code{TD} by
 #' which the genotypes in the scatter plots are colored.}
+#' \item{colGeno}{A character vector with plot colors for the genotypes. A
+#' single color when \code{colorGenoBy = NULL}, a vector of colors otherwise.}
 #' \item{trialOrder}{A character vector indicating the order of the trials in
 #' the plot matrix (left to right and top to bottom). This vector should be a
 #' permutation of all trials plotted.}
@@ -1260,6 +1262,8 @@ plot.TD <- function(x,
     }))) {
       stop("colorGenoBy should be a column in TD.\n")
     }
+    colGeno <- dotArgs$colGeno
+    chkChar(colGeno)
     colorTrialBy <- dotArgs$colorTrialBy
     if (!is.null(colorTrialBy)) {
       chkChar(colorTrialBy, len = 1, null = FALSE)
@@ -1307,13 +1311,14 @@ plot.TD <- function(x,
           trial[c("genotype", "trial", trait, colorGenoBy)]
         }
       }))
-      if (!is.null(plotDat)) {
-        plotDat <- droplevels(plotDat)
-      }
       if (is.null(plotDat) || nlevels(plotDat[["trial"]]) < 2) {
         warning(trait, " has no valid observations for a least two trials.\n",
                 "Plot skipped.\n", call. = FALSE)
         next
+      }
+      plotDat <- droplevels(plotDat)
+      if (!is.null(colorGenoBy) && !is.factor(plotDat[[colorGenoBy]])) {
+        plotDat[[colorGenoBy]] <- as.factor(plotDat[[colorGenoBy]])
       }
       if (!is.null(trialOrder)) {
         ## Reorder trials.
@@ -1397,6 +1402,9 @@ plot.TD <- function(x,
                          v.names = trait)
       if (!is.null(colorGenoBy)) {
         plotTab <- merge(plotTab, unique(plotDat[c("genotype", colorGenoBy)]))
+      } else {
+        plotTab[[".colorGenoBy"]] <- factor(1)
+        colorGenoBy <- ".colorGenoBy"
       }
       ## Merge to itself to create a full data set.
       plotTab <- merge(plotTab, plotTab, by = c("genotype", colorGenoBy))
@@ -1407,13 +1415,35 @@ plot.TD <- function(x,
         colnames(plotTab)[colnames(plotTab) == colnames(legendDat)[2]] <-
           colorTrialBy
       }
-      ## Create a facet plot containing only scatterplots.
+      ## Create a facet plot containing only scatter plots.
+      nColGeno <- nlevels(plotTab[[colorGenoBy]])
+      if (length(colGeno) == 0) {
+        ## Defaults to darkgrey for one color for genotypes.
+        ## For more than one colors from statgen.genoColors are used.
+        ## Fall back to topo.colors if number of colors in option is too small.
+        if (nColGeno == 1) {
+          colGeno <- "darkgrey"
+        } else if (length(getOption("statgen.genoColors")) >= nColGeno) {
+          colGeno <- getOption("statgen.genoColors")[1:nColGeno]
+        } else {
+          colGeno <- topo.colors(nColGeno)
+        }
+      } else {
+        nColGenoArg <- length(colGeno)
+        if (nColGenoArg != nColGeno) {
+          stop("Number of colors provided doesn't match number of genotype groups:",
+               "\n", nColGenoArg, " colors provided, ", nColGeno,
+               " groups in data.\n")
+        }
+      }
       scatterBase <-
         ggplot2::ggplot(data = plotTab,
                         ggplot2::aes_string(x = paste0(trait, ".x"),
                                             y = paste0(trait, ".y"),
-                                            color = if (is.null(colorGenoBy)) NULL else
-                                              paste0("`", colorGenoBy, "`"))) +
+                                            color = paste0("`", colorGenoBy, "`"))) +
+        ggplot2::geom_point(na.rm = TRUE, shape = 1,
+                            show.legend = colorGenoBy != ".colorGenoBy") +
+        ggplot2::scale_color_manual(values = colGeno) +
         ggplot2::scale_x_continuous(breaks = scales::breaks_extended(n = 3)) +
         ggplot2::scale_y_continuous(breaks = scales::breaks_extended(n = 3)) +
         ggplot2::facet_grid(facets = c("trial.y", "trial.x")) +
@@ -1424,13 +1454,6 @@ plot.TD <- function(x,
                        panel.grid = ggplot2::element_blank(),
                        panel.border = ggplot2::element_rect(color = "black",
                                                             fill = NA))
-      if (is.null(colorGenoBy)) {
-        scatterBase <- scatterBase +
-          ggplot2::geom_point(na.rm = TRUE, color = "darkgrey", shape = 1)
-      } else {
-        scatterBase <- scatterBase +
-          ggplot2::geom_point(na.rm = TRUE, shape = 1)
-      }
       if (!is.null(colorTrialBy)) {
         scatterBase <- scatterBase +
           ggplot2::geom_point(ggplot2::aes_string(fill = colorTrialBy),
