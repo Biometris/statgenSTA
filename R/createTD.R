@@ -734,6 +734,9 @@ print.summary.TD <- function(x, ...) {
 #' plotting field layouts. Only used if \code{plotType} = "layout" or "box".
 #' @param traits A character vector indicating the traits to be plotted in
 #' a boxplot. Only used if \code{plotType} = "box" or "cor".
+#' @param title A character string used a title for the plot. Note that when
+#' a title is specified and multiple plots are created, all plots will get the
+#' same title.
 #' @param output Should the plot be output to the current device? If
 #' \code{FALSE} only a list of ggplot objects is invisibly returned.
 #'
@@ -798,10 +801,12 @@ plot.TD <- function(x,
                     plotType = c("layout", "map", "box", "cor", "scatter"),
                     trials = names(x),
                     traits = NULL,
+                    title = NULL,
                     output = TRUE) {
   ## Checks.
   trials <- chkTrials(trials, x)
   plotType <- match.arg(plotType)
+  chkChar(title, len = 1)
   dotArgs <- list(...)
   ## Restrict x to trials.
   x <- dropTD(x, names(x)[!names(x) %in% trials])
@@ -849,6 +854,9 @@ plot.TD <- function(x,
       if (plotRep) {
         repBord <- calcPlotBorders(trDat = trDat, bordVar = "repId")
       }
+      if (is.null(title)) {
+        title <- trLoc
+      }
       ## Create base plot.
       pTr <-
         ggplot2::ggplot(data = trDat,
@@ -864,7 +872,7 @@ plot.TD <- function(x,
                                     expand = c(0, 0)) +
         ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(),
                                     expand = c(0, 0)) +
-        ggplot2::ggtitle(trLoc)
+        ggplot2::ggtitle(title)
       if (sum(!is.na(trDat[["highlight."]])) > 0) {
         ## Genotypes to be highlighted get a color.
         ## Everything else the NA color.
@@ -981,6 +989,7 @@ plot.TD <- function(x,
       colorTrialDat[[".colorTrialBy"]] <- factor(1)
       colorTrialBy <- ".colorTrialBy"
     }
+    colorTrialDat <- droplevels(colorTrialDat)
     nColTrial <- nlevels(colorTrialDat[[colorTrialBy]])
     if (length(colTrial) == 0) {
       ## Defaults to black for one color for trials.
@@ -1024,12 +1033,13 @@ plot.TD <- function(x,
                      c("name", "lat", "long"))
     locs[["trial"]] <- rownames(locs)
     ## Merge groups for coloring text.
-    locs <- merge(locs, colorTrialDat, by.x = "trial")
+    locs <- merge(locs, colorTrialDat, by.x = "row.names", by.y = "trial")
     if (any(table(unique(locs[c("name", colorTrialBy)])) > 1)) {
       stop("colorTrialBy should be unique within locations.\n")
     }
     ## Drop Row.names column created when merging.
-    locs <- unique(locs[!is.na(locs$lat) & !is.na(locs$long), ])
+    locs <- unique(locs[!is.na(locs[["lat"]]) & !is.na(locs[["long"]]),
+                        c("name", "lat", "long", colorTrialBy)])
     if (nrow(locs) == 0) {
       stop("At least one trial should have latitude and longitude ",
            "for plotting on map.\n")
@@ -1052,6 +1062,9 @@ plot.TD <- function(x,
                                                    color = colorTrialBy),
                      data = locs, size = 3, nudge_x = 0.01 * diff(longR),
                      nudge_y = 0.04 * diff(latR))
+    if (is.null(title)) {
+      title <- "Trial locations"
+    }
     p <- ggplot2::ggplot(mapDat, ggplot2::aes_string(x = "long", y = "lat")) +
       ggplot2::geom_polygon(ggplot2::aes_string(group = "group"), fill = "white",
                             color = "black") +
@@ -1071,7 +1084,7 @@ plot.TD <- function(x,
                      panel.grid.minor = ggplot2::element_blank(),
                      ## Empty space left represents water areas. Color blue.
                      panel.background = ggplot2::element_rect(fill = "steelblue2")) +
-      ggplot2::ggtitle("Trial locations")
+      ggplot2::ggtitle(title)
     if (output) {
       plot(p)
     }
@@ -1167,6 +1180,9 @@ plot.TD <- function(x,
           plotDat[xVar] <- factor(plotDat[[xVar]], levels = rev(levels(levNw)))
         }
       }
+      if (is.null(title)) {
+        title <- paste("Boxplot for", trait)
+      }
       ## Create boxplot.
       pTr <- ggplot2::ggplot(plotDat,
                              ggplot2::aes_string(x = paste0("`", xVar, "`"),
@@ -1175,14 +1191,15 @@ plot.TD <- function(x,
         ggplot2::geom_boxplot(na.rm = TRUE,
                               show.legend = colorTrialBy != ".colorTrialBy") +
         ggplot2::scale_fill_manual(values = colTrial) +
-        ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90,
+        ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
+                       axis.text.x = ggplot2::element_text(angle = 90,
                                                            vjust = 0.5,
                                                            hjust = 1),
                        panel.background = ggplot2::element_blank(),
                        panel.grid = ggplot2::element_blank(),
                        panel.border = ggplot2::element_rect(color = "black",
                                                             fill = NA)) +
-        ggplot2::labs(x = xVar, y = trait)
+        ggplot2::labs(x = xVar, y = trait, title = title)
       p[[trait]] <- pTr
       if (output) {
         plot(pTr)
@@ -1281,6 +1298,9 @@ plot.TD <- function(x,
       ## Select bottom right triangle for correlations and top for variances.
       meltedCorMatLow <- meltedCorMat[as.numeric(meltedCorMat[["trial1"]]) >
                                         as.numeric(meltedCorMat[["trial2"]]), ]
+      if (is.null(title)) {
+        title <- paste("Correlations of trials for", trait)
+      }
       ## Create plot.
       pTr <- ggplot2::ggplot(data = meltedCorMatLow,
                              ggplot2::aes_string("trial1", "trial2")) +
@@ -1302,8 +1322,7 @@ plot.TD <- function(x,
                        ## Center title.
                        plot.title = ggplot2::element_text(hjust = 0.5)) +
         ## No axis and legend titles.
-        ggplot2::labs(title = paste("Correlations of trials for", trait),
-                      x = "", y = "", fill = "") +
+        ggplot2::labs(title = title, x = "", y = "", fill = "") +
         ## Equal coordinates to get a square sized plot.
         ggplot2::coord_equal()
       p[[trait]] <- pTr
@@ -1385,8 +1404,9 @@ plot.TD <- function(x,
     p <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traits) {
       ## Create plot title.
-      plotTitle <- ifelse(!is.null(dotArgs$title), dotArgs$title,
-                          paste("Scatterplots of trials for", trait))
+      if (is.null(title)) {
+        title <- paste("Scatterplots of trials for", trait)
+      }
       ## Create a single data.frame from x with only columns genotype, trial
       ## and trait.
       ## trials where trait is not measured/available are removed by setting
@@ -1532,7 +1552,7 @@ plot.TD <- function(x,
         ggplot2::scale_x_continuous(breaks = scales::breaks_extended(n = 3)) +
         ggplot2::scale_y_continuous(breaks = scales::breaks_extended(n = 3)) +
         ggplot2::facet_grid(facets = c("trial.y", "trial.x")) +
-        ggplot2::labs(title = plotTitle, x = "", y = "") +
+        ggplot2::labs(title = title, x = "", y = "") +
         ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
                        aspect.ratio = 1,
                        panel.background = ggplot2::element_rect(fill = "white"),

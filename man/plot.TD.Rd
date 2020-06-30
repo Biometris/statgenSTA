@@ -10,6 +10,7 @@
   plotType = c("layout", "map", "box", "cor", "scatter"),
   trials = names(x),
   traits = NULL,
+  title = NULL,
   output = TRUE
 )
 }
@@ -27,6 +28,10 @@ plotting field layouts. Only used if \code{plotType} = "layout" or "box".}
 
 \item{traits}{A character vector indicating the traits to be plotted in
 a boxplot. Only used if \code{plotType} = "box" or "cor".}
+
+\item{title}{A character string used a title for the plot. Note that when
+a title is specified and multiple plots are created, all plots will get the
+same title.}
 
 \item{output}{Should the plot be output to the current device? If
 \code{FALSE} only a list of ggplot objects is invisibly returned.}
