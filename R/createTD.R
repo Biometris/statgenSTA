@@ -1376,7 +1376,10 @@ plot.TD <- function(x,
       colorTrialDat[[".colorTrialBy"]] <- factor(1)
       colorTrialBy <- ".colorTrialBy"
     }
-    colorTrialGroups <- unique(colorTrialDat[[2]])
+    if (!is.factor(colorTrialDat[[2]])) {
+      colorTrialDat[[2]] <- as.factor(colorTrialDat[[2]])
+    }
+    colorTrialGroups <- levels(colorTrialDat[[2]])
     nColTrial <- length(colorTrialGroups)
     if (length(colTrial) == 0) {
       ## Defaults to black for one color for trials.
