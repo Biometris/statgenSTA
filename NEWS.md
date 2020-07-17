@@ -1,3 +1,11 @@
+# statgenSTA 1.0.5.1
+
+* Default colors for genotypes and trials have been improved. User specific default colors may now be set in the R options "statgen.colGeno" (for genotypes) and "statgen.colTrial" (for trials).
+* New options colGeno and colTrial have been added to the relevent plot functions for TD objects. These options can be used to specify the colors for genotypes (colGeno) and trials (colTrial) in the plots.
+* Option trials in plot function for TD objects is now respected for all types of plots.
+* Plots for TD and STA object now have an option title. 
+* A bug in scatter plots for TD objects with custom ordering of trials has been fixed.
+
 # statgenSTA 1.0.5
 
 * Option colorBy in plot functions is renamed to colorTrialBy and colorGenoBy for a clear distinction between what is actually colored. For the TD scatter plot both options are now available.

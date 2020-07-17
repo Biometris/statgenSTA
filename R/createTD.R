@@ -669,6 +669,8 @@ print.summary.TD <- function(x, ...) {
 #' \describe{
 #' \item{colorTrialBy}{A character string indicating a column in \code{TD} by
 #' which the trials on the map are colored.}
+#' \item{colTrial}{A character vector with plot colors for the trials. A
+#' single color when \code{colorTrialBy = NULL}, a vector of colors otherwise.}
 #' \item{minLatRange}{A positive numerical value indicating the minimum range
 #' (in degrees) for the latitude on the plotted map. Defaults to 10.}
 #' \item{minLongRange}{A positive numerical value indicating the minimum range
@@ -685,6 +687,8 @@ print.summary.TD <- function(x, ...) {
 #' \item{colorTrialBy}{A character string indicating a column in \code{TD} by
 #' which the boxes are colored. Coloring will be done within the groups
 #' indicated by the \code{groupBy} parameter.}
+#' \item{colTrial}{A character vector with plot colors for the trials. A
+#' single color when \code{colorTrialBy = NULL}, a vector of colors otherwise.}
 #' \item{orderBy}{A character string indicating the way the boxes should be
 #' ordered. Either "alphabetic" for alphabetical ordering of the groups,
 #' "ascending" for ordering by ascending mean, or "descending" for ordering by
@@ -706,6 +710,12 @@ print.summary.TD <- function(x, ...) {
 #' \describe{
 #' \item{colorGenoBy}{A character string indicating a column in \code{TD} by
 #' which the genotypes in the scatter plots are colored.}
+#' \item{colGeno}{A character vector with plot colors for the genotypes. A
+#' single color when \code{colorGenoBy = NULL}, a vector of colors otherwise.}
+#' \item{colorTrialBy}{A character string indicating a column in \code{TD} by
+#' which the trials in the histograms are colored.}
+#' \item{colTrial}{A character vector with plot colors for the trials. A
+#' single color when \code{colorTrialBy = NULL}, a vector of colors otherwise.}
 #' \item{trialOrder}{A character vector indicating the order of the trials in
 #' the plot matrix (left to right and top to bottom). This vector should be a
 #' permutation of all trials plotted.}
@@ -724,6 +734,9 @@ print.summary.TD <- function(x, ...) {
 #' plotting field layouts. Only used if \code{plotType} = "layout" or "box".
 #' @param traits A character vector indicating the traits to be plotted in
 #' a boxplot. Only used if \code{plotType} = "box" or "cor".
+#' @param title A character string used a title for the plot. Note that when
+#' a title is specified and multiple plots are created, all plots will get the
+#' same title.
 #' @param output Should the plot be output to the current device? If
 #' \code{FALSE} only a list of ggplot objects is invisibly returned.
 #'
@@ -788,11 +801,15 @@ plot.TD <- function(x,
                     plotType = c("layout", "map", "box", "cor", "scatter"),
                     trials = names(x),
                     traits = NULL,
+                    title = NULL,
                     output = TRUE) {
   ## Checks.
   trials <- chkTrials(trials, x)
   plotType <- match.arg(plotType)
+  chkChar(title, len = 1)
   dotArgs <- list(...)
+  ## Restrict x to trials.
+  x <- dropTD(x, names(x)[!names(x) %in% trials])
   if (plotType == "layout") {
     showGeno <- isTRUE(dotArgs$showGeno)
     highlight <- dotArgs$highlight
@@ -837,6 +854,9 @@ plot.TD <- function(x,
       if (plotRep) {
         repBord <- calcPlotBorders(trDat = trDat, bordVar = "repId")
       }
+      if (is.null(title)) {
+        title <- trLoc
+      }
       ## Create base plot.
       pTr <-
         ggplot2::ggplot(data = trDat,
@@ -852,7 +872,7 @@ plot.TD <- function(x,
                                     expand = c(0, 0)) +
         ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(),
                                     expand = c(0, 0)) +
-        ggplot2::ggtitle(trLoc)
+        ggplot2::ggtitle(title)
       if (sum(!is.na(trDat[["highlight."]])) > 0) {
         ## Genotypes to be highlighted get a color.
         ## Everything else the NA color.
@@ -944,6 +964,8 @@ plot.TD <- function(x,
   } else if (plotType == "map") {
     ## Checks for colorTrialBy.
     colorTrialBy <- dotArgs$colorTrialBy
+    colTrial <- dotArgs$colTrial
+    chkChar(colTrial)
     if (!is.null(colorTrialBy)) {
       chkChar(colorTrialBy, len = 1, null = FALSE)
       if (!all(sapply(X = x, FUN = function(trial) {
@@ -951,7 +973,7 @@ plot.TD <- function(x,
       }))) {
         stop("colorTrialBy should be a column in TD.\n")
       }
-      colorTrialGroups <- do.call(rbind, lapply(X = x, FUN = function(trial) {
+      colorTrialDat <- do.call(rbind, lapply(X = x, FUN = function(trial) {
         ## Assure that coloring by trial is possible by using unique within
         ## column selection. Not doing so results in a column named trial.1
         ## causing problems when referring to trial later on.
@@ -962,6 +984,31 @@ plot.TD <- function(x,
         }
         return(colorTrial)
       }))
+    } else {
+      colorTrialDat <- unique(do.call(rbind, lapply(X = x, FUN = `[`, "trial")))
+      colorTrialDat[[".colorTrialBy"]] <- factor(1)
+      colorTrialBy <- ".colorTrialBy"
+    }
+    colorTrialDat <- droplevels(colorTrialDat)
+    nColTrial <- nlevels(colorTrialDat[[colorTrialBy]])
+    if (length(colTrial) == 0) {
+      ## Defaults to black for one color for trials.
+      ## For more than one colors from statgen.trialColors are used.
+      ## Fall back to topo.colors if number of colors in option is too small.
+      if (nColTrial == 1) {
+        colTrial <- "red"
+      } else if (length(getOption("statgen.trialColors")) >= nColTrial) {
+        colTrial <- getOption("statgen.trialColors")[1:nColTrial]
+      } else {
+        colTrial <- topo.colors(nColTrial)
+      }
+    } else {
+      nColTrialArg <- length(colTrial)
+      if (nColTrialArg != nColTrial) {
+        stop("Number of colors provided doesn't match number of trial ",
+             "groups:\n", nColTrialArg, " colors provided, ", nColTrial,
+             " groups in data.\n")
+      }
     }
     ## Check for latitude and longitude.
     minLatRange <- dotArgs$minLatRange
@@ -984,14 +1031,15 @@ plot.TD <- function(x,
     ## Population has a random value but if left out nothing is plotted.
     locs <- setNames(getMeta(x)[c("trLocation", "trLat", "trLong")],
                      c("name", "lat", "long"))
+    locs[["trial"]] <- rownames(locs)
     ## Merge groups for coloring text.
-    if (!is.null(colorTrialBy)) {
-      locs <- merge(locs, colorTrialGroups, by = "row.names")
-      if (any(table(unique(locs[c("name", colorTrialBy)])) > 1)) {
-        stop("colorTrialBy should be unique within locations.\n")
-      }
+    locs <- merge(locs, colorTrialDat, by.x = "row.names", by.y = "trial")
+    if (any(table(unique(locs[c("name", colorTrialBy)])) > 1)) {
+      stop("colorTrialBy should be unique within locations.\n")
     }
-    locs <- unique(locs[!is.na(locs$lat) & !is.na(locs$long), ])
+    ## Drop Row.names column created when merging.
+    locs <- unique(locs[!is.na(locs[["lat"]]) & !is.na(locs[["long"]]),
+                        c("name", "lat", "long", colorTrialBy)])
     if (nrow(locs) == 0) {
       stop("At least one trial should have latitude and longitude ",
            "for plotting on map.\n")
@@ -1014,8 +1062,8 @@ plot.TD <- function(x,
                                                    color = colorTrialBy),
                      data = locs, size = 3, nudge_x = 0.01 * diff(longR),
                      nudge_y = 0.04 * diff(latR))
-    if (is.null(colorTrialBy)) {
-      textArgs <- c(textArgs, list(color = "red"))
+    if (is.null(title)) {
+      title <- "Trial locations"
     }
     p <- ggplot2::ggplot(mapDat, ggplot2::aes_string(x = "long", y = "lat")) +
       ggplot2::geom_polygon(ggplot2::aes_string(group = "group"), fill = "white",
@@ -1024,13 +1072,19 @@ plot.TD <- function(x,
       ggplot2::coord_map(clip = "on", xlim = longR, ylim = latR) +
       ## Add trial locations.
       ggplot2::geom_point(data = locs) +
-      do.call(ggrepel::geom_text_repel, args = textArgs) +
+      ggrepel::geom_text_repel(mapping = ggplot2::aes_string(label = "name",
+                                                             color = colorTrialBy),
+                               data = locs, size = 3,
+                               nudge_x = 0.01 * diff(longR),
+                               nudge_y = 0.04 * diff(latR),
+                               show.legend = colorTrialBy != ".colorTrialBy") +
+      ggplot2::scale_color_manual(values = colTrial) +
       ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
                      panel.grid.major = ggplot2::element_blank(),
                      panel.grid.minor = ggplot2::element_blank(),
                      ## Empty space left represents water areas. Color blue.
                      panel.background = ggplot2::element_rect(fill = "steelblue2")) +
-      ggplot2::ggtitle("Trial locations")
+      ggplot2::ggtitle(title)
     if (output) {
       plot(p)
     }
@@ -1054,6 +1108,8 @@ plot.TD <- function(x,
     }))) {
       stop("colorTrialBy should be a column in TD.\n")
     }
+    colTrial <- dotArgs$colTrial
+    chkChar(colTrial)
     orderBy <- dotArgs$orderBy
     if (!is.null(orderBy)) {
       orderBy <- match.arg(orderBy, choices = c("alphabetic", "ascending",
@@ -1085,6 +1141,34 @@ plot.TD <- function(x,
                 "Plot skipped.\n", call. = FALSE)
         next
       }
+      if (is.null(colorTrialBy)) {
+        plotDat[[".colorTrialBy"]] <- factor(1)
+        colorTrialBy <- ".colorTrialBy"
+      }
+      ## colorTrialBy is ignored in plot if it is not a factor.
+      if (!is.null(colorTrialBy) && !is.factor(plotDat[colorTrialBy])) {
+        plotDat[colorTrialBy] <- factor(plotDat[[colorTrialBy]])
+      }
+      nColTrial <- nlevels(plotDat[[colorTrialBy]])
+      if (length(colTrial) == 0) {
+        ## Defaults to darkgrey for one color for trials.
+        ## For more than one colors from statgen.trialColors are used.
+        ## Fall back to topo.colors if number of colors in option is too small.
+        if (nColTrial == 1) {
+          colTrial <- "darkgrey"
+        } else if (length(getOption("statgen.trialColors")) >= nColTrial) {
+          colTrial <- getOption("statgen.trialColors")[1:nColTrial]
+        } else {
+          colTrial <- topo.colors(nColTrial)
+        }
+      } else {
+        nColTrialArg <- length(colTrial)
+        if (nColTrialArg != nColTrial) {
+          stop("Number of colors provided doesn't match number of trial ",
+               "groups:\n", nColTrialArg, " colors provided, ", nColTrial,
+               " groups in data.\n")
+        }
+      }
       if (orderBy != "alphabetic") {
         ## Reorder levels in trial so plotting is done according to orderBy.
         ## do.call needed since order doesn't accept a vector as input.
@@ -1096,29 +1180,26 @@ plot.TD <- function(x,
           plotDat[xVar] <- factor(plotDat[[xVar]], levels = rev(levels(levNw)))
         }
       }
-      ## colorTrialBy is ignored in plot if it is not a factor.
-      if (!is.null(colorTrialBy) && !is.factor(plotDat[colorTrialBy])) {
-        plotDat[colorTrialBy] <- factor(plotDat[[colorTrialBy]])
+      if (is.null(title)) {
+        title <- paste("Boxplot for", trait)
       }
       ## Create boxplot.
       pTr <- ggplot2::ggplot(plotDat,
                              ggplot2::aes_string(x = paste0("`", xVar, "`"),
                                                  y = paste0("`", trait, "`"),
-                                                 fill = if (is.null(colorTrialBy)) 1 else
-                                                   paste0("`", colorTrialBy, "`"))) +
-        ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90,
+                                                 fill = colorTrialBy)) +
+        ggplot2::geom_boxplot(na.rm = TRUE,
+                              show.legend = colorTrialBy != ".colorTrialBy") +
+        ggplot2::scale_fill_manual(values = colTrial) +
+        ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
+                       axis.text.x = ggplot2::element_text(angle = 90,
                                                            vjust = 0.5,
                                                            hjust = 1),
                        panel.background = ggplot2::element_blank(),
                        panel.grid = ggplot2::element_blank(),
                        panel.border = ggplot2::element_rect(color = "black",
                                                             fill = NA)) +
-        ggplot2::labs(x = xVar, y = trait)
-      if (is.null(colorTrialBy)) {
-        pTr <- pTr + ggplot2::geom_boxplot(na.rm = TRUE, fill = "darkgrey")
-      } else {
-        pTr <- pTr + ggplot2::geom_boxplot(na.rm = TRUE)
-      }
+        ggplot2::labs(x = xVar, y = trait, title = title)
       p[[trait]] <- pTr
       if (output) {
         plot(pTr)
@@ -1147,6 +1228,7 @@ plot.TD <- function(x,
                 "Plot skipped.\n", call. = FALSE)
         next
       }
+      plotDat <- droplevels(plotDat)
       ## Create table with values trait per genotype per trial.
       ## If TD already contains BLUEs/BLUPs taking means doesn't do anything
       ## but it is needed for raw data where there can be replicates.
@@ -1216,6 +1298,9 @@ plot.TD <- function(x,
       ## Select bottom right triangle for correlations and top for variances.
       meltedCorMatLow <- meltedCorMat[as.numeric(meltedCorMat[["trial1"]]) >
                                         as.numeric(meltedCorMat[["trial2"]]), ]
+      if (is.null(title)) {
+        title <- paste("Correlations of trials for", trait)
+      }
       ## Create plot.
       pTr <- ggplot2::ggplot(data = meltedCorMatLow,
                              ggplot2::aes_string("trial1", "trial2")) +
@@ -1237,8 +1322,7 @@ plot.TD <- function(x,
                        ## Center title.
                        plot.title = ggplot2::element_text(hjust = 0.5)) +
         ## No axis and legend titles.
-        ggplot2::labs(title = paste("Correlations of trials for", trait),
-                      x = "", y = "", fill = "") +
+        ggplot2::labs(title = title, x = "", y = "", fill = "") +
         ## Equal coordinates to get a square sized plot.
         ggplot2::coord_equal()
       p[[trait]] <- pTr
@@ -1260,6 +1344,8 @@ plot.TD <- function(x,
     }))) {
       stop("colorGenoBy should be a column in TD.\n")
     }
+    colGeno <- dotArgs$colGeno
+    chkChar(colGeno)
     colorTrialBy <- dotArgs$colorTrialBy
     if (!is.null(colorTrialBy)) {
       chkChar(colorTrialBy, len = 1, null = FALSE)
@@ -1269,6 +1355,8 @@ plot.TD <- function(x,
     }))) {
       stop("colorTrialBy should be a column in TD.\n")
     }
+    colTrial <- dotArgs$colTrial
+    chkChar(colTrial)
     trialOrder <- dotArgs$trialOrder
     if (!is.null(trialOrder) &&
         (!all(trialOrder %in% trials) || !all(trials %in% trialOrder))) {
@@ -1283,19 +1371,45 @@ plot.TD <- function(x,
     if (!is.null(colorTrialBy)) {
       colorTrialDat <- unique(do.call(rbind, lapply(X = x, FUN = `[`,
                                                     c("trial", colorTrialBy))))
-      colorTrialGroups <- unique(colorTrialDat[[2]])
-      colorTrialColors <- setNames(hcl.colors(length(colorTrialGroups),
-                                              palette = hcl.pals("diverging")[1]),
-                                   colorTrialGroups)
-      histCols <- setNames(colorTrialColors[match(colorTrialDat[[2]],
-                                                  colorTrialGroups)],
-                           make.names(paste0("t", colorTrialDat[[1]])))
+    } else {
+      colorTrialDat <- unique(do.call(rbind, lapply(X = x, FUN = `[`, "trial")))
+      colorTrialDat[[".colorTrialBy"]] <- factor(1)
+      colorTrialBy <- ".colorTrialBy"
     }
+    if (!is.factor(colorTrialDat[[2]])) {
+      colorTrialDat[[2]] <- as.factor(colorTrialDat[[2]])
+    }
+    colorTrialGroups <- levels(colorTrialDat[[2]])
+    nColTrial <- length(colorTrialGroups)
+    if (length(colTrial) == 0) {
+      ## Defaults to black for one color for trials.
+      ## For more than one colors from statgen.trialColors are used.
+      ## Fall back to topo.colors if number of colors in option is too small.
+      if (nColTrial == 1) {
+        colTrial <- "grey50"
+      } else if (length(getOption("statgen.trialColors")) >= nColTrial) {
+        colTrial <- getOption("statgen.trialColors")[1:nColTrial]
+      } else {
+        colTrial <- topo.colors(nColTrial)
+      }
+    } else {
+      nColTrialArg <- length(colTrial)
+      if (nColTrialArg != nColTrial) {
+        stop("Number of colors provided doesn't match number of trial ",
+             "groups:\n", nColTrialArg, " colors provided, ", nColTrial,
+             " groups in data.\n")
+      }
+    }
+    colorTrialColors <- setNames(colTrial, colorTrialGroups)
+    histCols <- setNames(colorTrialColors[match(colorTrialDat[[2]],
+                                                colorTrialGroups)],
+                         make.names(paste0("t", colorTrialDat[[1]])))
     p <- setNames(vector(mode = "list", length = length(traits)), traits)
     for (trait in traits) {
       ## Create plot title.
-      plotTitle <- ifelse(!is.null(dotArgs$title), dotArgs$title,
-                          paste("Scatterplots of trials for", trait))
+      if (is.null(title)) {
+        title <- paste("Scatterplots of trials for", trait)
+      }
       ## Create a single data.frame from x with only columns genotype, trial
       ## and trait.
       ## trials where trait is not measured/available are removed by setting
@@ -1307,19 +1421,20 @@ plot.TD <- function(x,
           trial[c("genotype", "trial", trait, colorGenoBy)]
         }
       }))
-      if (!is.null(plotDat)) {
-        plotDat <- droplevels(plotDat)
-      }
       if (is.null(plotDat) || nlevels(plotDat[["trial"]]) < 2) {
         warning(trait, " has no valid observations for a least two trials.\n",
                 "Plot skipped.\n", call. = FALSE)
         next
       }
+      plotDat <- droplevels(plotDat)
+      if (!is.null(colorGenoBy) && !is.factor(plotDat[[colorGenoBy]])) {
+        plotDat[[colorGenoBy]] <- as.factor(plotDat[[colorGenoBy]])
+      }
       if (!is.null(trialOrder)) {
         ## Reorder trials.
         ## First restrict reordering to trials left after removing NA trials.
         trialOrderTr <- trialOrder[trialOrder %in% levels(plotDat[["trial"]])]
-        plotDat[["trial"]] <- factor(plotDat[["trial"]], trialOrderTr)
+        plotDat[["trial"]] <- factor(plotDat[["trial"]], levels = trialOrderTr)
       }
       ## Create table with values trait per genotype per trial.
       ## If TD already contains BLUEs/BLUPs taking means doesn't do anything
@@ -1365,9 +1480,7 @@ plot.TD <- function(x,
                         ggplot2::aes_string(x = trial,
                                             y = "(..count..)/sum(..count..)")) +
           ggplot2::geom_histogram(na.rm = TRUE, binwidth = binWidth,
-                                  boundary = 0,
-                                  fill = if (is.null(colorTrialBy)) "grey50" else
-                                    histCols[trial],
+                                  boundary = 0, fill = histCols[trial],
                                   color = "grey50") +
           ggplot2::scale_x_continuous(limits = range(plotTab, na.rm = TRUE)) +
           ggplot2::theme(panel.background = ggplot2::element_blank(),
@@ -1395,43 +1508,65 @@ plot.TD <- function(x,
                          timevar = "trial", times = colnames(plotTab),
                          idvar = "genotype", ids = rownames(plotTab),
                          v.names = trait)
+      ## Reshaping loses factor levels. Reset them for trial so trial order
+      ## matches that from histograms.
+      plotTab[["trial"]] <- factor(plotTab[["trial"]],
+                                   levels = levels(plotDat[["trial"]]))
       if (!is.null(colorGenoBy)) {
         plotTab <- merge(plotTab, unique(plotDat[c("genotype", colorGenoBy)]))
+      } else {
+        plotTab[[".colorGenoBy"]] <- factor(1)
+        colorGenoBy <- ".colorGenoBy"
       }
       ## Merge to itself to create a full data set.
       plotTab <- merge(plotTab, plotTab, by = c("genotype", colorGenoBy))
-      if (!is.null(colorTrialBy)) {
+      if (colorTrialBy != ".colorTrialBy") {
         legendDat <- merge(colorTrialDat, colorTrialColors, by.x = colorTrialBy,
                            by.y = "row.names")
         plotTab <- merge(plotTab, legendDat, by.x = "trial.y", by.y = "trial")
         colnames(plotTab)[colnames(plotTab) == colnames(legendDat)[2]] <-
           colorTrialBy
       }
-      ## Create a facet plot containing only scatterplots.
+      ## Create a facet plot containing only scatter plots.
+      nColGeno <- nlevels(plotTab[[colorGenoBy]])
+      if (length(colGeno) == 0) {
+        ## Defaults to darkgrey for one color for genotypes.
+        ## For more than one colors from statgen.genoColors are used.
+        ## Fall back to topo.colors if number of colors in option is too small.
+        if (nColGeno == 1) {
+          colGeno <- "darkgrey"
+        } else if (length(getOption("statgen.genoColors")) >= nColGeno) {
+          colGeno <- getOption("statgen.genoColors")[1:nColGeno]
+        } else {
+          colGeno <- topo.colors(nColGeno)
+        }
+      } else {
+        nColGenoArg <- length(colGeno)
+        if (nColGenoArg != nColGeno) {
+          stop("Number of colors provided doesn't match number of genotype groups:",
+               "\n", nColGenoArg, " colors provided, ", nColGeno,
+               " groups in data.\n")
+        }
+      }
       scatterBase <-
         ggplot2::ggplot(data = plotTab,
                         ggplot2::aes_string(x = paste0(trait, ".x"),
                                             y = paste0(trait, ".y"),
-                                            color = if (is.null(colorGenoBy)) NULL else
-                                              paste0("`", colorGenoBy, "`"))) +
+                                            color = paste0("`", colorGenoBy, "`"))) +
+        ggplot2::geom_point(na.rm = TRUE, shape = 1,
+                            show.legend = colorGenoBy != ".colorGenoBy") +
+        ggplot2::scale_color_manual(values = colGeno) +
         ggplot2::scale_x_continuous(breaks = scales::breaks_extended(n = 3)) +
         ggplot2::scale_y_continuous(breaks = scales::breaks_extended(n = 3)) +
         ggplot2::facet_grid(facets = c("trial.y", "trial.x")) +
-        ggplot2::labs(title = plotTitle, x = "", y = "") +
+        ggplot2::labs(title = title, x = "", y = "") +
         ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
                        aspect.ratio = 1,
                        panel.background = ggplot2::element_rect(fill = "white"),
                        panel.grid = ggplot2::element_blank(),
                        panel.border = ggplot2::element_rect(color = "black",
                                                             fill = NA))
-      if (is.null(colorGenoBy)) {
-        scatterBase <- scatterBase +
-          ggplot2::geom_point(na.rm = TRUE, color = "darkgrey", shape = 1)
-      } else {
-        scatterBase <- scatterBase +
-          ggplot2::geom_point(na.rm = TRUE, shape = 1)
-      }
-      if (!is.null(colorTrialBy)) {
+      if (colorTrialBy != ".colorTrialBy") {
         scatterBase <- scatterBase +
           ggplot2::geom_point(ggplot2::aes_string(fill = colorTrialBy),
                               color = NA, na.rm = TRUE) +

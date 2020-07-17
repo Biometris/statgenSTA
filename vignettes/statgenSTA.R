@@ -45,6 +45,11 @@ summary(wheatTD, trial = "SR_FI_11", traits = "GY")
 ## Create a summary for the two replicates in SR_FI_11.
 summary(wheatTD, trial = "SR_FI_11", traits = "GY", groupBy = "repId")
 
+## ----colorOpts, eval=FALSE----------------------------------------------------
+#  ## Set default colors for genotypes and trials.
+#  options("statgen.genoColors" = c("blue", "green", "yellow"))
+#  options("statgen.trialColors" = c("red", "brown", "purple"))
+
 ## ----layoutPlot---------------------------------------------------------------
 plot(wheatTD, trials = "SR_FI_11")
 

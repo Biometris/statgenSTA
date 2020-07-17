@@ -123,7 +123,19 @@ summary(wheatTD, trial = "SR_FI_11", traits = "GY", groupBy = "repId")
 
 ## Plotting a `TD` object {#TDPlot}
 
-Several plots can be made to further investigate the contents of a `TD` object. 
+Several plots can be made to further investigate the contents of a `TD` object.   
+
+In all plots the default colors for both genotypes and trials are chosen from a predefined color palette. For genotypes the color palette is "Dark 2", for trials it is "Alphabet". See [here](https://developer.r-project.org/Blog/public/2019/11/21/a-new-palette-for-r/index.html) for an overview of these colors.    
+
+It is possible to specify different colors for genotypes and trials per plot using the options `colGeno` and `colTrial` respectively. Also, more conveniently, the default colors can be set using the options statgen.genoColors and statgen.trialColors.
+
+```{r colorOpts, eval=FALSE}
+## Set default colors for genotypes and trials.
+options("statgen.genoColors" = c("blue", "green", "yellow"))
+options("statgen.trialColors" = c("red", "brown", "purple"))
+```
+
+If a plot has more genotypes than the number of colors specified as default colors, the default colors will be ignored and `topo.colors` will be used instead. For trials this is done in a similar way.
 
 ### Layout plot {#layPlot}
 

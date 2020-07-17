@@ -269,6 +269,9 @@ print.summary.STA <- function(x,
 #' displaying the plots. Usually the default of 2 for base plots and 3 for
 #' spatial plots will be fine, but decreasing the numbers may help for nicer
 #' printing.
+#' @param title A character string used a title for the plot. Note that when
+#' a title is specified and multiple plots are created, all plots will get the
+#' same title.
 #' @param output Should the plot be output to the current device? If
 #' \code{FALSE} only a list of ggplot objects is invisibly returned.
 #'
@@ -299,6 +302,7 @@ plot.STA <- function(x,
                      plotType = c("base", "spatial"),
                      spaTrend = c("raw", "percentage"),
                      outCols = ifelse(plotType == "base", 2, 3),
+                     title = NULL,
                      output = TRUE) {
   ## Checks.
   trials <- chkTrials(trials, x)
@@ -306,6 +310,7 @@ plot.STA <- function(x,
   plotType <- match.arg(arg = plotType)
   chkNum(outCols, min = 1, null = FALSE, incl = TRUE)
   spaTrend <- match.arg(arg = spaTrend)
+  chkChar(title, len = 1)
   dotArgs <- list(...)
   p <- setNames(vector(mode = "list", length = length(trials)), trials)
   for (trial in trials) {
@@ -374,8 +379,9 @@ plot.STA <- function(x,
       ## Create empty list for storing plots.
       plots <- vector(mode = "list")
       ## Create main plot title.
-      plotTitle <- ifelse(!is.null(dotArgs$title), dotArgs$title,
-                          paste("Trial:", trial, "Trait:", trait))
+      if (is.null(title)) {
+        title <- paste("Trial:", trial, "Trait:", trait)
+      }
       if (plotType == "base") {
         plotDat <- ggplot2::remove_missing(plotDat, na.rm = TRUE)
         ## Plot histogram of residuals.
@@ -431,7 +437,7 @@ plot.STA <- function(x,
         if (output) {
           ## do.call is needed since grid.arrange doesn't accept lists as input.
           do.call(gridExtra::grid.arrange,
-                  args = c(plots, list(ncol = outCols, top = plotTitle)))
+                  args = c(plots, list(ncol = outCols, top = title)))
         }
         pTr[[trait]] <- plots
       } else if (plotType == "spatial") {
@@ -545,7 +551,7 @@ plot.STA <- function(x,
           ## do.call is needed since grid.arrange doesn't accept lists as input.
           do.call(gridExtra::grid.arrange,
                   args = c(Filter(f = Negate(f = is.null), x = plots),
-                           list(ncol = outCols, top = plotTitle)))
+                           list(ncol = outCols, top = title)))
         }
         pTr[[trait]] <- plots
       }# end spatial.
