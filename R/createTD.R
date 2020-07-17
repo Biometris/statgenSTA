@@ -1434,7 +1434,7 @@ plot.TD <- function(x,
         ## Reorder trials.
         ## First restrict reordering to trials left after removing NA trials.
         trialOrderTr <- trialOrder[trialOrder %in% levels(plotDat[["trial"]])]
-        plotDat[["trial"]] <- factor(plotDat[["trial"]], trialOrderTr)
+        plotDat[["trial"]] <- factor(plotDat[["trial"]], levels = trialOrderTr)
       }
       ## Create table with values trait per genotype per trial.
       ## If TD already contains BLUEs/BLUPs taking means doesn't do anything
@@ -1508,6 +1508,10 @@ plot.TD <- function(x,
                          timevar = "trial", times = colnames(plotTab),
                          idvar = "genotype", ids = rownames(plotTab),
                          v.names = trait)
+      ## Reshaping loses factor levels. Reset them for trial so trial order
+      ## matches that from histograms.
+      plotTab[["trial"]] <- factor(plotTab[["trial"]],
+                                   levels = levels(plotDat[["trial"]]))
       if (!is.null(colorGenoBy)) {
         plotTab <- merge(plotTab, unique(plotDat[c("genotype", colorGenoBy)]))
       } else {
