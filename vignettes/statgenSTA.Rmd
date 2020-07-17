@@ -3,7 +3,7 @@ title: "Modeling field trials using statgenSTA"
 author: "Bart-Jan van Rossum"
 date: "`r Sys.Date()`"
 output: 
-  rmarkdown::html_vignette:
+  rmarkdown::pdf_vignette:
     toc: false
     number_sections: true
 bibliography: bibliography.bib
