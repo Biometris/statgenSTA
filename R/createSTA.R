@@ -380,7 +380,9 @@ plot.STA <- function(x,
       plots <- vector(mode = "list")
       ## Create main plot title.
       if (is.null(title)) {
-        title <- paste("Trial:", trial, "Trait:", trait)
+        plotTitle <- paste("Trial:", trial, "Trait:", trait)
+      } else {
+        plotTitle <- title
       }
       if (plotType == "base") {
         plotDat <- ggplot2::remove_missing(plotDat, na.rm = TRUE)
@@ -437,7 +439,7 @@ plot.STA <- function(x,
         if (output) {
           ## do.call is needed since grid.arrange doesn't accept lists as input.
           do.call(gridExtra::grid.arrange,
-                  args = c(plots, list(ncol = outCols, top = title)))
+                  args = c(plots, list(ncol = outCols, top = plotTitle)))
         }
         pTr[[trait]] <- plots
       } else if (plotType == "spatial") {
@@ -551,7 +553,7 @@ plot.STA <- function(x,
           ## do.call is needed since grid.arrange doesn't accept lists as input.
           do.call(gridExtra::grid.arrange,
                   args = c(Filter(f = Negate(f = is.null), x = plots),
-                           list(ncol = outCols, top = title)))
+                           list(ncol = outCols, top = plotTitle)))
         }
         pTr[[trait]] <- plots
       }# end spatial.

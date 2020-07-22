@@ -855,7 +855,9 @@ plot.TD <- function(x,
         repBord <- calcPlotBorders(trDat = trDat, bordVar = "repId")
       }
       if (is.null(title)) {
-        title <- trLoc
+        plotTitle <- trLoc
+      } else {
+        plotTitle <- title
       }
       ## Create base plot.
       pTr <-
@@ -872,7 +874,7 @@ plot.TD <- function(x,
                                     expand = c(0, 0)) +
         ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(),
                                     expand = c(0, 0)) +
-        ggplot2::ggtitle(title)
+        ggplot2::ggtitle(plotTitle)
       if (sum(!is.na(trDat[["highlight."]])) > 0) {
         ## Genotypes to be highlighted get a color.
         ## Everything else the NA color.
@@ -1063,7 +1065,9 @@ plot.TD <- function(x,
                      data = locs, size = 3, nudge_x = 0.01 * diff(longR),
                      nudge_y = 0.04 * diff(latR))
     if (is.null(title)) {
-      title <- "Trial locations"
+      plotTitle <- "Trial locations"
+    } else {
+      plotTitle <- title
     }
     p <- ggplot2::ggplot(mapDat, ggplot2::aes_string(x = "long", y = "lat")) +
       ggplot2::geom_polygon(ggplot2::aes_string(group = "group"), fill = "white",
@@ -1084,7 +1088,7 @@ plot.TD <- function(x,
                      panel.grid.minor = ggplot2::element_blank(),
                      ## Empty space left represents water areas. Color blue.
                      panel.background = ggplot2::element_rect(fill = "steelblue2")) +
-      ggplot2::ggtitle(title)
+      ggplot2::ggtitle(plotTitle)
     if (output) {
       plot(p)
     }
@@ -1181,7 +1185,9 @@ plot.TD <- function(x,
         }
       }
       if (is.null(title)) {
-        title <- paste("Boxplot for", trait)
+        plotTitle <- paste("Boxplot for", trait)
+      } else {
+        plotTitle <- title
       }
       ## Create boxplot.
       pTr <- ggplot2::ggplot(plotDat,
@@ -1199,7 +1205,7 @@ plot.TD <- function(x,
                        panel.grid = ggplot2::element_blank(),
                        panel.border = ggplot2::element_rect(color = "black",
                                                             fill = NA)) +
-        ggplot2::labs(x = xVar, y = trait, title = title)
+        ggplot2::labs(x = xVar, y = trait, title = plotTitle)
       p[[trait]] <- pTr
       if (output) {
         plot(pTr)
@@ -1299,7 +1305,9 @@ plot.TD <- function(x,
       meltedCorMatLow <- meltedCorMat[as.numeric(meltedCorMat[["trial1"]]) >
                                         as.numeric(meltedCorMat[["trial2"]]), ]
       if (is.null(title)) {
-        title <- paste("Correlations of trials for", trait)
+        plotTitle <- paste("Correlations of trials for", trait)
+      } else {
+        plotTitle <- title
       }
       ## Create plot.
       pTr <- ggplot2::ggplot(data = meltedCorMatLow,
@@ -1322,7 +1330,7 @@ plot.TD <- function(x,
                        ## Center title.
                        plot.title = ggplot2::element_text(hjust = 0.5)) +
         ## No axis and legend titles.
-        ggplot2::labs(title = title, x = "", y = "", fill = "") +
+        ggplot2::labs(title = plotTitle, x = "", y = "", fill = "") +
         ## Equal coordinates to get a square sized plot.
         ggplot2::coord_equal()
       p[[trait]] <- pTr
@@ -1408,7 +1416,9 @@ plot.TD <- function(x,
     for (trait in traits) {
       ## Create plot title.
       if (is.null(title)) {
-        title <- paste("Scatterplots of trials for", trait)
+        plotTitle <- paste("Scatterplots of trials for", trait)
+      } else {
+        plotTitle <- title
       }
       ## Create a single data.frame from x with only columns genotype, trial
       ## and trait.
@@ -1559,7 +1569,7 @@ plot.TD <- function(x,
         ggplot2::scale_x_continuous(breaks = scales::breaks_extended(n = 3)) +
         ggplot2::scale_y_continuous(breaks = scales::breaks_extended(n = 3)) +
         ggplot2::facet_grid(facets = c("trial.y", "trial.x")) +
-        ggplot2::labs(title = title, x = "", y = "") +
+        ggplot2::labs(title = plotTitle, x = "", y = "") +
         ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
                        aspect.ratio = 1,
                        panel.background = ggplot2::element_rect(fill = "white"),
