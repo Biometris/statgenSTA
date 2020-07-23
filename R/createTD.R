@@ -836,10 +836,10 @@ plot.TD <- function(x,
       ## Create data.frame with all rows columns in field.
       ## Full missing rows/columns are included.
       ## If not geom_tile just fills the empty columns by expanding the
-      ## neighbouring colums (or rows).
+      ## neighboring columns (or rows).
       fullGrid <- expand.grid(colCoord = xMin:xMax, rowCoord = yMin:yMax)
       trDat <- merge(fullGrid, trDat, all.x = TRUE)
-      trDat[!is.na(trDat[["rowId"]]), "color."] <- "grey75"
+      trDat[!is.na(trDat[["rowId"]]), "color."] <- "grey85"
       ## Compute aspect for proper depiction of field size. If no information
       ## is available plots are assumed to be square.
       ylen <- attr(trDat, "trPlLength")
@@ -881,7 +881,7 @@ plot.TD <- function(x,
         pTr <- pTr +
           ggplot2::geom_tile(ggplot2::aes_string(fill = "highlight.",
                                                  color = "color.")) +
-          ggplot2::scale_color_manual(values = "grey75", na.translate = FALSE,
+          ggplot2::scale_color_manual(values = "grey85", na.translate = FALSE,
                                       na.value = "transparant") +
           ## Remove NA from scale.
           ggplot2::scale_fill_discrete(na.translate = FALSE) +
@@ -892,15 +892,15 @@ plot.TD <- function(x,
         pTr <- pTr +
           ggplot2::geom_tile(ggplot2::aes_string(fill = "subBlock",
                                                  color = "color.")) +
-          ggplot2::scale_color_manual(values = "grey75", na.translate = FALSE,
+          ggplot2::scale_color_manual(values = "grey85", na.translate = FALSE,
                                       na.value = "transparant") +
           ggplot2::guides(fill = ggplot2::guide_legend(ncol = 3), color = "none")
       } else {
-        ## No subblocks and no hightlights so just a single fill color.
+        ## No subblocks and no highlights so just a single fill color.
         pTr <- pTr +
           ggplot2::geom_tile(ggplot2::aes_string(color = "color."),
                              fill = "white") +
-          ggplot2::scale_color_manual(values = "grey75", na.translate = FALSE,
+          ggplot2::scale_color_manual(values = "grey85", na.translate = FALSE,
                                       na.value = "transparant") +
           ggplot2::guides(color = "none")
       }

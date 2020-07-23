@@ -3,7 +3,7 @@ title: "Modeling field trials using statgenSTA"
 author: "Bart-Jan van Rossum"
 date: "`r Sys.Date()`"
 output: 
-  rmarkdown::pdf_vignette:
+  rmarkdown::html_vignette:
     toc: false
     number_sections: true
 bibliography: bibliography.bib
@@ -135,7 +135,7 @@ options("statgen.genoColors" = c("blue", "green", "yellow"))
 options("statgen.trialColors" = c("red", "brown", "purple"))
 ```
 
-If a plot has more genotypes than the number of colors specified as default colors, the default colors will be ignored and `topo.colors` will be used instead. For trials this is done in a similar way.
+If a plot has more genotype groups than the number of colors specified as default colors, the default colors will be ignored and `topo.colors` will be used instead. For trial groups this is done in a similar way.
 
 ### Layout plot {#layPlot}
 
