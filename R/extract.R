@@ -623,7 +623,8 @@ extractAsreml <- function(STA,
   result <- setNames(vector(mode = "list", length = length(what)), what)
   ## Construct assocForm for use in associate in predict.
   if (length(grep(pattern = "+ checkId +", x = getCall(mf[[1]]))) > 0) {
-    assocForm <- formula("~ checkId:genotype")
+    #assocForm <- formula("~ checkId:genotype")
+    assocForm <- formula("~ NULL")
   } else {
     assocForm <- formula("~ NULL")
   }
@@ -883,7 +884,7 @@ extractAsreml <- function(STA,
       }
     })
   }
-  ## Compute lsd with signifcance level 5%.
+  ## Compute lsd with significance level 5%.
   ## asreml3 saves the predictions inside the asreml object.
   ## asreml4 creates a list containing nothing but the predictions.
   if ("lsd" %in% what) {

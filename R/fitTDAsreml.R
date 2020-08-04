@@ -91,7 +91,7 @@ fitTDAsreml <- function(TD,
     maxIter <- 200
     ## In asreml3 na.method.X and na.method.Y are used.
     ## In asreml4 this is replaced by na.action.
-    asrArgs0 <- list(aom = TRUE, maxiter = maxIter, trace = FALSE, ...)
+    asrArgs0 <- list(aom = TRUE, maxiter = maxIter, trace = FALSE) #, ...)
     if (asreml4()) {
       asrArgs0 <- c(asrArgs0, list(na.action = asreml::na.method(x = "include")))
     } else {
@@ -348,13 +348,15 @@ bestSpatMod <- function(TD,
       modSum[i, "random"] <- randTerm[i]
       modSum[i, "converge"] <- isTRUE(!is.null(mrTrait) & mrTrait$converge)
       if (!is.null(mrTrait)) {
-        summ <- summary(mrTrait)$varcomp["component"]
-        modSum[i, "AIC"] <- -2 * mrTrait$loglik + 2 * nrow(summ)
+        ## Compute number of parameters as number of unbound rows in varcomp.
+        nPar <- sum(summary(mrTrait)$varcomp[["bound"]] != "B")
+        modSum[i, "AIC"] <- -2 * mrTrait$loglik + 2 * nPar
         modSum[i, "BIC"] <- -2 * mrTrait$loglik +
-          log(length(fitted(mrTrait))) * nrow(summ)
+          log(length(fitted(mrTrait))) * nPar
         ## Row and column output differs for regular/non-regular.
         ## Always max. one of the possibilities is in summary so rowVal and
         ## colVal are always a single value.
+        summ <- summary(mrTrait)$varcomp["component"]
         rowVal <- summ[rownames(summ) %in%
                          c("R!rowId.cor", "R!rowCoord.pow", "R!pow",
                            ## New naming for asreml4.
