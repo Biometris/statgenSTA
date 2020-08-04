@@ -916,12 +916,14 @@ plot.TD <- function(x,
                                                     y = "y - 0.5",
                                                     yend = "y + 0.5",
                                                     linetype = "'subBlocks'"),
-                                data = subBlockBord$vertW, size = 0.4) +
+                                data = subBlockBord$vertW, size = 0.6,
+                                color = "blue") +
           ggplot2::geom_segment(ggplot2::aes_string(x = "x - 0.5",
                                                     xend = "x + 0.5",
                                                     y = "y - 0.5",
                                                     yend = "y - 0.5"),
-                                data = subBlockBord$horW, size = 0.4)
+                                data = subBlockBord$horW, size = 0.6,
+                                color = "blue")
       }
       if (showGeno) {
         ## Add names of genotypes to the center of the tiles.
@@ -949,14 +951,15 @@ plot.TD <- function(x,
       }
       if (plotSubBlock || plotRep) {
         shwVals <- c(plotRep, plotSubBlock)
+        newAes <- list(size = c(1, 0.6)[shwVals],
+                       color = c("black", "blue")[shwVals])
         pTr <- pTr +
           ## Add a legend entry for replicates and subBlocks.
           ggplot2::scale_linetype_manual(c("replicates", "subBlocks")[shwVals],
                                          values = c("replicates" = "solid",
                                                     "subBlocks" = "solid")[shwVals],
                                          name = ggplot2::element_blank()) +
-          ggplot2::guides(linetype = ggplot2::guide_legend(override.aes =
-                                                             list(size = c(1, 0.4)[shwVals])))
+          ggplot2::guides(linetype = ggplot2::guide_legend(override.aes = newAes))
       }
       p[[trial]] <- pTr
       if (output) {
