@@ -36,6 +36,22 @@ fitTDSpATS <- function(TD,
     list2env(x = checkOut, envir = environment())
   }
   TDTr <- droplevels(TD[[trial]])
+  if (design == "res.rowcol") {
+    ## Assure nesting of rows and columns within replicates.
+    rowTab <- table(TDTr[["repId"]], TDTr[["rowCoord"]])
+    colTab <- table(TDTr[["repId"]], TDTr[["colCoord"]])
+    ## Count the number of non-zero entries per replicate.
+    sumNonZero <- function(x) { sum(x != 0) }
+    nRowRep <- max(apply(X = rowTab, MARGIN = 1, FUN = sumNonZero))
+    nColRep <- max(apply(X = colTab, MARGIN = 1, FUN = sumNonZero))
+    ## Make nesting by assuring row/columns values of zero to max number of
+    ## non zero entries for each replicate.
+    ## If there is no nesting in one of the dimension nothing will happen.
+    TDTr[["rowId"]] <- factor(TDTr[["rowCoord"]] %% nRowRep,
+                              levels = c(1:nRowRep, 0))
+    TDTr[["colId"]] <- factor(TDTr[["colCoord"]] %% nColRep,
+                              levels = c(1:nColRep, 0))
+  }
   ## Should repId be used as fixed effect in the model.
   useRepIdFix <- design %in% c("res.ibd", "res.rowcol", "rcbd")
   ## Indicate extra random effects.
@@ -64,8 +80,8 @@ fitTDSpATS <- function(TD,
   }
   ## Compute number of segments.
   ## Defaults to number of cols / 2 and number of rows / 2.
-  nSeg <- c(ceiling(nlevels(TDTr[["colId"]]) / 2),
-            ceiling(nlevels(TDTr[["rowId"]]) / 2))
+  nSeg <- c(ceiling(length(unique(TDTr[["colCoord"]])) / 2),
+            ceiling(length(unique(TDTr[["rowCoord"]])) / 2))
   ## If valid values for nSeg are provided in control use these instead.
   if ("nSeg" %in% names(control)) {
     nSegCt <- control$nSeg
@@ -73,7 +89,8 @@ fitTDSpATS <- function(TD,
       nSegCt <- rep(x = nSegCt, times = 2)
     }
     if (is.numeric(nSegCt) && length(nSegCt) <= 2 && all(nSegCt >= 1) &&
-        all(nSegCt <= c(nlevels(TDTr[["colId"]]), nlevels(TDTr[["rowId"]])))) {
+        all(nSegCt <= c(length(unique(TDTr[["colCoord"]])),
+                        length(unique(TDTr[["rowCoord"]]))))) {
       nSeg <- nSegCt
     } else {
       warning("Invalid value for control parameter nSeg. ",

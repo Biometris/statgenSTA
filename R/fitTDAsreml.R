@@ -345,7 +345,7 @@ bestSpatMod <- function(TD,
       }
       ## Fill model summary table.
       modSum[i, "spatial"] <- spatCh[i]
-      modSum[i, "random"] <- randTerm[i]
+      modSum[i, "random"] <- if (randTerm[i] == "NULL") NA else randTerm[i]
       modSum[i, "converge"] <- isTRUE(!is.null(mrTrait) & mrTrait$converge)
       if (!is.null(mrTrait) && mrTrait$converge) {
         ## Compute number of parameters as number of unbound rows in varcomp.
