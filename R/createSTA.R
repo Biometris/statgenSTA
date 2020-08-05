@@ -201,7 +201,7 @@ print.summary.STA <- function(x,
     if (!is.null(x$spatSumTab)) {
       cat("Overview of tried spatial models",
           "\n================================\n")
-      print(x$spatSumTab)
+      print(x$spatSumTab, digits = digits)
     }
     if (!is.null(x$selSpatMod)) {
       cat("\nSelected spatial model: ", x$selSpatMod, "\n\n")

@@ -130,7 +130,6 @@ print(xtable::xtable(x = data.frame(descrItems), label = "modelDescription",
 
 if (engine == "asreml" && !is.null(x[[trial]]$sumTab[[trait]])) {
   sumTab <- x[[trial]]$sumTab[[trait]]
-  sumTab$random[sumTab$random == "NULL"] <- NA
   chMod <- attr(x = sumTab, which = "chosen")
   sumTab$AIC <- round(sumTab$AIC)
   sumTab$BIC <- round(sumTab$BIC)
