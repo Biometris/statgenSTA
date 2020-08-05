@@ -96,9 +96,9 @@ summary.STA <- function(object,
   if (is.null(trait)) {
     trait <- object[[trials[1]]]$traits
   }
-  ## If sortBy not provided sort by BLUEs if available BLUPs otherwise.
-  ## If sortBy is provided but only 1 of genotype fixed/ genotype random is
-  ## fitted ignore sortBy and overrule by available output.
+  ## If sortBy not provided, sort by BLUEs if available, BLUPs otherwise.
+  ## If sortBy is provided, but only 1 of genotype fixed/ genotype random is
+  ## fitted, ignore sortBy and overrule by available output.
   if (is.null(sortBy) || is.null(object[[trials[1]]]$mFix) ||
       is.null(object[[trials[1]]]$mRand)) {
     sortBy <- ifelse(!is.null(object[[trials[1]]]$mFix), "BLUEs", "BLUPs")
@@ -160,22 +160,26 @@ summary.STA <- function(object,
       meanTab <- meanTab[1:nBest, ]
       attr(x = meanTab, which = "nBest") <- nBest
     }
-    ## Extract selected spatial model when applicable.
+    ## Extract selected spatial model and
+    ## summary table for fitted spatial models when applicable.
     if (object[[trials]]$engine == "asreml" &&
         is.character(object[[trials]]$spatial[[trait]])) {
       selSpatMod <- object[[trials]]$spatial[[trait]]
+      spatSumTab <- object[[trials]]$sumTab[[trait]]
     } else {
       selSpatMod <- NULL
+      spatSumTab <- NULL
     }
     return(structure(list(selSpatMod = selSpatMod, stats = stats,
                           meanTab = meanTab, heritability = extr$heritability,
                           sed = data.frame("s.e.d" = extr$sed),
-                          lsd = data.frame("l.s.d." = extr$lsd)),
+                          lsd = data.frame("l.s.d." = extr$lsd),
+                          spatSumTab = spatSumTab),
                      class = c("summary.STA")))
   }
 }
 
-#' Printing summazed objects of class STA
+#' Printing summarized objects of class STA
 #'
 #' \code{print} method for object of class summary.STA created by summarizing
 #' objects of class STA.
@@ -194,8 +198,13 @@ print.summary.STA <- function(x,
     cat("Summary statistics for", x$what, "of", x$trait, "\n\n")
     print(x$sumTab)
   } else {
+    if (!is.null(x$spatSumTab)) {
+      cat("Overview of tried spatial models",
+          "\n================================\n")
+      print(x$spatSumTab)
+    }
     if (!is.null(x$selSpatMod)) {
-      cat("Selected spatial model: ", x$selSpatMod, "\n\n")
+      cat("\nSelected spatial model: ", x$selSpatMod, "\n\n")
     }
     cat("Summary statistics",
         "\n==================\n")
