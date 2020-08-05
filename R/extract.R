@@ -96,6 +96,7 @@ extract <- function(STA,
                     what = "all",
                     keep = NULL,
                     restoreColNames = FALSE) {
+  .Deprecated("extractSTA")
   ## Checks.
   if (missing(STA) || !inherits(STA, "STA")) {
     stop("STA has to be an object of class STA.\n")

@@ -7,7 +7,7 @@
 createExtract <- function(result,
                           what) {
   extract <- structure(result,
-                       class = c("extract", "list"),
+                       class = c("extractSTA", "list"),
                        what = what)
   return(extract)
 }
@@ -24,19 +24,19 @@ createExtract <- function(result,
 #' @param ... Ignored.
 #'
 #' @export
-as.data.frame.extract <- function(x,
-                                  row.names = NULL,
-                                  optional = FALSE,
-                                  ...) {
+as.data.frame.extractSTA <- function(x,
+                                     row.names = NULL,
+                                     optional = FALSE,
+                                     ...) {
   if ("heritability" %in% attr(x, which = "what")) {
-      herit <- sapply(X = x, FUN = `[`, "heritability")
-      traits <- unique(unlist(sapply(X = herit, names)))
-      heritDF <- data.frame(trial = names(x), row.names = row.names,
-                            stringsAsFactors = FALSE)
-      for (trait in traits) {
-        heritDF[[trait]] <- sapply(herit, `[`, trait)
-      }
-      return(heritDF)
+    herit <- sapply(X = x, FUN = `[`, "heritability")
+    traits <- unique(unlist(sapply(X = herit, names)))
+    heritDF <- data.frame(trial = names(x), row.names = row.names,
+                          stringsAsFactors = FALSE)
+    for (trait in traits) {
+      heritDF[[trait]] <- sapply(herit, `[`, trait)
+    }
+    return(heritDF)
   } else {
     stop("Conversion to data.frame only possible if heritabilities present.\n")
   }
