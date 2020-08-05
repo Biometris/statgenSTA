@@ -536,7 +536,7 @@ plot.STA <- function(x,
                               title = legends[5], colors = colors)
         plots$p6 <-
           ggplot2::ggplot(data = plotDat) +
-          ggplot2::geom_histogram(ggplot2::aes(x = residuals),
+          ggplot2::geom_histogram(ggplot2::aes(x = pred),
                                   fill = "white", color = "black", bins = 10,
                                   boundary = 0, na.rm = TRUE) +
           ## Remove empty space between ticks and actual plot.

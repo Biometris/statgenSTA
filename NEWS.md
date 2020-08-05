@@ -6,6 +6,7 @@
 * Plots for TD and STA object now have an option title.
 * Lines between sub block in layout plots for TD objects are now displayed in blue to make them stand out more clearly.
 * A bug in scatter plots for TD objects with custom ordering of trials has been fixed.
+* The final plot in spatial plots for STA objects now displays the BLUEs/BLUPs instead of the residuals.
 
 # statgenSTA 1.0.5
 
