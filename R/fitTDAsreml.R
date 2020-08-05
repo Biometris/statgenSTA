@@ -347,7 +347,7 @@ bestSpatMod <- function(TD,
       modSum[i, "spatial"] <- spatCh[i]
       modSum[i, "random"] <- randTerm[i]
       modSum[i, "converge"] <- isTRUE(!is.null(mrTrait) & mrTrait$converge)
-      if (!is.null(mrTrait)) {
+      if (!is.null(mrTrait) && mrTrait$converge) {
         ## Compute number of parameters as number of unbound rows in varcomp.
         nPar <- sum(summary(mrTrait)$varcomp[["bound"]] != "B")
         modSum[i, "AIC"] <- -2 * mrTrait$loglik + 2 * nPar
