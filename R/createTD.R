@@ -671,10 +671,13 @@ print.summary.TD <- function(x, ...) {
 #' which the trials on the map are colored.}
 #' \item{colTrial}{A character vector with plot colors for the trials. A
 #' single color when \code{colorTrialBy = NULL}, a vector of colors otherwise.}
+#' \item{printTrialsNames}{Should trial names be printed. Defaults to
+#' \code{TRUE}. Setting this to \code{FALSE} can be useful if there are many
+#' trials.}
 #' \item{minLatRange}{A positive numerical value indicating the minimum range
 #' (in degrees) for the latitude on the plotted map. Defaults to 10.}
 #' \item{minLongRange}{A positive numerical value indicating the minimum range
-#' (in degrees) for the longitud on the plotted map. Defaults to 5.}
+#' (in degrees) for the longitude on the plotted map. Defaults to 5.}
 #' }
 #'
 #' @section Box Plot:
@@ -793,7 +796,7 @@ print.summary.TD <- function(x, ...) {
 #' ## Add correlations to top left corner of plots.
 #' plot(wheatTD, plotType = "scatter", traits = "GY", addCorr = "tl")
 #'
-#' @importFrom grDevices hcl.colors hcl.pals
+#' @importFrom grDevices hcl.colors hcl.pals topo.colors
 #' @importFrom utils combn
 #' @export
 plot.TD <- function(x,
@@ -970,6 +973,7 @@ plot.TD <- function(x,
     ## Checks for colorTrialBy.
     colorTrialBy <- dotArgs$colorTrialBy
     colTrial <- dotArgs$colTrial
+    printTrialsNames <- dotArgs$printTrialNames
     chkChar(colTrial)
     if (!is.null(colorTrialBy)) {
       chkChar(colorTrialBy, len = 1, null = FALSE)
@@ -1005,7 +1009,7 @@ plot.TD <- function(x,
       } else if (length(getOption("statgen.trialColors")) >= nColTrial) {
         colTrial <- getOption("statgen.trialColors")[1:nColTrial]
       } else {
-        colTrial <- topo.colors(nColTrial)
+        colTrial <- topo.colors(n = nColTrial, alpha = NULL)
       }
     } else {
       nColTrialArg <- length(colTrial)
@@ -1078,13 +1082,10 @@ plot.TD <- function(x,
       ## Add a proper map projection.
       ggplot2::coord_map(clip = "on", xlim = longR, ylim = latR) +
       ## Add trial locations.
-      ggplot2::geom_point(data = locs) +
-      ggrepel::geom_text_repel(mapping = ggplot2::aes_string(label = "name",
-                                                             color = colorTrialBy),
-                               data = locs, size = 3,
-                               nudge_x = 0.01 * diff(longR),
-                               nudge_y = 0.04 * diff(latR),
-                               show.legend = colorTrialBy != ".colorTrialBy") +
+      ggplot2::geom_point(data = locs,
+                          ggplot2::aes_string(color = colorTrialBy),
+                          show.legend = isFALSE(printTrialsNames) &
+                            colorTrialBy != ".colorTrialBy") +
       ggplot2::scale_color_manual(values = colTrial) +
       ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
                      panel.grid.major = ggplot2::element_blank(),
@@ -1092,6 +1093,15 @@ plot.TD <- function(x,
                      ## Empty space left represents water areas. Color blue.
                      panel.background = ggplot2::element_rect(fill = "steelblue2")) +
       ggplot2::ggtitle(plotTitle)
+    if (!isFALSE(printTrialsNames)) {
+      p <- p +
+        ggrepel::geom_text_repel(mapping = ggplot2::aes_string(label = "name",
+                                                               color = colorTrialBy),
+                                 data = locs, size = 3,
+                                 nudge_x = 0.01 * diff(longR),
+                                 nudge_y = 0.04 * diff(latR),
+                                 show.legend = colorTrialBy != ".colorTrialBy")
+    }
     if (output) {
       plot(p)
     }
@@ -1166,7 +1176,7 @@ plot.TD <- function(x,
         } else if (length(getOption("statgen.trialColors")) >= nColTrial) {
           colTrial <- getOption("statgen.trialColors")[1:nColTrial]
         } else {
-          colTrial <- topo.colors(nColTrial)
+          colTrial <- topo.colors(n = nColTrial, alpha = NULL)
         }
       } else {
         nColTrialArg <- length(colTrial)
@@ -1401,7 +1411,7 @@ plot.TD <- function(x,
       } else if (length(getOption("statgen.trialColors")) >= nColTrial) {
         colTrial <- getOption("statgen.trialColors")[1:nColTrial]
       } else {
-        colTrial <- topo.colors(nColTrial)
+        colTrial <- topo.colors(n = nColTrial, alpha = NULL)
       }
     } else {
       nColTrialArg <- length(colTrial)
@@ -1543,7 +1553,7 @@ plot.TD <- function(x,
       ## Create a facet plot containing only scatter plots.
       nColGeno <- nlevels(plotTab[[colorGenoBy]])
       if (length(colGeno) == 0) {
-        ## Defaults to darkgrey for one color for genotypes.
+        ## Defaults to "darkgrey" for one color for genotypes.
         ## For more than one colors from statgen.genoColors are used.
         ## Fall back to topo.colors if number of colors in option is too small.
         if (nColGeno == 1) {
@@ -1551,7 +1561,7 @@ plot.TD <- function(x,
         } else if (length(getOption("statgen.genoColors")) >= nColGeno) {
           colGeno <- getOption("statgen.genoColors")[1:nColGeno]
         } else {
-          colGeno <- topo.colors(nColGeno)
+          colGeno <- topo.colors(n = nColGeno, alpha = NULL)
         }
       } else {
         nColGenoArg <- length(colGeno)

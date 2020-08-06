@@ -82,10 +82,13 @@ Extra parameter options:
 which the trials on the map are colored.}
 \item{colTrial}{A character vector with plot colors for the trials. A
 single color when \code{colorTrialBy = NULL}, a vector of colors otherwise.}
+\item{printTrialsNames}{Should trial names be printed. Defaults to
+\code{TRUE}. Setting this to \code{FALSE} can be useful if there are many
+trials.}
 \item{minLatRange}{A positive numerical value indicating the minimum range
 (in degrees) for the latitude on the plotted map. Defaults to 10.}
 \item{minLongRange}{A positive numerical value indicating the minimum range
-(in degrees) for the longitud on the plotted map. Defaults to 5.}
+(in degrees) for the longitude on the plotted map. Defaults to 5.}
 }
 }
 
