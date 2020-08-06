@@ -24,10 +24,13 @@ createExtract <- function(result,
 #' @param ... Ignored.
 #'
 #' @export
-as.data.frame.extractSTA <- function(x,
+as.data.frame.extract <- function(x,
                                      row.names = NULL,
                                      optional = FALSE,
                                      ...) {
+  .Deprecated("extractSTA",
+              msg = c("'as.data.frame' for extract is deprecated.\n",
+                      "Use 'extractSTA' with 'asDataFrame = TRUE' instead"))
   if ("heritability" %in% attr(x, which = "what")) {
     herit <- sapply(X = x, FUN = `[`, "heritability")
     traits <- unique(unlist(sapply(X = herit, names)))

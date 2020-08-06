@@ -9,6 +9,7 @@ extractSTA(
   trials = names(STA),
   traits = NULL,
   what = "all",
+  asDataFrame = length(what) == 1 && what != "all",
   keep = NULL,
   restoreColNames = FALSE
 )
@@ -29,6 +30,9 @@ computed. Most statistics are available for all models, some only for models
 fitted using a certain engine. If this is the case, this is indicated in the
 list with options in details.\cr
 If \code{what = "all"}, all available statistics are computed.}
+
+\item{asDataFrame}{Should the output be reshaped to a data.frame. This is
+only possible if the number of statistics to extract is one.}
 
 \item{keep}{A character vector of column(s) in the object of class
 \code{\link{TD}} used for modeling. These columns will be kept as output when

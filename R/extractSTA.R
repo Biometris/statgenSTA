@@ -60,6 +60,8 @@
 #' fitted using a certain engine. If this is the case, this is indicated in the
 #' list with options in details.\cr
 #' If \code{what = "all"}, all available statistics are computed.
+#' @param asDataFrame Should the output be reshaped to a data.frame. This is
+#' only possible if the number of statistics to extract is one.
 #' @param keep A character vector of column(s) in the object of class
 #' \code{\link{TD}} used for modeling. These columns will be kept as output when
 #' computing fitted values, residuals, standardized residuals and rMeans.
@@ -94,6 +96,7 @@ extractSTA <- function(STA,
                        trials = names(STA),
                        traits = NULL,
                        what = "all",
+                       asDataFrame = length(what) == 1 && what != "all",
                        keep = NULL,
                        restoreColNames = FALSE) {
   ## Checks.
@@ -103,6 +106,13 @@ extractSTA <- function(STA,
   trials <- chkTrials(trials, STA)
   chkChar(traits)
   chkChar(keep)
+  if (asDataFrame) {
+    if (length(what) > 1) {
+      stop("Converting output to data.frame is only possible if what has ",
+           "lenght 1.\n")
+    }
+    keep <- unique(c("trial", keep))
+  }
   resTot <- sapply(X = trials, FUN = function(trial) {
     STATr <- STA[[trial]]
     traitsTr <- chkTraits(traits, trial, STATr)
@@ -127,8 +137,36 @@ extractSTA <- function(STA,
     attr(x = result, which = "engine") <- engine
     return(result)
   }, simplify = FALSE)
-  return(createExtract(resTot,
-                       what = unique(sapply(resTot, names))))
+
+  if (asDataFrame) {
+    ## Get type of conversion that needs to be done.
+    ## 1 for simple row binding, 2 for conversion of nested list.
+    convertType <- extractOptions[extractOptions[["result"]] == what,
+                                  "asDataFrame"]
+    if (convertType == 0) {
+      warning("Conversion to data.frame not possible for ", what, ".\n",
+              "Returning the unconverted results.\n")
+      return(resTot)
+    } else if (convertType == 1) {
+      ## Bind data.frames in resTot together to one large data.frame.
+      resDf <- dfBind(unlist(resTot, recursive = FALSE))
+    } else if (convertType == 2) {
+      ## Extract nested results.
+      resNested <- sapply(X = resTot, FUN = `[`, what)
+      ## Get traits from result.
+      traitsRes <- unique(unlist(sapply(X = resNested, names)))
+      ## Create a base data.frame for the output.
+      resDf <- data.frame(trial = names(resTot), stringsAsFactors = FALSE)
+      for (trait in traitsRes) {
+        ## Fill values for current trait.
+        ## This respects missing values.
+        resDf[[trait]] <- sapply(X = resNested, FUN = `[`, trait)
+      }
+    }
+    return(resDf)
+  } else {
+    return(resTot)
+  }
 }
 
 #' Extract statistics from model fitted using SpATS
@@ -239,6 +277,12 @@ extractSTASpATS <- function(STA,
   if ("varGen" %in% what) {
     result[["varGen"]] <- sapply(X = mr, FUN = function(mr0) {
       unname(mr0$var.comp[predicted])
+    })
+  }
+  ## Extract residual variance.
+  if ("varErr" %in% what) {
+    result[["varErr"]] <- sapply(X = mr, FUN = function(mr0) {
+      unname(mr0$psi[1])
     })
   }
   ## Extract spatial variance.
@@ -373,7 +417,7 @@ extractSTALme4 <- function(STA,
   mr <- STA$mRand[names(STA$mRand) %in% traits]
   TD <- STA$TD[[1]]
   renCols <- attr(TD, "renamedCols")
-  predicted = STA$predicted
+  predicted <- STA$predicted
   whatPred <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ranEf")
   what <- extractOptSel(what = what, fixed = !is.null(mf),
                         random = !is.null(mr), engine = "lme4")
@@ -947,7 +991,7 @@ restoreColNames <- function(renDat,
                             restore = FALSE) {
   if (restore && !is.null(renamedCols)) {
     renCols <- colnames(renDat)
-    ## Get original columnnames from renamedCols data.frame.
+    ## Get original column names from renamedCols data.frame.
     origCols <- sapply(X = renCols, FUN = function(renCol) {
       if (renCol %in% renamedCols$new) {
         renamedCols$orig[renCol == renamedCols$new]

@@ -1,27 +1,27 @@
-model,result,description,asreml,lme4,SpATS
-F,BLUEs,Best Linear Unbiased Estimators,1,1,1
-F,seBLUEs,standard errors of the BLUEs,1,1,1
-R,BLUPs,Best Linear Unbiased Predictors,1,1,1
-R,seBLUPs,standard errors of the BLUPs,1,1,1
-F,ue,unit errors - only for lme4 and asreml,1,1,0
-R,heritability,broad sense heritability,1,1,1
-F,varCompF,variance components for the model with genotype as fixed component,1,1,1
-R,varCompR,variance components for the model with genotype as random component,1,1,1
-R,varGen,genetic variance component,1,1,1
-R,varErr,residual variance component - only for lme4 and asreml,1,1,0
-R,varSpat,spatial variance components - only for SpATS,0,0,1
-F,fitted,fitted values for the model with genotype as fixed component,1,1,1
-F,residF,residuals for the model with genotype as fixed component,1,1,1
-F,stdResF,standardized residuals for the model with genotype as fixed component,1,1,1
-R,rMeans,fitted values for the model with genotype as random component,1,1,1
-R,ranEf,random genetic effects,1,1,1
-R,residR,residuals for the model with genotype as random component,1,1,1
-R,stdResR,standardized residuals for the model with genotype as random component,1,1,1
-F,wald,results of the wald test - only for lme4 and asreml,1,1,0
-F,CV,Coefficient of Variation - only for lme4 and asreml,1,1,0
-F,rDfF,residual degrees of freedom for the model with genotype as fixed component,1,1,1
-R,rDfR,residual degrees of freedom for the model with genotype as random component,1,1,1
-R,effDim,effective dimensions - only for SpATS,0,0,1
-R,ratEffDim,ratios of the effective dimensions - only for SpATS,0,0,1
-F,sed,standard error of difference - only for asreml,1,0,0
-F,lsd,least significant difference - only for asreml,1,0,0
+model,result,description,asreml,lme4,SpATS,asDataFrame
+F,BLUEs,Best Linear Unbiased Estimators,1,1,1,1
+F,seBLUEs,standard errors of the BLUEs,1,1,1,1
+R,BLUPs,Best Linear Unbiased Predictors,1,1,1,1
+R,seBLUPs,standard errors of the BLUPs,1,1,1,1
+F,ue,unit errors - only for lme4 and asreml,1,1,0,1
+R,heritability,broad sense heritability,1,1,1,2
+F,varCompF,variance components for the model with genotype as fixed component,1,1,1,0
+R,varCompR,variance components for the model with genotype as random component,1,1,1,0
+R,varGen,genetic variance component,1,1,1,2
+R,varErr,residual variance component,1,1,1,2
+R,varSpat,spatial variance components - only for SpATS,0,0,1,0
+F,fitted,fitted values for the model with genotype as fixed component,1,1,1,1
+F,residF,residuals for the model with genotype as fixed component,1,1,1,1
+F,stdResF,standardized residuals for the model with genotype as fixed component,1,1,1,1
+R,rMeans,fitted values for the model with genotype as random component,1,1,1,1
+R,ranEf,random genetic effects,1,1,1,1
+R,residR,residuals for the model with genotype as random component,1,1,1,1
+R,stdResR,standardized residuals for the model with genotype as random component,1,1,1,1
+F,wald,results of the wald test - only for lme4 and asreml,1,1,0,0
+F,CV,Coefficient of Variation - only for lme4 and asreml,1,1,0,2
+F,rDfF,residual degrees of freedom for the model with genotype as fixed component,1,1,1,2
+R,rDfR,residual degrees of freedom for the model with genotype as random component,1,1,1,2
+R,effDim,effective dimensions - only for SpATS,0,0,1,0
+R,ratEffDim,ratios of the effective dimensions - only for SpATS,0,0,1,0
+F,sed,standard error of difference - only for asreml,1,0,0,0
+F,lsd,least significant difference - only for asreml,1,0,0,0

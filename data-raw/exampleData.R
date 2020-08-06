@@ -52,7 +52,11 @@ testTD <- createTD(data = testData[testData[["field"]] == "E1", ],
                    trial = "field", genotype = "seed", repId = "rep",
                    subBlock = "block", rowCoord = "Y", colCoord = "X")
 
-## Read extractOptions and save as data.frame
+## Read extractOptions and save as data.frame.
+# Column asDataFrame contains 1 for data.frame like outputs that can simply
+# be bound together.
+# It contains 2 for nested list like outputs that need conversion from nested
+# list to data.frame with trial x trait.
 extractOptions <- read.csv("data-raw/extractOptions.csv",
                            stringsAsFactors = FALSE)
 
