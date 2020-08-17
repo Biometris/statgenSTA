@@ -45,10 +45,8 @@ A list with, per trial for which statistics have been extracted, a
 list of those statistics.
 }
 \description{
-This function extracts and calculates various results for fitted models such
-as BLUEs, BLUPs, unit errors and heritabilities. Note that most results can
-only be calculated if a model is fitted with genotype as fixed or random.
-This is indicated in the list below with "F" and "R"
+This function is deprecated. Use \code{\link{extractSTA}} for extracting
+results from fitted models.
 }
 \details{
 Possible options for \code{what} are:
@@ -93,21 +91,6 @@ only for \code{SpATS}.}
 \item{F - lsd}{Least significant difference - only for \code{asreml}.}
 \item{all}{All available statistics.}
 }
-}
-\examples{
-## Fit model using SpATS.
-myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield")
-
-## Extract all available statistics from the fitted model.
-extr <- extract(myModel)
-
-## Extract only the BLUEs from the fitted model.
-BLUEs <- extract(myModel, what = "BLUEs")
-
-## Extract only the BLUEs from the fitted model and keep trial as variable in
-## the output.
-BLUEs2 <- extract(myModel, what = "BLUEs", keep = "trial")
-
 }
 \seealso{
 \code{\link{fitTD}}

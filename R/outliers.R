@@ -92,10 +92,8 @@ outlierSTA <- function(STA,
     detection <- TRUE
     whatExt <- ifelse(what == "fixed", "stdResF", "stdResR")
     whatExtDf <- ifelse(what == "fixed", "rDfF", "rDfR")
-    stdRes <- extract(STA, trials = trial, traits = traitsTr,
-                      what = whatExt)[[trial]][[whatExt]]
-    rDf <- extract(STA, trials = trial, traits = traitsTr,
-                   what = whatExtDf)[[trial]][[whatExtDf]]
+    stdRes <- extractSTA(STA, trials = trial, traits = traitsTr, what = whatExt)
+    rDf <- extractSTA(STA, trials = trial, traits = traitsTr, what = whatExtDf)
     ## Create empty data.frame for storing results.
     outTr <- indicatorTr <- setNames(vector(mode = "list",
                                             length = length(traitsTr)),
@@ -104,7 +102,8 @@ outlierSTA <- function(STA,
       stdResTr <- stdRes
       ## Compute limit value for residuals.
       if (is.null(rLimit)) {
-        rLimit <- min(max(2, qnorm(p = 1 - 0.5 / rDf[trait])), 4)
+        rLimit <- min(max(2, qnorm(p = 1 - 0.5 /
+                                     rDf[rDf[["trial"]] == trial, trait])), 4)
       }
       datTr <- STA[[trial]]$TD[[trial]]
       ## Compute outliers.

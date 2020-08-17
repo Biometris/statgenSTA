@@ -158,18 +158,18 @@ knitr::kable(optsTab, align = c("llll"), row.names = FALSE)
 
 ## ----extBLUEs-----------------------------------------------------------------
 ## Extract BLUEs
-BLUEsWheat <- extract(STA = modWheatSp, what = "BLUEs")
+BLUEsWheat <- extractSTA(STA = modWheatSp, what = "BLUEs")
 ## Extract BLUEs and BLUPs
-predWheat <- extract(STA = modWheatSp, what = c("BLUEs", "BLUPs"))
+predWheat <- extractSTA(STA = modWheatSp, what = c("BLUEs", "BLUPs"))
 
 ## ----extBLUEsKeep-------------------------------------------------------------
 ## Extract BLUEs from the fitted model.
-BLUEsWheat2 <- extract(STA = modWheatSp, what = "BLUEs", keep = "trial")
+BLUEsWheat2 <- extractSTA(STA = modWheatSp, what = "BLUEs", keep = "trial")
 head(BLUEsWheat2[["SR_FI_11"]]$BLUEs)
 
 ## ----extFit-------------------------------------------------------------------
 ## Extract fitted values from the model.
-fitVals <- extract(STA = modWheatSp, what = "fitted", keep = c("trial", "repId"))
+fitVals <- extractSTA(STA = modWheatSp, what = "fitted", keep = c("trial", "repId"))
 head(fitVals[["SR_FI_11"]]$fitted)
 
 ## ----STAtoTD, message=FALSE---------------------------------------------------

@@ -127,7 +127,7 @@ summary.STA <- function(object,
     }
     stats <- summary.TD(object = TD, traits = trait)
     ## get predicted means (BLUEs + BLUPs).
-    extr <- extract(object, trials = trials, traits = trait)[[trials]]
+    extr <- extractSTA(object, trials = trials, traits = trait)[[trials]]
     ## Merge results using a loop to avoid warnings over suffixes caused by
     ## merge when using Reduce.
     joinList <- Filter(f = Negate(f = is.null),
@@ -367,13 +367,12 @@ plot.STA <- function(x,
       }
       predicted <- x[[trial]]$predicted
       ## Extract fitted and predicted values from model.
-      fitted <- extract(x, trials = trial, traits = trait,
-                        what = ifelse(what == "fixed", "fitted", "rMeans"),
-                        keep = mergeCols)[[trial]][[ifelse(what == "fixed",
-                                                           "fitted", "rMeans")]]
+      fitted <- extractSTA(x, trials = trial, traits = trait,
+                           what = ifelse(what == "fixed", "fitted", "rMeans"),
+                           keep = mergeCols)
       predType <- ifelse(what == "fixed", "BLUEs", "BLUPs")
-      pred <- extract(x, trials = trial, traits = trait,
-                      what = predType)[[trial]][[predType]][c(predicted, trait)]
+      pred <- extractSTA(x, trials = trial, traits = trait,
+                         what = predType)[c(predicted, trait)]
       ## Extract raw data and compute residuals.
       response <- trDat[, c(predicted, trait, mergeCols)]
       ## Create plot data by merging extracted data together and renaming some
@@ -797,7 +796,9 @@ STAtoCross <- function(STA,
     stop("genoFile is not a valid filename.\n")
   }
   ## Extract predictions from the model.
-  pred <- extract(STA, traits = traits, what = what)[[trial]][[what]]
+  pred <- extractSTA(STA, traits = traits, what = what)
+  ## Remove trial column.
+  pred <- pred[, colnames(pred) != "trial"]
   ## Rename first column to match first column in genoFile.
   colnames(pred)[1] <- colnames(utils::read.csv(genoFile, nrow = 1))[1]
   ## Write predictions to temporary file.
@@ -900,9 +901,12 @@ STAtoTD <- function(STA,
   ## Create a list of data.frames with all statistics per trial.
   predTrTot <- lapply(X = names(STA), FUN = function(trial) {
     ## Extract predictions from the model.
-    predLst <- unlist(lapply(X = traits, FUN = function(trait) {
-      extract(STA, trials = trial, traits = trait, what = what, keep = keep)
-    }), recursive = FALSE)
+    predLst <- lapply(X = traits, FUN = function(trait) {
+      extractSTA(STA, trials = trial, traits = trait, what = what, keep = keep)
+    })
+    if (length(what) > 1) {
+      predLst <- unlist(predLst, recursive = FALSE)
+    }
     if (length(what) + addWt > 1) {
       ## Rename columns if more than one column per trait will appear in the
       ## output. Add the name of the statistic as prefix to the traits.
@@ -918,7 +922,11 @@ STAtoTD <- function(STA,
     ## Merge all statistics together. Because of the renaming above there is
     ## never a problem with duplicate columns and merging is done on all other
     ## columns than the traits.
-    predTr <- Reduce(f = merge, x = unlist(predLst, recursive = FALSE))
+    if (length(what) > 1) {
+      predTr <- Reduce(f = merge, x = unlist(predLst, recursive = FALSE))
+    } else {
+      predTr <- Reduce(f = merge, x = predLst)
+    }
     traitsTr <- traits[!sapply(X = predLst, FUN = is.null)]
     if (addWt && "seBLUEs" %in% what) {
       ## Add a wt column.

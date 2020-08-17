@@ -1,17 +1,17 @@
-context("Extract asreml")
+context("extractSTA asreml")
 
 if (requireNamespace("asreml", quietly = TRUE)) {
   modelAs <- fitTD(testTD, design = "res.ibd", traits = "t1", engine = "asreml")
 
-  test_that("the output of extract is of the proper type - asreml", {
-    expect_is(extract(modelAs, what = "BLUEs"), "list")
-    expect_is(extract(modelAs), "list")
-    expect_length(extract(modelAs)[["E1"]], 23)
-    expect_is(extract(modelAs, what = c("BLUEs", "BLUPs")), "list")
-    expect_length(extract(modelAs, what = c("BLUEs", "BLUPs"))[[1]], 2)
+  test_that("the output of extractSTA is of the proper type - asreml", {
+    expect_is(extractSTA(modelAs, what = "BLUEs"), "data.frame")
+    expect_is(extractSTA(modelAs), "list")
+    expect_length(extractSTA(modelAs)[["E1"]], 23)
+    expect_is(extractSTA(modelAs, what = c("BLUEs", "BLUPs")), "list")
+    expect_length(extractSTA(modelAs, what = c("BLUEs", "BLUPs"))[[1]], 2)
   })
 
-  extAs <- extract(modelAs)[["E1"]]
+  extAs <- extractSTA(modelAs)[["E1"]]
   test_that("BLUEs are computed correctly", {
     expect_is(extAs$BLUEs, "data.frame")
     expect_equal(dim(extAs$BLUEs), c(15, 2))
@@ -65,7 +65,7 @@ if (requireNamespace("asreml", quietly = TRUE)) {
   })
 
   test_that("heritability can be coerced to data.frame correctly", {
-    herit <- as.data.frame(extract(modelAs))
+    herit <- extractSTA(modelAs, what = "heritability")
     expect_is(herit, "data.frame")
     expect_named(herit, c("trial", "t1"))
     expect_equal(herit[1, 2], 0.642345563238147)

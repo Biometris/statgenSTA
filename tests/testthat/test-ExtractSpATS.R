@@ -1,16 +1,16 @@
-context("Extract SpATS")
+context("extractSTA SpATS")
 
 modelSp <- fitTD(testTD, design = "rowcol", traits = "t1")
 
-test_that("the output of extract is of the proper type", {
-  expect_is(extract(modelSp, what = "BLUEs"), "list")
-  expect_is(extract(modelSp), "list")
-  expect_length(extract(modelSp)[["E1"]], 20)
-  expect_is(extract(modelSp, what = c("BLUEs", "BLUPs")), "list")
-  expect_length(extract(modelSp, what = c("BLUEs", "BLUPs"))[["E1"]], 2)
+test_that("the output of extractSTA is of the proper type", {
+  expect_is(extractSTA(modelSp, what = "BLUEs"), "data.frame")
+  expect_is(extractSTA(modelSp), "list")
+  expect_length(extractSTA(modelSp)[["E1"]], 21)
+  expect_is(extractSTA(modelSp, what = c("BLUEs", "BLUPs")), "list")
+  expect_length(extractSTA(modelSp, what = c("BLUEs", "BLUPs"))[["E1"]], 2)
 })
 
-extSp <- extract(modelSp)[["E1"]]
+extSp <- extractSTA(modelSp)[["E1"]]
 test_that("BLUEs are computed correctly", {
   expect_is(extSp$BLUEs, "data.frame")
   expect_equal(dim(extSp$BLUEs), c(15, 2))
@@ -67,7 +67,7 @@ test_that("heritability is computed correctly", {
 })
 
 test_that("heritability can be coerced to data.frame correctly", {
-  herit <- as.data.frame(extract(modelSp))
+  herit <- extractSTA(modelSp, what = "heritability")
   expect_is(herit, "data.frame")
   expect_named(herit, c("trial", "t1"))
   expect_equal(herit[1, 2], 0.65)
@@ -80,7 +80,7 @@ test_that("heritability can be coerced to data.frame correctly when one trait co
   testTD$E2[["t4"]] <- NA
   modelSp <- suppressWarnings(fitTD(testTD, design = "rowcol", what = "random",
                                     traits = c("t1", "t2", "t3", "t4")))
-  herit <- as.data.frame(extract(modelSp))
+  herit <- extractSTA(modelSp, what = "heritability")
   expect_is(herit, "data.frame")
   expect_named(herit, c("trial", "t1", "t2", "t4", "t3"))
   expect_equivalent(herit[1, 2:5], c(0.65, 0.01, 0.09, NA))
@@ -92,6 +92,13 @@ test_that("varGen is computed correctly", {
   expect_length(extSp$varGen, 1)
   expect_named(extSp$varGen, "t1")
   expect_equivalent(extSp$varGen, 274.191950327797)
+})
+
+test_that("varErr is computed correctly", {
+  expect_is(extSp$varErr, "numeric")
+  expect_length(extSp$varErr, 1)
+  expect_named(extSp$varErr, "t1")
+  expect_equivalent(extSp$varErr, 237.021169555496)
 })
 
 test_that("varSpat is computed correctly", {

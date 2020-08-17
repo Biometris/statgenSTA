@@ -1767,7 +1767,7 @@ setMeta <- function(TD,
   return(TD)
 }
 
-#' Function for extracting for objects of class TD that keeps class.
+#' Function for extracting objects of class TD that keeps class.
 #'
 #' @noRd
 #' @keywords internal
@@ -1776,6 +1776,24 @@ setMeta <- function(TD,
   attr(r, "class") <- attr(x, "class")
   return(r)
 }
+
+#' Function for concatenating objects of class TD that keeps class.
+#'
+#' @noRd
+#' @keywords internal
+c.TD <- function(...) {
+  args <- list(...)
+  args <- lapply(X = args, FUN = unclass)
+  argNames <- unique(unlist(lapply(X = args, FUN = names)))
+  r <- do.call("c", args)
+  r <- lapply(X = r, FUN = function(trial) {
+    trial[["trial"]] <- factor(trial[["trial"]], levels = argNames)
+    return(trial)
+  })
+  class(r) <- c("TD", "list")
+  return(r)
+}
+
 
 #' Helper function for checking metadata structure for TD objects.
 #'

@@ -1,46 +1,45 @@
-context("extract general options")
+context("extractSTA general options")
 
 modelLm <- fitTD(testTD, design = "rcbd", traits = "t1", engine = "lme4")
-test_that("checks in extract function properly", {
-  expect_error(extract(1), "STA has to be an object of class STA")
-  expect_error(extract(modelLm, traits = 1),
+test_that("checks in extractSTA function properly", {
+  expect_error(extractSTA(1), "STA has to be an object of class STA")
+  expect_error(extractSTA(modelLm, traits = 1),
                "traits should be NULL or a character vector")
-  expect_error(extract(modelLm, keep = 1),
+  expect_error(extractSTA(modelLm, keep = 1),
                "keep should be NULL or a character vector")
-  expect_error(extract(modelLm, traits = "t5"),
+  expect_error(extractSTA(modelLm, traits = "t5"),
                "The following traits are not modeled for E1: t5")
-  expect_error(extract(modelLm, keep = "myKp"),
+  expect_error(extractSTA(modelLm, keep = "myKp"),
                "All keep should be columns in E1")
 })
 
 test_that("option keep functions properly", {
-  expect_named(extract(modelLm, what = "BLUEs", keep = "trial")[[1]][["BLUEs"]],
+  expect_named(extractSTA(modelLm, what = "BLUEs", keep = "trial"),
                c("genotype", "trial", "t1"))
-  expect_named(extract(modelLm, what = "fitted", keep = "repId")[[1]][["fitted"]],
-               c("genotype", "repId", "t1"))
+  expect_named(extractSTA(modelLm, what = "fitted", keep = "repId"),
+               c("genotype", "trial", "repId", "t1"))
   ## Columns that have duplicate values should be dropped with a warning.
-  expect_warning(ext <- extract(modelLm, what = "BLUEs", keep = "checkId"),
+  expect_warning(ext <- extractSTA(modelLm, what = "BLUEs", keep = "checkId"),
                  "Duplicate values for")
-  expect_named(ext[[1]][["BLUEs"]], c("genotype", "t1"))
-  expect_warning(ext2 <- extract(modelLm, what = "BLUEs",
-                                 keep = c("trial", "checkId")),
+  expect_named(ext, c("genotype", "trial", "t1"))
+  expect_warning(ext2 <- extractSTA(modelLm, what = "BLUEs",
+                                    keep = c("trial", "checkId")),
                  "Duplicate values for")
-  expect_named(ext2[[1]][["BLUEs"]], c("genotype", "trial", "t1"))
+  expect_named(ext2, c("genotype", "trial", "t1"))
 })
 
 test_that("option restoreColNames functions properly", {
   ## Restoring original colnames should work with and without keeping columns.
-  expect_named(extract(modelLm, what = "BLUEs",
-                       restoreColNames = TRUE)[[1]][["BLUEs"]],
-               c("seed", "t1"))
-  expect_named(extract(modelLm, what = "BLUEs", keep = "trial",
-                       restoreColNames = TRUE)[[1]][["BLUEs"]],
+  expect_named(extractSTA(modelLm, what = "BLUEs", restoreColNames = TRUE),
+               c("seed", "field", "t1"))
+  expect_named(extractSTA(modelLm, what = "BLUEs", keep = "trial",
+                          restoreColNames = TRUE),
                c("seed", "field", "t1"))
   ## Duplicate mappings are a potential problem.
-  expect_named(extract(modelLm, what = "fitted",
-                       keep = c("rowCoord", "rowId"),
-                       restoreColNames = TRUE)[[1]][["fitted"]],
-               c("seed", "rep", "Y", "t1"))
+  expect_named(extractSTA(modelLm, what = "fitted",
+                          keep = c("rowCoord", "rowId"),
+                          restoreColNames = TRUE),
+               c("seed", "field", "rep", "Y", "t1"))
 })
 
 test_that("function createBaseData functions properly for bdPred = FALSE", {

@@ -1,16 +1,16 @@
-context("Extract lme4")
+context("extractSTA lme4")
 
 modelLm <- fitTD(testTD, design = "rcbd", traits = "t1", engine = "lme4")
 
-test_that("the output of extract is of the proper type", {
-  expect_is(extract(modelLm, what = "BLUEs"), "list")
-  expect_is(extract(modelLm), "list")
-  expect_length(extract(modelLm)[["E1"]], 21)
-  expect_is(extract(modelLm, what = c("BLUEs", "BLUPs")), "list")
-  expect_length(extract(modelLm, what = c("BLUEs", "BLUPs"))[["E1"]], 2)
+test_that("the output of extractSTA is of the proper type", {
+  expect_is(extractSTA(modelLm, what = "BLUEs"), "data.frame")
+  expect_is(extractSTA(modelLm), "list")
+  expect_length(extractSTA(modelLm)[["E1"]], 21)
+  expect_is(extractSTA(modelLm, what = c("BLUEs", "BLUPs")), "list")
+  expect_length(extractSTA(modelLm, what = c("BLUEs", "BLUPs"))[["E1"]], 2)
 })
 
-extLm <- extract(modelLm)[["E1"]]
+extLm <- extractSTA(modelLm)[["E1"]]
 test_that("BLUEs are computed correctly", {
   expect_is(extLm$BLUEs, "data.frame"	)
   expect_equal(dim(extLm$BLUEs), c(15, 2))
@@ -68,7 +68,7 @@ test_that("heritability is computed correctly", {
 })
 
 test_that("heritability can be coerced to data.frame correctly", {
-  herit <- as.data.frame(extract(modelLm))
+  herit <- extractSTA(modelLm, what= "heritability")
   expect_is(herit, "data.frame")
   expect_named(herit, c("trial", "t1"))
   expect_equal(herit[1, 2], 0.642345528552063,
