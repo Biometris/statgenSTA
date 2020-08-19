@@ -55,6 +55,22 @@ test_that("summary.STA produces correct output for asreml", {
   expect_null(sumAs$spatSumTab)
 })
 
+test_that("summary.STA produces correct output for asreml with spatial models", {
+  skip_on_cran()
+  modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1",
+                     spatial = TRUE, engine = "asreml")
+  sumAsTs <- summary(modelAsTs)
+  expect_length(sumAsTs, 7)
+  expect_equal(sumAsTs$selSpatMod, "none")
+  expect_equal(nrow(sumAsTs$stats), 9)
+  expect_equal(dim(sumAsTs$meanTab), c(15, 4))
+  expect_equivalent(sumAsTs$heritability, 0.615070384479675)
+  expect_equal(nrow(sumAsTs$sed), 3)
+  expect_equal(nrow(sumAsTs$lsd), 3)
+  expect_equal(dim(sumAsTs$spatSumTab), c(7, 10))
+})
+
+
 test_that("option sortBy functions properly for summary.STA", {
   sumSp1 <- summary(modelSp)
   sumSp2 <- summary(modelSp, sortBy = "BLUEs")
@@ -98,10 +114,16 @@ test_that("print.summary.STA functions properly", {
   expect_false(any(grepl("Best", sumSp2)))
   skip_on_cran()
   modelAs <- fitTD(testTD, design = "rowcol", traits = "t1", engine = "asreml")
+  modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1", spatial = TRUE,
+                     engine = "asreml")
   sumAs <- capture.output(summary(modelAs))
+  sumAsTs <- capture.output(summary(modelAsTs))
   expect_true(all(c("Standard Error of Difference (genotype modeled as fixed effect) ",
                     "Least Significant Difference (genotype modeled as fixed effect) ") %in%
                     sumAs))
+  expect_true(all(c("Overview of tried spatial models ",
+                    "Selected spatial model:  none ") %in%
+                    sumAsTs))
 })
 
 test_that("print.summary.STA functions properly for multiple trials", {
