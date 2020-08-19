@@ -170,8 +170,7 @@ createTD <- function(data,
       stop(deparse(param), " has to be NULL or a column in data.\n")
     }
   }
-  checkTDMeta(trDesign = trDesign, trPlWidth = trPlWidth,
-              trPlLength = trPlLength)
+  checkTDMeta(trPlWidth = trPlWidth, trPlLength = trPlLength)
   ## Create list of reserved column names for renaming columns.
   renameCols <- c("genotype", "trial", "loc", "year", "repId", "plotId",
                   "subBlock", "rowId", "colId", "rowCoord", "colCoord",

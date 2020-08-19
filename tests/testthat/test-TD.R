@@ -58,6 +58,44 @@ test_that("attribute design is properly filled in createTD", {
   expect_error(createTD(data = testData, trDesign = "abc"), "should be one of")
 })
 
+test_that("meta data can be added from function arguments", {
+  ## Single trial
+  testMeta <- getMeta(createTD(data = testData, trPlWidth = 5,
+                               trPlLength = 2, trLocation = "loc1"))
+  expect_equal(testMeta[["trLocation"]], "loc1")
+  expect_equal(testMeta[["trPlWidth"]], 5)
+  expect_equal(testMeta[["trPlLength"]], 2)
+  ## Multiple trials.
+  testMeta2 <- getMeta(createTD(data = testData, trial = "field", trPlWidth = 5,
+                               trPlLength = 2, trLocation = "loc1"))
+  expect_equal(testMeta2[["trLocation"]], rep("loc1", times = 3))
+  expect_equal(testMeta2[["trPlWidth"]], c(5, 5, 5))
+  expect_equal(testMeta2[["trPlLength"]], c(2, 2, 2))
+})
+
+test_that("meta data can be added from columns in input data", {
+  testData2 <- testData
+  testData2[["lat"]] <- rep(c(10, 20 ,30), each = 30)
+  testData2[["long"]] <- rep(c(10, 20 ,30), each = 30)
+  testData2[["date"]] <- rep(as.Date("2000/1/1") + 0:2, each = 30)
+  testData2[["design"]] <- rep(c("ibd", "rowcol" ,"res.rowcol"), each = 30)
+  expect_error(createTD(data = testData2, trLat = "lat"),
+               "trLat not unique for testData2")
+  expect_error(createTD(data = testData2, trLong = "long"),
+               "trLong not unique for testData2")
+  expect_error(createTD(data = testData2, trDate = "date"),
+               "trDate not unique for testData2")
+  expect_error(createTD(data = testData2, trDesign = "design"),
+               "trDesign not unique for testData2")
+  testMeta <- getMeta(createTD(data = testData2, trial = "field", trLat = "lat",
+                               trLong = "long", trDate = "date",
+                               trDesign = "design"))
+  expect_equal(testMeta[["trLat"]], c(10, 20 ,30))
+  expect_equal(testMeta[["trLong"]], c(10, 20 ,30))
+  expect_equal(testMeta[["trDate"]], as.Date("2000/1/1") + 0:2)
+  expect_equal(testMeta[["trDesign"]], c("ibd", "rowcol" ,"res.rowcol"))
+})
+
 test_that("row and column are tested for uniqueness in createTD", {
   testData2 <- testData
   testData2[testData2[["Y"]] == 1 & testData2[["X"]] == 1, "Y"] <- 2
