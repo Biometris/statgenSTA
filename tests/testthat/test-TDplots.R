@@ -68,6 +68,11 @@ test_that("option highlight overrides colorSubBlock in TD layout plot", {
                   c("~highlight.", "~color."))
 })
 
+test_that("option title overrides default title in TD layout plot", {
+  p1 <- plot(testTD, plotType = "layout", title = "test")
+  expect_equal(p1$E1$labels$title, "test")
+})
+
 ### TD map plot.
 
 test_that("TD map plot gives correct output types", {
@@ -96,6 +101,11 @@ test_that("option colorTrialBy functions properly for TD map plot", {
   expect_error(plot(TDHeat05, plotType = "map", colorTrialBy = "Plot"),
                "colorTrialBy should be unique within each trial")
   expect_silent(plot(TDHeat05, plotType = "map", colorTrialBy = "trial"))
+})
+
+test_that("option title overrides default title in TD map plot", {
+  p1 <- plot(TDHeat05, plotType = "map", title = "test")
+  expect_equal(p1$labels$title, "test")
 })
 
 ### TD box plot.
@@ -145,6 +155,11 @@ test_that("option orderBy functions properly for TD box plot", {
                "levNw")
 })
 
+test_that("option title overrides default title in TD box plot", {
+  p1 <- plot(testTD, plotType = "box", traits = "t1", title = "test")
+  expect_equal(p1$t1$labels$title, "test")
+})
+
 ### TD correlation plot.
 
 test_that("TD correlation plot gives correct output types", {
@@ -171,6 +186,11 @@ test_that("TD correlation plot gives correct output types", {
   }
   expect_silent(p <- plot(TDMaize2, plotType = "cor", traits = "yld",
                           output = FALSE))
+})
+
+test_that("option title overrides default title in TD correlation plot", {
+  p1 <- plot(TDMaize, plotType = "cor", traits = "yld", title = "test")
+  expect_equal(p1$yld$labels$title, "test")
 })
 
 ### TD scatter plot.
@@ -237,4 +257,10 @@ test_that("scatterPlot works correctly for trials with non-syntactic names", {
   levels(TDMaize2$HN96b[["trial"]])[1] <- "HN-96b"
   names(TDMaize2)[1] <- "HN-96b"
   expect_silent(plot(TDMaize2, plotType = "scatter", traits = "yld"))
+})
+
+test_that("option title overrides default title in TD scatter plot", {
+  p1 <- plot(TDMaize, plotType = "scatter", traits = "yld", title = "test")
+  titleGrob <- which(p1$yld$layout$name == "title")
+  expect_equal(p1$yld$grobs[[titleGrob]]$children[[1]]$label, "test")
 })
