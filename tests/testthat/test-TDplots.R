@@ -100,7 +100,14 @@ test_that("option colorTrialBy functions properly for TD map plot", {
                "colorTrialBy should be a column in TD")
   expect_error(plot(TDHeat05, plotType = "map", colorTrialBy = "Plot"),
                "colorTrialBy should be unique within each trial")
-  expect_silent(plot(TDHeat05, plotType = "map", colorTrialBy = "trial"))
+  expect_error(plot(TDHeat05, plotType = "map", colorTrialBy = "trial",
+                    colTrial = c("orange", "red")),
+               "Number of colors provided doesn't match number of trial groups")
+  expect_silent(p1 <- plot(TDHeat05, plotType = "map", colorTrialBy = "trial"))
+  expect_silent(p2 <- plot(TDHeat05, plotType = "map", colorTrialBy = "trial",
+                           colTrial = "orange"))
+  expect_equal(p1$plot_env$colTrial, "red")
+  expect_equal(p2$plot_env$colTrial, "orange")
 })
 
 test_that("option title overrides default title in TD map plot", {
@@ -137,6 +144,9 @@ test_that("option colorTrialBy functions properly for TD box plot", {
   expect_error(plot(testTD, plotType = "box", traits = "t1",
                     colorTrialBy = "grp"),
                "colorTrialBy should be a column in TD")
+  expect_error(plot(testTD, plotType = "box", traits = "t1",
+                    colorTrialBy = "repId", colTrial = "red"),
+               "Number of colors provided doesn't match number of trial groups")
   p <- plot(testTD, plotType = "box", traits = "t1", colorTrialBy = "repId",
             output = FALSE)
   expect_true(all(c("~repId", "~trial") %in% as.character(p$t1$mapping)))
@@ -218,12 +228,15 @@ test_that("option colorGenoBy functions properly for TD scatter plot", {
 })
 
 test_that("option colorTrialBy functions properly for TD scatter plot", {
-  expect_error(plot(TDMaize, plotType = "scatter", traits = "t1",
+  expect_error(plot(TDMaize, plotType = "scatter", traits = "yld",
                     colorTrialBy = 1),
                "colorTrialBy should be a character string")
-  expect_error(plot(TDMaize, plotType = "scatter", traits = "t1",
+  expect_error(plot(TDMaize, plotType = "scatter", traits = "yld",
                     colorTrialBy = "grp"),
                "colorTrialBy should be a column in TD")
+  expect_error(plot(TDMaize, plotType = "scatter", traits = "yld",
+                    colorTrialBy = "trial", colTrial = "red"),
+               "Number of colors provided doesn't match number of trial groups")
   expect_silent(plot(TDMaize, plotType = "scatter", traits = "yld",
                      colorTrialBy = "trial"))
 })
