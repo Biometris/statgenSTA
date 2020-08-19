@@ -61,14 +61,14 @@ Some plots to get a first idea of the contents of the data.
 plot(wheatTD, plotType = "layout", trials = "SR_FI_11", highlight = c("G278", "G279"))
 ```
 
-<img src="man/figures/README-layoutPlot-1.png" width="100%" />
+<img src="man/figures/README-layoutPlot-1.png" width="75%" />
 
 ``` r
 ## Create a boxplot for grain yield.
 plot(wheatTD, plotType = "box", traits = "GY")
 ```
 
-<img src="man/figures/README-boxPlot-1.png" width="100%" />
+<img src="man/figures/README-boxPlot-1.png" width="75%" />
 
 ``` r
 ## Create a scatter plot matrix for grain yield.
@@ -76,7 +76,7 @@ plot(wheatTD, plotType = "box", traits = "GY")
 plot(wheatTD, plotType = "scatter", traits = "GY", addCorr = "tl")
 ```
 
-<img src="man/figures/README-scatterPlot-1.png" width="100%" />
+<img src="man/figures/README-scatterPlot-1.png" width="75%" />
 
 Fit mixed models for one of the trials, SR\_FI\_11, and visualize the
 output.
@@ -92,7 +92,7 @@ modWheatSp <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", design = "
 plot(modWheatSp, plotType = "base", what = "random")
 ```
 
-<img src="man/figures/README-basePlot-1.png" width="100%" />
+<img src="man/figures/README-basePlot-1.png" width="75%" />
 
 ``` r
 ## Spatial plot for the model with genotype fitted as fixed effect.
@@ -100,4 +100,4 @@ plot(modWheatSp, plotType = "base", what = "random")
 plot(modWheatSp, plotType = "spatial", spaTrend = "percentage")
 ```
 
-<img src="man/figures/README-spatialPlot-1.png" width="100%" />
+<img src="man/figures/README-spatialPlot-1.png" width="75%" />

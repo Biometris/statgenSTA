@@ -132,25 +132,25 @@
 <p>Some plots to get a first idea of the contents of the data.</p>
 <div class="sourceCode" id="cb4"><pre class="r"><span class="co">## Plot the layout for SR_FI_11 with genotypes G278 and G279 highlighted.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">wheatTD</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"layout"</span>, <span class="kw">trials</span> <span class="kw">=</span> <span class="st">"SR_FI_11"</span>, <span class="kw">highlight</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"G278"</span>, <span class="st">"G279"</span>))</pre></div>
-<p><img src="reference/figures/README-layoutPlot-1.png" width="100%"></p>
+<p><img src="reference/figures/README-layoutPlot-1.png" width="75%"></p>
 <div class="sourceCode" id="cb5"><pre class="r"><span class="co">## Create a boxplot for grain yield.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">wheatTD</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"box"</span>, <span class="kw">traits</span> <span class="kw">=</span> <span class="st">"GY"</span>)</pre></div>
-<p><img src="reference/figures/README-boxPlot-1.png" width="100%"></p>
+<p><img src="reference/figures/README-boxPlot-1.png" width="75%"></p>
 <div class="sourceCode" id="cb6"><pre class="r"><span class="co">## Create a scatter plot matrix for grain yield.</span>
 <span class="co">## Add correlations between trials in top left of scatter plots.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">wheatTD</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"scatter"</span>, <span class="kw">traits</span> <span class="kw">=</span> <span class="st">"GY"</span>, <span class="kw">addCorr</span> <span class="kw">=</span> <span class="st">"tl"</span>)</pre></div>
-<p><img src="reference/figures/README-scatterPlot-1.png" width="100%"></p>
+<p><img src="reference/figures/README-scatterPlot-1.png" width="75%"></p>
 <p>Fit mixed models for one of the trials, SR_FI_11, and visualize the output.</p>
 <div class="sourceCode" id="cb7"><pre class="r"><span class="co">## Fit a single trial model using a model based on a resovable row column design.</span>
 <span class="no">modWheatSp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/fitTD.html">fitTD</a></span>(<span class="kw">TD</span> <span class="kw">=</span> <span class="no">wheatTD</span>, <span class="kw">trials</span> <span class="kw">=</span> <span class="st">"SR_FI_11"</span>, <span class="kw">traits</span> <span class="kw">=</span> <span class="st">"GY"</span>, <span class="kw">design</span> <span class="kw">=</span> <span class="st">"res.rowcol"</span>)
 <span class="co">#&gt; Using SpATS for fitting models.</span></pre></div>
 <div class="sourceCode" id="cb8"><pre class="r"><span class="co">## Base plots for the model with genotype fitted as random effect.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">modWheatSp</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"base"</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"random"</span>)</pre></div>
-<p><img src="reference/figures/README-basePlot-1.png" width="100%"></p>
+<p><img src="reference/figures/README-basePlot-1.png" width="75%"></p>
 <div class="sourceCode" id="cb9"><pre class="r"><span class="co">## Spatial plot for the model with genotype fitted as fixed effect.</span>
 <span class="co">## Display the spatial trend as a percentage.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">modWheatSp</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"spatial"</span>, <span class="kw">spaTrend</span> <span class="kw">=</span> <span class="st">"percentage"</span>)</pre></div>
-<p><img src="reference/figures/README-spatialPlot-1.png" width="100%"></p>
+<p><img src="reference/figures/README-spatialPlot-1.png" width="75%"></p>
 </div>
 </div>
   </div>
