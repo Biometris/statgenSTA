@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Single Trial Analysis (STA) of Field Trials • statgenSTA</title>
+<title>An R package for single trial analysis of field trials • statgenSTA</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Single Trial Analysis (STA) of Field Trials">
+<script src="pkgdown.js"></script><meta property="og:title" content="An R package for single trial analysis of field trials">
 <meta property="og:description" content="Phenotypic analysis of field trials using mixed models with and 
     without spatial components. One of a series of statistical genetic packages 
     for streamlining the analysis of typical plant breeding experiments developed
@@ -45,25 +45,48 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home"></span>
      
   </a>
 </li>
 <li>
-  <a href="articles/statgenSTA.html">Get started</a>
-</li>
-<li>
-  <a href="reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="news/index.html">Changelog</a>
+  <a href="articles/index.html">Vignettes</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/Biometris/statgenSTA/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="news/index.html">
+    <span class="fa fa-newspaper-o"></span>
      
+    news
+  </a>
+</li>
+<li>
+  <a href="reference/index.html">
+    <span class="fa fa-file-code-o"></span>
+     
+    functions
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-seedling"></span>
+     
+    other packages
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="https://github.com/Biometris/statgenGWAS/index.html">statgenGWAS</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="https://biometris.github.io/statgenSTA/index.html">
+    <span class="fa fa-github fa-lg"></span>
+     
+    github
   </a>
 </li>
       </ul>
@@ -78,28 +101,58 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-
-
 <div id="statgensta" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#statgensta" class="anchor"></a>statgenSTA</h1></div>
-<p>R package for single trial analysis</p>
-<div id="implemented-functionality" class="section level2">
-<h2 class="hasAnchor">
-<a href="#implemented-functionality" class="anchor"></a>Implemented functionality</h2>
-<p>The following functionality has been implemented:</p>
-<ul>
-<li>Single trial analysis
-<ul>
-<li>Single trial analysis using SpATS, asreml or lme4</li>
-<li>Computation of statistics e.g. BLUEs, BLUPs, SE of BLUEs, SE of BLUPs and heritability based on the fitted models.</li>
-</ul>
-</li>
-<li>Plotting and reporting (.pdf and .tex) functions for most raw and fitted data.</li>
-</ul>
-</div>
-</div>
 
+<p><strong>statgenSTA</strong> is an R package providing functions for phenotypic analysis of agricultural field trials using mixed models with and without spatial components.</p>
+<p>Analysis can be done using one of the R packages <strong>SpATS</strong>, <strong>lme4</strong> or <strong>asreml</strong>. For the latter a license is required which can be obtained upon purchase from <a href="http://www.vsni.co.uk/software/asreml-r">VSNi</a>.</p>
+<p>statgenSTA has extensive options for summarizing and visualizing both the raw data and the fitted models. The example below shows a selection of what is possible. For a full overview of all options it is best to read the <a href="https://biometris.github.io/statgenSTA/articles"><strong>vignette</strong></a></p>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<ul>
+<li>Install from CRAN:</li>
+</ul>
+<!-- end list --><div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"statgenSTA"</span>)</pre></div>
+<ul>
+<li>Install latest development version from GitHub (requires <a href="https://github.com/r-lib/remotes">remotes</a> package):</li>
+</ul>
+<!-- end list --><div class="sourceCode" id="cb2"><pre class="r"><span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"Biometris/statgenSTA"</span>, <span class="kw">ref</span> <span class="kw">=</span> <span class="st">"develop"</span>, <span class="kw">dependencies</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
+</div>
+<div id="examples" class="section level2">
+<h2 class="hasAnchor">
+<a href="#examples" class="anchor"></a>Examples</h2>
+<p>Example using the phenotypic data for a wheat trial in Chile. The same data is used in the vignette and described there in detail.</p>
+<p>First get the data in the form required by the package, converting it to an object of class <strong>T(rial)D(ata)</strong>.</p>
+<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">statgenSTA</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"wheatChl"</span>)
+<span class="no">wheatTD</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/TD.html">createTD</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">wheatChl</span>, <span class="kw">genotype</span> <span class="kw">=</span> <span class="st">"trt"</span>, <span class="kw">repId</span> <span class="kw">=</span> <span class="st">"rep"</span>,
+            <span class="kw">subBlock</span> <span class="kw">=</span> <span class="st">"bl"</span>, <span class="kw">rowCoord</span> <span class="kw">=</span> <span class="st">"row"</span>, <span class="kw">colCoord</span> <span class="kw">=</span> <span class="st">"col"</span>)</pre></div>
+<p>Some plots to get a first idea of the contents of the data.</p>
+<div class="sourceCode" id="cb4"><pre class="r"><span class="co">## Plot the layout for SR_FI_11 with genotypes G278 and G279 highlighted.</span>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">wheatTD</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"layout"</span>, <span class="kw">trials</span> <span class="kw">=</span> <span class="st">"SR_FI_11"</span>, <span class="kw">highlight</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"G278"</span>, <span class="st">"G279"</span>))</pre></div>
+<p><img src="reference/figures/README-layoutPlot-1.png" width="100%"></p>
+<div class="sourceCode" id="cb5"><pre class="r"><span class="co">## Create a boxplot for grain yield.</span>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">wheatTD</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"box"</span>, <span class="kw">traits</span> <span class="kw">=</span> <span class="st">"GY"</span>)</pre></div>
+<p><img src="reference/figures/README-boxPlot-1.png" width="100%"></p>
+<div class="sourceCode" id="cb6"><pre class="r"><span class="co">## Create a scatter plot matrix for grain yield.</span>
+<span class="co">## Add correlations between trials in top left of scatter plots.</span>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">wheatTD</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"scatter"</span>, <span class="kw">traits</span> <span class="kw">=</span> <span class="st">"GY"</span>, <span class="kw">addCorr</span> <span class="kw">=</span> <span class="st">"tl"</span>)</pre></div>
+<p><img src="reference/figures/README-scatterPlot-1.png" width="100%"></p>
+<p>Fit mixed models for one of the trials, SR_FI_11, and visualize the output.</p>
+<div class="sourceCode" id="cb7"><pre class="r"><span class="co">## Fit a single trial model using a model based on a resovable row column design.</span>
+<span class="no">modWheatSp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/fitTD.html">fitTD</a></span>(<span class="kw">TD</span> <span class="kw">=</span> <span class="no">wheatTD</span>, <span class="kw">trials</span> <span class="kw">=</span> <span class="st">"SR_FI_11"</span>, <span class="kw">traits</span> <span class="kw">=</span> <span class="st">"GY"</span>, <span class="kw">design</span> <span class="kw">=</span> <span class="st">"res.rowcol"</span>)
+<span class="co">#&gt; Using SpATS for fitting models.</span></pre></div>
+<div class="sourceCode" id="cb8"><pre class="r"><span class="co">## Base plots for the model with genotype fitted as random effect.</span>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">modWheatSp</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"base"</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"random"</span>)</pre></div>
+<p><img src="reference/figures/README-basePlot-1.png" width="100%"></p>
+<div class="sourceCode" id="cb9"><pre class="r"><span class="co">## Spatial plot for the model with genotype fitted as fixed effect.</span>
+<span class="co">## Display the spatial trend as a percentage.</span>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">modWheatSp</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"spatial"</span>, <span class="kw">spaTrend</span> <span class="kw">=</span> <span class="st">"percentage"</span>)</pre></div>
+<p><img src="reference/figures/README-spatialPlot-1.png" width="100%"></p>
+</div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

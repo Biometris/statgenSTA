@@ -39,25 +39,48 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home"></span>
      
   </a>
 </li>
 <li>
-  <a href="../articles/statgenSTA.html">Get started</a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="../articles/index.html">Vignettes</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/Biometris/statgenSTA/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
      
+    news
+  </a>
+</li>
+<li>
+  <a href="../reference/index.html">
+    <span class="fa fa-file-code-o"></span>
+     
+    functions
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-seedling"></span>
+     
+    other packages
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="https://github.com/Biometris/statgenGWAS/index.html">statgenGWAS</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="https://biometris.github.io/statgenSTA/index.html">
+    <span class="fa fa-github fa-lg"></span>
+     
+    github
   </a>
 </li>
       </ul>
@@ -76,7 +99,7 @@
       <h1 data-toc-skip>Modeling field trials using statgenSTA</h1>
                         <h4 class="author">Bart-Jan van Rossum</h4>
             
-            <h4 class="date">2020-08-18</h4>
+            <h4 class="date">2020-08-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Biometris/statgenSTA/blob/master/vignettes/statgenSTA.Rmd"><code>vignettes/statgenSTA.Rmd</code></a></small>
       <div class="hidden name"><code>statgenSTA.Rmd</code></div>
@@ -240,8 +263,8 @@ Dropping one or more trials from a <code>TD</code> object can be done using the 
 <h2 class="hasAnchor">
 <a href="#TDPlot" class="anchor"></a>Plotting a <code>TD</code> object</h2>
 <p>Several plots can be made to further investigate the contents of a <code>TD</code> object.</p>
-<p>In all plots the default colors for both genotypes and trials are chosen from a predefined color palette. For genotypes the color palette is “Dark 2”, for trials it is “Alphabet”. See <a href="https://developer.r-project.org/Blog/public/2019/11/21/a-new-palette-for-r/index.html">here</a> for an overview of these colors.</p>
-<p>It is possible to specify different colors for genotypes and trials per plot using the options <code>colGeno</code> and <code>colTrial</code> respectively. Also, more conveniently, the default colors can be set using the options statgen.genoColors and statgen.trialColors.</p>
+<p>In all plots the default colors for both genotype groups and trial groups are chosen from a predefined color palette. For genotype groups the color palette is “Dark 2”, for trial groups it is “Alphabet”. See <a href="https://developer.r-project.org/Blog/public/2019/11/21/a-new-palette-for-r/index.html">here</a> for an overview of these colors.</p>
+<p>It is possible to specify different colors for genotype groups and trial groups per plot using the options <code>colGeno</code> and <code>colTrial</code> respectively. Also, more conveniently, the default colors can be set using the options statgen.genoColors and statgen.trialColors.</p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="co">## Set default colors for genotypes and trials.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="st">"statgen.genoColors"</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"blue"</span>, <span class="st">"green"</span>, <span class="st">"yellow"</span>))
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="st">"statgen.trialColors"</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"red"</span>, <span class="st">"brown"</span>, <span class="st">"purple"</span>))</pre></body></html></div>
@@ -333,31 +356,31 @@ Dropping one or more trials from a <code>TD</code> object can be done using the 
 <tr class="odd">
 <td>incomplete block design</td>
 <td>ibd</td>
-<td>trait = genotype + <strong>subBlock</strong> + <span class="math inline">\(\epsilon\)</span>
+<td>trait = <strong>subBlock</strong> + genotype + <span class="math inline">\(\epsilon\)</span>
 </td>
 </tr>
 <tr class="even">
 <td>resovable incomplete block design</td>
 <td>res.ibd</td>
-<td>trait = genotype + <em>repId</em> + <strong>repId:subBlock</strong> + <span class="math inline">\(\epsilon\)</span>
+<td>trait = <em>repId</em> + <strong>repId:subBlock</strong> + genotype + <span class="math inline">\(\epsilon\)</span>
 </td>
 </tr>
 <tr class="odd">
 <td>randomized complete block design</td>
 <td>rcbd</td>
-<td>trait = genotype + <em>repId</em> + <span class="math inline">\(\epsilon\)</span>
+<td>trait = <em>repId</em> + genotype + <span class="math inline">\(\epsilon\)</span>
 </td>
 </tr>
 <tr class="even">
 <td>row column design</td>
 <td>rowcol</td>
-<td>trait = genotype + <strong>rowId</strong> + <strong>colId</strong> + <span class="math inline">\(\epsilon\)</span>
+<td>trait = <strong>rowId</strong> + <strong>colId</strong> + genotype +<span class="math inline">\(\epsilon\)</span>
 </td>
 </tr>
 <tr class="odd">
 <td>resolvable row column design</td>
 <td>res.rowcol</td>
-<td>trait = genotype + <em>repId</em> + <strong>repId:rowId</strong> + <strong>repId:colId</strong> + <span class="math inline">\(\epsilon\)</span>
+<td>trait = <em>repId</em> + <strong>repId:rowId</strong> + <strong>repId:colId</strong> + genotype + <span class="math inline">\(\epsilon\)</span>
 </td>
 </tr>
 </tbody>

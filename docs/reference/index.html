@@ -79,25 +79,48 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home"></span>
      
   </a>
 </li>
 <li>
-  <a href="../articles/statgenSTA.html">Get started</a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="../articles/index.html">Vignettes</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/Biometris/statgenSTA/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
      
+    news
+  </a>
+</li>
+<li>
+  <a href="../reference/index.html">
+    <span class="fa fa-file-code-o"></span>
+     
+    functions
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-seedling"></span>
+     
+    other packages
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://github.com/Biometris/statgenGWAS/index.html">statgenGWAS</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="https://biometris.github.io/statgenSTA/index.html">
+    <span class="fa fa-github fa-lg"></span>
+     
+    github
   </a>
 </li>
       </ul>
@@ -127,7 +150,7 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <h2 id="section-data-preparation" class="hasAnchor"><a href="#section-data-preparation" class="anchor"></a>Data preparation</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -139,27 +162,9 @@
       <tr>
         
         <td>
-          <p><code><a href="as.data.frame.extract.html">as.data.frame(<i>&lt;extract&gt;</i>)</a></code> </p>
+          <p><code><a href="TD.html">createTD()</a></code> <code><a href="TD.html">addTD()</a></code> <code><a href="TD.html">dropTD()</a></code> </p>
         </td>
-        <td><p>Coerce extracted heritabilities to data.frame</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="extract.html">extract()</a></code> </p>
-        </td>
-        <td><p>Extract statistics from Fitted Models</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="extractSTA.html">extractSTA()</a></code> </p>
-        </td>
-        <td><p>Extract statistics from Fitted Models</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="fitTD.html">fitTD()</a></code> </p>
-        </td>
-        <td><p>Fit Single Trial Mixed Model</p></td>
+        <td><p>S3 class TD</p></td>
       </tr><tr>
         
         <td>
@@ -169,27 +174,52 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="outlierSTA.html">outlierSTA()</a></code> </p>
+          <p><code><a href="summary.TD.html">summary(<i>&lt;TD&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Identifying outliers in objects of class STA</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot.STA.html">plot(<i>&lt;STA&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Plot function for class STA</p></td>
+        <td><p>Summarizing objects of class <code>TD</code></p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="plot.TD.html">plot(<i>&lt;TD&gt;</i>)</a></code> </p>
         </td>
         <td><p>Plot function for class TD</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-single-trial-analysis" class="hasAnchor"><a href="#section-single-trial-analysis" class="anchor"></a>Single trial analysis</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="fitTD.html">fitTD()</a></code> </p>
+        </td>
+        <td><p>Fit Single Trial Mixed Model</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="report.html">report()</a></code> </p>
+          <p><code><a href="extractSTA.html">extractSTA()</a></code> </p>
         </td>
-        <td><p>Base method for creating a report</p></td>
+        <td><p>Extract statistics from Fitted Models</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="summary.STA.html">summary(<i>&lt;STA&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Summarizing objects of class <code>STA</code></p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot.STA.html">plot(<i>&lt;STA&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plot function for class STA</p></td>
       </tr><tr>
         
         <td>
@@ -208,30 +238,44 @@
           <p><code><a href="STAtoTD.html">STAtoTD()</a></code> </p>
         </td>
         <td><p>Convert STA to TD</p></td>
-      </tr><tr>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-outlier-detection" class="hasAnchor"><a href="#section-outlier-detection" class="anchor"></a>Outlier detection</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
-          <p><code><a href="summary.STA.html">summary(<i>&lt;STA&gt;</i>)</a></code> </p>
+          <p><code><a href="outlierSTA.html">outlierSTA()</a></code> </p>
         </td>
-        <td><p>Summarizing objects of class <code>STA</code></p></td>
-      </tr><tr>
+        <td><p>Identifying outliers in objects of class STA</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-example-data" class="hasAnchor"><a href="#section-example-data" class="anchor"></a>Example data</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
-          <p><code><a href="summary.TD.html">summary(<i>&lt;TD&gt;</i>)</a></code> </p>
+          <p><code><a href="wheatChl.html">wheatChl</a></code> </p>
         </td>
-        <td><p>Summarizing objects of class <code>TD</code></p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="TD.html">createTD()</a></code> <code><a href="TD.html">addTD()</a></code> <code><a href="TD.html">dropTD()</a></code> </p>
-        </td>
-        <td><p>S3 class TD</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="TDHeat05.html">TDHeat05</a></code> </p>
-        </td>
-        <td><p>Field data for a wheat experiment in Mexico</p></td>
+        <td><p>Field data for a wheat experiment in Chili</p></td>
       </tr><tr>
         
         <td>
@@ -241,9 +285,53 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="wheatChl.html">wheatChl</a></code> </p>
+          <p><code><a href="TDHeat05.html">TDHeat05</a></code> </p>
         </td>
-        <td><p>Field data for a wheat experiment in Chili</p></td>
+        <td><p>Field data for a wheat experiment in Mexico</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-internal-helper-functions" class="hasAnchor"><a href="#section-internal-helper-functions" class="anchor"></a>Internal helper functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="report.html">report()</a></code> </p>
+        </td>
+        <td><p>Base method for creating a report</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-deprecated" class="hasAnchor"><a href="#section-deprecated" class="anchor"></a>Deprecated</h2>
+          <p class="section-desc"><p>Use extractSTA instead</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="extract.html">extract()</a></code> </p>
+        </td>
+        <td><p>Extract statistics from Fitted Models</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as.data.frame.extract.html">as.data.frame(<i>&lt;extract&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Coerce extracted heritabilities to data.frame</p></td>
       </tr>
     </tbody>
     </table>

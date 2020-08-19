@@ -17,6 +17,7 @@ Phenotypic analysis of field trials using mixed models with and
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://biometris.github.io/statgenSTA/index.html}
   \item \url{https://github.com/Biometris/statgenSTA/}
   \item Report bugs at \url{https://github.com/Biometris/statgenSTA/issues}
 }
