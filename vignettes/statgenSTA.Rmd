@@ -125,9 +125,9 @@ summary(wheatTD, trial = "SR_FI_11", traits = "GY", groupBy = "repId")
 
 Several plots can be made to further investigate the contents of a `TD` object.   
 
-In all plots the default colors for both genotypes and trials are chosen from a predefined color palette. For genotypes the color palette is "Dark 2", for trials it is "Alphabet". See [here](https://developer.r-project.org/Blog/public/2019/11/21/a-new-palette-for-r/index.html) for an overview of these colors.    
+In all plots the default colors for both genotype groups and trial groups are chosen from a predefined color palette. For genotype groups the color palette is "Dark 2", for trial groups it is "Alphabet". See [here](https://developer.r-project.org/Blog/public/2019/11/21/a-new-palette-for-r/index.html) for an overview of these colors.    
 
-It is possible to specify different colors for genotypes and trials per plot using the options `colGeno` and `colTrial` respectively. Also, more conveniently, the default colors can be set using the options statgen.genoColors and statgen.trialColors.
+It is possible to specify different colors for genotype groups and trial groups per plot using the options `colGeno` and `colTrial` respectively. Also, more conveniently, the default colors can be set using the options statgen.genoColors and statgen.trialColors.
 
 ```{r colorOpts, eval=FALSE}
 ## Set default colors for genotypes and trials.
@@ -222,11 +222,11 @@ Models can be fitted for five different trial designs. These are listed in the f
 
 design | code | model fitted |
 -------------------------- | -------- | ----------------------------------------- |
-incomplete block design | ibd | trait = genotype + **subBlock** + $\epsilon$ |
-resovable incomplete block design | res.ibd | trait = genotype + *repId* + **repId:subBlock** + $\epsilon$ |
-randomized complete block design | rcbd | trait = genotype + *repId* + $\epsilon$ | 
-row column design | rowcol | trait = genotype + **rowId** + **colId** + $\epsilon$ |
-resolvable row column design | res.rowcol | trait = genotype + *repId* + **repId:rowId** + **repId:colId** + $\epsilon$ |
+incomplete block design | ibd | trait = **subBlock** + genotype + $\epsilon$ |
+resovable incomplete block design | res.ibd | trait = *repId* + **repId:subBlock** + genotype + $\epsilon$ |
+randomized complete block design | rcbd | trait = *repId* + genotype + $\epsilon$ | 
+row column design | rowcol | trait = **rowId** + **colId** + genotype +$\epsilon$ |
+resolvable row column design | res.rowcol | trait = *repId* + **repId:rowId** + **repId:colId** + genotype + $\epsilon$ |
 
 In the models above, fixed effects are indicated in *italics* whereas random effects are indicated in **bold**. genotype can be fitted as fixed or as random effect depending on the value of the parameter `what`. Extra fixed effects may be fitted using the parameter `covariates`.  
 If SpATS is used as modeling engine, an extra spatial term is always included in the model (see [**3.2**](#spMod)). A spatial term is also included when the modeling engine is asreml and the function parameter `spatial` is set to `TRUE`.

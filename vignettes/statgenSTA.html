@@ -12,7 +12,7 @@
 
 <meta name="author" content="Bart-Jan van Rossum" />
 
-<meta name="date" content="2020-08-17" />
+<meta name="date" content="2020-08-19" />
 
 <title>Modeling field trials using statgenSTA</title>
 
@@ -319,7 +319,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Modeling field trials using statgenSTA</h1>
 <h4 class="author">Bart-Jan van Rossum</h4>
-<h4 class="date">2020-08-17</h4>
+<h4 class="date">2020-08-19</h4>
 
 
 
@@ -472,8 +472,8 @@ Dropping one or more trials from a <code>TD</code> object can be done using the 
 <div id="TDPlot" class="section level2">
 <h2><span class="header-section-number">2.6</span> Plotting a <code>TD</code> object</h2>
 <p>Several plots can be made to further investigate the contents of a <code>TD</code> object.</p>
-<p>In all plots the default colors for both genotypes and trials are chosen from a predefined color palette. For genotypes the color palette is “Dark 2”, for trials it is “Alphabet”. See <a href="https://developer.r-project.org/Blog/public/2019/11/21/a-new-palette-for-r/index.html">here</a> for an overview of these colors.</p>
-<p>It is possible to specify different colors for genotypes and trials per plot using the options <code>colGeno</code> and <code>colTrial</code> respectively. Also, more conveniently, the default colors can be set using the options statgen.genoColors and statgen.trialColors.</p>
+<p>In all plots the default colors for both genotype groups and trial groups are chosen from a predefined color palette. For genotype groups the color palette is “Dark 2”, for trial groups it is “Alphabet”. See <a href="https://developer.r-project.org/Blog/public/2019/11/21/a-new-palette-for-r/index.html">here</a> for an overview of these colors.</p>
+<p>It is possible to specify different colors for genotype groups and trial groups per plot using the options <code>colGeno</code> and <code>colTrial</code> respectively. Also, more conveniently, the default colors can be set using the options statgen.genoColors and statgen.trialColors.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">## Set default colors for genotypes and trials.</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="kw">options</span>(<span class="st">&quot;statgen.genoColors&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;yellow&quot;</span>))</span>
 <span id="cb7-3"><a href="#cb7-3"></a><span class="kw">options</span>(<span class="st">&quot;statgen.trialColors&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;brown&quot;</span>, <span class="st">&quot;purple&quot;</span>))</span></code></pre></div>
@@ -560,27 +560,27 @@ Dropping one or more trials from a <code>TD</code> object can be done using the 
 <tr class="odd">
 <td>incomplete block design</td>
 <td>ibd</td>
-<td>trait = genotype + <strong>subBlock</strong> + <span class="math inline">\(\epsilon\)</span></td>
+<td>trait = <strong>subBlock</strong> + genotype + <span class="math inline">\(\epsilon\)</span></td>
 </tr>
 <tr class="even">
 <td>resovable incomplete block design</td>
 <td>res.ibd</td>
-<td>trait = genotype + <em>repId</em> + <strong>repId:subBlock</strong> + <span class="math inline">\(\epsilon\)</span></td>
+<td>trait = <em>repId</em> + <strong>repId:subBlock</strong> + genotype + <span class="math inline">\(\epsilon\)</span></td>
 </tr>
 <tr class="odd">
 <td>randomized complete block design</td>
 <td>rcbd</td>
-<td>trait = genotype + <em>repId</em> + <span class="math inline">\(\epsilon\)</span></td>
+<td>trait = <em>repId</em> + genotype + <span class="math inline">\(\epsilon\)</span></td>
 </tr>
 <tr class="even">
 <td>row column design</td>
 <td>rowcol</td>
-<td>trait = genotype + <strong>rowId</strong> + <strong>colId</strong> + <span class="math inline">\(\epsilon\)</span></td>
+<td>trait = <strong>rowId</strong> + <strong>colId</strong> + genotype +<span class="math inline">\(\epsilon\)</span></td>
 </tr>
 <tr class="odd">
 <td>resolvable row column design</td>
 <td>res.rowcol</td>
-<td>trait = genotype + <em>repId</em> + <strong>repId:rowId</strong> + <strong>repId:colId</strong> + <span class="math inline">\(\epsilon\)</span></td>
+<td>trait = <em>repId</em> + <strong>repId:rowId</strong> + <strong>repId:colId</strong> + genotype + <span class="math inline">\(\epsilon\)</span></td>
 </tr>
 </tbody>
 </table>
