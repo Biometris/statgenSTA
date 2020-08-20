@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 
 [![](https://www.r-pkg.org/badges/version/statgenSTA)](https://www.r-pkg.org/pkg/statgenSTA)
 [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/statgenSTA)](https://www.r-pkg.org/pkg/statgenSTA)
+[![R-CMD-check](https://github.com/Biometris/statgenSTA/workflows/R-CMD-check/badge.svg)](https://github.com/Biometris/statgenSTA/actions?workflow=R-CMD-check)
 
 **statgenSTA** is an R package providing functions for phenotypic analysis of agricultural field trials using mixed models with and without spatial components.
 
