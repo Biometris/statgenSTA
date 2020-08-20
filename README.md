@@ -7,6 +7,7 @@
 [![CRAN RStudio mirror
 downloads](https://cranlogs.r-pkg.org/badges/statgenSTA)](https://www.r-pkg.org/pkg/statgenSTA)
 [![R-CMD-check](https://github.com/Biometris/statgenSTA/workflows/R-CMD-check/badge.svg)](https://github.com/Biometris/statgenSTA/actions?workflow=R-CMD-check)
+[![codecov](https://codecov.io/gh/Biometris/statgenSTA/branch/master/graph/badge.svg)](https://codecov.io/gh/Biometris/statgenSTA)
 
 **statgenSTA** is an R package providing functions for phenotypic
 analysis of agricultural field trials using mixed models with and
