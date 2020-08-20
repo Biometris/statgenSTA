@@ -42,7 +42,7 @@ test_that("summary.STA produces correct output for lme4", {
 })
 
 test_that("summary.STA produces correct output for asreml", {
-  skip_on_cran()
+  skip_if_not_installed("asreml")
   modelAs <- fitTD(testTD, design = "rowcol", traits = "t1", engine = "asreml")
   sumAs <- summary(modelAs)
   expect_length(sumAs, 7)
@@ -56,7 +56,7 @@ test_that("summary.STA produces correct output for asreml", {
 })
 
 test_that("summary.STA produces correct output for asreml with spatial models", {
-  skip_on_cran()
+  skip_if_not_installed("asreml")
   modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1",
                      spatial = TRUE, engine = "asreml")
   sumAsTs <- summary(modelAsTs)
@@ -112,7 +112,7 @@ test_that("print.summary.STA functions properly", {
                     "Estimated heritability ",
                     "Predicted means (BLUEs & BLUPs) ") %in% sumSp))
   expect_false(any(grepl("Best", sumSp2)))
-  skip_on_cran()
+  skip_if_not_installed("asreml")
   modelAs <- fitTD(testTD, design = "rowcol", traits = "t1", engine = "asreml")
   modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1", spatial = TRUE,
                      engine = "asreml")
@@ -199,6 +199,7 @@ test_that("function STAtoTD functions properly", {
 
 test_that("checks in report.STA function properly", {
   skip_on_cran()
+  skip_on_ci()
   expect_error(report(modelSp, trials = "E2"),
                "trials has to be a character vector defining trials in modelSp")
   expect_error(report(modelSp, traits = 1),
@@ -217,6 +218,7 @@ test_that("checks in report.STA function properly", {
 test_that("function report.STA functions properly", {
   ## Reporting doesn't work on cran because of usage of pdflatex.
   skip_on_cran()
+  skip_on_ci()
   tmpFile <- tempfile(fileext = ".pdf")
   expect_silent(report(modelSp, trial = "E1", trait = "t1", outfile = tmpFile))
   expect_true(file.exists(paste0(tools::file_path_sans_ext(tmpFile),

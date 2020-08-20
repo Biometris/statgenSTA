@@ -108,7 +108,7 @@ test_that("row and column are tested for uniqueness in createTD", {
 
 test_that("createTD accepts tibbles as input", {
   ## Skip on cran since it needs package tibble as extra dependency.
-  skip_on_cran()
+  skip_if_not_installed("tibble")
   expect_is(createTD(data = tibble::as_tibble(testData)), "TD")
 })
 
