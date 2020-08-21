@@ -15,9 +15,9 @@ setMeta(TD, meta)
 \item{meta}{A data.frame containing metadata.}
 }
 \description{
-Functions for extracting and adding metadata for objects of class TD.\cr
+Functions for extracting and adding metadata for objects of class TD.\cr\cr
 \code{getMeta} extracts a data.frame with location, date, design, latitude,
-longitude, plotWidth and plotLength for all trials in TD.\cr\cr
+longitude, plot width and plot length for all trials in TD.\cr\cr
 \code{setMeta} adds metadata from a data.frame to an object of class TD. See
 details for the specifications of the data.frame.\cr\cr
 The most common use case is extracting metadata from a TD object, modifying

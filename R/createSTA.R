@@ -70,7 +70,7 @@ createSTA <- function(models) {
 #' ## Print a summary of the fitted model.
 #' summary(myModel)
 #'
-#' @family STA
+#' @family functions for STA objects
 #'
 #' @export
 summary.STA <- function(object,
@@ -267,7 +267,7 @@ print.summary.STA <- function(x,
 #' genotype as fixed (\code{what = "fixed"}) or genotype as random
 #' (\code{what = "random"}) factor should be plotted.
 #' If \code{x} contains only one model this model is chosen automatically.
-#' @param plotType A Character string indicating whether \code{base} plots or
+#' @param plotType A character string indicating whether \code{base} plots or
 #' \code{spatial} plots should be made.
 #' @param spaTrend A character string indicating how the spatial trend should
 #' be displayed. Either "raw" (original scale), or "percentage". If
@@ -299,7 +299,7 @@ print.summary.STA <- function(x,
 #' ## Create spatial plots showing the spatial trend as percentage.
 #' plot(myModel, what = "fixed", plotType = "spatial", spaTrend = "percentage")
 #'
-#' @family STA
+#' @family functions for STA objects
 #'
 #' @importFrom grDevices topo.colors colorRampPalette
 #' @export
@@ -615,11 +615,11 @@ fieldPlot <- function(plotDat,
 #'
 #' pdf reports will be created containing a summary of the results of the
 #' fitted model(s). For all selected trails and traits a separate pdf file will
-#' be generatd. Also a .tex file and a folder containing figures will be
+#' be generated. Also a .tex file and a folder containing figures will be
 #' created for each report to enable easy modifying of the report.
 #'
 #' This function uses pdflatex to create a pdf report. For it to run correctly
-#' an installation of LaTeX is requiered. Checking for this is done with
+#' an installation of LaTeX is required. Checking for this is done with
 #' Sys.which("pdflatex").
 #'
 #' @param x An object of class STA.
@@ -632,9 +632,9 @@ fieldPlot <- function(plotDat,
 #' \code{FALSE} if low values of the trait indicate better performance.
 #' @param outfile A character string, the name and location of the output .pdf
 #' and .tex file for the report. If \code{NULL}, a report with a default name
-#' will be created in the current working directory. Trialname, traitname and
+#' will be created in the current working directory. Trial, trait and
 #' the type of model (genotype fixed or random) will be concatenated to the
-#' name of the outputfile.\cr
+#' name of the output file.\cr
 #' Both knitr and pdflatex don't work well with spaces in file paths and these
 #' are therefore disallowed. Relative paths are possible though.
 #' @param what A character vector indicating whether the fitted model with
@@ -646,8 +646,9 @@ fieldPlot <- function(plotDat,
 #'
 #' @examples
 #' ## Fit model using lme4.
-#' myModel1 <- fitTD(TD = TDHeat05, design = "ibd", traits = "yield")
-
+#' myModel1 <- fitTD(TD = TDHeat05, design = "ibd", traits = "yield",
+#'                   engine = "lme4")
+#'
 #' ## Create a pdf report summarizing the results for the model with genotype
 #' ## as fixed factor.
 #' \donttest{
@@ -661,7 +662,7 @@ fieldPlot <- function(plotDat,
 #' report(myModel1, outfile = tempfile(fileext = ".pdf"), descending = FALSE)
 #' }
 #'
-#' @family STA
+#' @family functions for STA objects
 #'
 #' @export
 report.STA <- function(x,
@@ -758,7 +759,7 @@ report.STA <- function(x,
 #' @seealso \code{\link[qtl]{read.cross}}
 #'
 #' @examples
-#' ## Run model using SpATS.
+#' ## Fit model using SpATS.
 #' myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
 #'                  what = "fixed")
 #'
@@ -767,7 +768,8 @@ report.STA <- function(x,
 #' cross <- STAtoCross(myModel, genoFile = system.file("extdata", "markers.csv",
 #'                                                     package = "statgenSTA"))
 #'
-#' @family STA
+#' @family functions for STA objects
+#'
 #' @export
 STAtoCross <- function(STA,
                        trial = NULL,
@@ -820,7 +822,7 @@ STAtoCross <- function(STA,
 #' Genotype-by-Environment (GxE) analysis the output first needs to be converted
 #' back to an TD object. This function does exactly that. It extracts BLUEs,
 #' BLUPs and their standard errors from the STA object and creates a new TD
-#' object using these. Also a column "wt" (weigth) may also be added. Weights
+#' object using these. Also a column "wt" (weight) may also be added. Weights
 #' are then calculated as 1/(SE BLUEs) ^ 2.
 #'
 #' Trial information for the trials in the STA object will be copied from the
@@ -833,7 +835,7 @@ STAtoCross <- function(STA,
 #' @param traits A character string containing the traits to be included in the
 #' TD object. If \code{NULL}, all traits are exported.
 #' @param keep Columns from the TD object used as input for the STA model to
-#' be copied to the output. see \code{\link{extract}} for possible columns to
+#' be copied to the output. see \code{\link{extractSTA}} for possible columns to
 #' copy. If if it is available in \code{TD}, the column \code{trial} will always
 #' be copied.
 #' @param addWt Should a column wt be added to the output? If \code{TRUE}
@@ -842,17 +844,17 @@ STAtoCross <- function(STA,
 #' will be named \code{wt_trait}.
 #'
 #' @examples
-#' ## Run model using SpATS.
+#' ## Fit model using SpATS.
 #' myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
-#'                       what = "fixed")
+#'                  what = "fixed")
 #'
 #' ## Create TD object from the fitted model with BLUEs and standard errors.
-#' myTD <- STAtoTD(myModel)
+#' myTD <- STAtoTD(myModel, what = c("BLUEs", "seBLUEs"))
 #'
 #' ## Add a weight column in the output.
-#' myTDWt <- STAtoTD(myModel, addWt = TRUE)
+#' myTDWt <- STAtoTD(myModel, what = c("BLUEs", "seBLUEs"), addWt = TRUE)
 #'
-#' @family STA
+#' @family functions for STA objects
 #'
 #' @export
 STAtoTD <- function(STA,

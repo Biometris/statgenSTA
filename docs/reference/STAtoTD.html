@@ -45,7 +45,7 @@ To be able to use the output of a single trial analysis in
 Genotype-by-Environment (GxE) analysis the output first needs to be converted
 back to an TD object. This function does exactly that. It extracts BLUEs,
 BLUPs and their standard errors from the STA object and creates a new TD
-object using these. Also a column &quot;wt&quot; (weigth) may also be added. Weights
+object using these. Also a column &quot;wt&quot; (weight) may also be added. Weights
 are then calculated as 1/(SE BLUEs) ^ 2." />
 
 
@@ -154,7 +154,7 @@ To be able to use the output of a single trial analysis in
 Genotype-by-Environment (GxE) analysis the output first needs to be converted
 back to an TD object. This function does exactly that. It extracts BLUEs,
 BLUPs and their standard errors from the STA object and creates a new TD
-object using these. Also a column "wt" (weigth) may also be added. Weights
+object using these. Also a column "wt" (weight) may also be added. Weights
 are then calculated as 1/(SE BLUEs) ^ 2.</p>
     </div>
 
@@ -187,7 +187,7 @@ TD object. If <code>NULL</code>, all traits are exported.</p></td>
     <tr>
       <th>keep</th>
       <td><p>Columns from the TD object used as input for the STA model to
-be copied to the output. see <code><a href='extract.html'>extract</a></code> for possible columns to
+be copied to the output. see <code><a href='extractSTA.html'>extractSTA</a></code> for possible columns to
 copy. If if it is available in <code>TD</code>, the column <code>trial</code> will always
 be copied.</p></td>
     </tr>
@@ -206,23 +206,21 @@ will be named <code>wt_trait</code>.</p></td>
 original TD object on which the modeling was done.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other STA: 
+    <div class='dont-index'><p>Other functions for STA objects: 
 <code><a href='STAtoCross.html'>STAtoCross</a>()</code>,
 <code><a href='plot.STA.html'>plot.STA</a>()</code>,
 <code><a href='report.STA.html'>report.STA</a>()</code>,
 <code><a href='summary.STA.html'>summary.STA</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Run model using SpATS.</span>
+    <pre class="examples"><div class='input'><span class='co'>## Fit model using SpATS.</span>
 <span class='no'>myModel</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span>(<span class='kw'>TD</span> <span class='kw'>=</span> <span class='no'>TDHeat05</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='st'>"res.rowcol"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"yield"</span>,
-                      <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'>
+                 <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'>
 <span class='co'>## Create TD object from the fitted model with BLUEs and standard errors.</span>
-<span class='no'>myTD</span> <span class='kw'>&lt;-</span> <span class='fu'>STAtoTD</span>(<span class='no'>myModel</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: BLUPs and seBLUPs can only be extracted if a model with genotype random is fitted</span>
-#&gt; <span class='warning'>Removing them from what</span></div><div class='input'>
+<span class='no'>myTD</span> <span class='kw'>&lt;-</span> <span class='fu'>STAtoTD</span>(<span class='no'>myModel</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"BLUEs"</span>, <span class='st'>"seBLUEs"</span>))
+
 <span class='co'>## Add a weight column in the output.</span>
-<span class='no'>myTDWt</span> <span class='kw'>&lt;-</span> <span class='fu'>STAtoTD</span>(<span class='no'>myModel</span>, <span class='kw'>addWt</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: BLUPs and seBLUPs can only be extracted if a model with genotype random is fitted</span>
-#&gt; <span class='warning'>Removing them from what</span></div><div class='input'>
-</div></pre>
+<span class='no'>myTDWt</span> <span class='kw'>&lt;-</span> <span class='fu'>STAtoTD</span>(<span class='no'>myModel</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"BLUEs"</span>, <span class='st'>"seBLUEs"</span>), <span class='kw'>addWt</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

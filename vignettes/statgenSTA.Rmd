@@ -223,9 +223,9 @@ Models can be fitted for five different trial designs. These are listed in the f
 design | code | model fitted |
 -------------------------- | -------- | ----------------------------------------- |
 incomplete block design | ibd | trait = **subBlock** + genotype + $\epsilon$ |
-resovable incomplete block design | res.ibd | trait = *repId* + **repId:subBlock** + genotype + $\epsilon$ |
+resolvable incomplete block design | res.ibd | trait = *repId* + **repId:subBlock** + genotype + $\epsilon$ |
 randomized complete block design | rcbd | trait = *repId* + genotype + $\epsilon$ | 
-row column design | rowcol | trait = **rowId** + **colId** + genotype +$\epsilon$ |
+row column design | rowcol | trait = **rowId** + **colId** + genotype + $\epsilon$ |
 resolvable row column design | res.rowcol | trait = *repId* + **repId:rowId** + **repId:colId** + genotype + $\epsilon$ |
 
 In the models above, fixed effects are indicated in *italics* whereas random effects are indicated in **bold**. genotype can be fitted as fixed or as random effect depending on the value of the parameter `what`. Extra fixed effects may be fitted using the parameter `covariates`.  
@@ -236,7 +236,7 @@ Using the `TD` object wheatTD from the previous section, a model for the trial S
 ## Fit a single trial model using a model based on a resovable row column design.
 modWheatSp <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", design = "res.rowcol")
 ```
-Note that by not supplying the `what` argument to the function, two models are fitted, one with genotype as a fixed effect and one with genotype as a random effect. The results of both these models are stored in the `STA` object `modWheatSp`. This is very useful for extracting different results from the model later on. A trade-off is that fitting two models takes more time than fitting only one so when fitting models on large datasets it is sensible to explicitly define `what` if only a subset of the results is needed as output.
+Note that by not supplying the `what` argument to the function, two models are fitted, one with genotype as a fixed effect and one with genotype as a random effect. The results of both these models are stored in the `STA` object `modWheatSp`. This is very useful for extracting different results from the model later on. A trade-off is that fitting two models takes more time than fitting only one so when fitting models on large data sets it is sensible to explicitly define `what` if only a subset of the results is needed as output.
 ```{r fitSpSm, message=FALSE}
 ## Fit a single trial model with genotype as random effect.
 modWheatSp2 <- fitTD(TD = wheatTD, trials = "SR_FI_11", traits = "GY", 

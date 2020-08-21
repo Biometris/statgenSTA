@@ -68,7 +68,7 @@
 #' the trials. This will be used as default names when creating plots and
 #' summaries. If no locations are provided, first the column loc is considered.
 #' If this contains one unique value for a trial this is used as trLocation.
-#' Otherwise the trialname is used.
+#' Otherwise the trial name is used.
 #' @param trDate An optional character string indicating the column in
 #' \code{data} that contains the date of the trial or a date vector indicating
 #' the dates of the trials.
@@ -83,8 +83,7 @@
 #' latitudes of the trials on a scale of -90 to 90.
 #' @param trLong An optional character string indicating the column in
 #' \code{data} that contains the latitude of the trial or a numerical vector
-#' indicating the longitudes of the trials on a scale of -180 to 180. If
-#' \code{trLong} is not provided longitude will be taken from \code{long}.
+#' indicating the longitudes of the trials on a scale of -180 to 180.
 #' @param trPlWidth An optional positive numerical vector indicating the
 #' widths of the plots.
 #' @param trPlLength An optional positive numerical vector indicating the
@@ -98,7 +97,7 @@
 #' for trial, the list will contain one item named after the input data.
 #'
 #' @examples
-#' ## Create a data.frame with to be converted to TD object.
+#' ## Create a data.frame to be converted to TD object.
 #' ## The data consists of genotype, trial, row and column information and
 #' ## two traits, yield and flowering time.
 #' datT1 <- data.frame(geno = paste0("G", 1:10), tr = "T1",
@@ -110,7 +109,7 @@
 #'                  rowCoord = "row", colCoord = "col")
 #'
 #' ## Create a second data.frame similar to the first with data for a second trial.
-#' datT2<- data.frame(geno = paste0("G", 1:10), tr = "T2",
+#' datT2 <- data.frame(geno = paste0("G", 1:10), tr = "T2",
 #'                     row = rep(1:2, each = 5), col = rep(1:5, times = 2),
 #'                     yield = 10:1, flowering = 12:3)
 #'
@@ -407,8 +406,8 @@ dropTD <- function(TD,
 #'
 #' @param object An object of class TD.
 #' @param ... Further arguments - currently not used.
-#' @param trial A character string specifying the trial to be summarised.
-#' @param traits A character vector specifying the traits to be summarised.
+#' @param trial A character string specifying the trial to be summarized.
+#' @param traits A character vector specifying the traits to be summarized.
 #' @param groupBy A character string specifying a column in TD by which the
 #' summary should be grouped. If \code{NULL}, no grouping is done.
 #' @param what A character vector indicating which summary statistics should be
@@ -423,8 +422,8 @@ dropTD <- function(TD,
 #' \item{min}{The minimum.}
 #' \item{max}{The maximum.}
 #' \item{range}{The range (maximum - minimum).}
-#' \item{firstQ}{The first (25\%) quantile.}
-#' \item{thirdQ}{The third (75\%) quantile.}
+#' \item{firstQ}{The first (25pct) quantile.}
+#' \item{thirdQ}{The third (75pct) quantile.}
 #' \item{sd}{The standard deviation.}
 #' \item{seMean}{The standard error of mean.}
 #' \item{var}{The variance.}
@@ -595,7 +594,8 @@ summary.TD <- function(object,
 }
 
 #' @export
-print.summary.TD <- function(x, ...) {
+print.summary.TD <- function(x,
+                             ...) {
   whichStat <- attr(x, "whichStat")
   groupBy  <- attr(x, "group")
   decimals <- c(rep(x = 0, times = 3), rep(x = 2, times = 7),
@@ -635,35 +635,35 @@ print.summary.TD <- function(x, ...) {
 #' extra parameters of the different plots is given in the sections below.
 #'
 #' @section Layout Plot:
-#' Plots the layout of the selected trials (all available trials by default).
+#' Plots the layout of the selected trials.
 #' This plot can only be made for trials that contain both row (\code{rowCoord})
 #' and column (\code{colCoord}) information. If either one of those is missing
 #' the trial is skipped with a warning. If blocks (\code{subBlock}) are
-#' available for a trial these are indicated in different colors per block,
-#' otherwise all plots are colored in grey. If replicates (\code{repId}) are
-#' available a black line is plotted between diffent replicates. Missing plots
-#' are indicated in white. This can either be single plots in a trial or
+#' available for a trial these can be colored in different colors per block by
+#' setting \code{colorSubBlock = TRUE}. If replicates (\code{repId}) are
+#' available a black line is plotted between different replicates. Missing plots
+#' are indicated in white. These can either be single plots in a trial or
 #' complete missing columns or rows.\cr
 #' Extra parameter options:
 #' \describe{
-#' \item{showGeno}{Should individual genotypes be indicated in the plot?
+#' \item{showGeno}{Should individual genotypes be indicated as text in the plot?
 #' Defaults to \code{FALSE}}
 #' \item{highlight}{A character vector of genotypes to be highlighted in the
 #' plot.}
-#' \item{colorSubBlock}{Should subBlocks be colored with a different color per
+#' \item{colorSubBlock}{Should blocks be colored with a different color per
 #' subBlock? Defaults to \code{FALSE}. \code{colorSubBlock} is ignored when
 #' highlight is used to highlight genotypes.}
 #' }
 #'
 #' @section Map Plot:
 #' A map is plotted with the locations of the trials in the TD object.
-#' Mapping the trials is done based on lattitude and longitude that can be
-#' added when creating an object of class TD. Trials without latitude and/or
-#' longitude available are skipped with a warning message. The countries in
-#' which the trials are located will be plotted on a single map and the
-#' location of the trials will be indicated on this map. The actual plot is
-#' made using ggplot, but for getting the data for the borders of the countries
-#' the maps package is needed.\cr
+#' Mapping the trials is done based on latitude and longitude that can be
+#' added when creating an object of class TD. Trials for which either latitude
+#' or longitude is not available are skipped with a warning message.
+#' The countries in which the trials are located will be plotted on a single
+#' map and the location of the trials will be indicated on this map. The
+#' actual plot is made using ggplot, but for getting the data for the borders
+#' of the countries the maps package is needed.\cr
 #' Extra parameter options:
 #' \describe{
 #' \item{colorTrialBy}{A character string indicating a column in \code{TD} by
@@ -698,15 +698,16 @@ print.summary.TD <- function(x, ...) {
 #' }
 #'
 #' @section Correlation Plot:
-#' Draws a heatmap of correlations between trials per selected trait. If
+#' Draws a heat map of correlations between trials per selected trait. If
 #' genotypes are replicated within trials genotypic means are taken before
-#' computing correlations. The order of the trials in the heatmap is determined
-#' by clustering them.
+#' computing correlations. The order of the trials in the heat map is determined
+#' by clustering them. Closely related trials will be plotted close to each
+#' other.
 #'
 #' @section Scatter Plot:
 #' Draws a scatter plot matrix per selected trait. If genotypes are replicated
 #' within trials genotypic means are taken before plotting. The lower left of
-#' the matix contains scatter plots between trials. The diagonal contains
+#' the matrix contains scatter plots between trials. The diagonal contains
 #' histograms of the data per trial.\cr
 #' Extra parameter options:
 #' \describe{
@@ -722,9 +723,9 @@ print.summary.TD <- function(x, ...) {
 #' the plot matrix (left to right and top to bottom). This vector should be a
 #' permutation of all trials plotted.}
 #' \item{addCorr}{A character string indicating the position of the correlation
-#' diplayed in each plot, either "tl" for top left, "tr", for top right, "bl"
-#' for bottom left or "br" for bottom right. If \code{NULL}, the default, then
-#' no correlation is added to the plot.}
+#' between trials displayed in each plot, either "tl" for top left, "tr", for
+#' top right, "bl" for bottom left or "br" for bottom right. If \code{NULL},
+#' the default, then no correlation is added to the plot.}
 #' }
 #'
 #' @param x An object of class TD.
@@ -732,10 +733,10 @@ print.summary.TD <- function(x, ...) {
 #' section.
 #' @param plotType A single character string indicating which plot should be
 #' made. See the sections below for a detailed explanation of the plots.
-#' @param trials A character vector indicating the trials to be plotted when
-#' plotting field layouts. Only used if \code{plotType} = "layout" or "box".
-#' @param traits A character vector indicating the traits to be plotted in
-#' a boxplot. Only used if \code{plotType} = "box" or "cor".
+#' @param trials A character vector indicating which trials to include in the
+#' plot.
+#' @param traits A character vector indicating for which traits a plot should
+#' be made. Only used if \code{plotType} = "box", "cor", and "scatter".
 #' @param title A character string used a title for the plot. Note that when
 #' a title is specified and multiple plots are created, all plots will get the
 #' same title.
@@ -1644,9 +1645,9 @@ plot.TD <- function(x,
 
 #' Get and set metadata for TD objects
 #'
-#' Functions for extracting and adding metadata for objects of class TD.\cr
+#' Functions for extracting and adding metadata for objects of class TD.\cr\cr
 #' \code{getMeta} extracts a data.frame with location, date, design, latitude,
-#' longitude, plotWidth and plotLength for all trials in TD.\cr\cr
+#' longitude, plot width and plot length for all trials in TD.\cr\cr
 #' \code{setMeta} adds metadata from a data.frame to an object of class TD. See
 #' details for the specifications of the data.frame.\cr\cr
 #' The most common use case is extracting metadata from a TD object, modifying

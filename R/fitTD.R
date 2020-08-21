@@ -1,29 +1,28 @@
-#' Fit Single Trial Mixed Model
+#' Fit single trial mixed model
 #'
 #' Perform REML analysis given a specific experimental design using either
-#' SpATS, lme4 or asreml. SpATS is used as a default method when design is
-#' rowcol or res.rowcol, lme4 for other designs.
+#' SpATS, lme4 or asreml. SpATS is used as a default method when row
+#' coordinates (rowCoord) and column coordinates (colCoord) are present, lme4
+#' otherwise.
 #' See details for the exact models fitted.
 #'
 #' The actual model fitted depends on the design. For the supported designs, the
 #' following models are used:
-#' \describe{
-#' \item{ibd}{trait = genotype + \emph{subBlock} + e}
-#' \item{res.ibd}{trait = genotype + \strong{repId} +
-#' \emph{repId:subBlock} + e}
-#' \item{rcbd}{trait = genotype + \strong{repId} + e}
-#' \item{rowcol}{trait = genotype + \emph{rowId} + \emph{colId} + e}
-#' \item{res.rowcol}{trait = genotype + \strong{repId} +
-#' \emph{repId:rowId} + \emph{repId:colId} + e}
-#' }
-#' In the above models fixed effects are indicated in \strong{bold}, random
-#' effects in \emph{italics}. genotype is fitted as fixed or random effect
-#' depending on the value of \code{what}.\cr
-#' In case \code{useCheckId = TRUE}, an extra fixed effect \strong{checkId} is
-#' included in the model.\cr
-#' Variables in \code{covariates} are fitted as extra fixed effects.\cr\cr
-#' When \code{SpATS} is used for modeling, an extra spatial term is included
-#' in the model. This term is constructed using the function
+#'
+#' design | code | model fitted |
+#' --------------------------------------- | ------------ | ----------------------------------------- |
+#' incomplete block design | ibd | trait = **subBlock** + genotype + \eqn{\epsilon} |
+#' resolvable incomplete block design | res.ibd | trait = *repId* + **repId:subBlock** + genotype + \eqn{\epsilon} |
+#' randomized complete block design | rcbd | trait = *repId* + genotype + \eqn{\epsilon} |
+#' row column design | rowcol | trait = **rowId** + **colId** + genotype + \eqn{\epsilon} |
+#' resolvable row column design | res.rowcol | trait = *repId* + **repId:rowId** + **repId:colId** + genotype + \eqn{\epsilon} |
+#'
+#' In the models above, fixed effects are indicated in *italics* whereas random
+#' effects are indicated in **bold**. genotype can be fitted as fixed or as
+#' random effect depending on the value of the parameter \code{what}. Extra
+#' fixed effects may be fitted using the parameter \code{covariates}.\cr\cr
+#' If \code{SpATS} is used as modeling engine, an extra spatial term is always
+#' included  in the model. This term is constructed using the function
 #' \code{\link[SpATS]{PSANOVA}} from the SpATS package as\cr
 #' \code{PSANOVA(colCoord, rowCoord, nseg = nSeg, nest.div = 2)}
 #' where\cr \code{nSeg = (number of columns / 2, number of rows / 2)}. nseg and
@@ -36,38 +35,44 @@
 #' The fitted random terms depend on the structure of the data. If the design
 #' has a regular structure, i.e. all replicates appear the same amount of times
 #' in the design, the following combinations of random and spatial terms are
-#' fitted
-#' \itemize{
-#' \item{random = NULL, spatial = exp(rowCoord):colCoord}
-#' \item{random = NULL, spatial = rowCoord:exp(colCoord)}
-#' \item{random = NULL, spatial = iexp(rowCoord,colCoord)}
-#' \item{random = repId:rowId, spatial = exp(rowCoord):colCoord}
-#' \item{random = repId:colId, spatial = rowCoord:exp(colCoord)}
-#' \item{random = repId:rowId + repId:colId, spatial = iexp(rowCoord,colCoord)}
-#' }
+#' fitted:
+#'
+#' random part | spatial part |
+#' --------------------------------------- | ------------ |
+#' random effects based on design | none
+#' random effects based on design | ar1(rowId):colId |
+#' random effects based on design | rowId:ar1(colId) |
+#' random effects based on design | ar1(rowId):ar1(colId) |
+#' random effects based on design  + nugget | ar1(rowId):colId |
+#' random effects based on design + nugget | rowId:ar1(colId) |
+#' random effects based on design + nugget | ar1(rowId):ar1(colId) |
+#'
 #' If the design is not regular the following combinations of random and spatial
-#' terms are fitted
-#' \itemize{
-#' \item{random = NULL, spatial = ar1(rowId):colId}
-#' \item{random = NULL, spatial = rowId:ar1(colId)}
-#' \item{random = NULL, spatial = ar1(rowId):ar1(colId)}
-#' \item{random = repId:rowId, spatial = ar1(rowId):colId}
-#' \item{random = repId:colId, spatial = rowId:ar1(colId)}
-#' \item{random = repId:rowId + repId:colId, spatial = ar1(rowId):ar1(colId)}
-#' }
-#' If there are no replicates in the model, repId is left out from the random
-#' parts above.
+#' terms are fitted:
+#'
+#' random part | spatial part |
+#' --------------------------------------- | ------------ |
+#' random effects based on design | none
+#' random effects based on design | exp(rowCoord):colCoord |
+#' random effects based on design | rowCoord:exp(colCoord) |
+#' random effects based on design | iexp(rowCoord, colCoord) |
+#' random effects based on design  + nugget | exp(rowCoord):colCoord |
+#' random effects based on design + nugget | rowCoord:exp(colCoord) |
+#' random effects based on design + nugget | iexp(rowCoord,colCoord) |
 #'
 #' @param TD An object of class \code{\link{TD}}.
-#' @param trials A character vector specifying the trials for modeling.
+#' @param trials A character vector specifying the trials for which the models
+#' should be fitted.
 #' @param design A character string specifying the experimental design. Either
 #' "ibd" (incomplete block design), "res.ibd" (resolvable incomplete block
 #' design), "rcbd" (randomized complete block design), "rowcol" (row column
-#' design) or "res.rowcol" (resolvable row column design).
-#' @param traits A character vector specifying the traits for modeling.
+#' design) or "res.rowcol" (resolvable row column design). Can be ignored when
+#' the trial design is specified in the meta data (see \code{\link{setMeta}}).
+#' @param traits A character vector specifying the traits for which the models
+#' should be fitted.
 #' @param what A character vector specifying whether "genotype" should
-#' be fitted as "fixed" or "random" effect. If not specified, both models
-#' are fitted.
+#' be fitted as fixed or random effect. If not specified, both models are
+#' fitted.
 #' @param covariates A character vector specifying covariates to be fitted as
 #' extra fixed effects in the model.
 #' @param useCheckId Should checkId be used as a fixed effect in the model?\cr
@@ -76,9 +81,9 @@
 #' only be fitted with SpATS and asreml. If SpATS is used for modeling, only
 #' spatial models can be fitted and spatial is always set to \code{TRUE}. If
 #' asreml is used, fitting spatial models is optional.
-#' @param engine A string specifying the name of the mixed modeling engine to
-#' use, either "SpATS", "lme4" or "asreml." For spatial models, "SpaTS" is used
-#' as default, for other models "lme4".
+#' @param engine A character string specifying the name of the mixed modeling
+#' engine to use, either "SpATS", "lme4" or "asreml." For spatial models,
+#' "SpaTS" is used as default, for other models "lme4".
 #' @param control An optional list with control parameters to be passed to the
 #' actual fitting functions. Currently \code{nSeg} and \code{nestDiv} are valid
 #' parameters when fitting a model using SpATS. They pass a value to nseg and
@@ -99,8 +104,8 @@
 #' \item{mFix}{A list of models fitted with genotype as fixed effect.}
 #' \item{TD}{An object of class \code{\link{TD}} containing the data on which
 #' \code{mRand} and \code{mFix} are based.}
-#' \item{traits}{A character vector indicating the traits for which the analysis
-#' is done.}
+#' \item{traits}{A character vector indicating the traits for which the models
+#' are fitted.}
 #' \item{design}{A character string containing the design of the trial.
 #' (see \code{\link{fitTD}} for the possible designs).}
 #' \item{spatial}{A character string indicating the spatial part of the model.
@@ -109,6 +114,8 @@
 #' analysis.}
 #' \item{predicted}{A character string indicating the variable that has been
 #' predicted.}
+#' \item{sumTab}{A data.frame with a summary table for the spatial models tried
+#' when \code{engine = "asreml"} and \code{spatial = TRUE}}
 #'
 #' @references
 #' Maria Xose Rodriguez-Alvarez, Martin P. Boer, Fred A. van Eeuwijk, Paul H.C.
@@ -126,7 +133,7 @@
 #' @examples
 #' ## Fit model using lme4.
 #' myModel1 <- fitTD(TD = TDHeat05, design = "ibd", traits = "yield",
-#'                       what = "fixed")
+#'                   what = "fixed", engine = "lme4")
 #'
 #' ## Summarize results.
 #' summary(myModel1)
@@ -136,28 +143,30 @@
 #'
 #' ## Create a pdf report summarizing results.
 #' \donttest{
-#' report(myModel1, outfile = tempfile(fileext = ".pdf"))
+#' report(myModel1, outfile = tempfile(fileext = ".pdf"), what = "fixed")
 #' }
 #'
 #' ## Fit model using SpATS.
 #' myModel2 <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
-#'                       what = "fixed")
+#'                   what = "fixed")
 #' summary(myModel2)
 #'
 #' ## Create spatial plots of the results.
 #' plot(myModel2, plotType = "spatial")
+#'
+#' ## Create a pdf report summarizing results.
 #' \donttest{
-#' report(myModel2, outfile = tempfile(fileext = ".pdf"))
+#' report(myModel2, outfile = tempfile(fileext = ".pdf"), what = "fixed")
 #' }
 #'
 #' ## Fit model using asreml.
 #' if (requireNamespace("asreml", quietly = TRUE)) {
 #'   myModel3 <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
-#'                    what = "fixed", engine = "asreml")
+#'                     what = "fixed", engine = "asreml")
 #'   summary(myModel3)
 #'
 #'   \donttest{
-#'   report(myModel3, outfile = tempfile(fileext = ".pdf"))
+#'   report(myModel3, outfile = tempfile(fileext = ".pdf"), what = "fixed")
 #'   }
 #' }
 #' @export

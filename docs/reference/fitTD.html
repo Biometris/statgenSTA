@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fit Single Trial Mixed Model — fitTD • statgenSTA</title>
+<title>Fit single trial mixed model — fitTD • statgenSTA</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,11 @@
 
 
 
-<meta property="og:title" content="Fit Single Trial Mixed Model — fitTD" />
+<meta property="og:title" content="Fit single trial mixed model — fitTD" />
 <meta property="og:description" content="Perform REML analysis given a specific experimental design using either
-SpATS, lme4 or asreml. SpATS is used as a default method when design is
-rowcol or res.rowcol, lme4 for other designs.
+SpATS, lme4 or asreml. SpATS is used as a default method when row
+coordinates (rowCoord) and column coordinates (colCoord) are present, lme4
+otherwise.
 See details for the exact models fitted." />
 
 
@@ -140,15 +141,16 @@ See details for the exact models fitted." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Fit Single Trial Mixed Model</h1>
+    <h1>Fit single trial mixed model</h1>
     <small class="dont-index">Source: <a href='https://github.com/Biometris/statgenSTA/blob/master/R/fitTD.R'><code>R/fitTD.R</code></a></small>
     <div class="hidden name"><code>fitTD.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>Perform REML analysis given a specific experimental design using either
-SpATS, lme4 or asreml. SpATS is used as a default method when design is
-rowcol or res.rowcol, lme4 for other designs.
+SpATS, lme4 or asreml. SpATS is used as a default method when row
+coordinates (rowCoord) and column coordinates (colCoord) are present, lme4
+otherwise.
 See details for the exact models fitted.</p>
     </div>
 
@@ -176,24 +178,27 @@ See details for the exact models fitted.</p>
     </tr>
     <tr>
       <th>trials</th>
-      <td><p>A character vector specifying the trials for modeling.</p></td>
+      <td><p>A character vector specifying the trials for which the models
+should be fitted.</p></td>
     </tr>
     <tr>
       <th>design</th>
       <td><p>A character string specifying the experimental design. Either
 "ibd" (incomplete block design), "res.ibd" (resolvable incomplete block
 design), "rcbd" (randomized complete block design), "rowcol" (row column
-design) or "res.rowcol" (resolvable row column design).</p></td>
+design) or "res.rowcol" (resolvable row column design). Can be ignored when
+the trial design is specified in the meta data (see <code><a href='getMeta.html'>setMeta</a></code>).</p></td>
     </tr>
     <tr>
       <th>traits</th>
-      <td><p>A character vector specifying the traits for modeling.</p></td>
+      <td><p>A character vector specifying the traits for which the models
+should be fitted.</p></td>
     </tr>
     <tr>
       <th>what</th>
       <td><p>A character vector specifying whether "genotype" should
-be fitted as "fixed" or "random" effect. If not specified, both models
-are fitted.</p></td>
+be fitted as fixed or random effect. If not specified, both models are
+fitted.</p></td>
     </tr>
     <tr>
       <th>covariates</th>
@@ -214,9 +219,9 @@ asreml is used, fitting spatial models is optional.</p></td>
     </tr>
     <tr>
       <th>engine</th>
-      <td><p>A string specifying the name of the mixed modeling engine to
-use, either "SpATS", "lme4" or "asreml." For spatial models, "SpaTS" is used
-as default, for other models "lme4".</p></td>
+      <td><p>A character string specifying the name of the mixed modeling
+engine to use, either "SpATS", "lme4" or "asreml." For spatial models,
+"SpaTS" is used as default, for other models "lme4".</p></td>
     </tr>
     <tr>
       <th>control</th>
@@ -250,8 +255,8 @@ that has been analyzed, a list of:</p>
 <dt>mFix</dt><dd><p>A list of models fitted with genotype as fixed effect.</p></dd>
 <dt>TD</dt><dd><p>An object of class <code><a href='TD.html'>TD</a></code> containing the data on which
 <code>mRand</code> and <code>mFix</code> are based.</p></dd>
-<dt>traits</dt><dd><p>A character vector indicating the traits for which the analysis
-is done.</p></dd>
+<dt>traits</dt><dd><p>A character vector indicating the traits for which the models
+are fitted.</p></dd>
 <dt>design</dt><dd><p>A character string containing the design of the trial.
 (see <code>fitTD</code> for the possible designs).</p></dd>
 <dt>spatial</dt><dd><p>A character string indicating the spatial part of the model.
@@ -260,27 +265,29 @@ is done.</p></dd>
 analysis.</p></dd>
 <dt>predicted</dt><dd><p>A character string indicating the variable that has been
 predicted.</p></dd>
+<dt>sumTab</dt><dd><p>A data.frame with a summary table for the spatial models tried
+when <code>engine = "asreml"</code> and <code>spatial = TRUE</code></p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The actual model fitted depends on the design. For the supported designs, the
-following models are used:</p><dl'>
-<dt>ibd</dt><dd><p>trait = genotype + <em>subBlock</em> + e</p></dd>
-<dt>res.ibd</dt><dd><p>trait = genotype + <strong>repId</strong> +
-<em>repId:subBlock</em> + e</p></dd>
-<dt>rcbd</dt><dd><p>trait = genotype + <strong>repId</strong> + e</p></dd>
-<dt>rowcol</dt><dd><p>trait = genotype + <em>rowId</em> + <em>colId</em> + e</p></dd>
-<dt>res.rowcol</dt><dd><p>trait = genotype + <strong>repId</strong> +
-<em>repId:rowId</em> + <em>repId:colId</em> + e</p></dd>
+following models are used:</p><table class='table'>
+<tr><td>design</td><td>code</td><td>model fitted</td></tr>
+<tr><td>incomplete block design</td><td>ibd</td><td>trait = <strong>subBlock</strong> + genotype + \(\epsilon\)</td></tr>
+<tr><td>resolvable incomplete block design</td><td>res.ibd</td><td>trait = <em>repId</em> + <strong>repId:subBlock</strong> + genotype + \(\epsilon\)</td></tr>
+<tr><td>randomized complete block design</td><td>rcbd</td><td>trait = <em>repId</em> + genotype + \(\epsilon\)</td></tr>
+<tr><td>row column design</td><td>rowcol</td><td>trait = <strong>rowId</strong> + <strong>colId</strong> + genotype + \(\epsilon\)</td></tr>
+<tr><td>resolvable row column design</td><td>res.rowcol</td><td>trait = <em>repId</em> + <strong>repId:rowId</strong> + <strong>repId:colId</strong> + genotype + \(\epsilon\)</td></tr>
+</table>
 
-</dl><p>In the above models fixed effects are indicated in <strong>bold</strong>, random
-effects in <em>italics</em>. genotype is fitted as fixed or random effect
-depending on the value of <code>what</code>.<br />
-In case <code>useCheckId = TRUE</code>, an extra fixed effect <strong>checkId</strong> is
-included in the model.<br />
-Variables in <code>covariates</code> are fitted as extra fixed effects.<br /><br />
-When <code>SpATS</code> is used for modeling, an extra spatial term is included
-in the model. This term is constructed using the function
+
+
+<p>In the models above, fixed effects are indicated in <em>italics</em> whereas random
+effects are indicated in <strong>bold</strong>. genotype can be fitted as fixed or as
+random effect depending on the value of the parameter <code>what</code>. Extra
+fixed effects may be fitted using the parameter <code>covariates</code>.<br /><br />
+If <code>SpATS</code> is used as modeling engine, an extra spatial term is always
+included  in the model. This term is constructed using the function
 <code><a href='https://rdrr.io/pkg/SpATS/man/PSANOVA.html'>PSANOVA</a></code> from the SpATS package as<br />
 <code>PSANOVA(colCoord, rowCoord, nseg = nSeg, nest.div = 2)</code>
 where<br /> <code>nSeg = (number of columns / 2, number of rows / 2)</code>. nseg and
@@ -293,23 +300,32 @@ default is AIC.
 The fitted random terms depend on the structure of the data. If the design
 has a regular structure, i.e. all replicates appear the same amount of times
 in the design, the following combinations of random and spatial terms are
-fitted</p><ul>
-<li><p>random = NULL, spatial = exp(rowCoord):colCoord</p></li>
-<li><p>random = NULL, spatial = rowCoord:exp(colCoord)</p></li>
-<li><p>random = NULL, spatial = iexp(rowCoord,colCoord)</p></li>
-<li><p>random = repId:rowId, spatial = exp(rowCoord):colCoord</p></li>
-<li><p>random = repId:colId, spatial = rowCoord:exp(colCoord)</p></li>
-<li><p>random = repId:rowId + repId:colId, spatial = iexp(rowCoord,colCoord)</p></li>
-</ul><p>If the design is not regular the following combinations of random and spatial
-terms are fitted</p><ul>
-<li><p>random = NULL, spatial = ar1(rowId):colId</p></li>
-<li><p>random = NULL, spatial = rowId:ar1(colId)</p></li>
-<li><p>random = NULL, spatial = ar1(rowId):ar1(colId)</p></li>
-<li><p>random = repId:rowId, spatial = ar1(rowId):colId</p></li>
-<li><p>random = repId:colId, spatial = rowId:ar1(colId)</p></li>
-<li><p>random = repId:rowId + repId:colId, spatial = ar1(rowId):ar1(colId)</p></li>
-</ul><p>If there are no replicates in the model, repId is left out from the random
-parts above.</p>
+fitted:</p><table class='table'>
+<tr><td>random part</td><td>spatial part</td></tr>
+<tr><td>random effects based on design</td><td>none</td></tr>
+<tr><td>random effects based on design</td><td>ar1(rowId):colId</td></tr>
+<tr><td>random effects based on design</td><td>rowId:ar1(colId)</td></tr>
+<tr><td>random effects based on design</td><td>ar1(rowId):ar1(colId)</td></tr>
+<tr><td>random effects based on design  + nugget</td><td>ar1(rowId):colId</td></tr>
+<tr><td>random effects based on design + nugget</td><td>rowId:ar1(colId)</td></tr>
+<tr><td>random effects based on design + nugget</td><td>ar1(rowId):ar1(colId)</td></tr>
+</table>
+
+
+
+<p>If the design is not regular the following combinations of random and spatial
+terms are fitted:</p><table class='table'>
+<tr><td>random part</td><td>spatial part</td></tr>
+<tr><td>random effects based on design</td><td>none</td></tr>
+<tr><td>random effects based on design</td><td>exp(rowCoord):colCoord</td></tr>
+<tr><td>random effects based on design</td><td>rowCoord:exp(colCoord)</td></tr>
+<tr><td>random effects based on design</td><td>iexp(rowCoord, colCoord)</td></tr>
+<tr><td>random effects based on design  + nugget</td><td>exp(rowCoord):colCoord</td></tr>
+<tr><td>random effects based on design + nugget</td><td>rowCoord:exp(colCoord)</td></tr>
+<tr><td>random effects based on design + nugget</td><td>iexp(rowCoord,colCoord)</td></tr>
+</table>
+
+
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Maria Xose Rodriguez-Alvarez, Martin P. Boer, Fred A. van Eeuwijk, Paul H.C.
@@ -325,7 +341,8 @@ Linear Mixed-Effects Models Using lme4. Journal of Statistical Software,
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Fit model using lme4.</span>
 <span class='no'>myModel1</span> <span class='kw'>&lt;-</span> <span class='fu'>fitTD</span>(<span class='kw'>TD</span> <span class='kw'>=</span> <span class='no'>TDHeat05</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='st'>"ibd"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"yield"</span>,
-                      <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'>
+                  <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"lme4"</span>)
+
 <span class='co'>## Summarize results.</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>myModel1</span>)</div><div class='output co'>#&gt; Summary statistics 
 #&gt; ==================
@@ -348,36 +365,35 @@ Linear Mixed-Effects Models Using lme4. Journal of Statistical Software,
 #&gt; ===============================
 #&gt; Best 20 genotypes
 #&gt;        BLUEs     SE
-#&gt; SB023 286.87 11.351
-#&gt; SB025 286.47 11.240
-#&gt; SB022 283.72 11.389
-#&gt; SB032 277.66 11.227
-#&gt; SB011 268.25 11.524
-#&gt; SB156 265.26 11.385
-#&gt; SB144 263.42 11.462
-#&gt; SB031 251.09 11.235
-#&gt; SB093 246.63 11.274
-#&gt; SB020 245.97 11.290
-#&gt; SB055 244.17 11.554
-#&gt; SB054 244.11 11.612
-#&gt; SB028 241.92 11.410
-#&gt; SB128 238.40 11.544
-#&gt; SB194 238.22 11.307
-#&gt; SB027 238.02 11.273
-#&gt; SB155 236.74 11.327
-#&gt; SB143 234.15 11.493
-#&gt; SB163 232.77 11.232
-#&gt; SB181 232.68 11.257</div><div class='input'>
+#&gt; SB023 302.84 30.194
+#&gt; SB025 297.84 30.194
+#&gt; SB022 285.13 30.194
+#&gt; SB032 280.96 30.194
+#&gt; SB011 272.45 30.194
+#&gt; SB156 262.77 30.194
+#&gt; SB055 253.21 30.194
+#&gt; SB020 253.08 30.194
+#&gt; SB144 251.55 30.194
+#&gt; SB045 250.07 30.194
+#&gt; SB054 246.51 30.194
+#&gt; SB031 245.69 30.338
+#&gt; SB027 244.27 30.194
+#&gt; SB128 243.91 30.338
+#&gt; SB194 239.22 30.194
+#&gt; SB077 238.66 30.194
+#&gt; SB093 236.58 30.194
+#&gt; SB106 233.86 30.194
+#&gt; SB041 232.83 30.194
+#&gt; SB143 232.41 30.194</div><div class='input'>
 <span class='co'>## Create base plots of the results.</span>
 <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>myModel1</span>)</div><div class='input'>
 <span class='co'>## Create a pdf report summarizing results.</span>
 <span class='co'># \donttest{</span>
-<span class='fu'><a href='report.html'>report</a></span>(<span class='no'>myModel1</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".pdf"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Model with genotype random not available for trial HEAT05.</span>
-#&gt; <span class='warning'>Report skipped.</span></div><div class='img'><img src='fitTD-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+<span class='fu'><a href='report.html'>report</a></span>(<span class='no'>myModel1</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".pdf"</span>), <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='img'><img src='fitTD-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
 
 <span class='co'>## Fit model using SpATS.</span>
 <span class='no'>myModel2</span> <span class='kw'>&lt;-</span> <span class='fu'>fitTD</span>(<span class='kw'>TD</span> <span class='kw'>=</span> <span class='no'>TDHeat05</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='st'>"res.rowcol"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"yield"</span>,
-                      <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>myModel2</span>)</div><div class='output co'>#&gt; Summary statistics 
+                  <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>myModel2</span>)</div><div class='output co'>#&gt; Summary statistics 
 #&gt; ==================
 #&gt; 
 #&gt; Summary statistics for yield in HEAT05  
@@ -419,21 +435,21 @@ Linear Mixed-Effects Models Using lme4. Journal of Statistical Software,
 #&gt; SB163 233.97 11.130
 #&gt; SB181 233.14 11.084</div><div class='input'>
 <span class='co'>## Create spatial plots of the results.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>myModel2</span>, <span class='kw'>plotType</span> <span class='kw'>=</span> <span class='st'>"spatial"</span>)</div><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'><a href='report.html'>report</a></span>(<span class='no'>myModel2</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".pdf"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Model with genotype random not available for trial HEAT05.</span>
-#&gt; <span class='warning'>Report skipped.</span></div><div class='input'><span class='co'># }</span>
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>myModel2</span>, <span class='kw'>plotType</span> <span class='kw'>=</span> <span class='st'>"spatial"</span>)</div><div class='input'>
+<span class='co'>## Create a pdf report summarizing results.</span>
+<span class='co'># \donttest{</span>
+<span class='fu'><a href='report.html'>report</a></span>(<span class='no'>myModel2</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".pdf"</span>), <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='input'><span class='co'># }</span>
 
 <span class='co'>## Fit model using asreml.</span>
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"asreml"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
   <span class='no'>myModel3</span> <span class='kw'>&lt;-</span> <span class='fu'>fitTD</span>(<span class='kw'>TD</span> <span class='kw'>=</span> <span class='no'>TDHeat05</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='st'>"res.rowcol"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"yield"</span>,
-                   <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"asreml"</span>)
+                    <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>, <span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"asreml"</span>)
   <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>myModel3</span>)
 
   <span class='co'># \donttest{</span>
-  <span class='fu'><a href='report.html'>report</a></span>(<span class='no'>myModel3</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".pdf"</span>))
+  <span class='fu'><a href='report.html'>report</a></span>(<span class='no'>myModel3</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".pdf"</span>), <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)
   <span class='co'># }</span>
-}</div><div class='output co'>#&gt; License check Thu Aug 20 13:49:02 2020</div><div class='output co'>#&gt; <span class='warning'>Warning: Model with genotype random not available for trial HEAT05.</span>
-#&gt; <span class='warning'>Report skipped.</span></div><div class='img'><img src='fitTD-2.png' alt='' width='700' height='433' /></div></pre>
+}</div><div class='output co'>#&gt; License check Fri Aug 21 16:44:52 2020</div><div class='img'><img src='fitTD-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

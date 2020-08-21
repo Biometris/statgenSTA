@@ -7,20 +7,20 @@
 \format{
 A data.frame with 4000 rows and 11 columns:
 \describe{
-  \item{rep}{replicate}
-  \item{bl}{block id}
-  \item{trt}{genotype}
-  \item{row}{row within the field}
-  \item{col}{column within the field}
-  \item{DH}{Days to Heading, the number of days from sowing till 50\% of
-  the spikes emerged}
-  \item{GY}{Grain Yield, in tons}
-  \item{NKS}{Number of Kernels per Spike, calculated from 25 randomly
-  selected spikes per plot}
-  \item{TKW}{Thousand Kernel Weight, in grams, calculated from 25 randomly
-  selected spikes per plot}
-  \item{trial}{trial, a combination of location and year}
-  \item{year}{year}
+\item{rep}{replicate}
+\item{bl}{block id}
+\item{trt}{genotype}
+\item{row}{row within the field}
+\item{col}{column within the field}
+\item{DH}{Days to Heading, the number of days from sowing till 50\\% of
+the spikes emerged}
+\item{GY}{Grain Yield, in tons}
+\item{NKS}{Number of Kernels per Spike, calculated from 25 randomly
+selected spikes per plot}
+\item{TKW}{Thousand Kernel Weight, in grams, calculated from 25 randomly
+selected spikes per plot}
+\item{trial}{trial, a combination of location and year}
+\item{year}{year}
 }
 }
 \source{

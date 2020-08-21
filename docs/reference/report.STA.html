@@ -42,7 +42,7 @@
 <meta property="og:title" content="Report method for class STA — report.STA" />
 <meta property="og:description" content="pdf reports will be created containing a summary of the results of the
 fitted model(s). For all selected trails and traits a separate pdf file will
-be generatd. Also a .tex file and a folder containing figures will be
+be generated. Also a .tex file and a folder containing figures will be
 created for each report to enable easy modifying of the report." />
 
 
@@ -148,7 +148,7 @@ created for each report to enable easy modifying of the report." />
     <div class="ref-description">
     <p>pdf reports will be created containing a summary of the results of the
 fitted model(s). For all selected trails and traits a separate pdf file will
-be generatd. Also a .tex file and a folder containing figures will be
+be generated. Also a .tex file and a folder containing figures will be
 created for each report to enable easy modifying of the report.</p>
     </div>
 
@@ -193,9 +193,9 @@ created for each report to enable easy modifying of the report.</p>
       <th>outfile</th>
       <td><p>A character string, the name and location of the output .pdf
 and .tex file for the report. If <code>NULL</code>, a report with a default name
-will be created in the current working directory. Trialname, traitname and
+will be created in the current working directory. Trial, trait and
 the type of model (genotype fixed or random) will be concatenated to the
-name of the outputfile.<br />
+name of the output file.<br />
 Both knitr and pdflatex don't work well with spaces in file paths and these
 are therefore disallowed. Relative paths are possible though.</p></td>
     </tr>
@@ -214,11 +214,11 @@ to recreate the report.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function uses pdflatex to create a pdf report. For it to run correctly
-an installation of LaTeX is requiered. Checking for this is done with
+an installation of LaTeX is required. Checking for this is done with
 Sys.which("pdflatex").</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other STA: 
+    <div class='dont-index'><p>Other functions for STA objects: 
 <code><a href='STAtoCross.html'>STAtoCross</a>()</code>,
 <code><a href='STAtoTD.html'>STAtoTD</a>()</code>,
 <code><a href='plot.STA.html'>plot.STA</a>()</code>,
@@ -226,7 +226,10 @@ Sys.which("pdflatex").</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Fit model using lme4.</span>
-<span class='no'>myModel1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span>(<span class='kw'>TD</span> <span class='kw'>=</span> <span class='no'>TDHeat05</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='st'>"ibd"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"yield"</span>)</div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'><span class='co'>## Create a pdf report summarizing the results for the model with genotype</span>
+<span class='no'>myModel1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span>(<span class='kw'>TD</span> <span class='kw'>=</span> <span class='no'>TDHeat05</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='st'>"ibd"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"yield"</span>,
+                  <span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"lme4"</span>)
+
+<span class='co'>## Create a pdf report summarizing the results for the model with genotype</span>
 <span class='co'>## as fixed factor.</span>
 <span class='co'># \donttest{</span>
 <span class='fu'><a href='report.html'>report</a></span>(<span class='no'>myModel1</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".pdf"</span>), <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)

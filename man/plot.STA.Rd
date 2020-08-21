@@ -33,7 +33,7 @@ genotype as fixed (\code{what = "fixed"}) or genotype as random
 (\code{what = "random"}) factor should be plotted.
 If \code{x} contains only one model this model is chosen automatically.}
 
-\item{plotType}{A Character string indicating whether \code{base} plots or
+\item{plotType}{A character string indicating whether \code{base} plots or
 \code{spatial} plots should be made.}
 
 \item{spaTrend}{A character string indicating how the spatial trend should
@@ -92,10 +92,10 @@ plot(myModel, what = "fixed", plotType = "spatial", spaTrend = "percentage")
 
 }
 \seealso{
-Other STA: 
+Other functions for STA objects: 
 \code{\link{STAtoCross}()},
 \code{\link{STAtoTD}()},
 \code{\link{report.STA}()},
 \code{\link{summary.STA}()}
 }
-\concept{STA}
+\concept{functions for STA objects}

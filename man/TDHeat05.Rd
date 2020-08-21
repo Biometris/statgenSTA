@@ -8,17 +8,17 @@
 A TD object, a list containing a data.frame with the following
 columns:
 \describe{
-  \item{trial}{trial, a combination of watering regime, year and nitrogen
-  treatment}
-  \item{genotype}{genotype}
-  \item{Plot}{plot number in the field}
-  \item{repId}{replicate}
-  \item{subBlock}{block id}
-  \item{rowId}{row within the field (as factor)}
-  \item{colId}{column within the field (as factor)}
-  \item{yield}{yield in grams per square meter}
-  \item{rowCoord}{row within the field (as numerical value)}
-  \item{colCoord}{column within the field (as numerical value)}
+\item{trial}{trial, a combination of watering regime, year and nitrogen
+treatment}
+\item{genotype}{genotype}
+\item{Plot}{plot number in the field}
+\item{repId}{replicate}
+\item{subBlock}{block id}
+\item{rowId}{row within the field (as factor)}
+\item{colId}{column within the field (as factor)}
+\item{yield}{yield in grams per square meter}
+\item{rowCoord}{row within the field (as numerical value)}
+\item{colCoord}{column within the field (as numerical value)}
 }
 }
 \usage{

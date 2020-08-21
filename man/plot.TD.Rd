@@ -23,11 +23,11 @@ section.}
 \item{plotType}{A single character string indicating which plot should be
 made. See the sections below for a detailed explanation of the plots.}
 
-\item{trials}{A character vector indicating the trials to be plotted when
-plotting field layouts. Only used if \code{plotType} = "layout" or "box".}
+\item{trials}{A character vector indicating which trials to include in the
+plot.}
 
-\item{traits}{A character vector indicating the traits to be plotted in
-a boxplot. Only used if \code{plotType} = "box" or "cor".}
+\item{traits}{A character vector indicating for which traits a plot should
+be made. Only used if \code{plotType} = "box", "cor", and "scatter".}
 
 \item{title}{A character string used a title for the plot. Note that when
 a title is specified and multiple plots are created, all plots will get the
@@ -45,22 +45,22 @@ extra parameters of the different plots is given in the sections below.
 }
 \section{Layout Plot}{
 
-Plots the layout of the selected trials (all available trials by default).
+Plots the layout of the selected trials.
 This plot can only be made for trials that contain both row (\code{rowCoord})
 and column (\code{colCoord}) information. If either one of those is missing
 the trial is skipped with a warning. If blocks (\code{subBlock}) are
-available for a trial these are indicated in different colors per block,
-otherwise all plots are colored in grey. If replicates (\code{repId}) are
-available a black line is plotted between diffent replicates. Missing plots
-are indicated in white. This can either be single plots in a trial or
+available for a trial these can be colored in different colors per block by
+setting \code{colorSubBlock = TRUE}. If replicates (\code{repId}) are
+available a black line is plotted between different replicates. Missing plots
+are indicated in white. These can either be single plots in a trial or
 complete missing columns or rows.\cr
 Extra parameter options:
 \describe{
-\item{showGeno}{Should individual genotypes be indicated in the plot?
+\item{showGeno}{Should individual genotypes be indicated as text in the plot?
 Defaults to \code{FALSE}}
 \item{highlight}{A character vector of genotypes to be highlighted in the
 plot.}
-\item{colorSubBlock}{Should subBlocks be colored with a different color per
+\item{colorSubBlock}{Should blocks be colored with a different color per
 subBlock? Defaults to \code{FALSE}. \code{colorSubBlock} is ignored when
 highlight is used to highlight genotypes.}
 }
@@ -69,13 +69,13 @@ highlight is used to highlight genotypes.}
 \section{Map Plot}{
 
 A map is plotted with the locations of the trials in the TD object.
-Mapping the trials is done based on lattitude and longitude that can be
-added when creating an object of class TD. Trials without latitude and/or
-longitude available are skipped with a warning message. The countries in
-which the trials are located will be plotted on a single map and the
-location of the trials will be indicated on this map. The actual plot is
-made using ggplot, but for getting the data for the borders of the countries
-the maps package is needed.\cr
+Mapping the trials is done based on latitude and longitude that can be
+added when creating an object of class TD. Trials for which either latitude
+or longitude is not available are skipped with a warning message.
+The countries in which the trials are located will be plotted on a single
+map and the location of the trials will be indicated on this map. The
+actual plot is made using ggplot, but for getting the data for the borders
+of the countries the maps package is needed.\cr
 Extra parameter options:
 \describe{
 \item{colorTrialBy}{A character string indicating a column in \code{TD} by
@@ -114,17 +114,18 @@ descending mean. Default boxes are ordered alphabetically.}
 
 \section{Correlation Plot}{
 
-Draws a heatmap of correlations between trials per selected trait. If
+Draws a heat map of correlations between trials per selected trait. If
 genotypes are replicated within trials genotypic means are taken before
-computing correlations. The order of the trials in the heatmap is determined
-by clustering them.
+computing correlations. The order of the trials in the heat map is determined
+by clustering them. Closely related trials will be plotted close to each
+other.
 }
 
 \section{Scatter Plot}{
 
 Draws a scatter plot matrix per selected trait. If genotypes are replicated
 within trials genotypic means are taken before plotting. The lower left of
-the matix contains scatter plots between trials. The diagonal contains
+the matrix contains scatter plots between trials. The diagonal contains
 histograms of the data per trial.\cr
 Extra parameter options:
 \describe{
@@ -140,9 +141,9 @@ single color when \code{colorTrialBy = NULL}, a vector of colors otherwise.}
 the plot matrix (left to right and top to bottom). This vector should be a
 permutation of all trials plotted.}
 \item{addCorr}{A character string indicating the position of the correlation
-diplayed in each plot, either "tl" for top left, "tr", for top right, "bl"
-for bottom left or "br" for bottom right. If \code{NULL}, the default, then
-no correlation is added to the plot.}
+between trials displayed in each plot, either "tl" for top left, "tr", for
+top right, "bl" for bottom left or "br" for bottom right. If \code{NULL},
+the default, then no correlation is added to the plot.}
 }
 }
 

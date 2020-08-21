@@ -52,10 +52,10 @@ summary(myModel)
 
 }
 \seealso{
-Other STA: 
+Other functions for STA objects: 
 \code{\link{STAtoCross}()},
 \code{\link{STAtoTD}()},
 \code{\link{plot.STA}()},
 \code{\link{report.STA}()}
 }
-\concept{STA}
+\concept{functions for STA objects}

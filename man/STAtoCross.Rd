@@ -53,7 +53,7 @@ imported into a cross object using the read.cross function in the qtl
 package.
 }
 \examples{
-## Run model using SpATS.
+## Fit model using SpATS.
 myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
                  what = "fixed")
 
@@ -66,10 +66,10 @@ cross <- STAtoCross(myModel, genoFile = system.file("extdata", "markers.csv",
 \seealso{
 \code{\link[qtl]{read.cross}}
 
-Other STA: 
+Other functions for STA objects: 
 \code{\link{STAtoTD}()},
 \code{\link{plot.STA}()},
 \code{\link{report.STA}()},
 \code{\link{summary.STA}()}
 }
-\concept{STA}
+\concept{functions for STA objects}

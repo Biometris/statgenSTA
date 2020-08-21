@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract statistics from Fitted Models — extractSTA • statgenSTA</title>
+<title>Extract statistics from fitted models — extractSTA • statgenSTA</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,21 @@
 
 
 
-<meta property="og:title" content="Extract statistics from Fitted Models — extractSTA" />
-<meta property="og:description" content="This function extracts and calculates various results for fitted models such
-as BLUEs, BLUPs, unit errors and heritabilities. Note that most results can
-only be calculated if a model is fitted with genotype as fixed or random.
-This is indicated in the list below with &quot;F&quot; and &quot;R&quot;" />
+<meta property="og:title" content="Extract statistics from fitted models — extractSTA" />
+<meta property="og:description" content="Extract and calculate various results for fitted models such as BLUEs, BLUPs,
+unit errors and heritabilities. For a full list of results that can be
+extracted, see Details.
+The result(s) to extract are specified in what. If a single result is
+extracted, if possible, this result is returned as a data.frame. If this is
+not possible, the result is returned as a list. If multiple results are
+extracted at the same time, these are always returned as a list. Where
+relevant, this behavior can be changed by specifying asDataFrame.
+Results that are returned as data.frame are marked as such in the data.frame
+column in the table in Details.
+Most results can only be calculated if a model is fitted with genotype as
+fixed or with genotype as random. E.g. to compute heritabilies a model should
+be fitted with genotype as random effect. This is indicated in the list
+in Details with &quot;F&quot; and &quot;R&quot; respectively." />
 
 
 
@@ -140,16 +150,26 @@ This is indicated in the list below with &quot;F&quot; and &quot;R&quot;" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract statistics from Fitted Models</h1>
+    <h1>Extract statistics from fitted models</h1>
     <small class="dont-index">Source: <a href='https://github.com/Biometris/statgenSTA/blob/master/R/extractSTA.R'><code>R/extractSTA.R</code></a></small>
     <div class="hidden name"><code>extractSTA.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function extracts and calculates various results for fitted models such
-as BLUEs, BLUPs, unit errors and heritabilities. Note that most results can
-only be calculated if a model is fitted with genotype as fixed or random.
-This is indicated in the list below with "F" and "R"</p>
+    <p>Extract and calculate various results for fitted models such as BLUEs, BLUPs,
+unit errors and heritabilities. For a full list of results that can be
+extracted, see Details.<br /><br />
+The result(s) to extract are specified in <code>what</code>. If a single result is
+extracted, if possible, this result is returned as a data.frame. If this is
+not possible, the result is returned as a list. If multiple results are
+extracted at the same time, these are always returned as a list. Where
+relevant, this behavior can be changed by specifying <code>asDataFrame</code>.
+Results that are returned as data.frame are marked as such in the data.frame
+column in the table in Details.<br /><br />
+Most results can only be calculated if a model is fitted with genotype as
+fixed or with genotype as random. E.g. to compute heritabilies a model should
+be fitted with genotype as random effect. This is indicated in the list
+in Details with "F" and "R" respectively.</p>
     </div>
 
     <pre class="usage"><span class='fu'>extractSTA</span>(
@@ -216,48 +236,36 @@ output of the extracted data?</p></td>
 list of those statistics.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Possible options for <code>what</code> are:</p><dl'>
-<dt>F - BLUEs</dt><dd><p>Best Lineair Unbiased Estimators.</p></dd>
-<dt>F - seBLUES</dt><dd><p>Standard errors of the BLUEs.</p></dd>
-<dt>R - BLUPs</dt><dd><p>Best Lineair Unbiased Predictors.</p></dd>
-<dt>R - seBLUPs</dt><dd><p>Standard errors of the BLUPs.</p></dd>
-<dt>F - ue</dt><dd><p>Unit errors - only for <code>lme4</code> and <code>asreml</code>.</p></dd>
-<dt>R - heritability</dt><dd><p>Heritability.</p></dd>
-<dt>F - varCompF</dt><dd><p>Variance components for model with genotype as fixed
-component.</p></dd>
-<dt>R - varCompR</dt><dd><p>Variance components for model with genotype as random
-component.</p></dd>
-<dt>R - varGen</dt><dd><p>Genetic variance component(s).</p></dd>
-<dt>R - varErr</dt><dd><p>Residual variance component(s) - only for <code>lme4</code>
-and <code>asreml</code>.</p></dd>
-<dt>R - varSpat</dt><dd><p>Spatial variance components - only for <code>SpATS</code>.</p></dd>
-<dt>F - fitted</dt><dd><p>Fitted values for the model with genotype as fixed
-component.</p></dd>
-<dt>F - residF</dt><dd><p>Residuals for the model with genotype as fixed component.</p></dd>
-<dt>F - stdResF</dt><dd><p>Standardized residuals for the model with genotype as
-fixed component</p></dd>
-<dt>R - rMeans</dt><dd><p>Fitted values for the model with genotype as random
-component.</p></dd>
-<dt>R - ranEf</dt><dd><p>Random genetic effects.</p></dd>
-<dt>F - residR</dt><dd><p>Residuals for the model with genotype as random component.</p></dd>
-<dt>F - stdResR</dt><dd><p>Standardized residuals for the model with genotype as
-random component</p></dd>
-<dt>F - wald</dt><dd><p>Results of the wald test - only for <code>lme4</code> and
-<code>asreml</code>.</p></dd>
-<dt>F - CV</dt><dd><p>Coefficient of variation - only for <code>lme4</code> and
-<code>asreml</code>.</p></dd>
-<dt>F - rDfF</dt><dd><p>Residual degrees of freedom for the model with genotype as
-fixed component.</p></dd>
-<dt>R - rDfR</dt><dd><p>Residual degrees of freedom for the model with genotype as
-random component.</p></dd>
-<dt>R - effDim</dt><dd><p>Effective dimensions - only for <code>SpATS</code>.</p></dd>
-<dt>R - ratEffDim</dt><dd><p>Ratio's of the effective dimensions -
-only for <code>SpATS</code>.</p></dd>
-<dt>F - sed</dt><dd><p>Standard error of difference - only for <code>asreml</code>.</p></dd>
-<dt>F - lsd</dt><dd><p>Least significant difference - only for <code>asreml</code>.</p></dd>
-<dt>all</dt><dd><p>All available statistics.</p></dd>
+    <p>Possible options for <code>what</code> are:</p><table class='table'>
+<tr><td>result</td><td>model</td><td>description</td><td>data.frame</td></tr>
+<tr><td>BLUEs</td><td>F</td><td>Best Linear Unbiased Estimators</td><td>yes</td></tr>
+<tr><td>seBLUEs</td><td>F</td><td>standard errors of the BLUEs</td><td>yes</td></tr>
+<tr><td>ue</td><td>F</td><td>unit errors - only for lme4 and asreml</td><td>yes</td></tr>
+<tr><td>varCompF</td><td>F</td><td>variance components for the model with genotype as fixed component</td><td></td></tr>
+<tr><td>fitted</td><td>F</td><td>fitted values for the model with genotype as fixed component</td><td>yes</td></tr>
+<tr><td>residF</td><td>F</td><td>residuals for the model with genotype as fixed component</td><td>yes</td></tr>
+<tr><td>stdResF</td><td>F</td><td>standardized residuals for the model with genotype as fixed component</td><td>yes</td></tr>
+<tr><td>wald</td><td>F</td><td>results of the wald test - only for lme4 and asreml</td><td></td></tr>
+<tr><td>CV</td><td>F</td><td>Coefficient of Variation - only for lme4 and asreml</td><td>yes</td></tr>
+<tr><td>rDfF</td><td>F</td><td>residual degrees of freedom for the model with genotype as fixed component</td><td>yes</td></tr>
+<tr><td>sed</td><td>F</td><td>standard error of difference - only for asreml</td><td></td></tr>
+<tr><td>lsd</td><td>F</td><td>least significant difference - only for asreml</td><td></td></tr>
+<tr><td>BLUPs</td><td>R</td><td>Best Linear Unbiased Predictors</td><td>yes</td></tr>
+<tr><td>seBLUPs</td><td>R</td><td>standard errors of the BLUPs</td><td>yes</td></tr>
+<tr><td>heritability</td><td>R</td><td>broad sense heritability</td><td>yes</td></tr>
+<tr><td>varCompR</td><td>R</td><td>variance components for the model with genotype as random component</td><td></td></tr>
+<tr><td>varGen</td><td>R</td><td>genetic variance component</td><td>yes</td></tr>
+<tr><td>varErr</td><td>R</td><td>residual variance component</td><td>yes</td></tr>
+<tr><td>varSpat</td><td>R</td><td>spatial variance components - only for SpATS</td><td></td></tr>
+<tr><td>rMeans</td><td>R</td><td>fitted values for the model with genotype as random component</td><td>yes</td></tr>
+<tr><td>ranEf</td><td>R</td><td>random genetic effects</td><td>yes</td></tr>
+<tr><td>residR</td><td>R</td><td>residuals for the model with genotype as random component</td><td>yes</td></tr>
+<tr><td>stdResR</td><td>R</td><td>standardized residuals for the model with genotype as random component</td><td>yes</td></tr>
+<tr><td>rDfR</td><td>R</td><td>residual degrees of freedom for the model with genotype as random component</td><td>yes</td></tr>
+<tr><td>effDim</td><td>R</td><td>effective dimensions - only for SpATS</td><td></td></tr>
+<tr><td>ratEffDim</td><td>R</td><td>ratios of the effective dimensions - only for SpATS</td><td></td></tr>
+</table>
 
-</dl>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

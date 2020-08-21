@@ -19,9 +19,9 @@
 
 \item{...}{Further arguments - currently not used.}
 
-\item{trial}{A character string specifying the trial to be summarised.}
+\item{trial}{A character string specifying the trial to be summarized.}
 
-\item{traits}{A character vector specifying the traits to be summarised.}
+\item{traits}{A character vector specifying the traits to be summarized.}
 
 \item{groupBy}{A character string specifying a column in TD by which the
 summary should be grouped. If \code{NULL}, no grouping is done.}
@@ -38,8 +38,8 @@ Possible options are:
 \item{min}{The minimum.}
 \item{max}{The maximum.}
 \item{range}{The range (maximum - minimum).}
-\item{firstQ}{The first (25\%) quantile.}
-\item{thirdQ}{The third (75\%) quantile.}
+\item{firstQ}{The first (25pct) quantile.}
+\item{thirdQ}{The third (75pct) quantile.}
 \item{sd}{The standard deviation.}
 \item{seMean}{The standard error of mean.}
 \item{var}{The variance.}

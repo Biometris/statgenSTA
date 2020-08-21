@@ -50,8 +50,8 @@ reference:
   - summary.STA
   - plot.STA
   - report.STA
-  - STAtoCross
   - STAtoTD
+  - STAtoCross
 - title: Outlier detection
 - contents:
   - outlierSTA

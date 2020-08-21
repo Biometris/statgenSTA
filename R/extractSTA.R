@@ -1,52 +1,30 @@
-#' Extract statistics from Fitted Models
+#' Extract statistics from fitted models
 #'
-#' This function extracts and calculates various results for fitted models such
-#' as BLUEs, BLUPs, unit errors and heritabilities. Note that most results can
-#' only be calculated if a model is fitted with genotype as fixed or random.
-#' This is indicated in the list below with "F" and "R"
+#' Extract and calculate various results for fitted models such as BLUEs, BLUPs,
+#' unit errors and heritabilities. For a full list of results that can be
+#' extracted, see Details.\cr\cr
+#' The result(s) to extract are specified in \code{what}. If a single result is
+#' extracted, if possible, this result is returned as a data.frame. If this is
+#' not possible, the result is returned as a list. If multiple results are
+#' extracted at the same time, these are always returned as a list. Where
+#' relevant, this behavior can be changed by specifying \code{asDataFrame}.
+#' Results that are returned as data.frame are marked as such in the data.frame
+#' column in the table in Details.\cr\cr
+#' Most results can only be calculated if a model is fitted with genotype as
+#' fixed or with genotype as random. E.g. to compute heritabilies a model should
+#' be fitted with genotype as random effect. This is indicated in the list
+#' in Details with "F" and "R" respectively.
 #'
 #' Possible options for \code{what} are:
-#' \describe{
-#' \item{F - BLUEs}{Best Lineair Unbiased Estimators.}
-#' \item{F - seBLUES}{Standard errors of the BLUEs.}
-#' \item{R - BLUPs}{Best Lineair Unbiased Predictors.}
-#' \item{R - seBLUPs}{Standard errors of the BLUPs.}
-#' \item{F - ue}{Unit errors - only for \code{lme4} and \code{asreml}.}
-#' \item{R - heritability}{Heritability.}
-#' \item{F - varCompF}{Variance components for model with genotype as fixed
-#' component.}
-#' \item{R - varCompR}{Variance components for model with genotype as random
-#' component.}
-#' \item{R - varGen}{Genetic variance component(s).}
-#' \item{R - varErr}{Residual variance component(s) - only for \code{lme4}
-#' and \code{asreml}.}
-#' \item{R - varSpat}{Spatial variance components - only for \code{SpATS}.}
-#' \item{F - fitted}{Fitted values for the model with genotype as fixed
-#' component.}
-#' \item{F - residF}{Residuals for the model with genotype as fixed component.}
-#' \item{F - stdResF}{Standardized residuals for the model with genotype as
-#' fixed component}
-#' \item{R - rMeans}{Fitted values for the model with genotype as random
-#' component.}
-#' \item{R - ranEf}{Random genetic effects.}
-#' \item{F - residR}{Residuals for the model with genotype as random component.}
-#' \item{F - stdResR}{Standardized residuals for the model with genotype as
-#' random component}
-#' \item{F - wald}{Results of the wald test - only for \code{lme4} and
-#' \code{asreml}.}
-#' \item{F - CV}{Coefficient of variation - only for \code{lme4} and
-#' \code{asreml}.}
-#' \item{F - rDfF}{Residual degrees of freedom for the model with genotype as
-#' fixed component.}
-#' \item{R - rDfR}{Residual degrees of freedom for the model with genotype as
-#' random component.}
-#' \item{R - effDim}{Effective dimensions - only for \code{SpATS}.}
-#' \item{R - ratEffDim}{Ratio's of the effective dimensions -
-#' only for \code{SpATS}.}
-#' \item{F - sed}{Standard error of difference - only for \code{asreml}.}
-#' \item{F - lsd}{Least significant difference - only for \code{asreml}.}
-#' \item{all}{All available statistics.}
-#' }
+#'
+#' ```{r extractOpts, results="as.is", echo=FALSE}
+#' ## Generate table of options for extract from internal data.
+#' optsTab <- statgenSTA:::extractOptions[, c("result", "model", "description")]
+#' optsTab[["data.frame"]] <-
+#' ifelse(statgenSTA:::extractOptions[["asDataFrame"]] == 0, "", "yes")
+#' optsTab <- optsTab[order(optsTab[["model"]]), ]
+#' knitr::kable(optsTab, align = c("llll"), row.names = FALSE)
+#' ```
 #'
 #' @param STA An object of class STA.
 #' @param trials A character vector of trials for which the statistics should be

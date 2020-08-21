@@ -2,7 +2,7 @@
 % Please edit documentation in R/extractSTA.R
 \name{extractSTA}
 \alias{extractSTA}
-\title{Extract statistics from Fitted Models}
+\title{Extract statistics from fitted models}
 \usage{
 extractSTA(
   STA,
@@ -49,53 +49,50 @@ A list with, per trial for which statistics have been extracted, a
 list of those statistics.
 }
 \description{
-This function extracts and calculates various results for fitted models such
-as BLUEs, BLUPs, unit errors and heritabilities. Note that most results can
-only be calculated if a model is fitted with genotype as fixed or random.
-This is indicated in the list below with "F" and "R"
+Extract and calculate various results for fitted models such as BLUEs, BLUPs,
+unit errors and heritabilities. For a full list of results that can be
+extracted, see Details.\cr\cr
+The result(s) to extract are specified in \code{what}. If a single result is
+extracted, if possible, this result is returned as a data.frame. If this is
+not possible, the result is returned as a list. If multiple results are
+extracted at the same time, these are always returned as a list. Where
+relevant, this behavior can be changed by specifying \code{asDataFrame}.
+Results that are returned as data.frame are marked as such in the data.frame
+column in the table in Details.\cr\cr
+Most results can only be calculated if a model is fitted with genotype as
+fixed or with genotype as random. E.g. to compute heritabilies a model should
+be fitted with genotype as random effect. This is indicated in the list
+in Details with "F" and "R" respectively.
 }
 \details{
-Possible options for \code{what} are:
-\describe{
-\item{F - BLUEs}{Best Lineair Unbiased Estimators.}
-\item{F - seBLUES}{Standard errors of the BLUEs.}
-\item{R - BLUPs}{Best Lineair Unbiased Predictors.}
-\item{R - seBLUPs}{Standard errors of the BLUPs.}
-\item{F - ue}{Unit errors - only for \code{lme4} and \code{asreml}.}
-\item{R - heritability}{Heritability.}
-\item{F - varCompF}{Variance components for model with genotype as fixed
-component.}
-\item{R - varCompR}{Variance components for model with genotype as random
-component.}
-\item{R - varGen}{Genetic variance component(s).}
-\item{R - varErr}{Residual variance component(s) - only for \code{lme4}
-and \code{asreml}.}
-\item{R - varSpat}{Spatial variance components - only for \code{SpATS}.}
-\item{F - fitted}{Fitted values for the model with genotype as fixed
-component.}
-\item{F - residF}{Residuals for the model with genotype as fixed component.}
-\item{F - stdResF}{Standardized residuals for the model with genotype as
-fixed component}
-\item{R - rMeans}{Fitted values for the model with genotype as random
-component.}
-\item{R - ranEf}{Random genetic effects.}
-\item{F - residR}{Residuals for the model with genotype as random component.}
-\item{F - stdResR}{Standardized residuals for the model with genotype as
-random component}
-\item{F - wald}{Results of the wald test - only for \code{lme4} and
-\code{asreml}.}
-\item{F - CV}{Coefficient of variation - only for \code{lme4} and
-\code{asreml}.}
-\item{F - rDfF}{Residual degrees of freedom for the model with genotype as
-fixed component.}
-\item{R - rDfR}{Residual degrees of freedom for the model with genotype as
-random component.}
-\item{R - effDim}{Effective dimensions - only for \code{SpATS}.}
-\item{R - ratEffDim}{Ratio's of the effective dimensions -
-only for \code{SpATS}.}
-\item{F - sed}{Standard error of difference - only for \code{asreml}.}
-\item{F - lsd}{Least significant difference - only for \code{asreml}.}
-\item{all}{All available statistics.}
+Possible options for \code{what} are:\tabular{llll}{
+   result \tab model \tab description \tab data.frame \cr
+   BLUEs \tab F \tab Best Linear Unbiased Estimators \tab yes \cr
+   seBLUEs \tab F \tab standard errors of the BLUEs \tab yes \cr
+   ue \tab F \tab unit errors - only for lme4 and asreml \tab yes \cr
+   varCompF \tab F \tab variance components for the model with genotype as fixed component \tab  \cr
+   fitted \tab F \tab fitted values for the model with genotype as fixed component \tab yes \cr
+   residF \tab F \tab residuals for the model with genotype as fixed component \tab yes \cr
+   stdResF \tab F \tab standardized residuals for the model with genotype as fixed component \tab yes \cr
+   wald \tab F \tab results of the wald test - only for lme4 and asreml \tab  \cr
+   CV \tab F \tab Coefficient of Variation - only for lme4 and asreml \tab yes \cr
+   rDfF \tab F \tab residual degrees of freedom for the model with genotype as fixed component \tab yes \cr
+   sed \tab F \tab standard error of difference - only for asreml \tab  \cr
+   lsd \tab F \tab least significant difference - only for asreml \tab  \cr
+   BLUPs \tab R \tab Best Linear Unbiased Predictors \tab yes \cr
+   seBLUPs \tab R \tab standard errors of the BLUPs \tab yes \cr
+   heritability \tab R \tab broad sense heritability \tab yes \cr
+   varCompR \tab R \tab variance components for the model with genotype as random component \tab  \cr
+   varGen \tab R \tab genetic variance component \tab yes \cr
+   varErr \tab R \tab residual variance component \tab yes \cr
+   varSpat \tab R \tab spatial variance components - only for SpATS \tab  \cr
+   rMeans \tab R \tab fitted values for the model with genotype as random component \tab yes \cr
+   ranEf \tab R \tab random genetic effects \tab yes \cr
+   residR \tab R \tab residuals for the model with genotype as random component \tab yes \cr
+   stdResR \tab R \tab standardized residuals for the model with genotype as random component \tab yes \cr
+   rDfR \tab R \tab residual degrees of freedom for the model with genotype as random component \tab yes \cr
+   effDim \tab R \tab effective dimensions - only for SpATS \tab  \cr
+   ratEffDim \tab R \tab ratios of the effective dimensions - only for SpATS \tab  \cr
 }
 }
 \examples{

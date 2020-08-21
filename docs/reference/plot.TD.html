@@ -184,13 +184,13 @@ made. See the sections below for a detailed explanation of the plots.</p></td>
     </tr>
     <tr>
       <th>trials</th>
-      <td><p>A character vector indicating the trials to be plotted when
-plotting field layouts. Only used if <code>plotType</code> = "layout" or "box".</p></td>
+      <td><p>A character vector indicating which trials to include in the
+plot.</p></td>
     </tr>
     <tr>
       <th>traits</th>
-      <td><p>A character vector indicating the traits to be plotted in
-a boxplot. Only used if <code>plotType</code> = "box" or "cor".</p></td>
+      <td><p>A character vector indicating for which traits a plot should
+be made. Only used if <code>plotType</code> = "box", "cor", and "scatter".</p></td>
     </tr>
     <tr>
       <th>title</th>
@@ -209,21 +209,21 @@ same title.</p></td>
 
     
 
-<p>Plots the layout of the selected trials (all available trials by default).
+<p>Plots the layout of the selected trials.
 This plot can only be made for trials that contain both row (<code>rowCoord</code>)
 and column (<code>colCoord</code>) information. If either one of those is missing
 the trial is skipped with a warning. If blocks (<code>subBlock</code>) are
-available for a trial these are indicated in different colors per block,
-otherwise all plots are colored in grey. If replicates (<code>repId</code>) are
-available a black line is plotted between diffent replicates. Missing plots
-are indicated in white. This can either be single plots in a trial or
+available for a trial these can be colored in different colors per block by
+setting <code>colorSubBlock = TRUE</code>. If replicates (<code>repId</code>) are
+available a black line is plotted between different replicates. Missing plots
+are indicated in white. These can either be single plots in a trial or
 complete missing columns or rows.<br />
 Extra parameter options:</p><dl'>
-<dt>showGeno</dt><dd><p>Should individual genotypes be indicated in the plot?
+<dt>showGeno</dt><dd><p>Should individual genotypes be indicated as text in the plot?
 Defaults to <code>FALSE</code></p></dd>
 <dt>highlight</dt><dd><p>A character vector of genotypes to be highlighted in the
 plot.</p></dd>
-<dt>colorSubBlock</dt><dd><p>Should subBlocks be colored with a different color per
+<dt>colorSubBlock</dt><dd><p>Should blocks be colored with a different color per
 subBlock? Defaults to <code>FALSE</code>. <code>colorSubBlock</code> is ignored when
 highlight is used to highlight genotypes.</p></dd>
 
@@ -234,13 +234,13 @@ highlight is used to highlight genotypes.</p></dd>
     
 
 <p>A map is plotted with the locations of the trials in the TD object.
-Mapping the trials is done based on lattitude and longitude that can be
-added when creating an object of class TD. Trials without latitude and/or
-longitude available are skipped with a warning message. The countries in
-which the trials are located will be plotted on a single map and the
-location of the trials will be indicated on this map. The actual plot is
-made using ggplot, but for getting the data for the borders of the countries
-the maps package is needed.<br />
+Mapping the trials is done based on latitude and longitude that can be
+added when creating an object of class TD. Trials for which either latitude
+or longitude is not available are skipped with a warning message.
+The countries in which the trials are located will be plotted on a single
+map and the location of the trials will be indicated on this map. The
+actual plot is made using ggplot, but for getting the data for the borders
+of the countries the maps package is needed.<br />
 Extra parameter options:</p><dl'>
 <dt>colorTrialBy</dt><dd><p>A character string indicating a column in <code>TD</code> by
 which the trials on the map are colored.</p></dd>
@@ -281,17 +281,18 @@ descending mean. Default boxes are ordered alphabetically.</p></dd>
 
     
 
-<p>Draws a heatmap of correlations between trials per selected trait. If
+<p>Draws a heat map of correlations between trials per selected trait. If
 genotypes are replicated within trials genotypic means are taken before
-computing correlations. The order of the trials in the heatmap is determined
-by clustering them.</p>
+computing correlations. The order of the trials in the heat map is determined
+by clustering them. Closely related trials will be plotted close to each
+other.</p>
     <h2 class="hasAnchor" id="scatter-plot"><a class="anchor" href="#scatter-plot"></a>Scatter Plot</h2>
 
     
 
 <p>Draws a scatter plot matrix per selected trait. If genotypes are replicated
 within trials genotypic means are taken before plotting. The lower left of
-the matix contains scatter plots between trials. The diagonal contains
+the matrix contains scatter plots between trials. The diagonal contains
 histograms of the data per trial.<br />
 Extra parameter options:</p><dl'>
 <dt>colorGenoBy</dt><dd><p>A character string indicating a column in <code>TD</code> by
@@ -306,9 +307,9 @@ single color when <code>colorTrialBy = NULL</code>, a vector of colors otherwise
 the plot matrix (left to right and top to bottom). This vector should be a
 permutation of all trials plotted.</p></dd>
 <dt>addCorr</dt><dd><p>A character string indicating the position of the correlation
-diplayed in each plot, either "tl" for top left, "tr", for top right, "bl"
-for bottom left or "br" for bottom right. If <code>NULL</code>, the default, then
-no correlation is added to the plot.</p></dd>
+between trials displayed in each plot, either "tl" for top left, "tr", for
+top right, "bl" for bottom left or "br" for bottom right. If <code>NULL</code>,
+the default, then no correlation is added to the plot.</p></dd>
 
 </dl>
 

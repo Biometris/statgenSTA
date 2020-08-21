@@ -23,7 +23,7 @@ they will appear as \code{statistic_trait} in the output}
 TD object. If \code{NULL}, all traits are exported.}
 
 \item{keep}{Columns from the TD object used as input for the STA model to
-be copied to the output. see \code{\link{extract}} for possible columns to
+be copied to the output. see \code{\link{extractSTA}} for possible columns to
 copy. If if it is available in \code{TD}, the column \code{trial} will always
 be copied.}
 
@@ -38,7 +38,7 @@ To be able to use the output of a single trial analysis in
 Genotype-by-Environment (GxE) analysis the output first needs to be converted
 back to an TD object. This function does exactly that. It extracts BLUEs,
 BLUPs and their standard errors from the STA object and creates a new TD
-object using these. Also a column "wt" (weigth) may also be added. Weights
+object using these. Also a column "wt" (weight) may also be added. Weights
 are then calculated as 1/(SE BLUEs) ^ 2.
 }
 \details{
@@ -46,22 +46,22 @@ Trial information for the trials in the STA object will be copied from the
 original TD object on which the modeling was done.
 }
 \examples{
-## Run model using SpATS.
+## Fit model using SpATS.
 myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
-                      what = "fixed")
+                 what = "fixed")
 
 ## Create TD object from the fitted model with BLUEs and standard errors.
-myTD <- STAtoTD(myModel)
+myTD <- STAtoTD(myModel, what = c("BLUEs", "seBLUEs"))
 
 ## Add a weight column in the output.
-myTDWt <- STAtoTD(myModel, addWt = TRUE)
+myTDWt <- STAtoTD(myModel, what = c("BLUEs", "seBLUEs"), addWt = TRUE)
 
 }
 \seealso{
-Other STA: 
+Other functions for STA objects: 
 \code{\link{STAtoCross}()},
 \code{\link{plot.STA}()},
 \code{\link{report.STA}()},
 \code{\link{summary.STA}()}
 }
-\concept{STA}
+\concept{functions for STA objects}

@@ -20,12 +20,12 @@ outlierSTA(
 \item{trials}{A character vector specifying the trials for which outliers
 should be identified. If \code{trials = NULL}, all trials are included.}
 
-\item{traits}{A character vector specifying the names of the traits for
-which outliers should be identified.}
+\item{traits}{A character vector specifying the traits for which outliers
+should be identified.}
 
 \item{what}{A character string indicating whether the outliers should be
 identified for the fitted model with genotype as fixed
-(\code{what = "fixed"})or genotype as random (\code{what = "random"}) factor.
+(\code{what = "fixed"}) or genotype as random (\code{what = "random"}) factor.
 If \code{STA} contains only one model this model is chosen automatically.}
 
 \item{rLimit}{A numerical value used for determining when a value is
@@ -51,7 +51,7 @@ similar to the outliers as defined by \code{commonFactors}}
 \description{
 Function to identify observations with standardized residuals exceeding
 \code{rLimit}. If not provided \code{rLimit} is computed as
-\code{qnorm(1 - 0.5 / rDf)} where \code{rDf} are the residual degrees
+\code{qnorm(1 - 0.5 / rDf)} where \code{rDf} is the residual degrees
 of freedom for the model. This value is then restricted to the interval
 2..4. Alternatively a custom limit may be provided.\cr
 If \code{verbose = TRUE} a summary is printed of outliers and observations

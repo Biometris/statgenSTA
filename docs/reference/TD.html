@@ -333,7 +333,7 @@ be the same as colCoord.</p></td>
 the trials. This will be used as default names when creating plots and
 summaries. If no locations are provided, first the column loc is considered.
 If this contains one unique value for a trial this is used as trLocation.
-Otherwise the trialname is used.</p></td>
+Otherwise the trial name is used.</p></td>
     </tr>
     <tr>
       <th>trDate</th>
@@ -360,8 +360,7 @@ latitudes of the trials on a scale of -90 to 90.</p></td>
       <th>trLong</th>
       <td><p>An optional character string indicating the column in
 <code>data</code> that contains the latitude of the trial or a numerical vector
-indicating the longitudes of the trials on a scale of -180 to 180. If
-<code>trLong</code> is not provided longitude will be taken from <code>long</code>.</p></td>
+indicating the longitudes of the trials on a scale of -180 to 180.</p></td>
     </tr>
     <tr>
       <th>trPlWidth</th>
@@ -399,7 +398,7 @@ for trial, the list will contain one item named after the input data.</p>
 <code><a href='summary.TD.html'>summary.TD</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Create a data.frame with to be converted to TD object.</span>
+    <pre class="examples"><div class='input'><span class='co'>## Create a data.frame to be converted to TD object.</span>
 <span class='co'>## The data consists of genotype, trial, row and column information and</span>
 <span class='co'>## two traits, yield and flowering time.</span>
 <span class='no'>datT1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>geno</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"G"</span>, <span class='fl'>1</span>:<span class='fl'>10</span>), <span class='kw'>tr</span> <span class='kw'>=</span> <span class='st'>"T1"</span>,
@@ -411,7 +410,7 @@ for trial, the list will contain one item named after the input data.</p>
                  <span class='kw'>rowCoord</span> <span class='kw'>=</span> <span class='st'>"row"</span>, <span class='kw'>colCoord</span> <span class='kw'>=</span> <span class='st'>"col"</span>)
 
 <span class='co'>## Create a second data.frame similar to the first with data for a second trial.</span>
-<span class='no'>datT2</span><span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>geno</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"G"</span>, <span class='fl'>1</span>:<span class='fl'>10</span>), <span class='kw'>tr</span> <span class='kw'>=</span> <span class='st'>"T2"</span>,
+<span class='no'>datT2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>geno</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"G"</span>, <span class='fl'>1</span>:<span class='fl'>10</span>), <span class='kw'>tr</span> <span class='kw'>=</span> <span class='st'>"T2"</span>,
                     <span class='kw'>row</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>5</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>2</span>),
                     <span class='kw'>yield</span> <span class='kw'>=</span> <span class='fl'>10</span>:<span class='fl'>1</span>, <span class='kw'>flowering</span> <span class='kw'>=</span> <span class='fl'>12</span>:<span class='fl'>3</span>)
 

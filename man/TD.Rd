@@ -104,7 +104,7 @@ be the same as colCoord.}
 the trials. This will be used as default names when creating plots and
 summaries. If no locations are provided, first the column loc is considered.
 If this contains one unique value for a trial this is used as trLocation.
-Otherwise the trialname is used.}
+Otherwise the trial name is used.}
 
 \item{trDate}{An optional character string indicating the column in
 \code{data} that contains the date of the trial or a date vector indicating
@@ -123,8 +123,7 @@ latitudes of the trials on a scale of -90 to 90.}
 
 \item{trLong}{An optional character string indicating the column in
 \code{data} that contains the latitude of the trial or a numerical vector
-indicating the longitudes of the trials on a scale of -180 to 180. If
-\code{trLong} is not provided longitude will be taken from \code{long}.}
+indicating the longitudes of the trials on a scale of -180 to 180.}
 
 \item{trPlWidth}{An optional positive numerical vector indicating the
 widths of the plots.}
@@ -180,7 +179,7 @@ class TD.\cr\cr
 \code{\link{summary.TD}} and \code{\link{plot.TD}} methods are available.
 }
 \examples{
-## Create a data.frame with to be converted to TD object.
+## Create a data.frame to be converted to TD object.
 ## The data consists of genotype, trial, row and column information and
 ## two traits, yield and flowering time.
 datT1 <- data.frame(geno = paste0("G", 1:10), tr = "T1",
@@ -192,7 +191,7 @@ TDT1 <- createTD(data = datT1, genotype = "geno", trial = "tr",
                  rowCoord = "row", colCoord = "col")
 
 ## Create a second data.frame similar to the first with data for a second trial.
-datT2<- data.frame(geno = paste0("G", 1:10), tr = "T2",
+datT2 <- data.frame(geno = paste0("G", 1:10), tr = "T2",
                     row = rep(1:2, each = 5), col = rep(1:5, times = 2),
                     yield = 10:1, flowering = 12:3)
 

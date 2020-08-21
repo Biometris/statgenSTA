@@ -221,14 +221,14 @@ See <code><a href='https://rdrr.io/pkg/qtl/man/read.cross.html'>read.cross</a></
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/qtl/man/read.cross.html'>read.cross</a></code></p>
-<p>Other STA: 
+<p>Other functions for STA objects: 
 <code><a href='STAtoTD.html'>STAtoTD</a>()</code>,
 <code><a href='plot.STA.html'>plot.STA</a>()</code>,
 <code><a href='report.STA.html'>report.STA</a>()</code>,
 <code><a href='summary.STA.html'>summary.STA</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Run model using SpATS.</span>
+    <pre class="examples"><div class='input'><span class='co'>## Fit model using SpATS.</span>
 <span class='no'>myModel</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span>(<span class='kw'>TD</span> <span class='kw'>=</span> <span class='no'>TDHeat05</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='st'>"res.rowcol"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"yield"</span>,
                  <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'>
 <span class='co'>## Create cross object with BLUEs from myModel using genotypic information</span>
