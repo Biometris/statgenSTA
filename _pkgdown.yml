@@ -19,10 +19,10 @@ navbar:
       text: "other packages"
       menu:
         - text: "statgenGWAS"
-          href: https://github.com/Biometris/statgenGWAS/index.html
+          href: https://biometris.github.io/statgenGWAS
     - icon: fa-github fa-lg
       text: "github"
-      href: https://biometris.github.io/statgenSTA/index.html
+      href: https://github.com/Biometris/statgenSTA
 
 
 articles:

@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 
 Analysis can be done using one of the R packages **SpATS**, **lme4** or **asreml**. For the latter a license is required which can be obtained upon purchase from [VSNi](<http://www.vsni.co.uk/software/asreml-r>).
 
-statgenSTA has extensive options for summarizing and visualizing both the raw data and the fitted models. The example below shows a selection of what is possible. For a full overview of all options it is best to read the [**vignette**](https://biometris.github.io/statgenSTA/articles)
+statgenSTA has extensive options for summarizing and visualizing both the raw data and the fitted models. The example below shows a selection of what is possible. For a full overview of all options it is best to read the [**vignette**](https://biometris.github.io/statgenSTA/articles/statgenSTA.html)
 
 ## Installation
 

@@ -20,7 +20,8 @@ upon purchase from [VSNi](http://www.vsni.co.uk/software/asreml-r).
 statgenSTA has extensive options for summarizing and visualizing both
 the raw data and the fitted models. The example below shows a selection
 of what is possible. For a full overview of all options it is best to
-read the [**vignette**](https://biometris.github.io/statgenSTA/articles)
+read the
+[**vignette**](https://biometris.github.io/statgenSTA/articles/statgenSTA.html)
 
 ## Installation
 
