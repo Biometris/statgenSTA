@@ -1135,6 +1135,7 @@ plot.TD <- function(x,
       orderBy <- "alphabetic"
     }
     p <- setNames(vector(mode = "list", length = length(traits)), traits)
+    colorTrialByIn <- colorTrialBy
     for (trait in traits) {
       ## Create a single data.frame from x with only columns trial, trait and
       ## genotype.
@@ -1223,6 +1224,7 @@ plot.TD <- function(x,
       if (output) {
         plot(pTr)
       }
+      colorTrialBy <- colorTrialByIn
     }
   } else if (plotType == "cor") {
     if (length(trials) == 1) {
