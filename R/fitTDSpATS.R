@@ -181,6 +181,9 @@ fitTDSpATS <- function(TD,
   ## Based on TDTr so dropped levels are dropped in output.
   ## Needs attribute from TD[trial].
   TDOut <- createTD(data = TDTr)
+  ## If trial was not a column in TDTr the name of the trial is lost and
+  ## replaced by "TDTr". To prevent this readd the name.
+  names(TDOut) <- trial
   attr(x = TDOut[[trial]], which = "renamedCols") <-
     attr(x = TDTr, which = "renamedCols")
   ## Spatial model is always the same.
