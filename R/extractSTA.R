@@ -89,7 +89,11 @@ extractSTA <- function(STA,
       stop("Converting output to data.frame is only possible if what has ",
            "lenght 1.\n")
     }
-    keep <- unique(c("trial", keep))
+    ## Trial is added to keep columns, but only if a trial column is
+    ## actually present in the data.
+    keep <- unique(c(if (length(STA) != 1 ||
+                         hasName(STA[[1]]$TD[[1]], "trial")) "trial",
+                     keep))
   }
   resTot <- sapply(X = trials, FUN = function(trial) {
     STATr <- STA[[trial]]
