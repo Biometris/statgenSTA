@@ -99,7 +99,7 @@ See details for the exact models fitted.
 \details{
 The actual model fitted depends on the design. For the supported designs, the
 following models are used:\tabular{lll}{
-   design \tab code \tab model fitted \cr
+   Design \tab Code \tab Model fitted \cr
    incomplete block design \tab ibd \tab trait = \strong{subBlock} + genotype + \eqn{\epsilon} \cr
    resolvable incomplete block design \tab res.ibd \tab trait = \emph{repId} + \strong{repId:subBlock} + genotype + \eqn{\epsilon} \cr
    randomized complete block design \tab rcbd \tab trait = \emph{repId} + genotype + \eqn{\epsilon} \cr
@@ -127,7 +127,7 @@ The fitted random terms depend on the structure of the data. If the design
 has a regular structure, i.e. all replicates appear the same amount of times
 in the design, the following combinations of random and spatial terms are
 fitted:\tabular{ll}{
-   random part \tab spatial part \cr
+   Random part \tab Spatial part \cr
    random effects based on design \tab none \cr
    random effects based on design \tab ar1(rowId):colId \cr
    random effects based on design \tab rowId:ar1(colId) \cr
@@ -140,7 +140,7 @@ fitted:\tabular{ll}{
 
 If the design is not regular the following combinations of random and spatial
 terms are fitted:\tabular{ll}{
-   random part \tab spatial part \cr
+   Random part \tab Spatial part \cr
    random effects based on design \tab none \cr
    random effects based on design \tab exp(rowCoord):colCoord \cr
    random effects based on design \tab rowCoord:exp(colCoord) \cr
@@ -172,7 +172,9 @@ myModel2 <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
 summary(myModel2)
 
 ## Create spatial plots of the results.
+\donttest{
 plot(myModel2, plotType = "spatial")
+}
 
 ## Create a pdf report summarizing results.
 \donttest{

@@ -25,7 +25,7 @@
 #'   \item{year}{year}
 #' }
 #'
-#' @source \url{http://www.g3journal.org/content/3/12/2105/}
+#' @source \url{https://www.g3journal.org/content/3/12/2105/}
 #'
 #' @references Lado, Bettina, Ivan Matus, Alejandra Rodríguez, Luis Inostroza,
 #' Jesse Poland, François Belzile, Alejandro del Pozo, Martín Quincke,

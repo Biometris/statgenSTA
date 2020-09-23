@@ -12,7 +12,7 @@
 
 <meta name="author" content="Bart-Jan van Rossum" />
 
-<meta name="date" content="2020-08-21" />
+<meta name="date" content="2020-09-22" />
 
 <title>Modeling field trials using statgenSTA</title>
 
@@ -319,7 +319,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Modeling field trials using statgenSTA</h1>
 <h4 class="author">Bart-Jan van Rossum</h4>
-<h4 class="date">2020-08-21</h4>
+<h4 class="date">2020-09-22</h4>
 
 
 
@@ -589,7 +589,7 @@ If SpATS is used as modeling engine, an extra spatial term is always included in
 <p>Using the <code>TD</code> object wheatTD from the previous section, a model for the trial SR_FI_11 and trait GY can now be fitted on the data. The trial was set up using a resolvable row column design. This is specified in <code>fitTD</code> using the parameter <code>design</code>. Since <code>engine</code> is not supplied as a parameter, SpATS is used for fitting the model.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co">## Fit a single trial model using a model based on a resovable row column design.</span></span>
 <span id="cb17-2"><a href="#cb17-2"></a>modWheatSp &lt;-<span class="st"> </span><span class="kw">fitTD</span>(<span class="dt">TD =</span> wheatTD, <span class="dt">trials =</span> <span class="st">&quot;SR_FI_11&quot;</span>, <span class="dt">traits =</span> <span class="st">&quot;GY&quot;</span>, <span class="dt">design =</span> <span class="st">&quot;res.rowcol&quot;</span>)</span></code></pre></div>
-<p>Note that by not supplying the <code>what</code> argument to the function, two models are fitted, one with genotype as a fixed effect and one with genotype as a random effect. The results of both these models are stored in the <code>STA</code> object <code>modWheatSp</code>. This is very useful for extracting different results from the model later on. A trade-off is that fitting two models takes more time than fitting only one so when fitting models on large datasets it is sensible to explicitly define <code>what</code> if only a subset of the results is needed as output.</p>
+<p>Note that by not supplying the <code>what</code> argument to the function, two models are fitted, one with genotype as a fixed effect and one with genotype as a random effect. The results of both these models are stored in the <code>STA</code> object <code>modWheatSp</code>. This is very useful for extracting different results from the model later on. A trade-off is that fitting two models takes more time than fitting only one so when fitting models on large data sets it is sensible to explicitly define <code>what</code> if only a subset of the results is needed as output.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co">## Fit a single trial model with genotype as random effect.</span></span>
 <span id="cb18-2"><a href="#cb18-2"></a>modWheatSp2 &lt;-<span class="st"> </span><span class="kw">fitTD</span>(<span class="dt">TD =</span> wheatTD, <span class="dt">trials =</span> <span class="st">&quot;SR_FI_11&quot;</span>, <span class="dt">traits =</span> <span class="st">&quot;GY&quot;</span>, </span>
 <span id="cb18-3"><a href="#cb18-3"></a>                     <span class="dt">what =</span> <span class="st">&quot;random&quot;</span>, <span class="dt">design =</span> <span class="st">&quot;res.rowcol&quot;</span>)</span></code></pre></div>

@@ -155,14 +155,14 @@ extra parameters of the different plots is given in the sections below.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for TD</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(
-  <span class='no'>x</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>plotType</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"layout"</span>, <span class='st'>"map"</span>, <span class='st'>"box"</span>, <span class='st'>"cor"</span>, <span class='st'>"scatter"</span>),
-  <span class='kw'>trials</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>x</span>),
-  <span class='kw'>traits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(
+  <span class='kw'>x</span>,
+  <span class='kw'>...</span>,
+  plotType = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"layout"</span>, <span class='st'>"map"</span>, <span class='st'>"box"</span>, <span class='st'>"cor"</span>, <span class='st'>"scatter"</span>),
+  trials = <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>x</span>),
+  traits = <span class='kw'>NULL</span>,
+  title = <span class='kw'>NULL</span>,
+  output = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -218,7 +218,7 @@ setting <code>colorSubBlock = TRUE</code>. If replicates (<code>repId</code>) ar
 available a black line is plotted between different replicates. Missing plots
 are indicated in white. These can either be single plots in a trial or
 complete missing columns or rows.<br />
-Extra parameter options:</p><dl'>
+Extra parameter options:</p><dl>
 <dt>showGeno</dt><dd><p>Should individual genotypes be indicated as text in the plot?
 Defaults to <code>FALSE</code></p></dd>
 <dt>highlight</dt><dd><p>A character vector of genotypes to be highlighted in the
@@ -241,7 +241,7 @@ The countries in which the trials are located will be plotted on a single
 map and the location of the trials will be indicated on this map. The
 actual plot is made using ggplot, but for getting the data for the borders
 of the countries the maps package is needed.<br />
-Extra parameter options:</p><dl'>
+Extra parameter options:</p><dl>
 <dt>colorTrialBy</dt><dd><p>A character string indicating a column in <code>TD</code> by
 which the trials on the map are colored.</p></dd>
 <dt>colTrial</dt><dd><p>A character vector with plot colors for the trials. A
@@ -261,7 +261,7 @@ trials.</p></dd>
     
 
 <p>Creates a boxplot per selected trait grouped by trial. Extra parameter
-options:</p><dl'>
+options:</p><dl>
 <dt>groupBy</dt><dd><p>A character string indicating a column in <code>TD</code> by which
 the boxes in the plot should be grouped. By default the boxes are grouped
 per trial.</p></dd>
@@ -294,7 +294,7 @@ other.</p>
 within trials genotypic means are taken before plotting. The lower left of
 the matrix contains scatter plots between trials. The diagonal contains
 histograms of the data per trial.<br />
-Extra parameter options:</p><dl'>
+Extra parameter options:</p><dl>
 <dt>colorGenoBy</dt><dd><p>A character string indicating a column in <code>TD</code> by
 which the genotypes in the scatter plots are colored.</p></dd>
 <dt>colGeno</dt><dd><p>A character vector with plot colors for the genotypes. A
@@ -324,44 +324,55 @@ the default, then no correlation is added to the plot.</p></dd>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"wheatChl"</span>)
 
 <span class='co'>## Create a TD object.</span>
-<span class='no'>wheatTD</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TD.html'>createTD</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>wheatChl</span>, <span class='kw'>genotype</span> <span class='kw'>=</span> <span class='st'>"trt"</span>, <span class='kw'>repId</span> <span class='kw'>=</span> <span class='st'>"rep"</span>,
-                    <span class='kw'>subBlock</span> <span class='kw'>=</span> <span class='st'>"bl"</span>, <span class='kw'>rowCoord</span> <span class='kw'>=</span> <span class='st'>"row"</span>, <span class='kw'>colCoord</span> <span class='kw'>=</span> <span class='st'>"col"</span>)
+<span class='kw'>wheatTD</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TD.html'>createTD</a></span>(data = <span class='kw'>wheatChl</span>, genotype = <span class='st'>"trt"</span>, repId = <span class='st'>"rep"</span>,
+                    subBlock = <span class='st'>"bl"</span>, rowCoord = <span class='st'>"row"</span>, colCoord = <span class='st'>"col"</span>)
 
 <span class='co'>## Add meta data to be able to plot locations on a map.</span>
-<span class='no'>wheatMeta</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getMeta.html'>getMeta</a></span>(<span class='no'>wheatTD</span>)
-<span class='no'>wheatMeta</span>$<span class='no'>trLocation</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Cauquenes"</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"Santa Rosa"</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>4</span>))
-<span class='no'>wheatMeta</span>$<span class='no'>trLat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>35.58</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(-<span class='fl'>36.32</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>4</span>))
-<span class='no'>wheatMeta</span>$<span class='no'>trLong</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>72.17</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(-<span class='fl'>71.55</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>4</span>))
-<span class='no'>wheatTD</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getMeta.html'>setMeta</a></span>(<span class='no'>wheatTD</span>, <span class='no'>wheatMeta</span>)
+<span class='kw'>wheatMeta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='getMeta.html'>getMeta</a></span>(<span class='kw'>wheatTD</span>)
+<span class='kw'>wheatMeta</span><span class='op'>$</span><span class='kw'>trLocation</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Cauquenes"</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"Santa Rosa"</span>, times = <span class='fl'>4</span>))
+<span class='kw'>wheatMeta</span><span class='op'>$</span><span class='kw'>trLat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>35.58</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='op'>-</span><span class='fl'>36.32</span>, times = <span class='fl'>4</span>))
+<span class='kw'>wheatMeta</span><span class='op'>$</span><span class='kw'>trLong</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>72.17</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='op'>-</span><span class='fl'>71.55</span>, times = <span class='fl'>4</span>))
+<span class='kw'>wheatTD</span> <span class='op'>&lt;-</span> <span class='fu'><a href='getMeta.html'>setMeta</a></span>(<span class='kw'>wheatTD</span>, <span class='kw'>wheatMeta</span>)
 
 <span class='co'>### Layout plot.</span>
 
+<span class='co'># \donttest{</span>
 <span class='co'>## Plot the layout of one of the trials.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>wheatTD</span>, <span class='kw'>trials</span> <span class='kw'>=</span> <span class='st'>"C_SWS_12"</span>)</div><div class='img'><img src='plot.TD-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>wheatTD</span>, trials = <span class='st'>"C_SWS_12"</span>)
+</div><div class='img'><img src='plot.TD-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## Highlight some of the genotypes in the layout.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>wheatTD</span>, <span class='kw'>trials</span> <span class='kw'>=</span> <span class='st'>"C_SWS_12"</span>, <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"G001"</span>, <span class='st'>"G002"</span>))</div><div class='img'><img src='plot.TD-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>wheatTD</span>, trials = <span class='st'>"C_SWS_12"</span>, highlight = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"G001"</span>, <span class='st'>"G002"</span>))
+</div><div class='img'><img src='plot.TD-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>### Map plot.</span>
 
 <span class='co'>## Plot the location of the trials on the map.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>wheatTD</span>, <span class='kw'>plotType</span> <span class='kw'>=</span> <span class='st'>"map"</span>)</div><div class='img'><img src='plot.TD-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>wheatTD</span>, plotType = <span class='st'>"map"</span>)
+</div><div class='img'><img src='plot.TD-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>### Box plot.</span>
 
 <span class='co'>## Create a box plot for GY.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>wheatTD</span>, <span class='kw'>plotType</span> <span class='kw'>=</span> <span class='st'>"box"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"GY"</span>)</div><div class='img'><img src='plot.TD-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>wheatTD</span>, plotType = <span class='st'>"box"</span>, traits = <span class='st'>"GY"</span>)
+</div><div class='img'><img src='plot.TD-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## Add coloring by repId to the boxes.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>wheatTD</span>, <span class='kw'>plotType</span> <span class='kw'>=</span> <span class='st'>"box"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"GY"</span>, <span class='kw'>colorTrialBy</span> <span class='kw'>=</span> <span class='st'>"repId"</span>)</div><div class='img'><img src='plot.TD-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>wheatTD</span>, plotType = <span class='st'>"box"</span>, traits = <span class='st'>"GY"</span>, colorTrialBy = <span class='st'>"repId"</span>)
+</div><div class='img'><img src='plot.TD-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## Sort the boxes in descending order.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>wheatTD</span>, <span class='kw'>plotType</span> <span class='kw'>=</span> <span class='st'>"box"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"GY"</span>, <span class='kw'>orderBy</span> <span class='kw'>=</span> <span class='st'>"descending"</span>)</div><div class='img'><img src='plot.TD-6.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>wheatTD</span>, plotType = <span class='st'>"box"</span>, traits = <span class='st'>"GY"</span>, orderBy = <span class='st'>"descending"</span>)
+</div><div class='img'><img src='plot.TD-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>### Correlation plot.</span>
 
 <span class='co'>## Plot the correlations between trials for GY.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>wheatTD</span>, <span class='kw'>plotType</span> <span class='kw'>=</span> <span class='st'>"cor"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"GY"</span>)</div><div class='img'><img src='plot.TD-7.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>wheatTD</span>, plotType = <span class='st'>"cor"</span>, traits = <span class='st'>"GY"</span>)
+</div><div class='img'><img src='plot.TD-7.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>### Scatter plot</span>
 
 <span class='co'>## Plot scatter plot for GY.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>wheatTD</span>, <span class='kw'>plotType</span> <span class='kw'>=</span> <span class='st'>"scatter"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"GY"</span>)</div><div class='img'><img src='plot.TD-8.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>wheatTD</span>, plotType = <span class='st'>"scatter"</span>, traits = <span class='st'>"GY"</span>)
+</div><div class='img'><img src='plot.TD-8.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## Add correlations to top left corner of plots.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>wheatTD</span>, <span class='kw'>plotType</span> <span class='kw'>=</span> <span class='st'>"scatter"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"GY"</span>, <span class='kw'>addCorr</span> <span class='kw'>=</span> <span class='st'>"tl"</span>)</div><div class='img'><img src='plot.TD-9.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>wheatTD</span>, plotType = <span class='st'>"scatter"</span>, traits = <span class='st'>"GY"</span>, addCorr = <span class='st'>"tl"</span>)
+</div><div class='img'><img src='plot.TD-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -378,7 +389,7 @@ the default, then no correlation is added to the plot.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

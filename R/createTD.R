@@ -761,6 +761,7 @@ print.summary.TD <- function(x,
 #'
 #' ### Layout plot.
 #'
+#' \donttest{
 #' ## Plot the layout of one of the trials.
 #' plot(wheatTD, trials = "C_SWS_12")
 #'
@@ -795,8 +796,9 @@ print.summary.TD <- function(x,
 #'
 #' ## Add correlations to top left corner of plots.
 #' plot(wheatTD, plotType = "scatter", traits = "GY", addCorr = "tl")
+#' }
 #'
-#' @importFrom grDevices hcl.colors hcl.pals topo.colors
+#' @importFrom grDevices topo.colors
 #' @importFrom utils combn
 #' @export
 plot.TD <- function(x,

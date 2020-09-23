@@ -114,42 +114,60 @@
 <ul>
 <li>Install from CRAN:</li>
 </ul>
-<!-- end list --><div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"statgenSTA"</span>)</pre></div>
+<!-- end list --><div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"statgenSTA"</span>)
+</pre></div>
 <ul>
 <li>Install latest development version from GitHub (requires <a href="https://github.com/r-lib/remotes">remotes</a> package):</li>
 </ul>
-<!-- end list --><div class="sourceCode" id="cb2"><pre class="r"><span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"Biometris/statgenSTA"</span>, <span class="kw">ref</span> <span class="kw">=</span> <span class="st">"develop"</span>, <span class="kw">dependencies</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
+<!-- end list --><div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"Biometris/statgenSTA"</span>, ref = <span class="st">"develop"</span>, dependencies = <span class="fl">TRUE</span>)
+</pre></div>
 </div>
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h2>
 <p>Example using the phenotypic data for a wheat trial in Chile. The same data is used in the vignette and described there in detail.</p>
 <p>First get the data in the form required by the package, converting it to an object of class <strong>T(rial)D(ata)</strong>.</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">statgenSTA</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://biometris.github.io/statgenSTA/index.html">statgenSTA</a></span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"wheatChl"</span>)
-<span class="no">wheatTD</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/TD.html">createTD</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">wheatChl</span>, <span class="kw">genotype</span> <span class="kw">=</span> <span class="st">"trt"</span>, <span class="kw">repId</span> <span class="kw">=</span> <span class="st">"rep"</span>,
-            <span class="kw">subBlock</span> <span class="kw">=</span> <span class="st">"bl"</span>, <span class="kw">rowCoord</span> <span class="kw">=</span> <span class="st">"row"</span>, <span class="kw">colCoord</span> <span class="kw">=</span> <span class="st">"col"</span>)</pre></div>
+<span class="kw">wheatTD</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/TD.html">createTD</a></span>(data = <span class="kw">wheatChl</span>, genotype = <span class="st">"trt"</span>, repId = <span class="st">"rep"</span>,
+            subBlock = <span class="st">"bl"</span>, rowCoord = <span class="st">"row"</span>, colCoord = <span class="st">"col"</span>)
+</pre></div>
 <p>Some plots to get a first idea of the contents of the data.</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="co">## Plot the layout for SR_FI_11 with genotypes G278 and G279 highlighted.</span>
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">wheatTD</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"layout"</span>, <span class="kw">trials</span> <span class="kw">=</span> <span class="st">"SR_FI_11"</span>, <span class="kw">highlight</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"G278"</span>, <span class="st">"G279"</span>))</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="co">## Plot the layout for SR_FI_11 with genotypes G278 and G279 highlighted.</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">wheatTD</span>, plotType = <span class="st">"layout"</span>, trials = <span class="st">"SR_FI_11"</span>, highlight = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"G278"</span>, <span class="st">"G279"</span>))
+</pre></div>
 <p><img src="reference/figures/README-layoutPlot-1.png" width="75%"></p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="co">## Create a boxplot for grain yield.</span>
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">wheatTD</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"box"</span>, <span class="kw">traits</span> <span class="kw">=</span> <span class="st">"GY"</span>)</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="co">## Create a boxplot for grain yield.</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">wheatTD</span>, plotType = <span class="st">"box"</span>, traits = <span class="st">"GY"</span>)
+</pre></div>
 <p><img src="reference/figures/README-boxPlot-1.png" width="75%"></p>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="co">## Create a scatter plot matrix for grain yield.</span>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="co">## Create a scatter plot matrix for grain yield.</span>
 <span class="co">## Add correlations between trials in top left of scatter plots.</span>
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">wheatTD</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"scatter"</span>, <span class="kw">traits</span> <span class="kw">=</span> <span class="st">"GY"</span>, <span class="kw">addCorr</span> <span class="kw">=</span> <span class="st">"tl"</span>)</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">wheatTD</span>, plotType = <span class="st">"scatter"</span>, traits = <span class="st">"GY"</span>, addCorr = <span class="st">"tl"</span>)
+</pre></div>
 <p><img src="reference/figures/README-scatterPlot-1.png" width="75%"></p>
 <p>Fit mixed models for one of the trials, SR_FI_11, and visualize the output.</p>
-<div class="sourceCode" id="cb7"><pre class="r"><span class="co">## Fit a single trial model using a model based on a resovable row column design.</span>
-<span class="no">modWheatSp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/fitTD.html">fitTD</a></span>(<span class="kw">TD</span> <span class="kw">=</span> <span class="no">wheatTD</span>, <span class="kw">trials</span> <span class="kw">=</span> <span class="st">"SR_FI_11"</span>, <span class="kw">traits</span> <span class="kw">=</span> <span class="st">"GY"</span>, <span class="kw">design</span> <span class="kw">=</span> <span class="st">"res.rowcol"</span>)
-<span class="co">#&gt; Using SpATS for fitting models.</span></pre></div>
-<div class="sourceCode" id="cb8"><pre class="r"><span class="co">## Base plots for the model with genotype fitted as random effect.</span>
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">modWheatSp</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"base"</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"random"</span>)</pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="co">## Fit a single trial model using a model based on a resovable row column design.</span>
+<span class="kw">modWheatSp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fitTD.html">fitTD</a></span>(TD = <span class="kw">wheatTD</span>, trials = <span class="st">"SR_FI_11"</span>, traits = <span class="st">"GY"</span>, design = <span class="st">"res.rowcol"</span>)
+<span class="co">#&gt; Using SpATS for fitting models.</span>
+</pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="co">## Base plots for the model with genotype fitted as random effect.</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">modWheatSp</span>, plotType = <span class="st">"base"</span>, what = <span class="st">"random"</span>)
+</pre></div>
 <p><img src="reference/figures/README-basePlot-1.png" width="75%"></p>
-<div class="sourceCode" id="cb9"><pre class="r"><span class="co">## Spatial plot for the model with genotype fitted as fixed effect.</span>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="co">## Spatial plot for the model with genotype fitted as fixed effect.</span>
 <span class="co">## Display the spatial trend as a percentage.</span>
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">modWheatSp</span>, <span class="kw">plotType</span> <span class="kw">=</span> <span class="st">"spatial"</span>, <span class="kw">spaTrend</span> <span class="kw">=</span> <span class="st">"percentage"</span>)</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">modWheatSp</span>, plotType = <span class="st">"spatial"</span>, spaTrend = <span class="st">"percentage"</span>)
+</pre></div>
 <p><img src="reference/figures/README-spatialPlot-1.png" width="75%"></p>
 </div>
 </div>
@@ -199,7 +217,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

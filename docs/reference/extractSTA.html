@@ -173,13 +173,13 @@ in Details with "F" and "R" respectively.</p>
     </div>
 
     <pre class="usage"><span class='fu'>extractSTA</span>(
-  <span class='no'>STA</span>,
-  <span class='kw'>trials</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>STA</span>),
-  <span class='kw'>traits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
-  <span class='kw'>asDataFrame</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>what</span>) <span class='kw'>==</span> <span class='fl'>1</span> <span class='kw'>&amp;&amp;</span> <span class='no'>what</span> <span class='kw'>!=</span> <span class='st'>"all"</span>,
-  <span class='kw'>keep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>restoreColNames</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>STA</span>,
+  trials = <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>STA</span>),
+  traits = <span class='kw'>NULL</span>,
+  what = <span class='st'>"all"</span>,
+  asDataFrame = <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>what</span>) <span class='op'>==</span> <span class='fl'>1</span> <span class='op'>&amp;&amp;</span> <span class='kw'>what</span> != <span class='st'>"all"</span>,
+  keep = <span class='kw'>NULL</span>,
+  restoreColNames = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -273,16 +273,19 @@ list of those statistics.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Fit model using SpATS.</span>
-<span class='no'>myModel</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span>(<span class='kw'>TD</span> <span class='kw'>=</span> <span class='no'>TDHeat05</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='st'>"res.rowcol"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"yield"</span>)</div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'>
+<span class='kw'>myModel</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span>(TD = <span class='kw'>TDHeat05</span>, design = <span class='st'>"res.rowcol"</span>, traits = <span class='st'>"yield"</span>)
+</div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'>
 <span class='co'>## Extract all available statistics from the fitted model.</span>
-<span class='no'>extr</span> <span class='kw'>&lt;-</span> <span class='fu'>extractSTA</span>(<span class='no'>myModel</span>)
+<span class='kw'>extr</span> <span class='op'>&lt;-</span> <span class='fu'>extractSTA</span>(<span class='kw'>myModel</span>)
 
 <span class='co'>## Extract only the BLUEs from the fitted model.</span>
-<span class='no'>BLUEs</span> <span class='kw'>&lt;-</span> <span class='fu'>extractSTA</span>(<span class='no'>myModel</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"BLUEs"</span>)
+<span class='kw'>BLUEs</span> <span class='op'>&lt;-</span> <span class='fu'>extractSTA</span>(<span class='kw'>myModel</span>, what = <span class='st'>"BLUEs"</span>)
 
 <span class='co'>## Extract only the BLUEs from the fitted model and keep trial as variable in</span>
 <span class='co'>## the output.</span>
-<span class='no'>BLUEs2</span> <span class='kw'>&lt;-</span> <span class='fu'>extractSTA</span>(<span class='no'>myModel</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"BLUEs"</span>, <span class='kw'>keep</span> <span class='kw'>=</span> <span class='st'>"trial"</span>)</div></pre>
+<span class='kw'>BLUEs2</span> <span class='op'>&lt;-</span> <span class='fu'>extractSTA</span>(<span class='kw'>myModel</span>, what = <span class='st'>"BLUEs"</span>, keep = <span class='st'>"trial"</span>)
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -298,7 +301,7 @@ list of those statistics.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -165,13 +165,13 @@ package.</p>
     </div>
 
     <pre class="usage"><span class='fu'>STAtoCross</span>(
-  <span class='no'>STA</span>,
-  <span class='kw'>trial</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>traits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"BLUEs"</span>, <span class='st'>"BLUPs"</span>),
-  <span class='no'>genoFile</span>,
-  <span class='kw'>genotypes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"H"</span>, <span class='st'>"B"</span>, <span class='st'>"D"</span>, <span class='st'>"C"</span>),
-  <span class='no'>...</span>
+  <span class='kw'>STA</span>,
+  trial = <span class='kw'>NULL</span>,
+  traits = <span class='kw'>NULL</span>,
+  what = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"BLUEs"</span>, <span class='st'>"BLUPs"</span>),
+  <span class='kw'>genoFile</span>,
+  genotypes = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"H"</span>, <span class='st'>"B"</span>, <span class='st'>"D"</span>, <span class='st'>"C"</span>),
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -229,12 +229,15 @@ See <code><a href='https://rdrr.io/pkg/qtl/man/read.cross.html'>read.cross</a></
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Fit model using SpATS.</span>
-<span class='no'>myModel</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span>(<span class='kw'>TD</span> <span class='kw'>=</span> <span class='no'>TDHeat05</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='st'>"res.rowcol"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"yield"</span>,
-                 <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'>
+<span class='kw'>myModel</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span>(TD = <span class='kw'>TDHeat05</span>, design = <span class='st'>"res.rowcol"</span>, traits = <span class='st'>"yield"</span>,
+                 what = <span class='st'>"fixed"</span>)
+</div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'>
 <span class='co'>## Create cross object with BLUEs from myModel using genotypic information</span>
 <span class='co'>## from markers.csv in the package.</span>
-<span class='no'>cross</span> <span class='kw'>&lt;-</span> <span class='fu'>STAtoCross</span>(<span class='no'>myModel</span>, <span class='kw'>genoFile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"markers.csv"</span>,
-                                                    <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"statgenSTA"</span>))</div></pre>
+<span class='kw'>cross</span> <span class='op'>&lt;-</span> <span class='fu'>STAtoCross</span>(<span class='kw'>myModel</span>, genoFile = <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"markers.csv"</span>,
+                                                    package = <span class='st'>"statgenSTA"</span>))
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -250,7 +253,7 @@ See <code><a href='https://rdrr.io/pkg/qtl/man/read.cross.html'>read.cross</a></
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

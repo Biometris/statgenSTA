@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Summarizing objects of class <code>STA</code> — summary.STA • statgenSTA</title>
+<title>Summarizing objects of class STA — summary.STA • statgenSTA</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Summarizing objects of class <code>STA</code> — summary.STA" />
+<meta property="og:title" content="Summarizing objects of class STA — summary.STA" />
 <meta property="og:description" content="summary method for class STA." />
 
 
@@ -148,14 +148,14 @@
 
     <pre class="usage"><span class='co'># S3 method for STA</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(
-  <span class='no'>object</span>,
-  <span class='kw'>trials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>trait</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>nBest</span> <span class='kw'>=</span> <span class='fl'>20</span>,
-  <span class='kw'>sortBy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>naLast</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='no'>...</span>
+  <span class='kw'>object</span>,
+  trials = <span class='kw'>NULL</span>,
+  trait = <span class='kw'>NULL</span>,
+  nBest = <span class='fl'>20</span>,
+  sortBy = <span class='kw'>NULL</span>,
+  naLast = <span class='fl'>TRUE</span>,
+  decreasing = <span class='fl'>TRUE</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -213,9 +213,11 @@ Either <code>"BLUEs"</code>, <code>"BLUPs"</code> or <code>NA</code> (i.e. no so
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Run a single trait analysis using SpATS.</span>
-<span class='no'>myModel</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span>(<span class='kw'>TD</span> <span class='kw'>=</span> <span class='no'>TDHeat05</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='st'>"res.rowcol"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"yield"</span>)</div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'>
+<span class='kw'>myModel</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span>(TD = <span class='kw'>TDHeat05</span>, design = <span class='st'>"res.rowcol"</span>, traits = <span class='st'>"yield"</span>)
+</div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'>
 <span class='co'>## Print a summary of the fitted model.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>myModel</span>)</div><div class='output co'>#&gt; Summary statistics 
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>myModel</span>)
+</div><div class='output co'>#&gt; Summary statistics 
 #&gt; ==================
 #&gt; 
 #&gt; Summary statistics for yield in HEAT05  
@@ -277,7 +279,7 @@ Either <code>"BLUEs"</code>, <code>"BLUPs"</code> or <code>NA</code> (i.e. no so
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

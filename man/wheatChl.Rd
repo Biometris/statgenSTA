@@ -24,7 +24,7 @@ selected spikes per plot}
 }
 }
 \source{
-\url{http://www.g3journal.org/content/3/12/2105/}
+\url{https://www.g3journal.org/content/3/12/2105/}
 }
 \usage{
 wheatChl

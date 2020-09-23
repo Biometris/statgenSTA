@@ -164,9 +164,9 @@ Information in the metadata of a TD object is used in plotting functions
 data (the trial design).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>getMeta</span>(<span class='no'>TD</span>)
+    <pre class="usage"><span class='fu'>getMeta</span>(<span class='kw'>TD</span>)
 
-<span class='fu'>setMeta</span>(<span class='no'>TD</span>, <span class='no'>meta</span>)</pre>
+<span class='fu'>setMeta</span>(<span class='kw'>TD</span>, <span class='kw'>meta</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -185,7 +185,7 @@ data (the trial design).</p>
 
     <p>When setting metadata, metadata has to be a data.frame with rownames
 corresponding to the trials in <code>TD</code>. The data.frame should contain one
-or more of the following columns:</p><dl'>
+or more of the following columns:</p><dl>
 <dt>trLocation</dt><dd><p>The location of the trial. Used as default name when
 creating plots and summaries.</p></dd>
 <dt>trDate</dt><dd><p>The date of the trial.</p></dd>
@@ -218,23 +218,26 @@ in accidentally removing it.</p>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"wheatChl"</span>)
 
 <span class='co'>## Create a TD object.</span>
-<span class='no'>wheatTD</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='TD.html'>createTD</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>wheatChl</span>, <span class='kw'>genotype</span> <span class='kw'>=</span> <span class='st'>"trt"</span>, <span class='kw'>repId</span> <span class='kw'>=</span> <span class='st'>"rep"</span>,
-                    <span class='kw'>subBlock</span> <span class='kw'>=</span> <span class='st'>"bl"</span>, <span class='kw'>rowCoord</span> <span class='kw'>=</span> <span class='st'>"row"</span>, <span class='kw'>colCoord</span> <span class='kw'>=</span> <span class='st'>"col"</span>)
+<span class='kw'>wheatTD</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TD.html'>createTD</a></span>(data = <span class='kw'>wheatChl</span>, genotype = <span class='st'>"trt"</span>, repId = <span class='st'>"rep"</span>,
+                    subBlock = <span class='st'>"bl"</span>, rowCoord = <span class='st'>"row"</span>, colCoord = <span class='st'>"col"</span>)
 
 <span class='co'>## Get meta data from wheatTD</span>
-(<span class='no'>wheatMeta</span> <span class='kw'>&lt;-</span> <span class='fu'>getMeta</span>(<span class='no'>wheatTD</span>))</div><div class='output co'>#&gt;           trLocation trDate trDesign trLat trLong trPlWidth trPlLength
+(<span class='kw'>wheatMeta</span> <span class='op'>&lt;-</span> <span class='fu'>getMeta</span>(<span class='kw'>wheatTD</span>))
+</div><div class='output co'>#&gt;           trLocation trDate trDesign trLat trLong trPlWidth trPlLength
 #&gt; C_SWS_12    C_SWS_12   &lt;NA&gt;       NA    NA     NA        NA         NA
 #&gt; SR_FI_11    SR_FI_11   &lt;NA&gt;       NA    NA     NA        NA         NA
 #&gt; SR_FI_12    SR_FI_12   &lt;NA&gt;       NA    NA     NA        NA         NA
 #&gt; SR_MWS_11  SR_MWS_11   &lt;NA&gt;       NA    NA     NA        NA         NA
 #&gt; SR_MWS_12  SR_MWS_12   &lt;NA&gt;       NA    NA     NA        NA         NA</div><div class='input'>
 <span class='co'>## Add location names and latitude/longitude to meta data.</span>
-<span class='no'>wheatMeta</span>$<span class='no'>trLocation</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Cauquenes"</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"Santa Rosa"</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>4</span>))
-<span class='no'>wheatMeta</span>$<span class='no'>trLat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>35.58</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(-<span class='fl'>36.32</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>4</span>))
-<span class='no'>wheatMeta</span>$<span class='no'>trLong</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>72.17</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(-<span class='fl'>71.55</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>4</span>))
+<span class='kw'>wheatMeta</span><span class='op'>$</span><span class='kw'>trLocation</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Cauquenes"</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"Santa Rosa"</span>, times = <span class='fl'>4</span>))
+<span class='kw'>wheatMeta</span><span class='op'>$</span><span class='kw'>trLat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>35.58</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='op'>-</span><span class='fl'>36.32</span>, times = <span class='fl'>4</span>))
+<span class='kw'>wheatMeta</span><span class='op'>$</span><span class='kw'>trLong</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>72.17</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='op'>-</span><span class='fl'>71.55</span>, times = <span class='fl'>4</span>))
 
 <span class='co'>## Add back meta data to wheatTD.</span>
-<span class='no'>wheatTD</span> <span class='kw'>&lt;-</span> <span class='fu'>setMeta</span>(<span class='no'>wheatTD</span>, <span class='no'>wheatMeta</span>)</div></pre>
+<span class='kw'>wheatTD</span> <span class='op'>&lt;-</span> <span class='fu'>setMeta</span>(<span class='kw'>wheatTD</span>, <span class='kw'>wheatMeta</span>)
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -250,7 +253,7 @@ in accidentally removing it.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

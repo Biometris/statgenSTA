@@ -163,6 +163,7 @@ wheatTD <- setMeta(wheatTD, wheatMeta)
 
 ### Layout plot.
 
+\donttest{
 ## Plot the layout of one of the trials.
 plot(wheatTD, trials = "C_SWS_12")
 
@@ -197,6 +198,7 @@ plot(wheatTD, plotType = "scatter", traits = "GY")
 
 ## Add correlations to top left corner of plots.
 plot(wheatTD, plotType = "scatter", traits = "GY", addCorr = "tl")
+}
 
 }
 \seealso{

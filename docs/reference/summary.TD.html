@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Summarizing objects of class <code>TD</code> — summary.TD • statgenSTA</title>
+<title>Summarizing objects of class TD — summary.TD • statgenSTA</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Summarizing objects of class <code>TD</code> — summary.TD" />
+<meta property="og:title" content="Summarizing objects of class TD — summary.TD" />
 <meta property="og:description" content="summary method for class TD." />
 
 
@@ -148,12 +148,12 @@
 
     <pre class="usage"><span class='co'># S3 method for TD</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(
-  <span class='no'>object</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>trial</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>object</span>),
-  <span class='no'>traits</span>,
-  <span class='kw'>groupBy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>what</span> <span class='kw'>=</span> <span class='kw'>if</span> (!<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='no'>groupBy</span>)) {     <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"nObs"</span>, <span class='st'>"mean"</span>, <span class='st'>"sd"</span>) } <span class='kw'>else</span> {     <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"nObs"</span>,
+  <span class='kw'>object</span>,
+  <span class='kw'>...</span>,
+  trial = <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>object</span>),
+  <span class='kw'>traits</span>,
+  groupBy = <span class='kw'>NULL</span>,
+  what = <span class='co'>if</span> (<span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='kw'>groupBy</span>)) {     <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"nObs"</span>, <span class='st'>"mean"</span>, <span class='st'>"sd"</span>) } <span class='co'>else</span> {     <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"nObs"</span>,
     <span class='st'>"nMiss"</span>, <span class='st'>"mean"</span>, <span class='st'>"median"</span>, <span class='st'>"min"</span>, <span class='st'>"max"</span>, <span class='st'>"firstQ"</span>, <span class='st'>"thirdQ"</span>, <span class='st'>"var"</span>) }
 )</pre>
 
@@ -185,7 +185,7 @@ summary should be grouped. If <code>NULL</code>, no grouping is done.</p></td>
       <th>what</th>
       <td><p>A character vector indicating which summary statistics should be
 computed. If <code>what = "all"</code>, all available statistics are computed.<br />
-Possible options are:</p><dl'>
+Possible options are:</p><dl>
 <dt>nVals</dt><dd><p>The number of values, i.e. non-missing + missing values.</p></dd>
 <dt>nObs</dt><dd><p>The number of non-missing observations.</p></dd>
 <dt>nMiss</dt><dd><p>The number of missing values.</p></dd>
@@ -226,7 +226,8 @@ Possible options are:</p><dl'>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Summarize TDHeat05.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>TDHeat05</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"yield"</span>)</div><div class='output co'>#&gt; 
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>TDHeat05</span>, traits = <span class='st'>"yield"</span>)
+</div><div class='output co'>#&gt; 
 #&gt; Summary statistics for yield in HEAT05  
 #&gt; 
 #&gt;                             yield
@@ -241,7 +242,8 @@ Possible options are:</p><dl'>
 #&gt; Variance                 2569.229
 #&gt; </div><div class='input'>
 <span class='co'>## Summarize TDHeat05 grouping by repId.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>TDHeat05</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"yield"</span>, <span class='kw'>groupBy</span> <span class='kw'>=</span> <span class='st'>"repId"</span>)</div><div class='output co'>#&gt; 
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>TDHeat05</span>, traits = <span class='st'>"yield"</span>, groupBy = <span class='st'>"repId"</span>)
+</div><div class='output co'>#&gt; 
 #&gt; Summary statistics for yield in HEAT05 grouped by repId 
 #&gt; 
 #&gt;                             1      2
@@ -265,7 +267,7 @@ Possible options are:</p><dl'>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

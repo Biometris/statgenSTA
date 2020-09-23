@@ -154,13 +154,13 @@ created for each report to enable easy modifying of the report.</p>
 
     <pre class="usage"><span class='co'># S3 method for STA</span>
 <span class='fu'><a href='report.html'>report</a></span>(
-  <span class='no'>x</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>trials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>traits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>descending</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>)
+  <span class='kw'>x</span>,
+  <span class='kw'>...</span>,
+  trials = <span class='kw'>NULL</span>,
+  traits = <span class='kw'>NULL</span>,
+  descending = <span class='fl'>TRUE</span>,
+  outfile = <span class='kw'>NULL</span>,
+  what = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>)
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -226,21 +226,23 @@ Sys.which("pdflatex").</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Fit model using lme4.</span>
-<span class='no'>myModel1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span>(<span class='kw'>TD</span> <span class='kw'>=</span> <span class='no'>TDHeat05</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='st'>"ibd"</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"yield"</span>,
-                  <span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"lme4"</span>)
+<span class='kw'>myModel1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span>(TD = <span class='kw'>TDHeat05</span>, design = <span class='st'>"ibd"</span>, traits = <span class='st'>"yield"</span>,
+                  engine = <span class='st'>"lme4"</span>)
 
 <span class='co'>## Create a pdf report summarizing the results for the model with genotype</span>
 <span class='co'>## as fixed factor.</span>
 <span class='co'># \donttest{</span>
-<span class='fu'><a href='report.html'>report</a></span>(<span class='no'>myModel1</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".pdf"</span>), <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)
+<span class='fu'><a href='report.html'>report</a></span>(<span class='kw'>myModel1</span>, outfile = <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(fileext = <span class='st'>".pdf"</span>), what = <span class='st'>"fixed"</span>)
 <span class='co'># }</span>
 
 <span class='co'>## Create two pdf report summarizing the results for the model with genotype</span>
 <span class='co'>## as fixed factor and for the model with genotype as random factor. Order</span>
 <span class='co'>## the results in ascending order.</span>
 <span class='co'># \donttest{</span>
-<span class='fu'><a href='report.html'>report</a></span>(<span class='no'>myModel1</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".pdf"</span>), <span class='kw'>descending</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='co'># }</span></div></pre>
+<span class='fu'><a href='report.html'>report</a></span>(<span class='kw'>myModel1</span>, outfile = <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(fileext = <span class='st'>".pdf"</span>), descending = <span class='fl'>FALSE</span>)
+<span class='co'># }</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -256,7 +258,7 @@ Sys.which("pdflatex").</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

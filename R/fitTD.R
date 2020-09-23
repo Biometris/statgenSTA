@@ -9,7 +9,7 @@
 #' The actual model fitted depends on the design. For the supported designs, the
 #' following models are used:
 #'
-#' design | code | model fitted |
+#' Design | Code | Model fitted |
 #' --------------------------------------- | ------------ | ----------------------------------------- |
 #' incomplete block design | ibd | trait = **subBlock** + genotype + \eqn{\epsilon} |
 #' resolvable incomplete block design | res.ibd | trait = *repId* + **repId:subBlock** + genotype + \eqn{\epsilon} |
@@ -37,7 +37,7 @@
 #' in the design, the following combinations of random and spatial terms are
 #' fitted:
 #'
-#' random part | spatial part |
+#' Random part | Spatial part |
 #' --------------------------------------- | ------------ |
 #' random effects based on design | none
 #' random effects based on design | ar1(rowId):colId |
@@ -50,7 +50,7 @@
 #' If the design is not regular the following combinations of random and spatial
 #' terms are fitted:
 #'
-#' random part | spatial part |
+#' Random part | Spatial part |
 #' --------------------------------------- | ------------ |
 #' random effects based on design | none
 #' random effects based on design | exp(rowCoord):colCoord |
@@ -152,7 +152,9 @@
 #' summary(myModel2)
 #'
 #' ## Create spatial plots of the results.
+#' \donttest{
 #' plot(myModel2, plotType = "spatial")
+#' }
 #'
 #' ## Create a pdf report summarizing results.
 #' \donttest{

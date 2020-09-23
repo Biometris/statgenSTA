@@ -163,13 +163,13 @@ because of their commonFactors.</p>
     </div>
 
     <pre class="usage"><span class='fu'>outlierSTA</span>(
-  <span class='no'>STA</span>,
-  <span class='kw'>trials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>traits</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>what</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>rLimit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>commonFactors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>STA</span>,
+  trials = <span class='kw'>NULL</span>,
+  traits = <span class='kw'>NULL</span>,
+  what = <span class='kw'>NULL</span>,
+  rLimit = <span class='kw'>NULL</span>,
+  commonFactors = <span class='kw'>NULL</span>,
+  verbose = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -227,11 +227,12 @@ similar to the outliers as defined by <code>commonFactors</code></p></li>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Fit a model using lme4.</span>
-<span class='no'>myModel</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span>(<span class='kw'>TD</span> <span class='kw'>=</span> <span class='no'>TDHeat05</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"yield"</span>, <span class='kw'>design</span> <span class='kw'>=</span> <span class='st'>"res.rowcol"</span>,
-                <span class='kw'>engine</span> <span class='kw'>=</span> <span class='st'>"lme4"</span>)
+<span class='kw'>myModel</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span>(TD = <span class='kw'>TDHeat05</span>, traits = <span class='st'>"yield"</span>, design = <span class='st'>"res.rowcol"</span>,
+                engine = <span class='st'>"lme4"</span>)
 
 <span class='co'>## Detect outliers in the standardized residuals of the fitted model.</span>
-<span class='no'>outliers</span> <span class='kw'>&lt;-</span> <span class='fu'>outlierSTA</span>(<span class='kw'>STA</span> <span class='kw'>=</span> <span class='no'>myModel</span>, <span class='kw'>traits</span> <span class='kw'>=</span> <span class='st'>"yield"</span>)</div><div class='output co'>#&gt; No large standardized residuals.</div><div class='input'>
+<span class='kw'>outliers</span> <span class='op'>&lt;-</span> <span class='fu'>outlierSTA</span>(STA = <span class='kw'>myModel</span>, traits = <span class='st'>"yield"</span>)
+</div><div class='output co'>#&gt; No large standardized residuals.</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -248,7 +249,7 @@ similar to the outliers as defined by <code>commonFactors</code></p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
