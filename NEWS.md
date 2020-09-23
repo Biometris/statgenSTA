@@ -1,4 +1,4 @@
-# statgenSTA 1.0.5.1
+# statgenSTA 1.0.6
 
 * Default colors for genotypes and trials have been improved. User specific default colors may now be set in the R options "statgen.colGeno" (for genotypes) and "statgen.colTrial" (for trials).
 * New options colGeno and colTrial have been added to the relevant plot functions for TD objects. These options can be used to specify the colors for genotypes (colGeno) and trials (colTrial) in the plots.
@@ -8,7 +8,7 @@
 * Map plots for TD objects now have an extra argument printTrialNames that allows for printing and not printing of trial names on the map. The default of TRUE retains the original behavior of the function.
 * A bug in scatter plots for TD objects with custom ordering of trials has been fixed.
 * The final plot in spatial plots for STA objects now displays the BLUEs/BLUPs instead of the residuals.
-* A minor bug in fitTD occuring when a column trial is not available is fixed.
+* A minor bug in fitTD occurring when a column trial is not available is fixed.
 
 # statgenSTA 1.0.5
 

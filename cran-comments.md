@@ -1,11 +1,12 @@
-## Release with several extensions to plot functions, improved checks on input data, and some bug fixes.
+## Release with many extensions to plot functions, and some bug fixes.
 
 ----
 
 ## Test environments
 
 * local Windows 10 install, R 4.0.2
-* Debian (on gitlab-ci), R 3.6.3
+* Ubuntu (on github actions, devel and release)
+* macOS (on github actions, release)
 * R-hub (devel and release)
 
 ----
