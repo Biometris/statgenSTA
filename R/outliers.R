@@ -129,7 +129,8 @@ outlierSTA <- function(STA,
         ## Leave actual trait column as well for ease of judging outliers.
         outTrt[["value"]] <- outTrt[[trait]]
         ## Change order of columns to always display most relevant info first.
-        firstCols <- c("trial", "trait", "value", "res")
+        firstCols <- c(if (hasName(x = outTrt, name = "trial")) "trial",
+                       "trait", "value", "res")
         outTrt <- outTrt[c(firstCols, setdiff(colnames(outTrt), firstCols))]
         outTr[[trait]] <- outTrt
         ## Fill indicator column for current trait.
@@ -149,8 +150,9 @@ outlierSTA <- function(STA,
   if (verbose && detected) {
     if (!is.null(outTot)) {
       cat(paste("Large standardized residuals.\n\n"))
-      print(format(outTot[c("trial", "genotype", "trait", "value", "res",
-                            "outlier")], quote = FALSE), row.names = FALSE)
+      print(format(outTot[c(if (hasName(x = outTot, name = "trial")) "trial",
+                            "genotype", "trait", "value", "res", "outlier")],
+                   quote = FALSE), row.names = FALSE)
     } else {
       cat("No large standardized residuals.\n")
     }

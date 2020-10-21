@@ -1,3 +1,7 @@
+# statgenSTA 1.0.7
+
+* A minor bug in outlierSTA occurring when a column trial is not available is fixed.
+
 # statgenSTA 1.0.6
 
 * Default colors for genotypes and trials have been improved. User specific default colors may now be set in the R options "statgen.colGeno" (for genotypes) and "statgen.colTrial" (for trials).
