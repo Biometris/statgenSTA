@@ -816,6 +816,7 @@ plot.TD <- function(x,
   ## Restrict x to trials.
   x <- dropTD(x, names(x)[!names(x) %in% trials])
   if (plotType == "layout") {
+    chkChar(traits, len = 1, null = TRUE)
     showGeno <- isTRUE(dotArgs$showGeno)
     highlight <- dotArgs$highlight
     colorSubBlock <- isTRUE(dotArgs$colorSubBlock)
@@ -833,6 +834,7 @@ plot.TD <- function(x,
       trLoc <- attr(trDat, "trLocation")
       plotRep <- hasName(x = trDat, name = "repId")
       plotSubBlock <- hasName(x = trDat, name = "subBlock")
+      plotTrait <- !is.null(traits) && hasName(x = trDat, name = traits)
       ## Compute min and max for row and column coordinates.
       yMin <- min(trDat[["rowCoord"]])
       yMax <- max(trDat[["rowCoord"]])
@@ -900,6 +902,13 @@ plot.TD <- function(x,
           ggplot2::scale_color_manual(values = "grey85", na.translate = FALSE,
                                       na.value = "transparant") +
           ggplot2::guides(fill = ggplot2::guide_legend(ncol = 3), color = "none")
+      } else if (plotTrait) {
+        pTr <- pTr +
+          ggplot2::geom_tile(ggplot2::aes_string(fill = traits),
+                             color = "grey85") +
+          ## Adjust plot colors.
+          ggplot2::scale_fill_gradientn(colors = topo.colors(n = 100),
+                                        na.value = "white")
       } else {
         ## No subblocks and no highlights so just a single fill color.
         pTr <- pTr +
@@ -1261,7 +1270,7 @@ plot.TD <- function(x,
                           meanGT <- mean(x, na.rm = TRUE)
                           ifelse(is.nan(meanGT), NA, meanGT)
                         })
-      ## Get number of observation on which correlation will be based.
+      ## Get number of observations on which correlation will be based.
       corBase <- as.data.frame(t(combn(x = levels(plotDat[["trial"]]), m = 2)))
       corBase <- cbind(corBase,
                        combn(x = levels(plotDat[["trial"]]), m = 2,
