@@ -65,35 +65,7 @@ be fitted with genotype as random effect. This is indicated in the list
 in Details with "F" and "R" respectively.
 }
 \details{
-Possible options for \code{what} are:\tabular{llll}{
-   result \tab model \tab description \tab data.frame \cr
-   BLUEs \tab F \tab Best Linear Unbiased Estimators \tab yes \cr
-   seBLUEs \tab F \tab standard errors of the BLUEs \tab yes \cr
-   ue \tab F \tab unit errors - only for lme4 and asreml \tab yes \cr
-   varCompF \tab F \tab variance components for the model with genotype as fixed component \tab  \cr
-   fitted \tab F \tab fitted values for the model with genotype as fixed component \tab yes \cr
-   residF \tab F \tab residuals for the model with genotype as fixed component \tab yes \cr
-   stdResF \tab F \tab standardized residuals for the model with genotype as fixed component \tab yes \cr
-   wald \tab F \tab results of the wald test - only for lme4 and asreml \tab  \cr
-   CV \tab F \tab Coefficient of Variation - only for lme4 and asreml \tab yes \cr
-   rDfF \tab F \tab residual degrees of freedom for the model with genotype as fixed component \tab yes \cr
-   sed \tab F \tab standard error of difference - only for asreml \tab  \cr
-   lsd \tab F \tab least significant difference - only for asreml \tab  \cr
-   BLUPs \tab R \tab Best Linear Unbiased Predictors \tab yes \cr
-   seBLUPs \tab R \tab standard errors of the BLUPs \tab yes \cr
-   heritability \tab R \tab broad sense heritability \tab yes \cr
-   varCompR \tab R \tab variance components for the model with genotype as random component \tab  \cr
-   varGen \tab R \tab genetic variance component \tab yes \cr
-   varErr \tab R \tab residual variance component \tab yes \cr
-   varSpat \tab R \tab spatial variance components - only for SpATS \tab  \cr
-   rMeans \tab R \tab fitted values for the model with genotype as random component \tab yes \cr
-   ranEf \tab R \tab random genetic effects \tab yes \cr
-   residR \tab R \tab residuals for the model with genotype as random component \tab yes \cr
-   stdResR \tab R \tab standardized residuals for the model with genotype as random component \tab yes \cr
-   rDfR \tab R \tab residual degrees of freedom for the model with genotype as random component \tab yes \cr
-   effDim \tab R \tab effective dimensions - only for SpATS \tab  \cr
-   ratEffDim \tab R \tab ratios of the effective dimensions - only for SpATS \tab  \cr
-}
+Possible options for \code{what} are:
 }
 \examples{
 ## Fit model using SpATS.

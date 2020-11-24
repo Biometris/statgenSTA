@@ -17,14 +17,14 @@
 #'
 #' Possible options for \code{what} are:
 #'
-#' ```{r extractOpts, results="as.is", echo=FALSE}
-#' ## Generate table of options for extract from internal data.
-#' optsTab <- statgenSTA:::extractOptions[, c("result", "model", "description")]
-#' optsTab[["data.frame"]] <-
-#' ifelse(statgenSTA:::extractOptions[["asDataFrame"]] == 0, "", "yes")
-#' optsTab <- optsTab[order(optsTab[["model"]]), ]
-#' knitr::kable(optsTab, align = c("llll"), row.names = FALSE)
-#' ```
+# ```{r extractOpts, results="as.is", echo=FALSE, eval=FALSE}
+# ## Generate table of options for extract from internal data.
+# optsTab <- statgenSTA:::extractOptions[, c("result", "model", "description")]
+# optsTab[["data.frame"]] <-
+# ifelse(statgenSTA:::extractOptions[["asDataFrame"]] == 0, "", "yes")
+# optsTab <- optsTab[order(optsTab[["model"]]), ]
+# knitr::kable(optsTab, align = c("llll"), row.names = FALSE)
+# ```
 #'
 #' @param STA An object of class STA.
 #' @param trials A character vector of trials for which the statistics should be
