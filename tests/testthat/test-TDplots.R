@@ -84,9 +84,9 @@ test_that("TD map plot gives correct output types", {
 
 test_that("options minLatRange and minLongRange function properly for TD map plot", {
   expect_error(plot(TDHeat05, plotType = "map", minLatRange = c(20, 20)),
-               "minLatRange should be a single numerical value")
+               "minLatRange should be NULL or a single numerical value")
   expect_error(plot(TDHeat05, plotType = "map", minLongRange = c(20, 20)),
-               "minLongRange should be a single numerical value")
+               "minLongRange should be NULL or a single numerical value")
   p <- plot(TDHeat05, plotType = "map", minLatRange = 20, minLongRange = 20,
             output = FALSE)
   expect_equal(p$coordinates$limits$x, c(-6.33333, 17.66667))
