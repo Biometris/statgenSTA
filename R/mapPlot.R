@@ -41,25 +41,8 @@ mapPlot <- function(x,
   colorTrialDat <- droplevels(colorTrialDat)
   ## Get the number of colors needed for coloring the trials.
   nColTrial <- nlevels(colorTrialDat[[colorTrialBy]])
-  if (length(colTrial) == 0) {
-    ## Defaults to red for one color for trials.
-    ## For more than one colors from statgen.trialColors are used.
-    ## Fall back to topo.colors if number of colors in option is too small.
-    if (nColTrial == 1) {
-      colTrial <- "red"
-    } else if (length(getOption("statgen.trialColors")) >= nColTrial) {
-      colTrial <- getOption("statgen.trialColors")[1:nColTrial]
-    } else {
-      colTrial <- topo.colors(n = nColTrial, alpha = NULL)
-    }
-  } else {
-    nColTrialArg <- length(colTrial)
-    if (nColTrialArg != nColTrial) {
-      stop("Number of colors provided doesn't match number of trial ",
-           "groups:\n", nColTrialArg, " colors provided, ", nColTrial,
-           " groups in data.\n")
-    }
-  }
+  colTrial <- defineTrialColors(colors = colTrial, n = nColTrial,
+                                default = "red")
   ## Check for latitude and longitude.
   minLatRange <- dotArgs$minLatRange
   minLongRange <- dotArgs$minLongRange
