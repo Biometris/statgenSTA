@@ -1,6 +1,6 @@
-#' Helper function for creating a map plot
+#' Helper function for creating a box plot
 #'
-#' Helper function for creating a map plot for an object of class TD.
+#' Helper function for creating a box plot for an object of class TD.
 #'
 #' @keywords internal
 boxPlot <- function(x,
@@ -52,17 +52,18 @@ boxPlot <- function(x,
     ## trials where trait is not measured/available are removed by setting
     ## them to NULL.
     xVar <- if (is.null(groupBy)) "trial" else groupBy
-    plotDat <- Reduce(f = rbind, x = lapply(X = x[trials], function(trial) {
-      if (!hasName(x = trial, name = trait)) {
-        NULL
-      } else {
-        if (!hasName(x = trial, name = "trial")) {
-          trial[["trial"]] <- names(x)
-        }
-        trial[c(trait, "genotype", xVar,
-                if (!is.null(colorTrialBy)) colorTrialBy)]
-      }
-    }))
+    plotDat <- Reduce(f = rbind,
+                      x = lapply(X = x[trials], FUN = function(trial) {
+                        if (!hasName(x = trial, name = trait)) {
+                          NULL
+                        } else {
+                          if (!hasName(x = trial, name = "trial")) {
+                            trial[["trial"]] <- names(x)
+                          }
+                          trial[c(trait, "genotype", xVar,
+                                  if (!is.null(colorTrialBy)) colorTrialBy)]
+                        }
+                      }))
     ## If trait is not measured in any of the trials skip plotting for
     ## that trait.
     if (is.null(plotDat)) {

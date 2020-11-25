@@ -2,11 +2,11 @@
 % Please edit documentation in R/boxPlot.R
 \name{boxPlot}
 \alias{boxPlot}
-\title{Helper function for creating a map plot}
+\title{Helper function for creating a box plot}
 \usage{
 boxPlot(x, trials, traits, title, output, ...)
 }
 \description{
-Helper function for creating a map plot for an object of class TD.
+Helper function for creating a box plot for an object of class TD.
 }
 \keyword{internal}
