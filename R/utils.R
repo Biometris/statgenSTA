@@ -636,4 +636,12 @@ defineTrialColors <- function(colors,
   return(colTrial)
 }
 
-
+#' Helper function for extracting geoms from ggplot object
+#'
+#' @noRd
+#' @keywords internal
+getGeoms <- function(p) {
+  vapply(X = p[[1]]$layers, FUN = function(x) {
+    class(x$geom)[1]
+  }, FUN.VALUE = character(1))
+}
