@@ -1,4 +1,4 @@
-context("Modeling")
+context("SpATS modeling")
 
 ## Helper function for testing base structure that has to be consistent
 ## for all STA objects independent of engine and options.

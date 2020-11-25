@@ -1,4 +1,4 @@
-context("Modeling")
+context("asreml modeling")
 
 if (requireNamespace("asreml", quietly = TRUE)) {
   ## Helper function for testing base structure that has to be consistent
