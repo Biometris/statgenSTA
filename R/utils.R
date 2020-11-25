@@ -619,7 +619,7 @@ defineTrialColors <- function(colors,
     if (n == 1) {
       colTrial <- default
     } else if (length(getOption("statgen.trialColors")) >= n) {
-      colTrial <- getOption("statgen.trialColors")[1:n]
+      colTrial <- getOption("statgen.trialColors")[seq_len(n)]
     } else {
       colTrial <- topo.colors(n = n, alpha = NULL)
     }
