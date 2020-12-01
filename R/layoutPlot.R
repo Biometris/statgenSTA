@@ -138,7 +138,7 @@ layoutPlot <- function(x,
       ## Add names of genotypes to the center of the tiles.
       pTr <- pTr +
         ggplot2::geom_text(ggplot2::aes_string(label = "genotype"),
-                           size = 2, check_overlap = TRUE)
+                           size = 2, check_overlap = TRUE, na.rm = TRUE)
     }
     if (plotRep) {
       ## Add lines for replicates.
