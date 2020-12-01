@@ -523,10 +523,10 @@ extractSTALme4 <- function(STA,
     if ("heritability" %in% what) {
       ## Estimate heritability on a line mean basis.
       if (useRepId) {
-        result[["heritability"]] <- varGen /
-          (varGen + (varErr / length(unique(TD$repId))))
+        result[["heritability"]] <- round(varGen /
+          (varGen + (varErr / length(unique(TD$repId)))), 2)
       } else {
-        result[["heritability"]] <- varGen / (varGen + varErr)
+        result[["heritability"]] <- round(varGen / (varGen + varErr), 2)
       }
     }
   }
@@ -794,7 +794,8 @@ extractSTAAsreml <- function(STA,
       } else {
         mrPred$predictions$sed ^ 2
       }
-      unname(1 - mean(sedSq[lower.tri(sedSq)]) / (2 * varGen[[trait]]))
+      round(unname(1 - mean(sedSq[lower.tri(sedSq)]) /
+                     (2 * varGen[[trait]])), 2)
     })
   }
   ## Extract fitted values.

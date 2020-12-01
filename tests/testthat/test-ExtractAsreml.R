@@ -61,14 +61,14 @@ if (requireNamespace("asreml", quietly = TRUE)) {
     expect_is(extAs$heritability, "numeric")
     expect_length(extAs$heritability, 1)
     expect_named(extAs$heritability, "t1")
-    expect_equivalent(extAs$heritability, 0.642345563238147)
+    expect_equivalent(extAs$heritability, 0.64)
   })
 
   test_that("heritability can be coerced to data.frame correctly", {
     herit <- extractSTA(modelAs, what = "heritability")
     expect_is(herit, "data.frame")
     expect_named(herit, c("trial", "t1"))
-    expect_equal(herit[1, 2], 0.642345563238147)
+    expect_equal(herit[1, 2], 0.64)
   })
 
   test_that("varGen is computed correctly", {

@@ -33,9 +33,7 @@ test_that("summary.STA produces correct output for lme4", {
   expect_null(sumLm$selSpatMod)
   expect_equal(nrow(sumLm$stats), 9)
   expect_equal(dim(sumLm$meanTab), c(15, 4))
-  expect_equivalent(sumLm$heritability, 0.444115736298294,
-                    ## Added tolerance for new defaults in lme4-1.2-23.
-                    tolerance = 1e-5)
+  expect_equivalent(sumLm$heritability, 0.44)
   expect_equal(nrow(sumLm$sed), 0)
   expect_equal(nrow(sumLm$lsd), 0)
   expect_null(sumLm$spatSumTab)
@@ -49,7 +47,7 @@ test_that("summary.STA produces correct output for asreml", {
   expect_null(sumAs$selSpatMod)
   expect_equal(nrow(sumAs$stats), 9)
   expect_equal(dim(sumAs$meanTab), c(15, 4))
-  expect_equivalent(sumAs$heritability, 0.615070547646503)
+  expect_equivalent(sumAs$heritability, 0.62)
   expect_equal(nrow(sumAs$sed), 3)
   expect_equal(nrow(sumAs$lsd), 3)
   expect_null(sumAs$spatSumTab)
@@ -64,7 +62,7 @@ test_that("summary.STA produces correct output for asreml with spatial models", 
   expect_equal(sumAsTs$selSpatMod, "none")
   expect_equal(nrow(sumAsTs$stats), 9)
   expect_equal(dim(sumAsTs$meanTab), c(15, 4))
-  expect_equivalent(sumAsTs$heritability, 0.615070384479675)
+  expect_equivalent(sumAsTs$heritability, 0.62)
   expect_equal(nrow(sumAsTs$sed), 3)
   expect_equal(nrow(sumAsTs$lsd), 3)
   expect_equal(dim(sumAsTs$spatSumTab), c(7, 10))

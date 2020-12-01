@@ -62,18 +62,14 @@ test_that("heritability is computed correctly", {
   expect_is(extLm$heritability, "numeric")
   expect_length(extLm$heritability, 1)
   expect_named(extLm$heritability, "t1")
-  expect_equivalent(extLm$heritability, 0.642345528552063,
-                    ## Added tolerance for new defaults in lme4-1.2-23.
-                    tolerance = 1e-7)
+  expect_equivalent(extLm$heritability, 0.64)
 })
 
 test_that("heritability can be coerced to data.frame correctly", {
   herit <- extractSTA(modelLm, what= "heritability")
   expect_is(herit, "data.frame")
   expect_named(herit, c("trial", "t1"))
-  expect_equal(herit[1, 2], 0.642345528552063,
-               ## Added tolerance for new defaults in lme4-1.2-23.
-               tolerance = 1e-7)
+  expect_equal(herit[1, 2], 0.64)
 })
 
 test_that("varGen is computed correctly", {

@@ -1,5 +1,6 @@
 # statgenSTA 1.0.7
 
+* Heritablity is now rounded to two decimals for models fitted using asreml and lme4 as was already the case for SpATS. 
 * A minor bug in outlierSTA occurring when a column trial is not available is fixed.
 
 # statgenSTA 1.0.6
