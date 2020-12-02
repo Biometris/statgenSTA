@@ -150,7 +150,7 @@ scatterPlot <- function(x,
                                           y = "(..count..)/sum(..count..)")) +
         ggplot2::geom_histogram(na.rm = TRUE, binwidth = binWidth,
                                 boundary = 0, fill = histCols[trial],
-                                color = "grey50") +
+                                color = histCols[trial]) +
         ggplot2::scale_x_continuous(limits = range(plotTab, na.rm = TRUE)) +
         ggplot2::theme(panel.background = ggplot2::element_blank(),
                        panel.grid = ggplot2::element_blank(),

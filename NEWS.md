@@ -1,6 +1,7 @@
 # statgenSTA 1.0.7
 
-* Heritablity is now rounded to two decimals for models fitted using asreml and lme4 as was already the case for SpATS. 
+* Heritablity is now rounded to two decimals for models fitted using asreml and lme4 as was already the case for SpATS.
+* The border color of the histograms in the scatter plots for TD objects now matches the fill.
 * A minor bug in outlierSTA occurring when a column trial is not available is fixed.
 
 # statgenSTA 1.0.6
