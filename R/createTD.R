@@ -1013,21 +1013,24 @@ chkDesign <- function(design) {
                                 "res.rowcol"),
             several.ok = TRUE)
 }
+
 #' Helper function for checking latitude and longitude.
 #'
 #' @noRd
 #' @keywords internal
 chkLatLong <- function(lat,
                        long) {
-  if (!is.null(lat) && (!is.numeric(lat) || any(abs(lat) > 90))) {
+  if (!is.null(lat) && !is.na(lat) &&
+      (!is.numeric(lat) || any(abs(lat) > 90))) {
     stop("lat should be a numerical vector with values between -90 and 90.\n",
          call. = FALSE)
   }
-  if (!is.null(long) && (!is.numeric(long) || any(abs(long) > 180))) {
+  if (!is.null(long) && !is.na(long) &&
+      (!is.numeric(long) || any(abs(long) > 180))) {
     stop("long should be a numerical vector with values between -180 and 180.\n",
          call. = FALSE)
   }
-  if (!is.null(lat) && !is.null(long)) {
+  if (!is.null(lat) && !is.na(lat) && !is.null(long) && !is.na(long)) {
     locLen <- max(length(lat), length(long))
     ## Check that coordinates point to a proper location so plotting can be done.
     loc <- maps::map.where(x = rep(x = long, length.out = locLen),

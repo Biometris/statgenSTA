@@ -2,6 +2,7 @@
 #'
 #' Helper function for creating a correlation plot for an object of class TD.
 #'
+#' @importFrom utils combn
 #' @keywords internal
 corPlot <- function(x,
                     trials,
