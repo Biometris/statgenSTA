@@ -13,6 +13,14 @@ layoutPlot <- function(x,
   dotArgs <- list(...)
   chkChar(traits, len = 1, null = TRUE)
   showGeno <- isTRUE(dotArgs$showGeno)
+  if (showGeno) {
+    sizeGeno <- dotArgs$sizeGeno
+    if (is.null(sizeGeno)) {
+      sizeGeno <- 2
+    } else {
+      chkNum(sizeGeno, min = 0)
+    }
+  }
   highlight <- dotArgs$highlight
   colorSubBlock <- isTRUE(dotArgs$colorSubBlock)
   if (!is.null(highlight)) {
@@ -139,7 +147,7 @@ layoutPlot <- function(x,
       ## Add names of genotypes to the center of the tiles.
       pTr <- pTr +
         ggplot2::geom_text(ggplot2::aes_string(label = "genotype"),
-                           size = 2, check_overlap = TRUE, na.rm = TRUE)
+                           size = sizeGeno, check_overlap = TRUE, na.rm = TRUE)
     }
     if (plotRep) {
       ## Add lines for replicates.

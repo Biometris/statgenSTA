@@ -648,6 +648,8 @@ print.summary.TD <- function(x,
 #' \describe{
 #' \item{showGeno}{Should individual genotypes be indicated as text in the plot?
 #' Defaults to \code{FALSE}}
+#' \item{sizeGeno}{The text size for indicating individual genotypes. Defaults
+#' to 2. Ignored if \code{showGeno = FALSE}.}
 #' \item{highlight}{A character vector of genotypes to be highlighted in the
 #' plot.}
 #' \item{colorSubBlock}{Should blocks be colored with a different color per

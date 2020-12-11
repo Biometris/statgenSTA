@@ -39,6 +39,14 @@ test_that("option showGeno functions properly in TD layout plot", {
   expect_equal(setdiff(geoms1, geoms0), "GeomText")
 })
 
+test_that("option sizeGeno functions properly in TD layout plot", {
+  p1 <- plot(testTD, plotType = "layout", showGeno = TRUE, sizeGeno = 1,
+             output = FALSE)
+  ## Size of text should be 1.
+  geoms1 <- getGeoms(p1)
+  expect_equal(p1$E1$layers[[which(geoms1 == "GeomText")]]$aes_params$size, 1)
+})
+
 test_that("option highlight functions properly in TD layout plot", {
   expect_error(plot(testTD, plotType = "layout", highlight = 1),
                "highlight should be a character vector")
