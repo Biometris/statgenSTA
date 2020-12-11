@@ -2,6 +2,7 @@
 #'
 #' Helper function for creating a layout plot for an object of class TD.
 #'
+#' @importFrom grDevices topo.colors
 #' @keywords internal
 layoutPlot <- function(x,
                        trials,
@@ -25,7 +26,7 @@ layoutPlot <- function(x,
       trDat[["highlight."]] <- ifelse(trDat[["genotype"]] %in% highlight,
                                       as.character(trDat[["genotype"]]), NA)
     }
-    trLoc <- attr(trDat, "trLocation")
+    #trLoc <- attr(trDat, "trLocation")
     plotRep <- hasName(x = trDat, name = "repId")
     plotSubBlock <- hasName(x = trDat, name = "subBlock")
     plotTrait <- !is.null(traits) && hasName(x = trDat, name = traits)
@@ -56,7 +57,7 @@ layoutPlot <- function(x,
       repBord <- calcPlotBorders(trDat = trDat, bordVar = "repId")
     }
     if (is.null(title)) {
-      plotTitle <- trLoc
+      plotTitle <- trial
     } else {
       plotTitle <- title
     }

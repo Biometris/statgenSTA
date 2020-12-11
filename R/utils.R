@@ -608,6 +608,7 @@ dfBind <- function(dfList) {
 #' Helper function for defining trial colors in plots.
 #'
 #' @noRd
+#' @importFrom grDevices topo.colors
 #' @keywords internal
 defineTrialColors <- function(colors,
                               n,

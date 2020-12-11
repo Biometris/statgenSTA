@@ -798,8 +798,6 @@ print.summary.TD <- function(x,
 #' plot(wheatTD, plotType = "scatter", traits = "GY", addCorr = "tl")
 #' }
 #'
-#' @importFrom grDevices topo.colors
-#' @importFrom utils combn
 #' @export
 plot.TD <- function(x,
                     ...,
