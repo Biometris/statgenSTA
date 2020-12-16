@@ -18,6 +18,8 @@ navbar:
     - icon: fa-seedling
       text: "other packages"
       menu:
+        - text: "statgenGxE"
+          href: https://biometris.github.io/statgenGxE
         - text: "statgenGWAS"
           href: https://biometris.github.io/statgenGWAS
     - icon: fa-github fa-lg
