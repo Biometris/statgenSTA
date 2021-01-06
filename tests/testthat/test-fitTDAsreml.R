@@ -87,21 +87,21 @@ if (requireNamespace("asreml", quietly = TRUE)) {
   ### spatial.
 
   test_that("option spatial produces expected output structure", {
-    modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1",
-                       spatial = TRUE, engine = "asreml")
+    expect_warning(modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1",
+                                      spatial = TRUE, engine = "asreml"))
     expect_STA(modelAsTs)
     expect_STAMod(modelAsTs, "mRand")
     expect_STAMod(modelAsTs, "mFix")
     expect_is(modelAsTs[["E1"]]$spatial, "list")
     expect_length(modelAsTs[["E1"]]$spatial, 1)
     expect_named(modelAsTs[["E1"]]$spatial, "t1")
-    expect_equal(modelAsTs[["E1"]]$spatial$t1, "none")
+    expect_equal(modelAsTs[["E1"]]$spatial$t1, "AR1(x)AR1")
   })
 
   test_that("option spatial functions properly with missing data", {
     testTD$E1 <- testTD$E1[-1, ]
-    expect_silent(modelAsTs <- fitTD(testTD, design = "res.ibd", traits = "t1",
-                                     spatial = TRUE, engine = "asreml"))
+    expect_warning(modelAsTs <- fitTD(testTD, design = "res.ibd", traits = "t1",
+                                      spatial = TRUE, engine = "asreml"))
   })
 
   test_that("option spatial functions properly with extra data", {
@@ -116,10 +116,10 @@ if (requireNamespace("asreml", quietly = TRUE)) {
                          spatial = TRUE, engine = "asreml",
                          control = list(criterion = 1)),
                    "Invalid value for control parameter criterion")
-    modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1",
-                       spatial = TRUE, engine = "asreml",
-                       control = list(criterion = "BIC"))
-    expect_equal(modelAsTs[["E1"]]$spatial$t1, "none")
+    expect_warning(modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1",
+                                      spatial = TRUE, engine = "asreml",
+                                      control = list(criterion = "BIC")))
+    expect_equal(modelAsTs[["E1"]]$spatial$t1, "AR1(x)AR1")
   })
 
   ### Missing data.

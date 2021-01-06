@@ -26,7 +26,6 @@ TDMaize <- createTD(data = F2Maize, genotype = "genotype.", trial = "env.")
 usethis::use_data(TDMaize, overwrite = TRUE)
 
 ## Create a dataset for unit testing.
-RNGversion("3.5")
 set.seed(1)
 testData <- data.frame(seed = rep(x = paste0("G", rep(x = 1:15, times = 2)),
                                   times = 3),
@@ -65,7 +64,7 @@ usethis::use_data(testData, testTD, extractOptions,
                   overwrite = TRUE, internal = TRUE)
 
 ## Create data for vignette.
-# Read raw data.
+# Read raw data.6
 dat2011 <- read.delim(system.file("extdata", "pheno_data2011.txt",
                                   package = "statgenSTA"))
 dat2012 <- read.delim(system.file("extdata", "pheno_data2012.txt",

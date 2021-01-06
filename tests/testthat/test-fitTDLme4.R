@@ -107,8 +107,8 @@ test_that("Fitting models functions properly when trait contains space", {
   ## Create a trait with a space in its name.
   ## fitTD should be able to handle this.
   testTD[["E1"]][["t 2"]] <- testTD[["E1"]][["t2"]]
-  expect_silent(modelLm <- fitTD(testTD, design = "rcbd", engine = "lme4",
-                                 traits = c("t1", "t 2")))
+  expect_message(modelLm <- fitTD(testTD, design = "rcbd", engine = "lme4",
+                                  traits = c("t1", "t 2")))
   expect_STA(modelLm)
 })
 

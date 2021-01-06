@@ -53,28 +53,27 @@ test_that("option what functions properly", {
 test_that("option rLimit funtions properly", {
   out1 <- outlierSTA(modelLm, trials = "E1", traits = "t1", rLimit = 1,
                      verbose = FALSE)
-  expect_length(out1$indicator[["E1"]][["t1"]], 4)
-  expect_equal(nrow(out1$outliers), 4)
-  expect_equal(out1$outliers$res, c(1.73562640255469, -1.73562640255469,
-                                    1.48592104460245, -1.48592104460245),
-               ## Added tolerance for new defaults in lme4-1.2-23.
-               tolerance = 1e-5)
+  expect_length(out1$indicator[["E1"]][["t1"]], 6)
+  expect_equal(nrow(out1$outliers), 6)
+  expect_equal(out1$outliers$res,
+               c(1.13191821629099, -1.27945389572384, -1.13191821629098,
+                 1.27945389572384, -1.23458129246234, 1.23458129246234))
 })
 
 test_that("option rLimit funtions properly for multiple traits", {
   out14 <- outlierSTA(modelLm, trials = "E1", traits = paste0("t", 1:4),
                       rLimit = 1, verbose = FALSE)
   expect_equivalent(sapply(X = out14$indicator[["E1"]], FUN = length),
-                    c(4, 6, 2, 2))
-  expect_equal(nrow(out14$outliers), 14)
+                    c(6, 10, 0, 2))
+  expect_equal(nrow(out14$outliers), 18)
 })
 
 test_that("option commonFactors functions properly", {
   out1 <- outlierSTA(modelLm, trials = "E1", traits = "t1", rLimit = 1,
                      commonFactors = "subBlock", verbose = FALSE)
-  expect_length(out1$indicator[["E1"]][["t1"]], 4)
-  expect_equal(nrow(out1$outliers), 12)
-  expect_equal(sum(out1$outliers$outlier), 4)
+  expect_length(out1$indicator[["E1"]][["t1"]], 6)
+  expect_equal(nrow(out1$outliers), 18)
+  expect_equal(sum(out1$outliers$outlier), 6)
 })
 
 test_that("option verbose functions properly", {
@@ -82,8 +81,8 @@ test_that("option verbose functions properly", {
                                                  traits = "t1", verbose = TRUE))
   printOut2 <- capture.output(out2 <- outlierSTA(modelLm, trials = "E1",
                                                  traits = "t1", what = "random",
-                                                 rLimit = 2, verbose = TRUE))
+                                                 rLimit = 1, verbose = TRUE))
   expect_equal(printOut1, "No large standardized residuals.")
   expect_true("Large standardized residuals." %in% printOut2)
-  expect_true(any(grepl(pattern = "2.03194", x = printOut2)))
+  expect_true(any(grepl(pattern = "1.082710", x = printOut2)))
 })

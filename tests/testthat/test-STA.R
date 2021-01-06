@@ -20,7 +20,7 @@ test_that("summary.STA produces correct output for SpATS", {
   expect_null(sumSp$selSpatMod)
   expect_equal(nrow(sumSp$stats), 9)
   expect_equal(dim(sumSp$meanTab), c(15, 4))
-  expect_equivalent(sumSp$heritability, 0.65)
+  expect_equivalent(sumSp$heritability, 0.01)
   expect_equal(nrow(sumSp$sed), 0)
   expect_equal(nrow(sumSp$lsd), 0)
   expect_null(sumSp$spatSumTab)
@@ -33,7 +33,7 @@ test_that("summary.STA produces correct output for lme4", {
   expect_null(sumLm$selSpatMod)
   expect_equal(nrow(sumLm$stats), 9)
   expect_equal(dim(sumLm$meanTab), c(15, 4))
-  expect_equivalent(sumLm$heritability, 0.44)
+  expect_equivalent(sumLm$heritability, 0)
   expect_equal(nrow(sumLm$sed), 0)
   expect_equal(nrow(sumLm$lsd), 0)
   expect_null(sumLm$spatSumTab)
@@ -47,7 +47,7 @@ test_that("summary.STA produces correct output for asreml", {
   expect_null(sumAs$selSpatMod)
   expect_equal(nrow(sumAs$stats), 9)
   expect_equal(dim(sumAs$meanTab), c(15, 4))
-  expect_equivalent(sumAs$heritability, 0.62)
+  expect_equivalent(sumAs$heritability, 0)
   expect_equal(nrow(sumAs$sed), 3)
   expect_equal(nrow(sumAs$lsd), 3)
   expect_null(sumAs$spatSumTab)
@@ -55,14 +55,14 @@ test_that("summary.STA produces correct output for asreml", {
 
 test_that("summary.STA produces correct output for asreml with spatial models", {
   skip_if_not_installed("asreml")
-  modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1",
-                     spatial = TRUE, engine = "asreml")
-  sumAsTs <- summary(modelAsTs)
+  expect_warning(modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1",
+                                    spatial = TRUE, engine = "asreml"))
+  expect_warning(sumAsTs <- summary(modelAsTs))
   expect_length(sumAsTs, 7)
-  expect_equal(sumAsTs$selSpatMod, "none")
+  expect_equal(sumAsTs$selSpatMod, "AR1(x)AR1")
   expect_equal(nrow(sumAsTs$stats), 9)
   expect_equal(dim(sumAsTs$meanTab), c(15, 4))
-  expect_equivalent(sumAsTs$heritability, 0.62)
+  expect_equivalent(sumAsTs$heritability, -0.72)
   expect_equal(nrow(sumAsTs$sed), 3)
   expect_equal(nrow(sumAsTs$lsd), 3)
   expect_equal(dim(sumAsTs$spatSumTab), c(7, 10))
@@ -112,15 +112,15 @@ test_that("print.summary.STA functions properly", {
   expect_false(any(grepl("Best", sumSp2)))
   skip_if_not_installed("asreml")
   modelAs <- fitTD(testTD, design = "rowcol", traits = "t1", engine = "asreml")
-  modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1", spatial = TRUE,
-                     engine = "asreml")
+  expect_warning(modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1",
+                                    spatial = TRUE, engine = "asreml"))
   sumAs <- capture.output(summary(modelAs))
-  sumAsTs <- capture.output(summary(modelAsTs))
+  expect_warning(sumAsTs <- capture.output(summary(modelAsTs)))
   expect_true(all(c("Standard Error of Difference (genotype modeled as fixed effect) ",
                     "Least Significant Difference (genotype modeled as fixed effect) ") %in%
                     sumAs))
   expect_true(all(c("Overview of tried spatial models ",
-                    "Selected spatial model:  none ") %in%
+                    "Selected spatial model:  AR1(x)AR1 ") %in%
                     sumAsTs))
 })
 
