@@ -1,25 +1,22 @@
-## Load data from zip file.
-phenoFile <- system.file("extdata", "grainYield_components_BLUEs.zip",
-                         package = "statgenSTA")
-dropsPheno <- read.csv(unz(description = phenoFile,
-                           filename = "2b-GrainYield_components_BLUEs_level.csv"))
+## Load raw data.
+dropsRaw <- read.csv("./data-raw/2a-GrainYield_components_Plot_level-1.csv",
+                     stringsAsFactors = FALSE)
 ## Load genotype meta data.
-genoMeta <- read.csv(system.file("extdata", "8-Info_Maize_variety.csv",
-                                 package = "statgenSTA"))
+genoMeta <- read.csv("./data-raw/8-Info_Maize_variety.csv",
+                     stringsAsFactors = FALSE)
 ## Rename genetic_group geneticGroup for consistency.
 colnames(genoMeta)[colnames(genoMeta) == "genetic_group"] <- "geneticGroup"
 
 ## Restrict to 10 relevant environments.
 exps <- c("Cam12R", "Cra12R", "Gai12W", "Kar12W", "Kar13R", "Kar13W",
           "Mar13R", "Mur13R", "Mur13W", "Ner12R")
-dropsPheno <- dropsPheno[dropsPheno[["Experiment"]] %in% exps, ]
+dropsRaw <- dropsRaw[dropsRaw[["Experiment"]] %in% exps, ]
 
-## Add year column.
-dropsPheno[["year"]] <- paste0("20", substring(dropsPheno[["Experiment"]],
-                                               first = 4, last = 5))
+## Remove anthesis.silking.interval.
+dropsRaw <- dropsRaw[colnames(dropsRaw) != "anthesis.silking.interval"]
+
 ## Add location column.
-dropsPheno[["loc"]] <- substring(dropsPheno[["Experiment"]],
-                                 first = 1, last = 3)
+dropsRaw[["loc"]] <- substring(dropsRaw[["Experiment"]],  first = 1, last = 3)
 
 ## Add scenario columns.
 scenario <- data.frame(Experiment = exps,
@@ -28,15 +25,15 @@ scenario <- data.frame(Experiment = exps,
                        scenarioTemp = c("Hot", "Hot", "Cool", "Cool",
                                         "Hot(Day)", "Hot(Day)", "Hot(Day)",
                                         "Hot", "Hot", "Hot(Day)"))
-dropsPheno <- merge(dropsPheno, scenario)
+dropsRaw <- merge(dropsRaw, scenario)
 
-dropsPheno[["scenarioFull"]] <- interaction(dropsPheno[c("scenarioWater",
-                                                         "scenarioTemp")],
-                                            drop = TRUE)
+dropsRaw[["scenarioFull"]] <- interaction(dropsRaw[c("scenarioWater",
+                                                     "scenarioTemp")],
+                                          drop = TRUE)
 
 ## Add genetic groups.
-dropsPheno <- merge(dropsPheno, genoMeta[c("Variety_ID", "geneticGroup")])
+dropsRaw <- merge(dropsRaw, genoMeta[c("Variety_ID", "geneticGroup")])
 
-dropsPheno <- droplevels(dropsPheno)
+dropsRaw <- droplevels(dropsRaw)
 
-usethis::use_data(dropsPheno, overwrite = TRUE)
+usethis::use_data(dropsRaw, overwrite = TRUE)

@@ -15,18 +15,21 @@
 #' the five main environmental scenarios that were identified in the data. The
 #' scenarios have been added to the data as well as a classification of the
 #' genotypes in four genetic groups.\cr\cr
-#'
-#' The data.frame contains the genotypic means  (Best Linear Unbiased Estimators,
-#' BLUEs), with one value per experiment  (Location × year × water regime) per
-#' genotype.\cr
-#' A data.frame with 2460 rows and 19 columns.\cr
+#' The data.frame contains the raw phenotypic data per experiment
+#' (Location × year × water regime), one value per individual plot and
+#' outliers have been removed.\cr\cr
+#' A data.frame with 6499 rows and 25 columns.\cr
 #' \describe{
 #' \item{Experiment}{experiments ID described by the three first letters of the
 #' city’s name followed by the year of experiment and the water regime with W
 #' for watered and R for rain-fed.}
-#' \item{parent1}{identifier of donor dent line}
+#' \item{Site}{location where the experiment was performed}
+#' \item{year}{year in which the experiment was performed}
+#' \item{plotId}{plot identifier (when available)}
+#' \item{treatment}{targeted water regime}
 #' \item{Code_ID, Variety_ID, Accession_ID}{identifier of the genotype}
-#' \item{geno.panel}{project in which the genetic material was generated}
+#' \item{Replicate, block}{experimental design factors}
+#' \item{Row, Column}{2D coordinates of each plot}
 #' \item{grain.yield}{genotypic mean for yield adjusted at 15\% grain moisture,
 #' in ton per hectare (t ha^-1)}
 #' \item{grain.number}{genotypic mean for number of grain per square meter}
@@ -35,14 +38,13 @@
 #' \item{anthesis}{genotypic mean for male flowering (pollen shed), in thermal
 #' time cumulated since emergence (d_20°C)}
 #' \item{silking}{genotypic mean for female flowering (silking emergence), in
-#' thermal time cumulated since emergence (d_20°C)}
+#' thermal time cumulated since emergence (d_20°C)}#'
 #' \item{plant.height}{genotypic mean for plant height, from ground level to
 #' the base of the flag leaf (highest) leaf in centimeter (cm)}
 #' \item{tassel.height}{genotypic mean for plant height including tassel, from
 #' ground level to the highest point of the tassel in centimeter (cm)}
 #' \item{ear.height}{genotypic mean for ear insertion height, from ground level
 #' to ligule of the highest ear leaf in centimeter (cm)}
-#' \item{year}{year in which the experiment was performed}
 #' \item{loc}{location where the experiment was performed, a three letter
 #' abbreviation}
 #' \item{scenarioWater}{water scenario for the experiment, well watered (WW) or
@@ -60,7 +62,7 @@
 #' experiment in a network of European fields for assessing the maize yield
 #' response to environmental scenarios (Data set).
 #' \doi{10.15454/IASSTN}
-"dropsPheno"
+"dropsRaw"
 
 #' Field data for a wheat experiment in Chili
 #'
