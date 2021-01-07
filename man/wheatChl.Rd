@@ -43,6 +43,6 @@ Jesse Poland, François Belzile, Alejandro del Pozo, Martín Quincke,
 Marina Castro, and Jarislav von Zitzewitz. 2013. “Increased Genomic
 Prediction Accuracy in Wheat Breeding Through Spatial Adjustment of Field
 Trial Data.” G3: Genes|Genomes|Genetics 3 (12): 2105–14.
-doi:10.1534/g3.113.007807.
+\doi{10.1534/g3.113.007807}.
 }
 \keyword{datasets}

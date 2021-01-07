@@ -121,7 +121,7 @@
 #' Maria Xose Rodriguez-Alvarez, Martin P. Boer, Fred A. van Eeuwijk, Paul H.C.
 #' Eilers (2017). Correcting for spatial heterogeneity in plant breeding
 #' experiments with P-splines. Spatial Statistics
-#' \url{https://doi.org/10.1016/j.spasta.2017.10.003}
+#' \doi{10.1016/j.spasta.2017.10.003}
 #' @references
 #' Butler, D. G., et al. (2010). Analysis of Mixed Models for S language
 #' environments: ASReml-R reference manual. Brisbane, DPI Publications
