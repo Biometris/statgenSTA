@@ -202,7 +202,7 @@ createTD <- function(data,
   if (length(dupCols) > 0) {
     stop("The following columns already exist in the input data:\n",
          paste(dupCols, collapse = ","), "\n",
-         "Renaming another column to one of these is imposseble.\n")
+         "Renaming another column to one of these is impossible.\n")
   }
   colnames(data) <- cols
   ## Convert columns to factor if neccessary.
