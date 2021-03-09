@@ -150,56 +150,55 @@ the default, then no correlation is added to the plot.}
 }
 
 \examples{
-data("wheatChl")
+data("dropsRaw")
 
 ## Create a TD object.
-wheatTD <- createTD(data = wheatChl, genotype = "trt", repId = "rep",
-                    subBlock = "bl", rowCoord = "row", colCoord = "col")
-
-## Add meta data to be able to plot locations on a map.
-wheatMeta <- getMeta(wheatTD)
-wheatMeta$trLocation <- c("Cauquenes", rep("Santa Rosa", times = 4))
-wheatMeta$trLat <- c(-35.58, rep(-36.32, times = 4))
-wheatMeta$trLong <- c(-72.17, rep(-71.55, times = 4))
-wheatTD <- setMeta(wheatTD, wheatMeta)
-
+dropsTD <- createTD(data = dropsRaw[dropsRaw$year == 2012, ],
+                    genotype = "Variety_ID", trial = "Experiment",
+                    loc = "Site", repId = "Replicate", subBlock = "block",
+                    rowCoord = "Row", colCoord = "Column",
+                    trLat = "Lat", trLong = "Long")
 ### Layout plot.
 
 \donttest{
 ## Plot the layout of one of the trials.
-plot(wheatTD, trials = "C_SWS_12")
+plot(dropsTD, trials = "C_SWS_12")
 
 ## Highlight some of the genotypes in the layout.
-plot(wheatTD, trials = "C_SWS_12", highlight = c("G001", "G002"))
+plot(dropsTD, trials = "C_SWS_12", highlight = c("G001", "G002"))
 
 ### Map plot.
 
 ## Plot the location of the trials on the map.
-plot(wheatTD, plotType = "map")
+plot(dropsTD, plotType = "map")
 
 ### Box plot.
 
-## Create a box plot for GY.
-plot(wheatTD, plotType = "box", traits = "GY")
+## Create a box plot for grain.yield.
+plot(dropsTD, plotType = "box", traits = "grain.yield")
 
-## Add coloring by repId to the boxes.
-plot(wheatTD, plotType = "box", traits = "GY", colorTrialBy = "repId")
+## Add coloring by scenarioFull to the boxes.
+plot(dropsTD, plotType = "box", traits = "grain.yield",
+     colorTrialBy = "scenarioFull")
 
 ## Sort the boxes in descending order.
-plot(wheatTD, plotType = "box", traits = "GY", orderBy = "descending")
+plot(dropsTD, plotType = "box", traits = "grain.yield",
+     orderBy = "descending")
 
 ### Correlation plot.
 
-## Plot the correlations between trials for GY.
-plot(wheatTD, plotType = "cor", traits = "GY")
+## Plot the correlations between trials for grain.yield.
+plot(dropsTD, plotType = "cor", traits = "grain.yield")
 
 ### Scatter plot
 
-## Plot scatter plot for GY.
-plot(wheatTD, plotType = "scatter", traits = "GY")
+## Plot scatter plot for grain.yield.
+plot(dropsTD, plotType = "scatter", traits = "grain.yield")
 
-## Add correlations to top left corner of plots.
-plot(wheatTD, plotType = "scatter", traits = "GY", addCorr = "tl")
+## Create a scatter plot matrix for grain yield.
+## Color trials by scenario and genotypes by family.
+plot(dropsTD, plotType = "scatter", traits = "grain.yield",
+     colorTrialBy = "scenarioFull", colorGenoBy = "geneticGroup")
 }
 
 }

@@ -54,22 +54,23 @@ but \code{NA} will be ignored so setting a value to \code{NA} won't result
 in accidentally removing it.
 }
 \examples{
-data("wheatChl")
+data("dropsRaw")
 
 ## Create a TD object.
-wheatTD <- createTD(data = wheatChl, genotype = "trt", repId = "rep",
-                    subBlock = "bl", rowCoord = "row", colCoord = "col")
+dropsTD <- createTD(data = dropsRaw[dropsRaw$year == 2012, ],
+                    genotype = "Variety_ID", trial = "Experiment",
+                    loc = "Site", repId = "Replicate", subBlock = "block",
+                    rowCoord = "Row", colCoord = "Column",
+                    trLat = "Lat", trLong = "Long")
 
-## Get meta data from wheatTD
-(wheatMeta <- getMeta(wheatTD))
+## Get meta data from dropsTD.
+(dropsMeta <- getMeta(dropsTD))
 
-## Add location names and latitude/longitude to meta data.
-wheatMeta$trLocation <- c("Cauquenes", rep("Santa Rosa", times = 4))
-wheatMeta$trLat <- c(-35.58, rep(-36.32, times = 4))
-wheatMeta$trLong <- c(-72.17, rep(-71.55, times = 4))
+## Add trial date to meta data.
+dropsMeta$trDate <- as.Date(rep("010112", times = 5), "\%d\%m\%y")
 
 ## Add back meta data to wheatTD.
-wheatTD <- setMeta(wheatTD, wheatMeta)
+dropsTD <- setMeta(dropsTD, dropsMeta)
 
 }
 \seealso{
