@@ -59,8 +59,8 @@ the base of the flag leaf (highest) leaf in centimeter (cm)}
 ground level to the highest point of the tassel in centimeter (cm)}
 \item{ear.height}{genotypic mean for ear insertion height, from ground level
 to ligule of the highest ear leaf in centimeter (cm)}
-\item{loc}{location where the experiment was performed, a three letter
-abbreviation}
+\item{Lat}{The latitude of the location where the experiment was performed}
+\item{Long}{The longitude of the location where the experiment was performed}
 \item{scenarioWater}{water scenario for the experiment, well watered (WW) or
 water deficit (WD)}
 \item{scenarioTemp}{temperature scenario for the experiment, Cool, Hot or
