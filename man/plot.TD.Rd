@@ -27,7 +27,7 @@ made. See the sections below for a detailed explanation of the plots.}
 plot.}
 
 \item{traits}{A character vector indicating for which traits a plot should
-be made. Only used if \code{plotType} = "box", "cor", and "scatter".}
+be made. Ignored if \code{plotType} = "map".}
 
 \item{title}{A character string used a title for the plot. Note that when
 a title is specified and multiple plots are created, all plots will get the
@@ -84,7 +84,7 @@ Extra parameter options:
 which the trials on the map are colored.}
 \item{colTrial}{A character vector with plot colors for the trials. A
 single color when \code{colorTrialBy = NULL}, a vector of colors otherwise.}
-\item{printTrialsNames}{Should trial names be printed. Defaults to
+\item{printTrialNames}{Should trial names be printed. Defaults to
 \code{TRUE}. Setting this to \code{FALSE} can be useful if there are many
 trials.}
 \item{minLatRange}{A positive numerical value indicating the minimum range

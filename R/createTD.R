@@ -672,7 +672,7 @@ print.summary.TD <- function(x,
 #' which the trials on the map are colored.}
 #' \item{colTrial}{A character vector with plot colors for the trials. A
 #' single color when \code{colorTrialBy = NULL}, a vector of colors otherwise.}
-#' \item{printTrialsNames}{Should trial names be printed. Defaults to
+#' \item{printTrialNames}{Should trial names be printed. Defaults to
 #' \code{TRUE}. Setting this to \code{FALSE} can be useful if there are many
 #' trials.}
 #' \item{minLatRange}{A positive numerical value indicating the minimum range
@@ -738,7 +738,7 @@ print.summary.TD <- function(x,
 #' @param trials A character vector indicating which trials to include in the
 #' plot.
 #' @param traits A character vector indicating for which traits a plot should
-#' be made. Only used if \code{plotType} = "box", "cor", and "scatter".
+#' be made. Ignored if \code{plotType} = "map".
 #' @param title A character string used a title for the plot. Note that when
 #' a title is specified and multiple plots are created, all plots will get the
 #' same title.

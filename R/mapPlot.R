@@ -10,7 +10,7 @@ mapPlot <- function(x,
   dotArgs <- list(...)
   colorTrialBy <- dotArgs$colorTrialBy
   colTrial <- dotArgs$colTrial
-  printTrialsNames <- dotArgs$printTrialNames
+  printTrialNames <- dotArgs$printTrialNames
   ## Checks for colTrial.
   chkChar(colTrial)
   if (!is.null(colorTrialBy)) {
@@ -38,6 +38,11 @@ mapPlot <- function(x,
     colorTrialDat[[".colorTrialBy"]] <- factor(1)
     colorTrialBy <- ".colorTrialBy"
   }
+  if (!is.factor(colorTrialDat[[2]])) {
+    colorTrialDat[[2]] <- as.factor(colorTrialDat[[2]])
+  }
+  ## droplevels is needed to assure number of colors matches actual number of
+  ## trials in data.
   colorTrialDat <- droplevels(colorTrialDat)
   ## Get the number of colors needed for coloring the trials.
   nColTrial <- nlevels(colorTrialDat[[colorTrialBy]])
@@ -93,7 +98,7 @@ mapPlot <- function(x,
     ## Add trial locations.
     ggplot2::geom_point(data = locs,
                         ggplot2::aes_string(color = colorTrialBy),
-                        show.legend = isFALSE(printTrialsNames) &
+                        show.legend = isFALSE(printTrialNames) &
                           colorTrialBy != ".colorTrialBy") +
     ggplot2::scale_color_manual(values = colTrial) +
     ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
@@ -103,7 +108,7 @@ mapPlot <- function(x,
                    panel.background =
                      ggplot2::element_rect(fill = "steelblue2")) +
     ggplot2::ggtitle(title)
-  if (!isFALSE(printTrialsNames)) {
+  if (!isFALSE(printTrialNames)) {
     p <- p +
       ggrepel::geom_text_repel(mapping =
                                  ggplot2::aes_string(label = "name",
