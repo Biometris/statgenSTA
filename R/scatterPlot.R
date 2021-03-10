@@ -61,6 +61,9 @@ scatterPlot <- function(x,
   if (!is.factor(colorTrialDat[[2]])) {
     colorTrialDat[[2]] <- as.factor(colorTrialDat[[2]])
   }
+  ## droplevels is needed to assure number of colors matches actual number of
+  ## trials in data.
+  colorTrialDat <- droplevels(colorTrialDat)
   colorTrialGroups <- levels(colorTrialDat[[2]])
   ## Get the number of colors needed for coloring the trials.
   nColTrial <- length(colorTrialGroups)
@@ -79,7 +82,7 @@ scatterPlot <- function(x,
       plotTitle <- title
     }
     ## Create a single data.frame from x with only columns genotype, trial
-    ## and trait and optionally colorGenoBy
+    ## and trait and optionally colorGenoBy.
     ## trials where trait is not measured/available are removed by setting
     ## them to NULL.
     plotDat <- Reduce(f = rbind, x = lapply(X = x, FUN = function(trial) {

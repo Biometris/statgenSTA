@@ -162,10 +162,10 @@ dropsTD <- createTD(data = dropsRaw[dropsRaw$year == 2012, ],
 
 \donttest{
 ## Plot the layout of one of the trials.
-plot(dropsTD, trials = "C_SWS_12")
+plot(dropsTD, trials = "Kar12W")
 
 ## Highlight some of the genotypes in the layout.
-plot(dropsTD, trials = "C_SWS_12", highlight = c("G001", "G002"))
+plot(dropsTD, trials = "Kar12W", highlight = c("A3", "11430"))
 
 ### Map plot.
 
