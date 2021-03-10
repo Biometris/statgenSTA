@@ -38,7 +38,7 @@ mapPlot <- function(x,
     colorTrialDat[[".colorTrialBy"]] <- factor(1)
     colorTrialBy <- ".colorTrialBy"
   }
-  if (!is.factor(colorTrialDat[[2]])) {
+  if (ncol(colorTrialDat) > 1 && !is.factor(colorTrialDat[[2]])) {
     colorTrialDat[[2]] <- as.factor(colorTrialDat[[2]])
   }
   ## droplevels is needed to assure number of colors matches actual number of
