@@ -44,14 +44,14 @@ A `TD` object can be created from a `data.frame` with the function `createTD`. T
 * Rename columns to default column names used by the functions in the statgenSTA package. For example, the column in the data containing variety/accession/genotype is renamed to "genotype". Original column names are stored as an attribute of the `TD` object.
 * Convert column types to the default column types. For example, the column  "genotype" is converted to a factor and "rowCoord" to a numeric column.
 * Split the data into separate data.frames by trial. A `TD` object is a `list` of `data.frames` where each `data.frame` contains the data for a single trial. If there is only one trial or no column trial is defined, the output will be a `list` with only one item.
-* Add meta data to the `TD` object. This meta data is used to store background information about the trials. It consists of location, date of the experiment, longitude, latitude, trial design, plot width and plot length. None of these are strictly neccessary for any analysis and meta data can therefore be safely ignored. However the meta data is used when plotting field layouts, plotting trials on a map and naming plots. Meta data can be added when creating the `TD` object using the appropriate parameters in `createTD` (see [**2.4**](#addTD)). However if the data consists of multiple trials it is more convenient to first create a `TD` object without meta data and then add meta data using the `getMeta` and `setMeta` functions (see [**2.3**](#meta)).
+* Add meta data to the `TD` object. This meta data is used to store background information about the trials. It consists of location, date of the experiment, longitude, latitude, trial design, plot width and plot length. None of these are strictly necessary for any analysis and meta data can therefore be safely ignored. However the meta data is used when plotting field layouts, plotting trials on a map and naming plots. Meta data can be added when creating the `TD` object using the appropriate parameters in `createTD` (see [**2.2**](#ex)). It is also possible to first create a `TD` object without meta data and then add meta data using the `getMeta` and `setMeta` functions (see [**2.3**](#meta)).
 
 After creating a `TD` object, data for new trials can be added to it using  `addTD`. This function works in exactly the same way as `createTD` except that it adds data to an existing `TD` object instead of creating a new one.  
 Dropping one or more trials from a `TD` object can be done using the function `dropTD`.
 
-## Example
+## Example {#ex}
 
-The use of the package is demonstrated using maize data from the European Union project DROPS (https://cordis.europa.eu/project/id/244374). The data is available from https://data.inra.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN&version=2.0 [@Millet2019] and the relevant data set is included as data.frame in the statgenSTA package.
+The use of the package is demonstrated using maize data from the European Union project DROPS (https://cordis.europa.eu/project/id/244374). The data is available from https://data.inrae.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN [@Millet2019] and the relevant data set is included as data.frame in the statgenSTA package.
 
 The first step is loading the data into R. 
 ```{r loadData} 
@@ -65,10 +65,15 @@ For the example, first a `TD` object is created for experiments conducted in 201
 ## Create a TD object containing for 2012.
 data("dropsRaw")
 dropsTD <- createTD(data = dropsRaw[dropsRaw$year == 2012, ],
-                    genotype = "Variety_ID", trial = "Experiment",
-                    loc = "Site", repId = "Replicate", subBlock = "block",
-                    rowCoord = "Row", colCoord = "Column", 
-                    trLat = "Lat", trLong = "Long")
+                    genotype = "Variety_ID", 
+                    trial = "Experiment",
+                    loc = "Site",
+                    repId = "Replicate", 
+                    subBlock = "block",
+                    rowCoord = "Row", 
+                    colCoord = "Column", 
+                    trLat = "Lat", 
+                    trLong = "Long")
 ```
 The `TD` object just created is a `list` with five items, one for each trial  (combination of location, year and water regime) in the original `data.frame`. The column "Variety_ID" in the original data is renamed to "genotype" and converted to a factor. The columns "Replicate", "block", "loc" are renamed and converted likewise. The columns "Row" and "Column" are renamed to "rowCoord" and "colCoord" respectively. Simultaneously two columns "rowId" and "colId" are created containing the same information converted to a factor. This seemingly duplicate information is needed for spatial analysis. It is possible to define different columns as "rowId" and "colId" than the ones used as "rowCoord" and "colCoord". Finally, the latitude and longitude of the trials is read from the column "Lat" and "Long" in the input and stored in `dropsTD`. The information about which columns have been renamed when creating a `TD` object is stored as an attribute of each individual `data.frame` in the object.
 
@@ -100,14 +105,20 @@ dropsTD <- setMeta(TD = dropsTD, meta = dropsMeta)
 
 ## Add extra data to a `TD` object {#addTD}
 
-To add the data for the 2013 trials to the `TD` object the function `addTD` can be used. This functions is very similar to `createTD` with the only exception that a `TD` object has to be specified to which the new data is added.
+To add the data for the 2013 trials to the `TD` object the function `addTD` can be used. This function is very similar to `createTD` with the only exception that a `TD` object has to be specified to which the new data is added.
 ```{r addTD, R.options=list(width=90)}
 ## Add the data for the 2013 trials to the TD object.
-dropsTD <- addTD(TD = dropsTD, data = dropsRaw[dropsRaw$year == 2013, ],
-                 genotype = "Variety_ID", trial = "Experiment",
-                 loc = "Site", repId = "Replicate", subBlock = "block",
-                 rowCoord = "Row", colCoord = "Column", 
-                 trLat = "Lat", trLong = "Long")
+dropsTD <- addTD(TD = dropsTD, 
+                 data = dropsRaw[dropsRaw$year == 2013, ],
+                 genotype = "Variety_ID", 
+                 trial = "Experiment",
+                 loc = "Site", 
+                 repId = "Replicate", 
+                 subBlock = "block",
+                 rowCoord = "Row", 
+                 colCoord = "Column", 
+                 trLat = "Lat", 
+                 trLong = "Long")
 
 ## Inspect the meta data after the extra trial was added.
 getMeta(TD = dropsTD)
@@ -117,18 +128,23 @@ getMeta(TD = dropsTD)
 
 ## Summarizing a `TD` object
 
-The `summary` function can be used to get an idea of the content of the data in the `TD` object. Multiple traits can be summarized at once but for clarity here a summary is only made for grain.yield
+The `summary` function can be used to get an idea of the content of the data in the `TD` object. Multiple traits can be summarized at once but for clarity here a summary is only made for grain.yield for a single trial.
 ```{r TDsum}
-## Create a summary for grain yield in Kar12W.
-summary(dropsTD, trial = "Kar12W", traits = "grain.yield")
+## Create a summary for grain yield in Gai12W.
+summary(dropsTD, 
+        trial = "Gai12W", 
+        traits = "grain.yield")
 ```
 
 Using the default options, nine summary statistics are printed, but many more are available. These can be accessed using the parameter `what` in the `summary` function. For a full list of available statistics, use `help(summary.TD)`. It is also possible to output all statistics using `what = "all"`.    
 
 It is possible to summarize the data in a TD object for different groups. This can be done using the parameter `groupBy`. It will display three main summary statistics per group. Again, more statistics can be displayed using the parameter `what`.
 ```{r TDsumGroup}
-## Create a summary for the geneticGroups in Kar12W
-summary(dropsTD, trial = "Kar12W", traits = "grain.yield", groupBy = "geneticGroup")
+## Create a summary per family in Gai12W
+summary(dropsTD, 
+        trial = "Gai12W", 
+        traits = "grain.yield", 
+        groupBy = "geneticGroup")
 ```
 
 ## Plotting a `TD` object {#TDPlot}
@@ -137,7 +153,7 @@ Several plots can be made to further investigate the contents of a `TD` object.
 
 In all plots the default colors for both genotype groups and trial groups are chosen from a predefined color palette. For genotype groups the color palette is "Dark 2", for trial groups it is "Alphabet". See [here](https://developer.r-project.org/Blog/public/2019/11/21/a-new-palette-for-r/index.html) for an overview of these colors.    
 
-It is possible to specify different colors for genotype groups and trial groups per plot using the options `colGeno` and `colTrial` respectively. Also, more conveniently, the default colors can be set using the options statgen.genoColors and statgen.trialColors.
+It is possible to specify different colors for genotype groups and trial groups per plot using the options `colGeno` and `colTrial` respectively. Also, more conveniently, the default colors can be set using the options `statgen.genoColors` and `statgen.trialColors`.
 
 ```{r colorOpts, eval=FALSE}
 ## Set default colors for genotypes and trials.
@@ -145,88 +161,130 @@ options("statgen.genoColors" = c("blue", "green", "yellow"))
 options("statgen.trialColors" = c("red", "brown", "purple"))
 ```
 
-If a plot has more genotype groups than the number of colors specified as default colors, the default colors will be ignored and `topo.colors` will be used instead. For trial groups this is done in a similar way.
+If a plot has more genotype groups than the number of colors specified as default colors, the default colors will be ignored and `topo.colors()` will be used instead. For trial groups this is done in a similar way.
 
 ### Layout plot {#layPlot}
 
-The default plot creates plots for the layout of all trials in the `TD` object. This can be restricted to selected trials using the `trials` parameter. The width and length of the plot are derived from "trPlWidth" and "trPlLength" in the meta data if these are available.  
+The default plot creates plots for the layout of all trials in the `TD` object. This can be restricted to selected trials using the `trials` parameter. The width and length of the plot are derived from "trPlWidth" and "trPlLength" in the meta data if these are available. If `repId` was specified when creating the `TP` object, replicate blocks are delineated by a black line. If subBlock was specified, then sub blocks are delineated by a blue line. This type of plot allows checking the design of the experiment.
 ```{r layoutPlot}
-plot(dropsTD, trials = "Kar12W")
+plot(dropsTD, 
+     trials = "Gai12W")
 ```
+
+*Note that the default title of the plot is the name of the trial. This can be manually changed using the `title` option.*
 
 This plot can be extended by highlighting interesting genotypes in the layout.
 ```{r layoutPlotHL}
-## Plot the layout for Kar12W with genotypes A3 and 11430 highlighted.
-plot(dropsTD, trials = "Kar12W", highlight = c("A3", "11430"))
+## Plot the layout for Gai12W with genotypes A3 and 11430 highlighted.
+plot(dropsTD, 
+     trials = "Gai12W", 
+     highlight = c("A3", "11430"))
 ```
 
-It is also possible to color the subBlocks within the field.
+It is also possible to color the sub blocks within the field.
 ```{r layoutPlotSB, fig.dim = c(7, 5)}
-## Plot the layout for Kar12W, color subBlocks.
-plot(dropsTD, trials = "Kar12W", colorSubBlock = TRUE)
+## Plot the layout for Gai12W, color sub blocks.
+plot(dropsTD, 
+     trials = "Gai12W", 
+     colorSubBlock = TRUE)
 ```
 
 Highlighting genotypes and coloring subBlocks cannot be done simultaneously. If both options are specified, only highlighting is done.    
 
-Finally, it is possible to add the names of the genotypes to the layout. 
-```{r layoutPlotSG, fig.dim = c(7, 5)}
-## Plot the layout for Kar12W, color subBlocks.
-plot(dropsTD, trials = "Kar12W", showGeno = TRUE)
+It is possible to add the labels of the genotypes to the layout.
+```{r layoutPlotSG, fig.dim = c(7, 6)}
+## Plot the layout for Gai12W, label the genotypes.
+plot(dropsTD, 
+     trials = "Gai12W", 
+     showGeno = TRUE)
+```
+
+We can visualize the raw data of a given trait on the layout, as a heatmap. This type of plot gives a first indication of the spatial variability for a given trial. This can be further investigated with the spatial modeling. Missing plots are indicated in white.
+```{r layoutPlotGY, fig.dim = c(7, 5)}
+## Plot the layout for Gai12W, show raw data for grain yield.
+plot(dropsTD, 
+     trials = "Gai12W", 
+     traits = "grain.yield")
 ```
 
 ### Map plot {#mapPlot}
 
-A second type of plot displays the trial locations on a map. This plot is made based on trLat and trLong in the meta data. If latitude or longitude is not available for a certain location, then this location is not plotted. If the locations are very close together, the resulting map can become quite small. The parameters `minLatRange` and `minLongRange` can be used to extend the minimum range of latitude and longitude respectively to address this issue.
+A second type of plot displays the trial locations on a map. This plot is made based on trLat and trLong in the meta data. If latitude or longitude is not available for a certain location, then this location is not plotted. If the locations are very close together, the resulting map can become quite small. The parameters `minLatRange` and `minLongRange` can be used to extend the minimum range of latitude and longitude respectively to address this issue. For map plots where there are many trials close together, the trial names can be left out of the plot by specifying `printTrialNames = FALSE`.
 ```{r mapPlot}
 ## Plot the locations of the trials on a map.
-plot(dropsTD, plotType = "map")
+plot(dropsTD, 
+     plotType = "map")
 ```
+
+It is possible to color the trials by a variable in the `TD` object using `colorTrialBy`. Colors may be specified in `colTrial`.   
+```{r mapPlotCol}
+## Plot the locations of the trials on a map.
+## Color the trials by water scenario.
+plot(dropsTD, 
+     plotType = "map",
+     colorTrialBy = "scenarioWater",
+     colTrial = c("red", "darkgreen"))
+```
+
 
 ### Box plot {#boxPlot}
 
 Boxplots can be made to get an idea of the contents of the data in the `TD` object. By default a box is plotted per trial in the data for the specified traits. Boxplots for multiple traits can be made at once.
+
+Boxplots can be made to visually assess the variability of the trait(s) in the `TD` object. By default a box is plotted per trial for the specified trait. Boxplots for multiple traits can be made at once.
 ```{r boxPlot}
 ## Create a boxplot for grain yield.
-plot(dropsTD, plotType = "box", traits = "grain.yield")
+plot(dropsTD, 
+     plotType = "box", 
+     traits = "grain.yield")
 ```
 
-The trials in the boxplot can be grouped using the parameter `groupBy`. Colors can be applied to groups within trials using the parameter `colorTrialBy`. The boxes  for the (groups of) trials can be ordered using `orderBy`. Boxes can be ordered by an external vector or by the group mean.
+The trials in the boxplot can be grouped using the parameter `groupBy`. Colors can be applied to groups within trials using the parameter `colorTrialBy`. As in other plots `colTrial` may be used to specify the colors used. The boxes for the (groups of) trials can be ordered using `orderBy`. Boxes can be ordered alphabetically (`orderBy = alphabetic`), and by ascending (`orderBy = ascending`) and descending (`orderBy = descending`) trait mean.
 ```{r boxPlotGR}
-## Create a boxplot for grain yield with boxes grouped by year and scenario within years colored.
-plot(dropsTD, plotType = "box", traits = "grain.yield", groupBy = "year", 
-     colorTrialBy = "scenarioFull", orderBy = "descending")
+## Create a boxplot for grain yield with boxes grouped by year 
+## Color the boxes by scenario within years.
+plot(dropsTD, 
+     plotType = "box", 
+     traits = "grain.yield", 
+     groupBy = "year", 
+     colorTrialBy = "scenarioFull")
 ```
 
 ### Correlation plot {#corPlot}
 
-Another plot that can be made is a plot of the correlations between the fields for a specified trait. The order of the plotted fields is determined by clustering them and plotting closely related fields close to each other.
+Another plot that can be made is a plot of the correlations between the trials for a specified trait. The order of the plotted trials is determined by clustering them and plotting closely related trials close to each other.
 ```{r corPlot}
 ## Create a correlation plot for grain yield.
-plot(dropsTD, plotType = "cor", traits = "grain.yield")
+plot(dropsTD, 
+     plotType = "cor", 
+     traits = "grain.yield")
 ```
 
 ### Scatter plot matrix {#scatPlot}
 
-Finally a scatter plot matrix can be made. The lower left of the matrix contains scatter plots between trials. The diagonal contains histograms of the data per trial. It is possible to calculate the correlation between environments and print it in the scatter plots by specifying `addCorr`. `addCorr` takes the values "tl" (top left), "tr" (top right), "bl" (bottom left) or "br" (bottom right). This indicates where the correlation is placed in each of the scatter plots. It is possible to color the genotypes and trials in the plots by a variable in the TD object by specifying `colorTrialBy` and `colorGenoBy` respectively.
+Finally a scatter plot matrix can be made. The lower left of the matrix contains scatter plots between trials. The diagonal contains histograms of the data per trial. It is possible to calculate the correlation between trials and print it in the scatter plots by specifying `addCorr`. `addCorr` takes the values "tl" (top left), "tr" (top right), "bl" (bottom left) or "br" (bottom right). This indicates where the correlation is placed in each of the scatter plots. It is possible to color the genotypes and trials in the plots by a variable in the TD object by specifying `colorTrialBy` and `colorGenoBy` respectively.
 
 ```{r scatPlot, fig.dim = c(8, 8)}
 ## Create a scatter plot matrix for grain yield.
 ## Color trials by scenario and genotypes by family.
-plot(dropsTD, plotType = "scatter", traits = "grain.yield", 
-     colorTrialBy = "scenarioFull", colorGenoBy = "geneticGroup")
+plot(dropsTD, 
+     plotType = "scatter", 
+     traits = "grain.yield", 
+     colorTrialBy = "scenarioFull", 
+     colorGenoBy = "geneticGroup")
 ```
 
 ----
 
 # Modeling
 
-After creating a `TD` object, a model can be fitted on the trial data. This is done using the function `fitTD`. The exact model fitted depends on the design of the trial (see [**3.1**](#modType)). The design can be given as a parameter in the function or included in the meta data of the `TD` object as described in [**2.3**](#meta). In the former case, the same model will be fitted for all trials, in the latter, different models can be fitted for different trials. If both are available the function parameter will always be leading. 
+To get genotypic predictions we want to accurately separate the genetic effects from the spatial effects and further design factors. To do this, for each trial a model can be fitted for the trait we are interested in. In `statgenSTA` models can be fitted using *SpATS* [@RodAlv2018], *lme4* [@Bates2015], or *ASReml* [@Gilmour2017]. For models with row column or resolvable row column design, SpATS is the default engine, for the other models lme4. This can always be overruled by specifying the function parameter `engine`.
+
+Models can be fitted on the trial data in a `TD` object using the function `fitTD`. The exact model fitted depends on the design of the trial (see [**3.1**](#modType)). The design can be given as a parameter in the function or included in the meta data of the `TD` object as described in [**2.3**](#meta). In the former case, the same model will be fitted for all trials, in the latter, different models can be fitted for different trials. If both are available the function parameter will always be leading. 
 
 The output of `fitTD` is an object of class `STA` (Single Site Analysis), a `list` of fitted models with one item for each trial the model was fitted for. 
 
 ## Model types {#modType}
-
-`fitTD` uses three different engines for fitting the models, namely SpATS [@RodAlv2017], lme4 [@Bates2015] and asreml [@Gilmour2017]. For models with row column or resolvable row column design, SpATS is the default engine, for the other models lme4. This can always be overruled by specifying the function parameter `engine`.
 
 Models can be fitted for five different trial designs. These are listed in the following table with their respective model specifications.  
 
@@ -241,34 +299,74 @@ resolvable row column design | res.rowcol | trait = *repId* + **repId:rowId** + 
 In the models above, fixed effects are indicated in *italics* whereas random effects are indicated in **bold**. genotype can be fitted as fixed or as random effect depending on the value of the parameter `what`. Extra fixed effects may be fitted using the parameter `covariates`.  
 If SpATS is used as modeling engine, an extra spatial term is always included in the model (see [**3.2**](#spMod)). A spatial term is also included when the modeling engine is asreml and the function parameter `spatial` is set to `TRUE`.
 
-Using the `TD` object dropsTD from the previous section, a model for the trial Kar12W and trait grain.yield can now be fitted on the data. The trial was set up using a resolvable row column design. This is specified in `fitTD` using the parameter `design`. Since `engine` is not supplied as a parameter, SpATS is used for fitting the model.
+Using the `TD` object dropsTD from the previous section, a model for the trial Gai12W and trait grain.yield can now be fitted on the data. The trial was set up using a resolvable row column design. This is specified in `fitTD` using the parameter `design`. Since `engine` is not supplied as a parameter, SpATS is used for fitting the model.
 ```{r fitSp, message=FALSE}
 ## Fit a single trial model using a model based on a resolvable row column design.
-modDropsSp <- fitTD(TD = dropsTD, trials = "Kar12W", traits = "grain.yield", design = "res.rowcol")
+modDropsSp <- fitTD(TD = dropsTD, 
+                    trials = "Gai12W", 
+                    traits = "grain.yield",
+                    design = "res.rowcol")
 ```
 Note that by not supplying the `what` argument to the function, two models are fitted, one with genotype as a fixed effect and one with genotype as a random effect. The results of both these models are stored in the `STA` object `modDropsSp`. This is very useful for extracting different results from the model later on. A trade-off is that fitting two models takes more time than fitting only one so when fitting models on large data sets it is sensible to explicitly define `what` if only a subset of the results is needed as output.
 ```{r fitSpSm, message=FALSE}
 ## Fit a single trial model with genotype as random effect.
-modDropsSp2 <- fitTD(TD = dropsTD, trials = "Kar12W", traits = "grain.yield", what = "random", design = "res.rowcol")
+modDropsSp2 <- fitTD(TD = dropsTD, 
+                     trials = "Gai12W", 
+                     traits = "grain.yield", 
+                     what = "random", 
+                     design = "res.rowcol")
 ```
 
 ## Spatial models {#spMod}
 
-When using SpATS as a modeling engine for fitting a model, an extra spatial component is always included in the model. This spatial component is composed using the `PSANOVA` function in the SpATS package which uses 2-dimensional smoothing with P-splines as described in @Lee2013 and in @RodAlv2017. See `help(PSANOVA, SpATS)` for a detailed description. The parameters `nseg` and `nest.div` of `PSANOVA` can be modified using the `control` parameter in `fitTD`.  
-Fitting the model in the previous section specifying the number of segments for both columns and rows as 28 and 18 respectively.
+When using SpATS as a modeling engine for fitting a model, an extra spatial component is always included in the model. This spatial component is composed using the `PSANOVA` function in the SpATS package which uses 2-dimensional smoothing with P-splines as described in @Lee2013 and in @RodAlv2018. See `help(PSANOVA, SpATS)` for a detailed description. The parameters `nseg` and `nest.div` of `PSANOVA` can be modified using the `control` parameter in `fitTD`.  
+The default number for the number of segments is (number of columns / 2, number of rows / 2). Fitting the model in the previous section specifying the number of segments for columns and rows as 28 and 18 respectively, works as follows:
 ```{r fitSpCtr, message=FALSE}
 ## Fit a spatial single trial model using SpATS. 
 ## Manually specify the number of segments for rows and columns.
-modDropsSp3 <- fitTD(TD = dropsTD, trials = "Kar12W", traits = "grain.yield", design = "res.rowcol", control = list(nSeg = c(28, 18)))
+modDropsSp3 <- fitTD(TD = dropsTD, 
+                     trials = "Gai12W", 
+                     traits = "grain.yield", 
+                     design = "res.rowcol", 
+                     control = list(nSeg = c(28, 18)))
 ```
 
-Alternatively, spatial models can be fitted using asreml as modeling engine and setting the parameter `spatial = TRUE`. In this case seven models are fitted and the best model, based on a goodness-of-fit criterion, either AIC or BIC, is chosen. For a full specification of the models fitted see `help(fitTD)`. The criterion to be used can be specified using the `control` parameter in `fitTD`.  
-Fitting a model similar to the one above using asreml with BIC as goodness-of-fit criterion works as follows
-```{r fitAs, message=FALSE, results='hide'}
+Alternatively, spatial models can be fitted using asreml as modeling engine and setting the parameter `spatial = TRUE`. In this case seven models are fitted and the best model, based on a goodness-of-fit criterion, either AIC or BIC. The default is AIC, this can be modified the `control` parameter in `fitTD`.  
+
+The seven models fitted largely depend on the trial design. On top of the model described in the previous section extra random terms are added. These extra random terms depend on the structure of the data. If the trial has a regular structure, i.e. all replicates appear the same amount of times in the trial, the following combinations of random and spatial terms are fitted:
+
+Random part | Spatial part |
+--------------------------------------- | ------------ |
+random effects based on design | none
+random effects based on design | AR1(rowId):colId |
+random effects based on design | rowId:AR1(colId) |
+random effects based on design | AR1(rowId):AR1(colId) |
+random effects based on design + nugget | AR1(rowId):colId |
+random effects based on design + nugget | rowId:AR1(colId) |
+random effects based on design + nugget | AR1(rowId):AR1(colId) |
+ 
+If the design is not regular the following combinations of random and spatial terms are fitted:
+
+Random part | Spatial part |
+--------------------------------------- | ------------ |
+random effects based on design | none
+random effects based on design | exp(rowCoord):colCoord |
+random effects based on design | rowCoord:exp(colCoord) |
+random effects based on design | iexp(rowCoord, colCoord) |
+random effects based on design  + nugget | exp(rowCoord):colCoord |
+random effects based on design + nugget | rowCoord:exp(colCoord) |
+random effects based on design + nugget | iexp(rowCoord,colCoord) |
+
+Fitting a model similar to the one above using asreml with BIC as goodness-of-fit criterion works as follows:
+```{r fitAs, message=FALSE, results='hide', warning=FALSE}
 if (requireNamespace("asreml", quietly = TRUE)) {
   ## Fit a spatial single trial model using asreml.
-  modDropsAs <- fitTD(TD = dropsTD, trials = "Kar12W", traits = "grain.yield", 
-                      design = "res.rowcol", spatial = TRUE, engine = "asreml",
+  modDropsAs <- fitTD(TD = dropsTD, 
+                      trials = "Gai12W", 
+                      traits = "grain.yield", 
+                      design = "res.rowcol", 
+                      spatial = TRUE, 
+                      engine = "asreml",
                       control = list(criterion = "BIC"))
 }
 ```
@@ -276,7 +374,7 @@ The fitted models and the best model are stored in the output together with a su
 ```{r spatCh, R.options=list(width=90)}
 if (exists("modDropsAs")) {
   ## Overview of fitted models.
-  print(modDropsAs$Kar12W$sumTab$grain.yield, digits = 2, row.names = FALSE)
+  print(modDropsAs$Gai12W$sumTab$grain.yield, digits = 2, row.names = FALSE)
 }  
 ```
 `r if (exists("modDropsAs")) {"As the overview shows, the best model, the model with the lowest BIC, is AR1(x)AR1 with units in the random part of the model."}`
@@ -285,8 +383,9 @@ if (exists("modDropsAs")) {
 
 Since genotype has been fitted both as fixed and as random factor in `modDropsSp` it is possible to calculate both the Best Linear Unbiased Estimators (BLUEs) and the Best Linear Unbiased Predictors (BLUPs). Therefore both are printed in the summary of the model together with their respective standard errors.
 ```{r fitSum, message=FALSE}
-## Set nBest to 5 to decrease size of output.
-summary(modDropsSp, nBest = 5)
+## Set nBest to 5 to limit the output to the best 5 genotypes.
+summary(modDropsSp, 
+        nBest = 5)
 ```
 
 ## Model plots
@@ -298,7 +397,9 @@ Two types of plots can be made for fitted models.
 The first is a series of four plots, a histogram of the residuals, normal quantiles of the residuals, a scatter plot of residuals against fitted values and a scatter plot of absolute value of residuals against fitted values. These plots can be made by calling `plot` on the `STA` object. Plots can be made for multiple trials and multiple traits simultaneously, either for the model with genotype as fixed effect or for the model with genotype as random effect. By default plots are made for all trials and all traits, but this can be restricted using the parameters `trials` and `traits`. If only one model is fitted the results of the fitted model will be plotted. In case both models were fitted, as a default the results will be plotted for the model with genotype fixed. This can be changed using the parameter `what`.
 ```{r basePlot}
 ## Base plots for the model with genotype fitted as random effect.
-plot(modDropsSp, plotType = "base", what = "random")
+plot(modDropsSp, 
+     plotType = "base", 
+     what = "random")
 ```
 
 ### Spatial plots
@@ -306,12 +407,15 @@ plot(modDropsSp, plotType = "base", what = "random")
 The second type of plot consists of five plots, spatial plots of the raw data, fitted values, residuals and either BLUEs or BLUPs, and a histogram of the BLUEs or BLUPs. If SpATS was used for modeling an extra plot with the fitted spatial trend is included. The spatial trend can be displayed on the original scale (`spaTrend = "raw"`) or as percentega (`spaTrend = "percentage"`). In the latter case the spatial trend is scaled (i.e., divided by the average of the observed response variable of interest across the field) and displayed as percentage. The call for creating these plots differs from the base plots only by an extra parameter `plotType = "spatial"`. Note that spatial plots can only be made if spatial information, i.e. `rowCoord` and `colCoord`, is available in the `TD` object.
 ```{r spatPlot}
 ## Spatial plot for the model with genotype fitted as fixed effect.
-plot(modDropsSp, plotType = "spatial")
+plot(modDropsSp, 
+     plotType = "spatial")
 ```
 ```{r spatPlotPerc}
 ## Spatial plot for the model with genotype fitted as fixed effect.
 ## Display the spatial trend as a percentage.
-plot(modDropsSp, plotType = "spatial", spaTrend = "percentage")
+plot(modDropsSp, 
+     plotType = "spatial", 
+     spaTrend = "percentage")
 ```
 
 ## Outlier detection
@@ -319,24 +423,29 @@ plot(modDropsSp, plotType = "spatial", spaTrend = "percentage")
 After fitting a model, it is possible to run an outlier detection on the results. This outlier detection che cks the residuals in the fitted model and compares them to a limit. Observations with a residual higher than this limit are marked as outliers. The default limit is calculated based on the number of observations in the data. Setting a custom limit is also possible.
 ```{r outDet}
 ## Outlier detection for the model with genotype fitted as random.
-outliers <- outlierSTA(modDropsSp, traits = "grain.yield", what = "random")
+outliers <- outlierSTA(modDropsSp, 
+                       traits = "grain.yield",
+                       what = "random")
 ```
 
 The output of the outlier detection function is a data.frame with the outliers and of vector of indices of the outliers in the original data. This vector can be used for removing outliers from the data.    
 
 It is possible to run outlier detection on a model with genotype fitted as fixed, but when doing so it is only possible to detect outliers in genotypes that are replicated in the data. For unreplicated genotypes the residual will always be 0 and so these will never be marked as outliers.    
 
-To get an idea of the magnitude of the outliers, the parameter commonFactors can be used to see the values of observations with similar characteristics. In the example below, for all outliers also the other observations for the same genotype are shown.
+To get an idea of the magnitude of the outliers, the parameter `commonFactors` can be used to see the values of observations with similar characteristics. In the example below, for all outliers also the other observations for the same genotype are shown.
 ```{r outDetCom}
 ## Outlier detection for the model with genotype fitted as random.
 ## A custom limit is used and commonFactors set to genotype.
-outliers <- outlierSTA(modDropsSp, traits = "grain.yield", what = "random",
-                       rLimit = 3.2, commonFactors = "genotype")
+outliers <- outlierSTA(modDropsSp, 
+                       traits = "grain.yield", 
+                       what = "random",
+                       rLimit = 2.7, 
+                       commonFactors = "genotype")
 ```
 
 ## Model reports
 
-For `STA` objects there is a `report` function available in the statgenSTA package. This function creates a pdf report summarizing the main results of the fitted model. Also the tex file and figures used for generating the pdf report are saved. By editing the tex file it is possible to modify the report to ones needs, creating high flexibility.  
+For `STA` objects there is a `report` function available in the `statgenSTA` package. This function creates a pdf report summarizing the main results of the fitted model. Also the tex file and figures used for generating the pdf report are saved. By editing the tex file it is possible to modify the report to ones needs, creating high flexibility.  
 
 When no outfile is specified, reports will be created with a default names, e.g. "modelReport_trial_trait_fixed_timestamp.pdf", in the current working directory. The parameter `outfile` can be used to change the name and location of the report. The value of this parameter should be a valid location and name for a **pdf** file, i.e. including the postfix ".pdf". Non-existing directories are created by the `report` function. When an outfile is supplied, trial, trait and modeltype (fixed or random) are concatenated to it in the name of the report.
 
@@ -345,7 +454,9 @@ The reports contains general information on the model fitted, a summary of the r
 ## Create a report in the current working directory
 report(modDropsSp)
 ## Create a report for the model with genotype fitted as random.
-report(modDropsSp, outfile = "./myReports/dropsReport.pdf", what = "random")
+report(modDropsSp, 
+       outfile = "./myReports/dropsReport.pdf", 
+       what = "random")
 ```
 Reporting for an `STA` object can be done for multiple trials, traits and model types simultaneously. For each combination of trial, trait and model type, a separate .pdf report will be created. Parameters `traits`, `trials` and `what` can be used for specifying the models for which the reports should be made.
 
@@ -353,58 +464,73 @@ Reporting for an `STA` object can be done for multiple trials, traits and model 
 
 # Extracting model results
 
-After fitting a model, various results can be extracted or calculated from the fitted model using the function `extractSTA`. This can be anything from a single result for one trait and one trial to a `list` of different results for all models in an `STA` object. The results that can be extracted depend on the type of model fitted and sometimes on the modeling engine as well. For example, BLUEs can only extracted if genotype was fitted as fixed effect. On the other hand, BLUPs and heritabilities can only be calculated and extracted if genotype was fitted as random effect.  
+After fitting a model, various results can be extracted or calculated from the fitted model using the function `extractSTA`. This can be anything from a single result for one trait and one trial to a `list` of different results for all models in an `STA` object. The results that can be extracted depend on the type of model fitted and sometimes on the modeling engine as well. For example, BLUEs can only extracted if genotype was fitted as a fixed effect. On the other hand, BLUPs and heritabilities can only be calculated and extracted if genotype was fitted as random effect.  
 
-All results that can be extracted are shown in the table below. In the first column is the result. This is also the value to be used for the parameter `what` in `extractSTA` needed to extract the corresponding result. The second column shows what model needs to be fitted in order to be able to extract the result. Here F stands for genotype as fixed effect and R for genotype as random effect.  The last column gives a short description of the result that will be extracted and, where needed, also states for which modeling engines it can be extracted.
+All results that can be extracted are shown in the table below. In the first column is the result. This is also the value to be used for the parameter `what` in `extractSTA` needed to extract the corresponding result. The second column shows what model needs to be fitted in order to be able to extract the result. Here F stands for genotype as fixed effect and R for genotype as random effect. The third column gives a short description of the result that will be extracted and, where needed, also states for which modeling engines it can be extracted. The final columns shows what the output format of the extracted result will be. This can either be a `data.frame` or a `list`. E.g. BLUES by default will be extracted in a `data.frame` and varCompF as a `list`. When extracting multiple results at once, the result will always be a `list`. E.g., when extracting BLUEs and BLUPs the result we be a list with two items per trial, named `BLUEs` and `BLUPs`.
 
 ```{r extractOpts, results="as.is", echo=FALSE, out.width = "\\textwidth"}
 ## Generate table of options for extract from internal data.
-optsTab <- statgenSTA:::extractOptions[, c("result", "model", "description")]
-optsTab <- optsTab[order(optsTab[["model"]]), ]
-knitr::kable(optsTab, align = c("llll"), row.names = FALSE)
+optsTab <- statgenSTA:::extractOptions[, c("result", "model", "description", "asDataFrame")]
+optsTab$format <- factor(ifelse(optsTab$asDataFrame == 0, 2, 1), 
+                         labels = c("data.frame", "list"))
+optsTab <- optsTab[order(optsTab[["model"]]), c(1:3, 5)]
+knitr::kable(optsTab, align = c("lllll"), row.names = FALSE)
 ```
 
 Using `what = "all"` in the function call, extracts all results possible for the fitted model. This is also the default.  
 
 Below are some examples of extracting results from a fitted model. Recall that `modDropsSp` contains two fitted models, one with genotype as fixed effect and one with genotype as random effect.
 ```{r extBLUEs}
-## Extract BLUEs
-BLUEsDrops <- extractSTA(STA = modDropsSp, what = "BLUEs")
-## Extract BLUEs and BLUPs
-predDrops <- extractSTA(STA = modDropsSp, what = c("BLUEs", "BLUPs"))
+## Extract BLUEs.
+BLUEsDrops <- extractSTA(STA = modDropsSp, 
+                         what = "BLUEs")
+## Extract BLUEs and BLUPs.
+predDrops <- extractSTA(STA = modDropsSp, 
+                        what = c("BLUEs", "BLUPs"))
 ```
-Both `BLUEsDrops` and `predDrops` are `list`s with one item, the trial used for modeling. In general, when extracting results, there will be an item in the `list` for every trial for which results were extracted. These items are a `list` themselves with an item for every statistic that has been extracted, so one item for `BLUEsDrops`, a `data.frame` containing the BLUEs, and two for `predDrops`, the `data.frames` containing BLUEs and BLUPs respectively. 
+Note that `BLUEsDrops` is a data.frame, whereas `predDrops` is a list with one item, since we fitted a model for only one trial. 
 
 ## Adding extra variables
 
-The `data.frame` BLUEs in either of the `lists` consists of only two columns, genotype and GY. If the model would have been fitted for multiple traits all these traits would become columns in the `data.frame`. It might be useful to add extra columns from the data used to fit the model to the output. This can be achieved using the paramater `keep` in `extractSTA`. To include the trial in the output, useful for easily combining several `data.frames` with BLUEs and using them for a GxE analysis, use the following command
+The `data.frame` BLUEsDrops consists of only three columns, genotype, trial and grain.yield. If the model would have been fitted for multiple traits all these traits would become columns in the `data.frame`. It might be useful to add extra columns from the data used to fit the model to the output for use in further analysis of the data. This can be achieved using the paramater `keep` in `extractSTA`. To include the water scenario in the output, useful for using the BLUEs for a GxE analysis, use the following command:
 ```{r extBLUEsKeep}
 ## Extract BLUEs from the fitted model.
-BLUEsDrops2 <- extractSTA(STA = modDropsSp, what = "BLUEs", keep = "trial")
+BLUEsDrops2 <- extractSTA(STA = modDropsSp, 
+                          what = "BLUEs", 
+                          keep = "scenarioWater")
 head(BLUEsDrops2)
 ```
-Not every column from the original `TD` object can be included in the extracted data in this way. Only columns that, for each genotype, have only one value per trial can be included. For example, the column `repId` containing replicates, that has several different values for a single genotype within each trial, cannot be included. When trying to do so it will be ignored with a warning.  
+Multiple columns can be included in the output in this way. Note that not every column from the original `TD` object can be included in the extracted data. Only columns that, for each genotype, have only one value per trial can be included. For example, the column `repId` containing replicates, that has several different values for a single genotype within each trial, cannot be included. When trying to do so it will be ignored with a warning.  
 It is however possible to include `repId` when extracting fitted values, since for each observation in the original data a fitted value is computed. 
 ```{r extFit}
 ## Extract fitted values from the model.
-fitVals <- extractSTA(STA = modDropsSp, what = "fitted", keep = c("trial", "repId"))
+## Add repId and family to the output.
+fitVals <- extractSTA(STA = modDropsSp, 
+                      what = "fitted", 
+                      keep = c("repId", "geneticGroup"))
 head(fitVals)
 ```
 
 ## Prepare data for GxE analysis
 
-To use the BLUEs or BLUPs from the fitted model in a GxE analysis they have to be converted again into a `TD` object. For this the function `STAtoTD` can be used. It creates a `TD` object from a fitted model outputting one or more of the following: BLUEs, standard errors of BLUEs, BLUPs and standard errors of BLUPs. Optionally, a column `wt` with weights (calculated as $(1 / seBLUEs)^2$) can be added as well. In the same way as described in the previous section extra columns can be added to the output using the parameter `keep`. 
-```{r STAtoTD, message=FALSE}
+Performing a GxE analysis on can be done using the [*statgenGxE*](https://biometris.github.io/statgenGxE/index.html) package. This package uses the same input format for its analyses as the `statgenSTA` package.
+
+To use the BLUEs or BLUPs from the fitted model in a GxE analysis they can easily be converted into a `TD` object using the function `STAtoTD`. This function creates a `TD` object from a fitted model including one or more of the following: BLUEs, standard errors of BLUEs, BLUPs and standard errors of BLUPs. Optionally, a column `wt` with weights (calculated as $(1 / seBLUEs)^2$) can be added as well. In the same way as described in the previous section extra columns can be added to the output using the parameter `keep`. 
+```{r STAtoTD, message=FALSE, eval=FALSE}
 ## Fit a model for all trials with genotype as fixed factor.
-modDropsSpTot <- fitTD(TD = dropsTD, traits = "grain.yield", what = "fixed", 
+modDropsSpTot <- fitTD(TD = dropsTD, 
+                       traits = "grain.yield", 
+                       what = "fixed", 
                        design = "res.rowcol")
 ## Create a TD object containing BLUEs and standard errors of BLUEs.
-TDGxE <- STAtoTD(STA = modDropsSpTot, what = c("BLUEs", "seBLUEs"))
-## Add weights to the output.
-TDGxE2 <- STAtoTD(STA = modDropsSpTot, what = c("BLUEs", "seBLUEs"), addWt = TRUE)
+TDGxE <- STAtoTD(STA = modDropsSpTot, 
+                 what = c("BLUEs", "seBLUEs"))
+## Add weights and water scenario to the output.
+TDGxE2 <- STAtoTD(STA = modDropsSpTot, 
+                  what = c("BLUEs", "seBLUEs"), 
+                  keep = "scenarioWater",
+                  addWt = TRUE)
 ```
-
-Performing GxE analysis on the `TD` object can be done using the [*statgenGxE*](https://biometris.github.io/statgenGxE/index.html) package.
 
 ```{r winddown, include = FALSE}
 options(op)
