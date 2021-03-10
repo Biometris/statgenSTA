@@ -23,6 +23,9 @@ dropsRaw <- dropsRaw[dropsRaw[["Experiment"]] %in% exps, ]
 ## Remove anthesis.silking.interval.
 dropsRaw <- dropsRaw[colnames(dropsRaw) != "anthesis.silking.interval"]
 
+## F546 has no family. Remove it from the data.
+dropsRaw <- dropsRaw[dropsRaw$Variety_ID != "F546", ]
+
 ## Add scenario and latitude/longitude columns.
 dropsRaw <- merge(dropsRaw, envMeta[, c("Experiment", "Lat", "Long",
                                         "scenarioWater", "scenarioTemp")])

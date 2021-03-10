@@ -5,7 +5,7 @@
 \alias{dropsRaw}
 \title{DROPS data set}
 \format{
-An object of class \code{data.frame} with 6499 rows and 26 columns.
+An object of class \code{data.frame} with 6486 rows and 26 columns.
 }
 \source{
 \doi{10.15454/IASSTN}
