@@ -119,22 +119,22 @@ included  in the model. This term is constructed using the function
 where\cr \code{nSeg = (number of columns / 2, number of rows / 2)}. nseg and
 nest.div can be modified using the \code{control} parameter.\cr\cr
 When \code{asreml} is used for modeling and \code{spatial} is \code{TRUE}
-six models are fitted with different random terms and covariance structure.
+seven models are fitted with different random terms and covariance structure.
 The best model is determined based on a goodness-of-fit criterion, either
 AIC or BIC. This can be set using the control parameter \code{criterion},
 default is AIC.
-The fitted random terms depend on the structure of the data. If the design
+The fitted random terms depend on the structure of the data. If the trial
 has a regular structure, i.e. all replicates appear the same amount of times
-in the design, the following combinations of random and spatial terms are
+in the trial, the following combinations of random and spatial terms are
 fitted:\tabular{ll}{
    Random part \tab Spatial part \cr
    random effects based on design \tab none \cr
-   random effects based on design \tab ar1(rowId):colId \cr
-   random effects based on design \tab rowId:ar1(colId) \cr
-   random effects based on design \tab ar1(rowId):ar1(colId) \cr
-   random effects based on design  + nugget \tab ar1(rowId):colId \cr
-   random effects based on design + nugget \tab rowId:ar1(colId) \cr
-   random effects based on design + nugget \tab ar1(rowId):ar1(colId) \cr
+   random effects based on design \tab AR1(rowId):colId \cr
+   random effects based on design \tab rowId:AR1(colId) \cr
+   random effects based on design \tab AR1(rowId):ar1(colId) \cr
+   random effects based on design + nugget \tab AR1(rowId):colId \cr
+   random effects based on design + nugget \tab rowId:AR1(colId) \cr
+   random effects based on design + nugget \tab AR1(rowId):AR1(colId) \cr
 }
 
 
@@ -152,43 +152,63 @@ terms are fitted:\tabular{ll}{
 }
 \examples{
 ## Fit model using lme4.
-myModel1 <- fitTD(TD = TDHeat05, design = "ibd", traits = "yield",
-                  what = "fixed", engine = "lme4")
+lmeMod <- fitTD(TD = TDHeat05,
+                design = "ibd",
+                traits = "yield",
+                what = "fixed",
+                engine = "lme4")
 
 ## Summarize results.
-summary(myModel1)
+summary(lmeMod)
 
 ## Create base plots of the results.
-plot(myModel1)
+plot(lmeMod)
 
 ## Create a pdf report summarizing results.
 \donttest{
-report(myModel1, outfile = tempfile(fileext = ".pdf"), what = "fixed")
+report(lmeMod,
+       outfile = tempfile(fileext = ".pdf"),
+       what = "fixed")
 }
 
 ## Fit model using SpATS.
-myModel2 <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
-                  what = "fixed")
-summary(myModel2)
+spaMod <- fitTD(TD = TDHeat05,
+                design = "res.rowcol",
+                traits = "yield",
+                what = "fixed")
+summary(spaMod)
 
 ## Create spatial plots of the results.
 \donttest{
-plot(myModel2, plotType = "spatial")
+plot(spaMod, plotType = "spatial")
 }
+
+## Fit model using SpATS.
+## Specify the number of segments to use in PSANOVA
+spaMod2 <- fitTD(TD = TDHeat05,
+                 design = "res.rowcol",
+                 traits = "yield",
+                 what = "fixed",
+                 control = list(nSeg = c(13, 26)))
 
 ## Create a pdf report summarizing results.
 \donttest{
-report(myModel2, outfile = tempfile(fileext = ".pdf"), what = "fixed")
+report(spaMod, outfile = tempfile(fileext = ".pdf"), what = "fixed")
 }
 
 ## Fit model using asreml.
 if (requireNamespace("asreml", quietly = TRUE)) {
-  myModel3 <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
-                    what = "fixed", engine = "asreml")
-  summary(myModel3)
+  asrMod <- fitTD(TD = TDHeat05,
+                  design = "res.rowcol",
+                  traits = "yield",
+                  what = "fixed",
+                  engine = "asreml")
+  summary(asrMod)
 
   \donttest{
-  report(myModel3, outfile = tempfile(fileext = ".pdf"), what = "fixed")
+  report(asrMod,
+         outfile = tempfile(fileext = ".pdf"),
+         what = "fixed")
   }
 }
 }
