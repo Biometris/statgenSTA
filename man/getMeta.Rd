@@ -58,10 +58,15 @@ data("dropsRaw")
 
 ## Create a TD object.
 dropsTD <- createTD(data = dropsRaw[dropsRaw$year == 2012, ],
-                    genotype = "Variety_ID", trial = "Experiment",
-                    loc = "Site", repId = "Replicate", subBlock = "block",
-                    rowCoord = "Row", colCoord = "Column",
-                    trLat = "Lat", trLong = "Long")
+                    genotype = "Variety_ID",
+                    trial = "Experiment",
+                    loc = "Site",
+                    repId = "Replicate",
+                    subBlock = "block",
+                    rowCoord = "Row",
+                    colCoord = "Column",
+                    trLat = "Lat",
+                    trLong = "Long")
 
 ## Get meta data from dropsTD.
 (dropsMeta <- getMeta(dropsTD))
@@ -70,7 +75,8 @@ dropsTD <- createTD(data = dropsRaw[dropsRaw$year == 2012, ],
 dropsMeta$trDate <- as.Date(rep("010112", times = 5), "\%d\%m\%y")
 
 ## Add back meta data to wheatTD.
-dropsTD <- setMeta(dropsTD, dropsMeta)
+dropsTD <- setMeta(dropsTD,
+                   dropsMeta)
 
 }
 \seealso{

@@ -154,51 +154,74 @@ data("dropsRaw")
 
 ## Create a TD object.
 dropsTD <- createTD(data = dropsRaw[dropsRaw$year == 2012, ],
-                    genotype = "Variety_ID", trial = "Experiment",
-                    loc = "Site", repId = "Replicate", subBlock = "block",
-                    rowCoord = "Row", colCoord = "Column",
-                    trLat = "Lat", trLong = "Long")
+                    genotype = "Variety_ID",
+                    trial = "Experiment",
+                    loc = "Site",
+                    repId = "Replicate",
+                    subBlock = "block",
+                    rowCoord = "Row",
+                    colCoord = "Column",
+                    trLat = "Lat",
+                    trLong = "Long")
+
 ### Layout plot.
 
 \donttest{
 ## Plot the layout of one of the trials.
-plot(dropsTD, trials = "Kar12W")
+plot(dropsTD,
+    trials = "Kar12W")
 
 ## Highlight some of the genotypes in the layout.
-plot(dropsTD, trials = "Kar12W", highlight = c("A3", "11430"))
+plot(dropsTD,
+     trials = "Kar12W",
+     highlight = c("A3", "11430"))
 
 ### Map plot.
 
 ## Plot the location of the trials on the map.
-plot(dropsTD, plotType = "map")
+plot(dropsTD,
+     plotType = "map")
 
 ### Box plot.
 
 ## Create a box plot for grain.yield.
-plot(dropsTD, plotType = "box", traits = "grain.yield")
+plot(dropsTD,
+     plotType = "box",
+     traits = "grain.yield")
 
 ## Add coloring by scenarioFull to the boxes.
-plot(dropsTD, plotType = "box", traits = "grain.yield",
+plot(dropsTD,
+     plotType = "box",
+     traits = "grain.yield",
      colorTrialBy = "scenarioFull")
 
 ## Sort the boxes in descending order.
-plot(dropsTD, plotType = "box", traits = "grain.yield",
+plot(dropsTD,
+     plotType = "box",
+     traits = "grain.yield",
      orderBy = "descending")
 
 ### Correlation plot.
 
 ## Plot the correlations between trials for grain.yield.
-plot(dropsTD, plotType = "cor", traits = "grain.yield")
+plot(dropsTD,
+     plotType = "cor",
+     traits = "grain.yield")
 
 ### Scatter plot
 
 ## Plot scatter plot for grain.yield.
-plot(dropsTD, plotType = "scatter", traits = "grain.yield")
+plot(dropsTD,
+    plotType = "scatter",
+    traits = "grain.yield")
 
 ## Create a scatter plot matrix for grain yield.
 ## Color trials by scenario and genotypes by family.
-plot(dropsTD, plotType = "scatter", traits = "grain.yield",
-     colorTrialBy = "scenarioFull", colorGenoBy = "geneticGroup")
+plot(dropsTD,
+     plotType = "scatter",
+     traits = "grain.yield",
+     colorTrialBy = "scenarioFull",
+     colorGenoBy = "geneticGroup")
 }
 
 }

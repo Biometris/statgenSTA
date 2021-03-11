@@ -47,14 +47,19 @@ original TD object on which the modeling was done.
 }
 \examples{
 ## Fit model using SpATS.
-myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
-                 what = "fixed")
+modSp <- fitTD(TD = TDHeat05,
+               design = "res.rowcol",
+               traits = "yield",
+               what = "fixed")
 
 ## Create TD object from the fitted model with BLUEs and standard errors.
-myTD <- STAtoTD(myModel, what = c("BLUEs", "seBLUEs"))
+TDRes <- STAtoTD(modSp,
+                 what = c("BLUEs", "seBLUEs"))
 
 ## Add a weight column in the output.
-myTDWt <- STAtoTD(myModel, what = c("BLUEs", "seBLUEs"), addWt = TRUE)
+TDResWt <- STAtoTD(modSp,
+                   what = c("BLUEs", "seBLUEs"),
+                   addWt = TRUE)
 
 }
 \seealso{

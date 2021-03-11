@@ -466,15 +466,15 @@ Reporting for an `STA` object can be done for multiple trials, traits and model 
 
 After fitting a model, various results can be extracted or calculated from the fitted model using the function `extractSTA`. This can be anything from a single result for one trait and one trial to a `list` of different results for all models in an `STA` object. The results that can be extracted depend on the type of model fitted and sometimes on the modeling engine as well. For example, BLUEs can only extracted if genotype was fitted as a fixed effect. On the other hand, BLUPs and heritabilities can only be calculated and extracted if genotype was fitted as random effect.  
 
-All results that can be extracted are shown in the table below. In the first column is the result. This is also the value to be used for the parameter `what` in `extractSTA` needed to extract the corresponding result. The second column shows what model needs to be fitted in order to be able to extract the result. Here F stands for genotype as fixed effect and R for genotype as random effect. The third column gives a short description of the result that will be extracted and, where needed, also states for which modeling engines it can be extracted. The final columns shows what the output format of the extracted result will be. This can either be a `data.frame` or a `list`. E.g. BLUES by default will be extracted in a `data.frame` and varCompF as a `list`. When extracting multiple results at once, the result will always be a `list`. E.g., when extracting BLUEs and BLUPs the result we be a list with two items per trial, named `BLUEs` and `BLUPs`.
+All results that can be extracted are shown in the table below. In the first column is the result. This is also the value to be used for the parameter `what` in `extractSTA` needed to extract the corresponding result. The second column shows what model needs to be fitted in order to be able to extract the result. Here F stands for genotype as fixed effect and R for genotype as random effect. The third column gives a short description of the result that will be extracted and, where needed, also states for which modeling engines it can be extracted. The final columns shows whether the result can be extracted as a `data.frame` or not. Results that cannot be extracted as a `data.frame` will be extracted as a `list`. E.g. BLUES by default will be extracted in a `data.frame` and varCompF as a `list`. When extracting multiple results at once, the result will always be a `list`. E.g., when extracting BLUEs and BLUPs the result we be a list with two items per trial, named `BLUEs` and `BLUPs`.
 
 ```{r extractOpts, results="as.is", echo=FALSE, out.width = "\\textwidth"}
 ## Generate table of options for extract from internal data.
 optsTab <- statgenSTA:::extractOptions[, c("result", "model", "description", "asDataFrame")]
-optsTab$format <- factor(ifelse(optsTab$asDataFrame == 0, 2, 1), 
-                         labels = c("data.frame", "list"))
-optsTab <- optsTab[order(optsTab[["model"]]), c(1:3, 5)]
-knitr::kable(optsTab, align = c("lllll"), row.names = FALSE)
+optsTab$asDataFrame <- factor(ifelse(optsTab$asDataFrame == 0, 2, 1), 
+                         labels = c("yes", ""))
+optsTab <- optsTab[order(optsTab[["model"]]), ]
+knitr::kable(optsTab, align = "l", row.names = FALSE)
 ```
 
 Using `what = "all"` in the function call, extracts all results possible for the fitted model. This is also the default.  

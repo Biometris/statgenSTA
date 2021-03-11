@@ -79,16 +79,25 @@ information.
 }
 \examples{
 ## Run a single trait analysis using SpATS.
-myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield")
+modSp <- fitTD(TD = TDHeat05,
+               design = "res.rowcol",
+               traits = "yield")
 
 ## Create base plots.
-plot(myModel, what = "fixed", plotType = "base")
+plot(modSp,
+     what = "fixed",
+     plotType = "base")
 
 ## Create spatial plots.
-plot(myModel, what = "fixed", plotType = "spatial")
+plot(modSp,
+     what = "fixed",
+     plotType = "spatial")
 
 ## Create spatial plots showing the spatial trend as percentage.
-plot(myModel, what = "fixed", plotType = "spatial", spaTrend = "percentage")
+plot(modSp,
+     what = "fixed",
+     plotType = "spatial",
+     spaTrend = "percentage")
 
 }
 \seealso{

@@ -54,13 +54,16 @@ package.
 }
 \examples{
 ## Fit model using SpATS.
-myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
-                 what = "fixed")
+modSp <- fitTD(TD = TDHeat05,
+               design = "res.rowcol",
+               traits = "yield",
+               what = "fixed")
 
-## Create cross object with BLUEs from myModel using genotypic information
+## Create cross object with BLUEs from modSp using genotypic information
 ## from markers.csv in the package.
-cross <- STAtoCross(myModel, genoFile = system.file("extdata", "markers.csv",
-                                                    package = "statgenSTA"))
+cross <- STAtoCross(modSp,
+                    genoFile = system.file("extdata", "markers.csv",
+                                           package = "statgenSTA"))
 
 }
 \seealso{

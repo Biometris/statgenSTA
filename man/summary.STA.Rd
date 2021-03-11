@@ -45,10 +45,12 @@ Either \code{"BLUEs"}, \code{"BLUPs"} or \code{NA} (i.e. no sorting).}
 }
 \examples{
 ## Run a single trait analysis using SpATS.
-myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield")
+modSp <- fitTD(TD = TDHeat05,
+               design = "res.rowcol",
+               traits = "yield")
 
 ## Print a summary of the fitted model.
-summary(myModel)
+summary(modSp)
 
 }
 \seealso{

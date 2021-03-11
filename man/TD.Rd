@@ -182,25 +182,39 @@ class TD.\cr\cr
 ## Create a data.frame to be converted to TD object.
 ## The data consists of genotype, trial, row and column information and
 ## two traits, yield and flowering time.
-datT1 <- data.frame(geno = paste0("G", 1:10), tr = "T1",
-                    row = rep(1:5, each = 2), col = rep(1:2, times = 5),
-                    yield = 1:10, flowering = 3:12)
+datT1 <- data.frame(geno = paste0("G", 1:10),
+                    tr = "T1",
+                    row = rep(1:5, each = 2),
+                    col = rep(1:2, times = 5),
+                    yield = 1:10,
+                    flowering = 3:12)
 
 ## Convert data.frame to TD object.
-TDT1 <- createTD(data = datT1, genotype = "geno", trial = "tr",
-                 rowCoord = "row", colCoord = "col")
+TDT1 <- createTD(data = datT1,
+                 genotype = "geno",
+                 trial = "tr",
+                 rowCoord = "row",
+                 colCoord = "col")
 
 ## Create a second data.frame similar to the first with data for a second trial.
-datT2 <- data.frame(geno = paste0("G", 1:10), tr = "T2",
-                    row = rep(1:2, each = 5), col = rep(1:5, times = 2),
-                    yield = 10:1, flowering = 12:3)
+datT2 <- data.frame(geno = paste0("G", 1:10),
+                    tr = "T2",
+                    row = rep(1:2, each = 5),
+                    col = rep(1:5, times = 2),
+                    yield = 10:1,
+                    flowering = 12:3)
 
 ## Add this data to the TD object created above.
-TDTot <- addTD(TD = TDT1, data = datT2, genotype = "geno", trial = "tr",
-               rowCoord = "row", colCoord = "col")
+TDTot <- addTD(TD = TDT1,
+               data = datT2,
+               genotype = "geno",
+               trial = "tr",
+               rowCoord = "row",
+               colCoord = "col")
 
 ## Drop the data for the first trial from the object.
-TDT2 <- dropTD(TD = TDTot, rmTrials = "T1")
+TDT2 <- dropTD(TD = TDTot,
+               rmTrials = "T1")
 
 }
 \seealso{

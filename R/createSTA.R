@@ -65,10 +65,12 @@ createSTA <- function(models) {
 #'
 #' @examples
 #' ## Run a single trait analysis using SpATS.
-#' myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield")
+#' modSp <- fitTD(TD = TDHeat05,
+#'                design = "res.rowcol",
+#'                traits = "yield")
 #'
 #' ## Print a summary of the fitted model.
-#' summary(myModel)
+#' summary(modSp)
 #'
 #' @family functions for STA objects
 #'
@@ -288,16 +290,25 @@ print.summary.STA <- function(x,
 #'
 #' @examples
 #' ## Run a single trait analysis using SpATS.
-#' myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield")
+#' modSp <- fitTD(TD = TDHeat05,
+#'                design = "res.rowcol",
+#'                traits = "yield")
 #'
 #' ## Create base plots.
-#' plot(myModel, what = "fixed", plotType = "base")
+#' plot(modSp,
+#'      what = "fixed",
+#'      plotType = "base")
 #'
 #' ## Create spatial plots.
-#' plot(myModel, what = "fixed", plotType = "spatial")
+#' plot(modSp,
+#'      what = "fixed",
+#'      plotType = "spatial")
 #'
 #' ## Create spatial plots showing the spatial trend as percentage.
-#' plot(myModel, what = "fixed", plotType = "spatial", spaTrend = "percentage")
+#' plot(modSp,
+#'      what = "fixed",
+#'      plotType = "spatial",
+#'      spaTrend = "percentage")
 #'
 #' @family functions for STA objects
 #'
@@ -646,20 +657,26 @@ fieldPlot <- function(plotDat,
 #'
 #' @examples
 #' ## Fit model using lme4.
-#' myModel1 <- fitTD(TD = TDHeat05, design = "ibd", traits = "yield",
-#'                   engine = "lme4")
+#' modLme <- fitTD(TD = TDHeat05,
+#'                 design = "ibd",
+#'                 traits = "yield",
+#'                 engine = "lme4")
 #'
 #' ## Create a pdf report summarizing the results for the model with genotype
 #' ## as fixed factor.
 #' \donttest{
-#' report(myModel1, outfile = tempfile(fileext = ".pdf"), what = "fixed")
+#' report(modLme,
+#'        outfile = tempfile(fileext = ".pdf"),
+#'        what = "fixed")
 #' }
 #'
 #' ## Create two pdf report summarizing the results for the model with genotype
 #' ## as fixed factor and for the model with genotype as random factor. Order
 #' ## the results in ascending order.
 #' \donttest{
-#' report(myModel1, outfile = tempfile(fileext = ".pdf"), descending = FALSE)
+#' report(modLme,
+#'        outfile = tempfile(fileext = ".pdf"),
+#'        descending = FALSE)
 #' }
 #'
 #' @family functions for STA objects
@@ -760,13 +777,16 @@ report.STA <- function(x,
 #'
 #' @examples
 #' ## Fit model using SpATS.
-#' myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
-#'                  what = "fixed")
+#' modSp <- fitTD(TD = TDHeat05,
+#'                design = "res.rowcol",
+#'                traits = "yield",
+#'                what = "fixed")
 #'
-#' ## Create cross object with BLUEs from myModel using genotypic information
+#' ## Create cross object with BLUEs from modSp using genotypic information
 #' ## from markers.csv in the package.
-#' cross <- STAtoCross(myModel, genoFile = system.file("extdata", "markers.csv",
-#'                                                     package = "statgenSTA"))
+#' cross <- STAtoCross(modSp,
+#'                     genoFile = system.file("extdata", "markers.csv",
+#'                                            package = "statgenSTA"))
 #'
 #' @family functions for STA objects
 #'
@@ -845,14 +865,19 @@ STAtoCross <- function(STA,
 #'
 #' @examples
 #' ## Fit model using SpATS.
-#' myModel <- fitTD(TD = TDHeat05, design = "res.rowcol", traits = "yield",
-#'                  what = "fixed")
+#' modSp <- fitTD(TD = TDHeat05,
+#'                design = "res.rowcol",
+#'                traits = "yield",
+#'                what = "fixed")
 #'
 #' ## Create TD object from the fitted model with BLUEs and standard errors.
-#' myTD <- STAtoTD(myModel, what = c("BLUEs", "seBLUEs"))
+#' TDRes <- STAtoTD(modSp,
+#'                  what = c("BLUEs", "seBLUEs"))
 #'
 #' ## Add a weight column in the output.
-#' myTDWt <- STAtoTD(myModel, what = c("BLUEs", "seBLUEs"), addWt = TRUE)
+#' TDResWt <- STAtoTD(modSp,
+#'                    what = c("BLUEs", "seBLUEs"),
+#'                    addWt = TRUE)
 #'
 #' @family functions for STA objects
 #'

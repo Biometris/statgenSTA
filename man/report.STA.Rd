@@ -57,20 +57,26 @@ Sys.which("pdflatex").
 }
 \examples{
 ## Fit model using lme4.
-myModel1 <- fitTD(TD = TDHeat05, design = "ibd", traits = "yield",
-                  engine = "lme4")
+modLme <- fitTD(TD = TDHeat05,
+                design = "ibd",
+                traits = "yield",
+                engine = "lme4")
 
 ## Create a pdf report summarizing the results for the model with genotype
 ## as fixed factor.
 \donttest{
-report(myModel1, outfile = tempfile(fileext = ".pdf"), what = "fixed")
+report(modLme,
+       outfile = tempfile(fileext = ".pdf"),
+       what = "fixed")
 }
 
 ## Create two pdf report summarizing the results for the model with genotype
 ## as fixed factor and for the model with genotype as random factor. Order
 ## the results in ascending order.
 \donttest{
-report(myModel1, outfile = tempfile(fileext = ".pdf"), descending = FALSE)
+report(modLme,
+       outfile = tempfile(fileext = ".pdf"),
+       descending = FALSE)
 }
 
 }

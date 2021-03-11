@@ -38,11 +38,14 @@
 #'
 #' @examples
 #' ## Fit a model using lme4.
-#' myModel <- fitTD(TD = TDHeat05, traits = "yield", design = "res.rowcol",
+#' modLme <- fitTD(TD = TDHeat05,
+#'                 traits = "yield",
+#'                 design = "res.rowcol",
 #'                 engine = "lme4")
 #'
 #' ## Detect outliers in the standardized residuals of the fitted model.
-#' outliers <- outlierSTA(STA = myModel, traits = "yield")
+#' outliers <- outlierSTA(STA = modLme,
+#'                        traits = "yield")
 #'
 #' @export
 outlierSTA <- function(STA,

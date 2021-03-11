@@ -3,6 +3,7 @@
 #' Helper function for creating a scatter plot for an object of class TD.
 #'
 #' @importFrom grDevices topo.colors
+#' @noRd
 #' @keywords internal
 scatterPlot <- function(x,
                         trials,

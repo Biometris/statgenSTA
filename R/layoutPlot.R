@@ -3,6 +3,7 @@
 #' Helper function for creating a layout plot for an object of class TD.
 #'
 #' @importFrom grDevices topo.colors
+#' @noRd
 #' @keywords internal
 layoutPlot <- function(x,
                        trials,

@@ -100,25 +100,39 @@
 #' ## Create a data.frame to be converted to TD object.
 #' ## The data consists of genotype, trial, row and column information and
 #' ## two traits, yield and flowering time.
-#' datT1 <- data.frame(geno = paste0("G", 1:10), tr = "T1",
-#'                     row = rep(1:5, each = 2), col = rep(1:2, times = 5),
-#'                     yield = 1:10, flowering = 3:12)
+#' datT1 <- data.frame(geno = paste0("G", 1:10),
+#'                     tr = "T1",
+#'                     row = rep(1:5, each = 2),
+#'                     col = rep(1:2, times = 5),
+#'                     yield = 1:10,
+#'                     flowering = 3:12)
 #'
 #' ## Convert data.frame to TD object.
-#' TDT1 <- createTD(data = datT1, genotype = "geno", trial = "tr",
-#'                  rowCoord = "row", colCoord = "col")
+#' TDT1 <- createTD(data = datT1,
+#'                  genotype = "geno",
+#'                  trial = "tr",
+#'                  rowCoord = "row",
+#'                  colCoord = "col")
 #'
 #' ## Create a second data.frame similar to the first with data for a second trial.
-#' datT2 <- data.frame(geno = paste0("G", 1:10), tr = "T2",
-#'                     row = rep(1:2, each = 5), col = rep(1:5, times = 2),
-#'                     yield = 10:1, flowering = 12:3)
+#' datT2 <- data.frame(geno = paste0("G", 1:10),
+#'                     tr = "T2",
+#'                     row = rep(1:2, each = 5),
+#'                     col = rep(1:5, times = 2),
+#'                     yield = 10:1,
+#'                     flowering = 12:3)
 #'
 #' ## Add this data to the TD object created above.
-#' TDTot <- addTD(TD = TDT1, data = datT2, genotype = "geno", trial = "tr",
-#'                rowCoord = "row", colCoord = "col")
+#' TDTot <- addTD(TD = TDT1,
+#'                data = datT2,
+#'                genotype = "geno",
+#'                trial = "tr",
+#'                rowCoord = "row",
+#'                colCoord = "col")
 #'
 #' ## Drop the data for the first trial from the object.
-#' TDT2 <- dropTD(TD = TDTot, rmTrials = "T1")
+#' TDT2 <- dropTD(TD = TDTot,
+#'                rmTrials = "T1")
 #'
 #' @family functions for TD objects
 #'
@@ -445,10 +459,13 @@ dropTD <- function(TD,
 #'
 #' @examples
 #' ## Summarize TDHeat05.
-#' summary(TDHeat05, traits = "yield")
+#' summary(TDHeat05,
+#'         traits = "yield")
 #'
 #' ## Summarize TDHeat05 grouping by repId.
-#' summary(TDHeat05, traits = "yield", groupBy = "repId")
+#' summary(TDHeat05,
+#'         traits = "yield",
+#'         groupBy = "repId")
 #'
 #' @export
 summary.TD <- function(object,
@@ -752,51 +769,74 @@ print.summary.TD <- function(x,
 #'
 #' ## Create a TD object.
 #' dropsTD <- createTD(data = dropsRaw[dropsRaw$year == 2012, ],
-#'                     genotype = "Variety_ID", trial = "Experiment",
-#'                     loc = "Site", repId = "Replicate", subBlock = "block",
-#'                     rowCoord = "Row", colCoord = "Column",
-#'                     trLat = "Lat", trLong = "Long")
+#'                     genotype = "Variety_ID",
+#'                     trial = "Experiment",
+#'                     loc = "Site",
+#'                     repId = "Replicate",
+#'                     subBlock = "block",
+#'                     rowCoord = "Row",
+#'                     colCoord = "Column",
+#'                     trLat = "Lat",
+#'                     trLong = "Long")
+#'
 #' ### Layout plot.
 #'
 #' \donttest{
 #' ## Plot the layout of one of the trials.
-#' plot(dropsTD, trials = "Kar12W")
+#' plot(dropsTD,
+#'     trials = "Kar12W")
 #'
 #' ## Highlight some of the genotypes in the layout.
-#' plot(dropsTD, trials = "Kar12W", highlight = c("A3", "11430"))
+#' plot(dropsTD,
+#'      trials = "Kar12W",
+#'      highlight = c("A3", "11430"))
 #'
 #' ### Map plot.
 #'
 #' ## Plot the location of the trials on the map.
-#' plot(dropsTD, plotType = "map")
+#' plot(dropsTD,
+#'      plotType = "map")
 #'
 #' ### Box plot.
 #'
 #' ## Create a box plot for grain.yield.
-#' plot(dropsTD, plotType = "box", traits = "grain.yield")
+#' plot(dropsTD,
+#'      plotType = "box",
+#'      traits = "grain.yield")
 #'
 #' ## Add coloring by scenarioFull to the boxes.
-#' plot(dropsTD, plotType = "box", traits = "grain.yield",
+#' plot(dropsTD,
+#'      plotType = "box",
+#'      traits = "grain.yield",
 #'      colorTrialBy = "scenarioFull")
 #'
 #' ## Sort the boxes in descending order.
-#' plot(dropsTD, plotType = "box", traits = "grain.yield",
+#' plot(dropsTD,
+#'      plotType = "box",
+#'      traits = "grain.yield",
 #'      orderBy = "descending")
 #'
 #' ### Correlation plot.
 #'
 #' ## Plot the correlations between trials for grain.yield.
-#' plot(dropsTD, plotType = "cor", traits = "grain.yield")
+#' plot(dropsTD,
+#'      plotType = "cor",
+#'      traits = "grain.yield")
 #'
 #' ### Scatter plot
 #'
 #' ## Plot scatter plot for grain.yield.
-#' plot(dropsTD, plotType = "scatter", traits = "grain.yield")
+#' plot(dropsTD,
+#'     plotType = "scatter",
+#'     traits = "grain.yield")
 #'
 #' ## Create a scatter plot matrix for grain yield.
 #' ## Color trials by scenario and genotypes by family.
-#' plot(dropsTD, plotType = "scatter", traits = "grain.yield",
-#'      colorTrialBy = "scenarioFull", colorGenoBy = "geneticGroup")
+#' plot(dropsTD,
+#'      plotType = "scatter",
+#'      traits = "grain.yield",
+#'      colorTrialBy = "scenarioFull",
+#'      colorGenoBy = "geneticGroup")
 #' }
 #'
 #' @export
@@ -880,10 +920,15 @@ plot.TD <- function(x,
 #'
 #' ## Create a TD object.
 #' dropsTD <- createTD(data = dropsRaw[dropsRaw$year == 2012, ],
-#'                     genotype = "Variety_ID", trial = "Experiment",
-#'                     loc = "Site", repId = "Replicate", subBlock = "block",
-#'                     rowCoord = "Row", colCoord = "Column",
-#'                     trLat = "Lat", trLong = "Long")
+#'                     genotype = "Variety_ID",
+#'                     trial = "Experiment",
+#'                     loc = "Site",
+#'                     repId = "Replicate",
+#'                     subBlock = "block",
+#'                     rowCoord = "Row",
+#'                     colCoord = "Column",
+#'                     trLat = "Lat",
+#'                     trLong = "Long")
 #'
 #' ## Get meta data from dropsTD.
 #' (dropsMeta <- getMeta(dropsTD))
@@ -892,7 +937,8 @@ plot.TD <- function(x,
 #' dropsMeta$trDate <- as.Date(rep("010112", times = 5), "%d%m%y")
 #'
 #' ## Add back meta data to wheatTD.
-#' dropsTD <- setMeta(dropsTD, dropsMeta)
+#' dropsTD <- setMeta(dropsTD,
+#'                    dropsMeta)
 #'
 #' @export
 getMeta <- function(TD) {

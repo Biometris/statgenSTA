@@ -2,6 +2,7 @@
 #'
 #' Helper function for creating a map plot for an object of class TD.
 #'
+#' @noRd
 #' @keywords internal
 mapPlot <- function(x,
                     title = "Trial locations",

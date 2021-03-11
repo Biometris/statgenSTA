@@ -2,6 +2,7 @@
 #'
 #' Helper function for creating a box plot for an object of class TD.
 #'
+#' @noRd
 #' @keywords internal
 boxPlot <- function(x,
                     trials,
