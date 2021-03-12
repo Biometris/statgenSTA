@@ -45,26 +45,35 @@ column repId with several different values per genotype cannot be kept.}
 output of the extracted data?}
 }
 \value{
-A list with, per trial for which statistics have been extracted, a
-list of those statistics.
+Depending on the input either a data.frame or a list with, per
+trial for which statistics have been extracted, a list of those statistics.
 }
 \description{
 Extract and calculate various results for fitted models such as BLUEs, BLUPs,
 unit errors and heritabilities. For a full list of results that can be
-extracted, see Details.\cr\cr
-The result(s) to extract are specified in \code{what}. If a single result is
-extracted, if possible, this result is returned as a data.frame. If this is
-not possible, the result is returned as a list. If multiple results are
-extracted at the same time, these are always returned as a list. Where
-relevant, this behavior can be changed by specifying \code{asDataFrame}.
-Results that are returned as data.frame are marked as such in the data.frame
-column in the table in Details.\cr\cr
+extracted, see the table below.\cr\cr
+The result(s) to extract can be specified in \code{what}.\cr
+If a single result is extracted, this result is returned as a
+\code{data.frame}, If this is not possible, because the format of the result
+is incompatible with the \code{data.frame} format, the result is returned as
+a list. E.g. if BLUEs are extracted, the output of the function is a
+\code{data.frame} with BLUEs. However if varCompF is extracted, the
+output of the function is a \code{list}.\cr\cr
+Results that are returned as \code{data.frame} are marked as such in the
+asDataFrame column in the table. If the default return value for a result
+is a \code{data.frame} that can be overridden by the user by specifying
+\code{asDataFrame = FALSE}. When doing so the result will be returned as a
+list of data.frames, one per trial. They other way round is not possible.
+If a result is returned as a \code{list} according to the table, it cannot
+be returned as a \code{data.frame}.\cr
+If multiple results are extracted at the same time, these are always
+returned as a list.
+\cr\cr
 Most results can only be calculated if a model is fitted with genotype as
-fixed or with genotype as random. E.g. to compute heritabilies a model should
-be fitted with genotype as random effect. This is indicated in the list
-in Details with "F" and "R" respectively.
-}
-\details{
+fixed or with genotype as random. E.g. to compute heritabilities a model
+should be fitted with genotype as random effect. This is indicated in the
+table in the column model with "F" and "R" respectively.
+
 Possible options for \code{what} are:\tabular{llll}{
    result \tab model \tab description \tab asDataFrame \cr
    BLUEs \tab F \tab Best Linear Unbiased Estimators \tab yes \cr
