@@ -669,9 +669,13 @@ print.summary.TD <- function(x,
 #' to 2. Ignored if \code{showGeno = FALSE}.}
 #' \item{highlight}{A character vector of genotypes to be highlighted in the
 #' plot.}
+#' \item{colHighlight}{A character vector specifying colors to use for the
+#' highlighted genotypes. If not specified, default ggplot colors are used.}
 #' \item{colorSubBlock}{Should blocks be colored with a different color per
 #' subBlock? Defaults to \code{FALSE}. \code{colorSubBlock} is ignored when
 #' highlight is used to highlight genotypes.}
+#' \item{colSubBlock}{A character vector specifying colors to use for the
+#' subBlocks. If not specified, default ggplot colors are used.}
 #' }
 #'
 #' @section Map Plot:

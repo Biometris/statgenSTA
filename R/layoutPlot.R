@@ -23,19 +23,21 @@ layoutPlot <- function(x,
     }
   }
   highlight <- dotArgs$highlight
+  colHighlight <- dotArgs$colHighlight
   colorSubBlock <- isTRUE(dotArgs$colorSubBlock)
+  colSubBlock <- dotArgs$colSubBlock
+  ## Bind data for all trials together.
+  plotDat <- dfBind(x[trials])
   if (!is.null(highlight)) {
     chkChar(highlight, null = FALSE)
+    chkChar(colHighlight)
+    plotDat[["highlight."]] <- ifelse(plotDat[["genotype"]] %in% highlight,
+                                    as.character(plotDat[["genotype"]]), NA)
   }
   p <- setNames(vector(mode = "list", length = length(trials)), trials)
   for (trial in trials) {
-    trDat <- x[[trial]]
+    trDat <- plotDat[plotDat[["trial"]] == trial, ]
     if (!chkRowCol(trDat)) next
-    if (length(highlight) > 0) {
-      trDat[["highlight."]] <- ifelse(trDat[["genotype"]] %in% highlight,
-                                      as.character(trDat[["genotype"]]), NA)
-    }
-    #trLoc <- attr(trDat, "trLocation")
     plotRep <- hasName(x = trDat, name = "repId")
     plotSubBlock <- hasName(x = trDat, name = "subBlock")
     plotTrait <- !is.null(traits) && hasName(x = trDat, name = traits)
@@ -95,7 +97,8 @@ layoutPlot <- function(x,
         ggplot2::scale_color_manual(values = "grey85", na.translate = FALSE,
                                     na.value = "transparant") +
         ## Remove NA from scale.
-        ggplot2::scale_fill_discrete(na.translate = FALSE) +
+        ggplot2::scale_fill_discrete(na.translate = FALSE,
+                                     type = colHighlight) +
         ggplot2::labs(fill = "Highlighted") +
         ggplot2::guides(color = "none")
     } else if (plotSubBlock && colorSubBlock) {
@@ -103,6 +106,7 @@ layoutPlot <- function(x,
       pTr <- pTr +
         ggplot2::geom_tile(ggplot2::aes_string(fill = "subBlock",
                                                color = "color.")) +
+        ggplot2::scale_fill_discrete(type = colSubBlock) +
         ggplot2::scale_color_manual(values = "grey85", na.translate = FALSE,
                                     na.value = "transparant") +
         ggplot2::guides(fill = ggplot2::guide_legend(ncol = 3), color = "none")
