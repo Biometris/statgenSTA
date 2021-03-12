@@ -58,6 +58,14 @@ test_that("option highlight functions properly in TD layout plot", {
   expect_equal(sum(!is.na(p1[[1]]$data$highlight.)), 2)
 })
 
+test_that("specifying custom colors for highlight functions properly in TD layout plot", {
+  p1 <- plot(testTD, plotType = "layout", highlight = "G1",
+             colHighlight = "green", output = FALSE)
+  ## Fill color should be equal to specified colors.
+  plottedCols <- unique(ggplot2::ggplot_build(p1[[1]])$data[[1]][["fill"]])
+  expect_setequal(plottedCols, c("green", NA))
+})
+
 test_that("option colorSubBlock functions properly in TD layout plot", {
   p1 <- plot(testTD, plotType = "layout", colorSubBlock = TRUE,
              output = FALSE)
@@ -65,6 +73,15 @@ test_that("option colorSubBlock functions properly in TD layout plot", {
   ## Fill should be based on subBlocks.
   expect_setequal(as.character(p1[[1]]$layers[geoms1 == "GeomTile"][[1]]$mapping),
                   c("~subBlock", "~color."))
+})
+
+test_that("specifying custom colors for subBlock functions properly in TD layout plot", {
+  cols <- c("green", "blue", "red", "orange", "yellow")
+  p1 <- plot(testTD, plotType = "layout", colorSubBlock = TRUE,
+             colSubBlock = cols, output = FALSE)
+  ## Fill color should be equal to specified colors.
+  plottedCols <- unique(ggplot2::ggplot_build(p1[[1]])$data[[1]][["fill"]])
+  expect_setequal(cols, plottedCols)
 })
 
 test_that("option highlight overrides colorSubBlock in TD layout plot", {
