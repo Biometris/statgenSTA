@@ -106,7 +106,8 @@ layoutPlot <- function(x,
       pTr <- pTr +
         ggplot2::geom_tile(ggplot2::aes_string(fill = "subBlock",
                                                color = "color.")) +
-        ggplot2::scale_fill_discrete(type = colSubBlock) +
+        ggplot2::scale_fill_discrete(na.translate = FALSE,
+                                     type = colSubBlock) +
         ggplot2::scale_color_manual(values = "grey85", na.translate = FALSE,
                                     na.value = "transparant") +
         ggplot2::guides(fill = ggplot2::guide_legend(ncol = 3), color = "none")

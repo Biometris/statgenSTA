@@ -173,20 +173,24 @@ plot(dropsTD,
 
 *Note that the default title of the plot is the name of the trial. This can be manually changed using the `title` option.*
 
-This plot can be extended by highlighting interesting genotypes in the layout.
+This plot can be extended by highlighting interesting genotypes in the layout. By default the default ggplot colors are used for highlighting these genotypes. Custom colors can be specified using the parameter `colHighlight`.
 ```{r layoutPlotHL}
-## Plot the layout for Gai12W with genotypes A3 and 11430 highlighted.
+## Plot the layout for Gai12W.
+## Highlight genotypes A3 and 11430 in red and blue.
 plot(dropsTD, 
      trials = "Gai12W", 
-     highlight = c("A3", "11430"))
+     highlight = c("A3", "11430"),
+     colHighlight = c("red", "blue"))
 ```
 
-It is also possible to color the sub blocks within the field.
+It is also possible to color the sub blocks within the field. By default the default ggplot colors are used for coloring these sub blocks. Custom colors can be specified using the parameter `colSubBlock`.
 ```{r layoutPlotSB, fig.dim = c(7, 5)}
-## Plot the layout for Gai12W, color sub blocks.
+## Plot the layout for Gai12W.
+## Color sub blocks using polychrome colors for high contrast.
 plot(dropsTD, 
      trials = "Gai12W", 
-     colorSubBlock = TRUE)
+     colorSubBlock = TRUE,
+     colSubBlock = unname(grDevices::palette.colors(n = 36, palette = "polychrome")))
 ```
 
 Highlighting genotypes and coloring subBlocks cannot be done simultaneously. If both options are specified, only highlighting is done.    
