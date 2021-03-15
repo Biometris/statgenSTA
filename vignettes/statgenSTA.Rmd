@@ -1,5 +1,5 @@
 ---
-title: "Modeling field trials using statgenSTA2"
+title: "Modeling field trials using statgenSTA"
 author: "Bart-Jan van Rossum"
 date: "`r Sys.Date()`"
 output: 
@@ -8,7 +8,7 @@ output:
     number_sections: true
 bibliography: bibliography.bib
 vignette: >
-  %\VignetteIndexEntry{Modeling field trials using statgenSTA2}
+  %\VignetteIndexEntry{Modeling field trials using statgenSTA}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -51,7 +51,7 @@ Dropping one or more trials from a `TD` object can be done using the function `d
 
 ## Example {#ex}
 
-The use of the package is demonstrated using maize data from the European Union project DROPS (https://cordis.europa.eu/project/id/244374). The data is available from https://data.inrae.fr/dataset.xhtml?persistentId=doi:10.15454/IASSTN [@Millet2019] and the relevant data set is included as data.frame in the statgenSTA package.
+The use of the package is demonstrated using maize data from the European Union project DROPS (https://cordis.europa.eu/project/id/244374). The data is available from https://doi.org/10.15454/IASSTN [@Millet2019] and the relevant data set is included as data.frame in the statgenSTA package.
 
 The first step is loading the data into R. 
 ```{r loadData} 
@@ -63,7 +63,6 @@ regimes (irrigated or rainfed), in seven fields in 2012 and 2013. The hybrids ar
 For the example, first a `TD` object is created for experiments conducted in 2012. The data for 2013 is then added later on. In practice all this could be done in one go.
 ```{r createTD}
 ## Create a TD object containing for 2012.
-data("dropsRaw")
 dropsTD <- createTD(data = dropsRaw[dropsRaw$year == 2012, ],
                     genotype = "Variety_ID", 
                     trial = "Experiment",
@@ -187,10 +186,18 @@ It is also possible to color the sub blocks within the field. By default the def
 ```{r layoutPlotSB, fig.dim = c(7, 5)}
 ## Plot the layout for Gai12W.
 ## Color sub blocks using polychrome colors for high contrast.
+## Colors are specified here since this color palette is only available as such
+## from R > 4.0.
+cols <- c("#5A5156", "#E4E1E3", "#F6222E", "#FE00FA", "#16FF32", "#3283FE", 
+          "#FEAF16", "#B00068", "#1CFFCE", "#90AD1C", "#2ED9FF", "#DEA0FD", 
+          "#AA0DFE", "#F8A19F", "#325A9B", "#C4451C", "#1C8356", "#85660D", 
+          "#B10DA1", "#FBE426", "#1CBE4F", "#FA0087", "#FC1CBF", "#F7E1A0", 
+          "#C075A6", "#782AB6", "#AAF400", "#BDCDFF", "#822E1C", "#B5EFB5", 
+          "#7ED7D1", "#1C7F93", "#D85FF7", "#683B79", "#66B0FF", "#3B00FB")
 plot(dropsTD, 
      trials = "Gai12W", 
      colorSubBlock = TRUE,
-     colSubBlock = unname(grDevices::palette.colors(n = 36, palette = "polychrome")))
+     colSubBlock = cols)
 ```
 
 Highlighting genotypes and coloring subBlocks cannot be done simultaneously. If both options are specified, only highlighting is done.    
