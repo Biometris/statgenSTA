@@ -6,7 +6,8 @@ Date: 2020-09-23
 Authors@R: c(person(given = "Bart-Jan", 
                     family = "van Rossum", 
                     email = "bart-jan.vanrossum@wur.nl", 
-                    role = c("aut", "cre")),
+                    role = c("aut", "cre"),
+                    comment = c(ORCID = "0000-0002-8673-2514")),
              person(given = "Fred", 
                     family = "van Eeuwijk",
                     role = "ctb",
@@ -53,7 +54,7 @@ Description: Phenotypic analysis of field trials using mixed models with and
     by Biometris.    
     Some functions have been created to be used in conjunction with the R 
     package 'asreml' for the 'ASReml' software, which can be obtained upon 
-    purchase from 'VSN' international (<http://www.vsni.co.uk/software/asreml-r>). 
+    purchase from 'VSN' international (<https://www.vsni.co.uk/software/asreml-r>). 
 License: GPL
 Encoding: UTF-8
 LazyData: true

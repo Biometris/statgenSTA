@@ -12,7 +12,7 @@ Phenotypic analysis of field trials using mixed models with and
     by Biometris.    
     Some functions have been created to be used in conjunction with the R 
     package 'asreml' for the 'ASReml' software, which can be obtained upon 
-    purchase from 'VSN' international (<http://www.vsni.co.uk/software/asreml-r>).
+    purchase from 'VSN' international (<https://www.vsni.co.uk/software/asreml-r>).
 }
 \seealso{
 Useful links:
@@ -24,7 +24,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Bart-Jan van Rossum \email{bart-jan.vanrossum@wur.nl}
+\strong{Maintainer}: Bart-Jan van Rossum \email{bart-jan.vanrossum@wur.nl} (\href{https://orcid.org/0000-0002-8673-2514}{ORCID})
 
 Other contributors:
 \itemize{
