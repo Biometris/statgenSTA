@@ -11,6 +11,8 @@ columns:
 \item{trial}{trial, a combination of watering regime, year and nitrogen
 treatment}
 \item{genotype}{genotype}
+\item{regime}{stress level, NS (no water stress), IS (intermediate water
+stress, SS (severe water stress), LN (low nitrogen) or HN (high nitrogen))}
 \item{yld}{grain yield in tons}
 }
 }
@@ -31,7 +33,7 @@ co-dominant markers on 10 linkage groups. Phenotypic evaluations were
 performed on 211 F2:3 families, each one derived from an original F2 plant.
 The families were evaluated under different water and nitrogen regimes
 during 1992, 1994 and 1996. In the winter of 1992 three water regimes were
-imposed on the trials: well watered (WW), intermediate stress (IS) and severe
+imposed on the trials: well watered (NS), intermediate stress (IS) and severe
 stress (SS). In the winter of 1994, only the IS and SS trials were available.
 Nitrogen availability varied in the 1996 trials, with two low nitrogen
 treatments (LN, in winter and summer) and one high-nitrogen treatment

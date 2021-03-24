@@ -9,6 +9,7 @@
 * Layout plots now have extra options for specifying custom colors when highlighting genotypes (colHighlight) or sub blocks (colSubBlock).
 * The vignette has been updated using the data from the DROPS projects as in the other statgen packages.
 * Documentation for several functions has been improved by adding extra clarification and extra examples.
+* The data in TDMaize now has an extra column indicating the stress regime of the trials.
 
 # statgenSTA 1.0.6
 
