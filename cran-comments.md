@@ -1,10 +1,10 @@
-## Release with many extensions to plot functions, and some bug fixes.
+## Release with extra options in some of the plot functions and a partial rewrite of the vignette using a different data set.
 
 ----
 
 ## Test environments
 
-* local Windows 10 install, R 4.0.2
+* local Windows 10 install, R 4.0.3
 * Ubuntu (on github actions, devel and release)
 * macOS (on github actions, release)
 * R-hub (devel and release)
