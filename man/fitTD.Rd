@@ -151,6 +151,7 @@ terms are fitted:\tabular{ll}{
 }
 }
 \examples{
+\donttest{
 ## Fit model using lme4.
 lmeMod <- fitTD(TD = TDHeat05,
                 design = "ibd",
@@ -165,11 +166,9 @@ summary(lmeMod)
 plot(lmeMod)
 
 ## Create a pdf report summarizing results.
-\donttest{
 report(lmeMod,
        outfile = tempfile(fileext = ".pdf"),
        what = "fixed")
-}
 
 ## Fit model using SpATS.
 spaMod <- fitTD(TD = TDHeat05,
@@ -179,9 +178,7 @@ spaMod <- fitTD(TD = TDHeat05,
 summary(spaMod)
 
 ## Create spatial plots of the results.
-\donttest{
 plot(spaMod, plotType = "spatial")
-}
 
 ## Fit model using SpATS.
 ## Specify the number of segments to use in PSANOVA
@@ -192,9 +189,7 @@ spaMod2 <- fitTD(TD = TDHeat05,
                  control = list(nSeg = c(13, 26)))
 
 ## Create a pdf report summarizing results.
-\donttest{
 report(spaMod, outfile = tempfile(fileext = ".pdf"), what = "fixed")
-}
 
 ## Fit model using asreml.
 if (requireNamespace("asreml", quietly = TRUE)) {
@@ -205,11 +200,10 @@ if (requireNamespace("asreml", quietly = TRUE)) {
                   engine = "asreml")
   summary(asrMod)
 
-  \donttest{
   report(asrMod,
          outfile = tempfile(fileext = ".pdf"),
          what = "fixed")
-  }
+}
 }
 }
 \references{

@@ -131,6 +131,7 @@
 #' 67(1), 1-48. \url{https://www.jstatsoft.org/article/view/v067i01/0}.
 #'
 #' @examples
+#' \donttest{
 #' ## Fit model using lme4.
 #' lmeMod <- fitTD(TD = TDHeat05,
 #'                 design = "ibd",
@@ -145,11 +146,9 @@
 #' plot(lmeMod)
 #'
 #' ## Create a pdf report summarizing results.
-#' \donttest{
 #' report(lmeMod,
 #'        outfile = tempfile(fileext = ".pdf"),
 #'        what = "fixed")
-#' }
 #'
 #' ## Fit model using SpATS.
 #' spaMod <- fitTD(TD = TDHeat05,
@@ -159,9 +158,7 @@
 #' summary(spaMod)
 #'
 #' ## Create spatial plots of the results.
-#' \donttest{
 #' plot(spaMod, plotType = "spatial")
-#' }
 #'
 #' ## Fit model using SpATS.
 #' ## Specify the number of segments to use in PSANOVA
@@ -172,9 +169,7 @@
 #'                  control = list(nSeg = c(13, 26)))
 #'
 #' ## Create a pdf report summarizing results.
-#' \donttest{
 #' report(spaMod, outfile = tempfile(fileext = ".pdf"), what = "fixed")
-#' }
 #'
 #' ## Fit model using asreml.
 #' if (requireNamespace("asreml", quietly = TRUE)) {
@@ -185,11 +180,10 @@
 #'                   engine = "asreml")
 #'   summary(asrMod)
 #'
-#'   \donttest{
 #'   report(asrMod,
 #'          outfile = tempfile(fileext = ".pdf"),
 #'          what = "fixed")
-#'   }
+#' }
 #' }
 #' @export
 fitTD = function(TD,
