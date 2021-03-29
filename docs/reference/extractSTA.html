@@ -42,18 +42,59 @@
 <meta property="og:title" content="Extract statistics from fitted models — extractSTA" />
 <meta property="og:description" content="Extract and calculate various results for fitted models such as BLUEs, BLUPs,
 unit errors and heritabilities. For a full list of results that can be
-extracted, see Details.
-The result(s) to extract are specified in what. If a single result is
-extracted, if possible, this result is returned as a data.frame. If this is
-not possible, the result is returned as a list. If multiple results are
-extracted at the same time, these are always returned as a list. Where
-relevant, this behavior can be changed by specifying asDataFrame.
-Results that are returned as data.frame are marked as such in the data.frame
-column in the table in Details.
+extracted, see the table below.
+The result(s) to extract can be specified in what.
+If a single result is extracted, this result is returned as a
+data.frame, If this is not possible, because the format of the result
+is incompatible with the data.frame format, the result is returned as
+a list. E.g. if BLUEs are extracted, the output of the function is a
+data.frame with BLUEs. However if varCompF is extracted, the
+output of the function is a list.
+Results that are returned as data.frame are marked as such in the
+asDataFrame column in the table. If the default return value for a result
+is a data.frame that can be overridden by the user by specifying
+asDataFrame = FALSE. When doing so the result will be returned as a
+list of data.frames, one per trial. They other way round is not possible.
+If a result is returned as a list according to the table, it cannot
+be returned as a data.frame.
+If multiple results are extracted at the same time, these are always
+returned as a list.
+
 Most results can only be calculated if a model is fitted with genotype as
-fixed or with genotype as random. E.g. to compute heritabilies a model should
-be fitted with genotype as random effect. This is indicated in the list
-in Details with &quot;F&quot; and &quot;R&quot; respectively." />
+fixed or with genotype as random. E.g. to compute heritabilities a model
+should be fitted with genotype as random effect. This is indicated in the
+table in the column model with &quot;F&quot; and &quot;R&quot; respectively.
+Possible options for what are:
+resultmodeldescriptionasDataFrame
+BLUEsFBest Linear Unbiased Estimatorsyes
+seBLUEsFstandard errors of the BLUEsyes
+ueFunit errors - only for lme4 and asremlyes
+varCompFFvariance components for the model with genotype as fixed component
+fittedFfitted values for the model with genotype as fixed componentyes
+residFFresiduals for the model with genotype as fixed componentyes
+stdResFFstandardized residuals for the model with genotype as fixed componentyes
+waldFresults of the wald test - only for lme4 and asreml
+CVFCoefficient of Variation - only for lme4 and asremlyes
+rDfFFresidual degrees of freedom for the model with genotype as fixed componentyes
+sedFstandard error of difference - only for asreml
+lsdFleast significant difference - only for asreml
+BLUPsRBest Linear Unbiased Predictorsyes
+seBLUPsRstandard errors of the BLUPsyes
+heritabilityRbroad sense heritabilityyes
+varCompRRvariance components for the model with genotype as random component
+varGenRgenetic variance componentyes
+varErrRresidual variance componentyes
+varSpatRspatial variance components - only for SpATS
+rMeansRfitted values for the model with genotype as random componentyes
+ranEfRrandom genetic effectsyes
+residRRresiduals for the model with genotype as random componentyes
+stdResRRstandardized residuals for the model with genotype as random componentyes
+rDfRRresidual degrees of freedom for the model with genotype as random componentyes
+effDimReffective dimensions - only for SpATS
+ratEffDimRratios of the effective dimensions - only for SpATS
+
+
+" />
 
 
 
@@ -85,7 +126,7 @@ in Details with &quot;F&quot; and &quot;R&quot; respectively." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">statgenSTA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
       </span>
     </div>
 
@@ -93,7 +134,7 @@ in Details with &quot;F&quot; and &quot;R&quot; respectively." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home"></span>
+    <span class="fas fa-home"></span>
      
   </a>
 </li>
@@ -104,21 +145,21 @@ in Details with &quot;F&quot; and &quot;R&quot; respectively." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-file-code-o"></span>
+    <span class="fas fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-seedling"></span>
+    <span class="fas fa-seedling"></span>
      
     other packages
      
@@ -126,13 +167,19 @@ in Details with &quot;F&quot; and &quot;R&quot; respectively." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="https://biometris.github.io/statgenGxE">statgenGxE</a>
+    </li>
+    <li>
       <a href="https://biometris.github.io/statgenGWAS">statgenGWAS</a>
+    </li>
+    <li>
+      <a href="https://biometris.github.io/statgenHTP">statgenHTP</a>
     </li>
   </ul>
 </li>
 <li>
   <a href="https://github.com/Biometris/statgenSTA">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg fab"></span>
      
     github
   </a>
@@ -158,29 +205,70 @@ in Details with &quot;F&quot; and &quot;R&quot; respectively." />
     <div class="ref-description">
     <p>Extract and calculate various results for fitted models such as BLUEs, BLUPs,
 unit errors and heritabilities. For a full list of results that can be
-extracted, see Details.<br /><br />
-The result(s) to extract are specified in <code>what</code>. If a single result is
-extracted, if possible, this result is returned as a data.frame. If this is
-not possible, the result is returned as a list. If multiple results are
-extracted at the same time, these are always returned as a list. Where
-relevant, this behavior can be changed by specifying <code>asDataFrame</code>.
-Results that are returned as data.frame are marked as such in the data.frame
-column in the table in Details.<br /><br />
+extracted, see the table below.<br /><br />
+The result(s) to extract can be specified in <code>what</code>.<br />
+If a single result is extracted, this result is returned as a
+<code>data.frame</code>, If this is not possible, because the format of the result
+is incompatible with the <code>data.frame</code> format, the result is returned as
+a list. E.g. if BLUEs are extracted, the output of the function is a
+<code>data.frame</code> with BLUEs. However if varCompF is extracted, the
+output of the function is a <code>list</code>.<br /><br />
+Results that are returned as <code>data.frame</code> are marked as such in the
+asDataFrame column in the table. If the default return value for a result
+is a <code>data.frame</code> that can be overridden by the user by specifying
+<code>asDataFrame = FALSE</code>. When doing so the result will be returned as a
+list of data.frames, one per trial. They other way round is not possible.
+If a result is returned as a <code>list</code> according to the table, it cannot
+be returned as a <code>data.frame</code>.<br />
+If multiple results are extracted at the same time, these are always
+returned as a list.
+<br /><br />
 Most results can only be calculated if a model is fitted with genotype as
-fixed or with genotype as random. E.g. to compute heritabilies a model should
-be fitted with genotype as random effect. This is indicated in the list
-in Details with "F" and "R" respectively.</p>
+fixed or with genotype as random. E.g. to compute heritabilities a model
+should be fitted with genotype as random effect. This is indicated in the
+table in the column model with "F" and "R" respectively.</p>
+<p>Possible options for <code>what</code> are:</p><table class='table'>
+<tr><td>result</td><td>model</td><td>description</td><td>asDataFrame</td></tr>
+<tr><td>BLUEs</td><td>F</td><td>Best Linear Unbiased Estimators</td><td>yes</td></tr>
+<tr><td>seBLUEs</td><td>F</td><td>standard errors of the BLUEs</td><td>yes</td></tr>
+<tr><td>ue</td><td>F</td><td>unit errors - only for lme4 and asreml</td><td>yes</td></tr>
+<tr><td>varCompF</td><td>F</td><td>variance components for the model with genotype as fixed component</td><td></td></tr>
+<tr><td>fitted</td><td>F</td><td>fitted values for the model with genotype as fixed component</td><td>yes</td></tr>
+<tr><td>residF</td><td>F</td><td>residuals for the model with genotype as fixed component</td><td>yes</td></tr>
+<tr><td>stdResF</td><td>F</td><td>standardized residuals for the model with genotype as fixed component</td><td>yes</td></tr>
+<tr><td>wald</td><td>F</td><td>results of the wald test - only for lme4 and asreml</td><td></td></tr>
+<tr><td>CV</td><td>F</td><td>Coefficient of Variation - only for lme4 and asreml</td><td>yes</td></tr>
+<tr><td>rDfF</td><td>F</td><td>residual degrees of freedom for the model with genotype as fixed component</td><td>yes</td></tr>
+<tr><td>sed</td><td>F</td><td>standard error of difference - only for asreml</td><td></td></tr>
+<tr><td>lsd</td><td>F</td><td>least significant difference - only for asreml</td><td></td></tr>
+<tr><td>BLUPs</td><td>R</td><td>Best Linear Unbiased Predictors</td><td>yes</td></tr>
+<tr><td>seBLUPs</td><td>R</td><td>standard errors of the BLUPs</td><td>yes</td></tr>
+<tr><td>heritability</td><td>R</td><td>broad sense heritability</td><td>yes</td></tr>
+<tr><td>varCompR</td><td>R</td><td>variance components for the model with genotype as random component</td><td></td></tr>
+<tr><td>varGen</td><td>R</td><td>genetic variance component</td><td>yes</td></tr>
+<tr><td>varErr</td><td>R</td><td>residual variance component</td><td>yes</td></tr>
+<tr><td>varSpat</td><td>R</td><td>spatial variance components - only for SpATS</td><td></td></tr>
+<tr><td>rMeans</td><td>R</td><td>fitted values for the model with genotype as random component</td><td>yes</td></tr>
+<tr><td>ranEf</td><td>R</td><td>random genetic effects</td><td>yes</td></tr>
+<tr><td>residR</td><td>R</td><td>residuals for the model with genotype as random component</td><td>yes</td></tr>
+<tr><td>stdResR</td><td>R</td><td>standardized residuals for the model with genotype as random component</td><td>yes</td></tr>
+<tr><td>rDfR</td><td>R</td><td>residual degrees of freedom for the model with genotype as random component</td><td>yes</td></tr>
+<tr><td>effDim</td><td>R</td><td>effective dimensions - only for SpATS</td><td></td></tr>
+<tr><td>ratEffDim</td><td>R</td><td>ratios of the effective dimensions - only for SpATS</td><td></td></tr>
+</table>
+
+
     </div>
 
-    <pre class="usage"><span class='fu'>extractSTA</span>(
-  <span class='kw'>STA</span>,
-  trials = <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>STA</span>),
-  traits = <span class='kw'>NULL</span>,
-  what = <span class='st'>"all"</span>,
-  asDataFrame = <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>what</span>) <span class='op'>==</span> <span class='fl'>1</span> <span class='op'>&amp;&amp;</span> <span class='kw'>what</span> != <span class='st'>"all"</span>,
-  keep = <span class='kw'>NULL</span>,
-  restoreColNames = <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>extractSTA</span><span class='op'>(</span>
+  <span class='va'>STA</span>,
+  trials <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>STA</span><span class='op'>)</span>,
+  traits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  what <span class='op'>=</span> <span class='st'>"all"</span>,
+  asDataFrame <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>what</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>1</span> <span class='op'>&amp;&amp;</span> <span class='va'>what</span> <span class='op'>!=</span> <span class='st'>"all"</span>,
+  keep <span class='op'>=</span> <span class='cn'>NULL</span>,
+  restoreColNames <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -232,58 +320,30 @@ output of the extracted data?</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list with, per trial for which statistics have been extracted, a
-list of those statistics.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Possible options for <code>what</code> are:</p><table class='table'>
-<tr><td>result</td><td>model</td><td>description</td><td>data.frame</td></tr>
-<tr><td>BLUEs</td><td>F</td><td>Best Linear Unbiased Estimators</td><td>yes</td></tr>
-<tr><td>seBLUEs</td><td>F</td><td>standard errors of the BLUEs</td><td>yes</td></tr>
-<tr><td>ue</td><td>F</td><td>unit errors - only for lme4 and asreml</td><td>yes</td></tr>
-<tr><td>varCompF</td><td>F</td><td>variance components for the model with genotype as fixed component</td><td></td></tr>
-<tr><td>fitted</td><td>F</td><td>fitted values for the model with genotype as fixed component</td><td>yes</td></tr>
-<tr><td>residF</td><td>F</td><td>residuals for the model with genotype as fixed component</td><td>yes</td></tr>
-<tr><td>stdResF</td><td>F</td><td>standardized residuals for the model with genotype as fixed component</td><td>yes</td></tr>
-<tr><td>wald</td><td>F</td><td>results of the wald test - only for lme4 and asreml</td><td></td></tr>
-<tr><td>CV</td><td>F</td><td>Coefficient of Variation - only for lme4 and asreml</td><td>yes</td></tr>
-<tr><td>rDfF</td><td>F</td><td>residual degrees of freedom for the model with genotype as fixed component</td><td>yes</td></tr>
-<tr><td>sed</td><td>F</td><td>standard error of difference - only for asreml</td><td></td></tr>
-<tr><td>lsd</td><td>F</td><td>least significant difference - only for asreml</td><td></td></tr>
-<tr><td>BLUPs</td><td>R</td><td>Best Linear Unbiased Predictors</td><td>yes</td></tr>
-<tr><td>seBLUPs</td><td>R</td><td>standard errors of the BLUPs</td><td>yes</td></tr>
-<tr><td>heritability</td><td>R</td><td>broad sense heritability</td><td>yes</td></tr>
-<tr><td>varCompR</td><td>R</td><td>variance components for the model with genotype as random component</td><td></td></tr>
-<tr><td>varGen</td><td>R</td><td>genetic variance component</td><td>yes</td></tr>
-<tr><td>varErr</td><td>R</td><td>residual variance component</td><td>yes</td></tr>
-<tr><td>varSpat</td><td>R</td><td>spatial variance components - only for SpATS</td><td></td></tr>
-<tr><td>rMeans</td><td>R</td><td>fitted values for the model with genotype as random component</td><td>yes</td></tr>
-<tr><td>ranEf</td><td>R</td><td>random genetic effects</td><td>yes</td></tr>
-<tr><td>residR</td><td>R</td><td>residuals for the model with genotype as random component</td><td>yes</td></tr>
-<tr><td>stdResR</td><td>R</td><td>standardized residuals for the model with genotype as random component</td><td>yes</td></tr>
-<tr><td>rDfR</td><td>R</td><td>residual degrees of freedom for the model with genotype as random component</td><td>yes</td></tr>
-<tr><td>effDim</td><td>R</td><td>effective dimensions - only for SpATS</td><td></td></tr>
-<tr><td>ratEffDim</td><td>R</td><td>ratios of the effective dimensions - only for SpATS</td><td></td></tr>
-</table>
-
-
+    <p>Depending on the input either a data.frame or a list with, per
+trial for which statistics have been extracted, a list of those statistics.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='fitTD.html'>fitTD</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Fit model using SpATS.</span>
-<span class='kw'>myModel</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span>(TD = <span class='kw'>TDHeat05</span>, design = <span class='st'>"res.rowcol"</span>, traits = <span class='st'>"yield"</span>)
+<span class='va'>modSp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span><span class='op'>(</span>TD <span class='op'>=</span> <span class='va'>TDHeat05</span>,
+               design <span class='op'>=</span> <span class='st'>"res.rowcol"</span>,
+               traits <span class='op'>=</span> <span class='st'>"yield"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'>
 <span class='co'>## Extract all available statistics from the fitted model.</span>
-<span class='kw'>extr</span> <span class='op'>&lt;-</span> <span class='fu'>extractSTA</span>(<span class='kw'>myModel</span>)
+<span class='va'>extr</span> <span class='op'>&lt;-</span> <span class='fu'>extractSTA</span><span class='op'>(</span><span class='va'>modSp</span><span class='op'>)</span>
 
 <span class='co'>## Extract only the BLUEs from the fitted model.</span>
-<span class='kw'>BLUEs</span> <span class='op'>&lt;-</span> <span class='fu'>extractSTA</span>(<span class='kw'>myModel</span>, what = <span class='st'>"BLUEs"</span>)
+<span class='va'>BLUEs</span> <span class='op'>&lt;-</span> <span class='fu'>extractSTA</span><span class='op'>(</span><span class='va'>modSp</span>,
+                    what <span class='op'>=</span> <span class='st'>"BLUEs"</span><span class='op'>)</span>
 
 <span class='co'>## Extract only the BLUEs from the fitted model and keep trial as variable in</span>
 <span class='co'>## the output.</span>
-<span class='kw'>BLUEs2</span> <span class='op'>&lt;-</span> <span class='fu'>extractSTA</span>(<span class='kw'>myModel</span>, what = <span class='st'>"BLUEs"</span>, keep = <span class='st'>"trial"</span>)
+<span class='va'>BLUEs2</span> <span class='op'>&lt;-</span> <span class='fu'>extractSTA</span><span class='op'>(</span><span class='va'>modSp</span>,
+                     what <span class='op'>=</span> <span class='st'>"BLUEs"</span>,
+                     keep <span class='op'>=</span> <span class='st'>"trial"</span><span class='op'>)</span>
 
 </div></pre>
   </div>

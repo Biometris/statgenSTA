@@ -81,7 +81,7 @@ data (the trial design)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">statgenSTA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@ data (the trial design)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home"></span>
+    <span class="fas fa-home"></span>
      
   </a>
 </li>
@@ -100,21 +100,21 @@ data (the trial design)." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-file-code-o"></span>
+    <span class="fas fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-seedling"></span>
+    <span class="fas fa-seedling"></span>
      
     other packages
      
@@ -122,13 +122,19 @@ data (the trial design)." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="https://biometris.github.io/statgenGxE">statgenGxE</a>
+    </li>
+    <li>
       <a href="https://biometris.github.io/statgenGWAS">statgenGWAS</a>
+    </li>
+    <li>
+      <a href="https://biometris.github.io/statgenHTP">statgenHTP</a>
     </li>
   </ul>
 </li>
 <li>
   <a href="https://github.com/Biometris/statgenSTA">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg fab"></span>
      
     github
   </a>
@@ -164,9 +170,9 @@ Information in the metadata of a TD object is used in plotting functions
 data (the trial design).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>getMeta</span>(<span class='kw'>TD</span>)
+    <pre class="usage"><span class='fu'>getMeta</span><span class='op'>(</span><span class='va'>TD</span><span class='op'>)</span>
 
-<span class='fu'>setMeta</span>(<span class='kw'>TD</span>, <span class='kw'>meta</span>)</pre>
+<span class='fu'>setMeta</span><span class='op'>(</span><span class='va'>TD</span>, <span class='va'>meta</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -215,27 +221,34 @@ in accidentally removing it.</p>
 <code><a href='summary.TD.html'>summary.TD</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"wheatChl"</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"dropsRaw"</span><span class='op'>)</span>
 
 <span class='co'>## Create a TD object.</span>
-<span class='kw'>wheatTD</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TD.html'>createTD</a></span>(data = <span class='kw'>wheatChl</span>, genotype = <span class='st'>"trt"</span>, repId = <span class='st'>"rep"</span>,
-                    subBlock = <span class='st'>"bl"</span>, rowCoord = <span class='st'>"row"</span>, colCoord = <span class='st'>"col"</span>)
+<span class='va'>dropsTD</span> <span class='op'>&lt;-</span> <span class='fu'><a href='TD.html'>createTD</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>dropsRaw</span><span class='op'>[</span><span class='va'>dropsRaw</span><span class='op'>$</span><span class='va'>year</span> <span class='op'>==</span> <span class='fl'>2012</span>, <span class='op'>]</span>,
+                    genotype <span class='op'>=</span> <span class='st'>"Variety_ID"</span>,
+                    trial <span class='op'>=</span> <span class='st'>"Experiment"</span>,
+                    loc <span class='op'>=</span> <span class='st'>"Site"</span>,
+                    repId <span class='op'>=</span> <span class='st'>"Replicate"</span>,
+                    subBlock <span class='op'>=</span> <span class='st'>"block"</span>,
+                    rowCoord <span class='op'>=</span> <span class='st'>"Row"</span>,
+                    colCoord <span class='op'>=</span> <span class='st'>"Column"</span>,
+                    trLat <span class='op'>=</span> <span class='st'>"Lat"</span>,
+                    trLong <span class='op'>=</span> <span class='st'>"Long"</span><span class='op'>)</span>
 
-<span class='co'>## Get meta data from wheatTD</span>
-(<span class='kw'>wheatMeta</span> <span class='op'>&lt;-</span> <span class='fu'>getMeta</span>(<span class='kw'>wheatTD</span>))
-</div><div class='output co'>#&gt;           trLocation trDate trDesign trLat trLong trPlWidth trPlLength
-#&gt; C_SWS_12    C_SWS_12   &lt;NA&gt;       NA    NA     NA        NA         NA
-#&gt; SR_FI_11    SR_FI_11   &lt;NA&gt;       NA    NA     NA        NA         NA
-#&gt; SR_FI_12    SR_FI_12   &lt;NA&gt;       NA    NA     NA        NA         NA
-#&gt; SR_MWS_11  SR_MWS_11   &lt;NA&gt;       NA    NA     NA        NA         NA
-#&gt; SR_MWS_12  SR_MWS_12   &lt;NA&gt;       NA    NA     NA        NA         NA</div><div class='input'>
-<span class='co'>## Add location names and latitude/longitude to meta data.</span>
-<span class='kw'>wheatMeta</span><span class='op'>$</span><span class='kw'>trLocation</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Cauquenes"</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"Santa Rosa"</span>, times = <span class='fl'>4</span>))
-<span class='kw'>wheatMeta</span><span class='op'>$</span><span class='kw'>trLat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>35.58</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='op'>-</span><span class='fl'>36.32</span>, times = <span class='fl'>4</span>))
-<span class='kw'>wheatMeta</span><span class='op'>$</span><span class='kw'>trLong</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>72.17</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='op'>-</span><span class='fl'>71.55</span>, times = <span class='fl'>4</span>))
+<span class='co'>## Get meta data from dropsTD.</span>
+<span class='op'>(</span><span class='va'>dropsMeta</span> <span class='op'>&lt;-</span> <span class='fu'>getMeta</span><span class='op'>(</span><span class='va'>dropsTD</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;        trLocation trDate trDesign  trLat trLong trPlWidth trPlLength
+#&gt; Cam12R Campagnola   &lt;NA&gt;       NA 45.171  9.532        NA         NA
+#&gt; Cra12R    Craiova   &lt;NA&gt;       NA 44.116 24.348        NA         NA
+#&gt; Gai12W    Gaillac   &lt;NA&gt;       NA 43.910  1.890        NA         NA
+#&gt; Kar12W  Karlsruhe   &lt;NA&gt;       NA 49.100  8.320        NA         NA
+#&gt; Ner12R      Nerac   &lt;NA&gt;       NA 44.170  0.307        NA         NA</div><div class='input'>
+<span class='co'>## Add trial date to meta data.</span>
+<span class='va'>dropsMeta</span><span class='op'>$</span><span class='va'>trDate</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"010112"</span>, times <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>, <span class='st'>"%d%m%y"</span><span class='op'>)</span>
 
 <span class='co'>## Add back meta data to wheatTD.</span>
-<span class='kw'>wheatTD</span> <span class='op'>&lt;-</span> <span class='fu'>setMeta</span>(<span class='kw'>wheatTD</span>, <span class='kw'>wheatMeta</span>)
+<span class='va'>dropsTD</span> <span class='op'>&lt;-</span> <span class='fu'>setMeta</span><span class='op'>(</span><span class='va'>dropsTD</span>,
+                   <span class='va'>dropsMeta</span><span class='op'>)</span>
 
 </div></pre>
   </div>

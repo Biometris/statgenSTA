@@ -61,7 +61,7 @@ reference:
   - outlierSTA
 - title: Example data
 - contents:
-  - wheatChl
+  - dropsRaw
   - TDMaize
   - TDHeat05
 - title: Internal helper functions

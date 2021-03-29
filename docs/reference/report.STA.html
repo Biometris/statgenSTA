@@ -75,7 +75,7 @@ created for each report to enable easy modifying of the report." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">statgenSTA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@ created for each report to enable easy modifying of the report." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home"></span>
+    <span class="fas fa-home"></span>
      
   </a>
 </li>
@@ -94,21 +94,21 @@ created for each report to enable easy modifying of the report." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-file-code-o"></span>
+    <span class="fas fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-seedling"></span>
+    <span class="fas fa-seedling"></span>
      
     other packages
      
@@ -116,13 +116,19 @@ created for each report to enable easy modifying of the report." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="https://biometris.github.io/statgenGxE">statgenGxE</a>
+    </li>
+    <li>
       <a href="https://biometris.github.io/statgenGWAS">statgenGWAS</a>
+    </li>
+    <li>
+      <a href="https://biometris.github.io/statgenHTP">statgenHTP</a>
     </li>
   </ul>
 </li>
 <li>
   <a href="https://github.com/Biometris/statgenSTA">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg fab"></span>
      
     github
   </a>
@@ -153,15 +159,15 @@ created for each report to enable easy modifying of the report.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for STA</span>
-<span class='fu'><a href='report.html'>report</a></span>(
-  <span class='kw'>x</span>,
-  <span class='kw'>...</span>,
-  trials = <span class='kw'>NULL</span>,
-  traits = <span class='kw'>NULL</span>,
-  descending = <span class='fl'>TRUE</span>,
-  outfile = <span class='kw'>NULL</span>,
-  what = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>)
-)</pre>
+<span class='fu'><a href='report.html'>report</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  <span class='va'>...</span>,
+  trials <span class='op'>=</span> <span class='cn'>NULL</span>,
+  traits <span class='op'>=</span> <span class='cn'>NULL</span>,
+  descending <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  outfile <span class='op'>=</span> <span class='cn'>NULL</span>,
+  what <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"fixed"</span>, <span class='st'>"random"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -226,20 +232,26 @@ Sys.which("pdflatex").</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Fit model using lme4.</span>
-<span class='kw'>myModel1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span>(TD = <span class='kw'>TDHeat05</span>, design = <span class='st'>"ibd"</span>, traits = <span class='st'>"yield"</span>,
-                  engine = <span class='st'>"lme4"</span>)
+<span class='va'>modLme</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fitTD.html'>fitTD</a></span><span class='op'>(</span>TD <span class='op'>=</span> <span class='va'>TDHeat05</span>,
+                design <span class='op'>=</span> <span class='st'>"ibd"</span>,
+                traits <span class='op'>=</span> <span class='st'>"yield"</span>,
+                engine <span class='op'>=</span> <span class='st'>"lme4"</span><span class='op'>)</span>
 
 <span class='co'>## Create a pdf report summarizing the results for the model with genotype</span>
 <span class='co'>## as fixed factor.</span>
 <span class='co'># \donttest{</span>
-<span class='fu'><a href='report.html'>report</a></span>(<span class='kw'>myModel1</span>, outfile = <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(fileext = <span class='st'>".pdf"</span>), what = <span class='st'>"fixed"</span>)
+<span class='fu'><a href='report.html'>report</a></span><span class='op'>(</span><span class='va'>modLme</span>,
+       outfile <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".pdf"</span><span class='op'>)</span>,
+       what <span class='op'>=</span> <span class='st'>"fixed"</span><span class='op'>)</span>
 <span class='co'># }</span>
 
 <span class='co'>## Create two pdf report summarizing the results for the model with genotype</span>
 <span class='co'>## as fixed factor and for the model with genotype as random factor. Order</span>
 <span class='co'>## the results in ascending order.</span>
 <span class='co'># \donttest{</span>
-<span class='fu'><a href='report.html'>report</a></span>(<span class='kw'>myModel1</span>, outfile = <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(fileext = <span class='st'>".pdf"</span>), descending = <span class='fl'>FALSE</span>)
+<span class='fu'><a href='report.html'>report</a></span><span class='op'>(</span><span class='va'>modLme</span>,
+       outfile <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".pdf"</span><span class='op'>)</span>,
+       descending <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='co'># }</span>
 
 </div></pre>

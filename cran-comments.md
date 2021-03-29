@@ -1,4 +1,5 @@
 ## Release with extra options in some of the plot functions and a partial rewrite of the vignette using a different data set.
+*Fixed link in Readme after earlier submission*
 
 ----
 

@@ -102,7 +102,7 @@ summary.TD and plot.TD methods are available." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">statgenSTA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
       </span>
     </div>
 
@@ -110,7 +110,7 @@ summary.TD and plot.TD methods are available." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home"></span>
+    <span class="fas fa-home"></span>
      
   </a>
 </li>
@@ -121,21 +121,21 @@ summary.TD and plot.TD methods are available." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-file-code-o"></span>
+    <span class="fas fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-seedling"></span>
+    <span class="fas fa-seedling"></span>
      
     other packages
      
@@ -143,13 +143,19 @@ summary.TD and plot.TD methods are available." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="https://biometris.github.io/statgenGxE">statgenGxE</a>
+    </li>
+    <li>
       <a href="https://biometris.github.io/statgenGWAS">statgenGWAS</a>
+    </li>
+    <li>
+      <a href="https://biometris.github.io/statgenHTP">statgenHTP</a>
     </li>
   </ul>
 </li>
 <li>
   <a href="https://github.com/Biometris/statgenSTA">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg fab"></span>
      
     github
   </a>
@@ -206,54 +212,54 @@ class TD.<br /><br />
 <code><a href='summary.TD.html'>summary.TD</a></code> and <code><a href='plot.TD.html'>plot.TD</a></code> methods are available.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>createTD</span>(
-  <span class='kw'>data</span>,
-  genotype = <span class='kw'>NULL</span>,
-  trial = <span class='kw'>NULL</span>,
-  loc = <span class='kw'>NULL</span>,
-  year = <span class='kw'>NULL</span>,
-  repId = <span class='kw'>NULL</span>,
-  subBlock = <span class='kw'>NULL</span>,
-  plotId = <span class='kw'>NULL</span>,
-  rowCoord = <span class='kw'>NULL</span>,
-  colCoord = <span class='kw'>NULL</span>,
-  rowId = <span class='kw'>rowCoord</span>,
-  colId = <span class='kw'>colCoord</span>,
-  checkId = <span class='kw'>NULL</span>,
-  trLocation = <span class='kw'>NULL</span>,
-  trDate = <span class='kw'>NULL</span>,
-  trDesign = <span class='kw'>NULL</span>,
-  trLat = <span class='kw'>NULL</span>,
-  trLong = <span class='kw'>NULL</span>,
-  trPlWidth = <span class='kw'>NULL</span>,
-  trPlLength = <span class='kw'>NULL</span>
-)
+    <pre class="usage"><span class='fu'>createTD</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  genotype <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trial <span class='op'>=</span> <span class='cn'>NULL</span>,
+  loc <span class='op'>=</span> <span class='cn'>NULL</span>,
+  year <span class='op'>=</span> <span class='cn'>NULL</span>,
+  repId <span class='op'>=</span> <span class='cn'>NULL</span>,
+  subBlock <span class='op'>=</span> <span class='cn'>NULL</span>,
+  plotId <span class='op'>=</span> <span class='cn'>NULL</span>,
+  rowCoord <span class='op'>=</span> <span class='cn'>NULL</span>,
+  colCoord <span class='op'>=</span> <span class='cn'>NULL</span>,
+  rowId <span class='op'>=</span> <span class='va'>rowCoord</span>,
+  colId <span class='op'>=</span> <span class='va'>colCoord</span>,
+  checkId <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trLocation <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trDate <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trDesign <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trLat <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trLong <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trPlWidth <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trPlLength <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
 
-<span class='fu'>addTD</span>(
-  <span class='kw'>TD</span>,
-  <span class='kw'>data</span>,
-  genotype = <span class='kw'>NULL</span>,
-  trial = <span class='kw'>NULL</span>,
-  loc = <span class='kw'>NULL</span>,
-  year = <span class='kw'>NULL</span>,
-  repId = <span class='kw'>NULL</span>,
-  subBlock = <span class='kw'>NULL</span>,
-  plotId = <span class='kw'>NULL</span>,
-  rowCoord = <span class='kw'>NULL</span>,
-  colCoord = <span class='kw'>NULL</span>,
-  rowId = <span class='kw'>rowCoord</span>,
-  colId = <span class='kw'>colCoord</span>,
-  checkId = <span class='kw'>NULL</span>,
-  trLocation = <span class='kw'>NULL</span>,
-  trDate = <span class='kw'>NULL</span>,
-  trDesign = <span class='kw'>NULL</span>,
-  trLat = <span class='kw'>NULL</span>,
-  trLong = <span class='kw'>NULL</span>,
-  trPlWidth = <span class='kw'>NULL</span>,
-  trPlLength = <span class='kw'>NULL</span>
-)
+<span class='fu'>addTD</span><span class='op'>(</span>
+  <span class='va'>TD</span>,
+  <span class='va'>data</span>,
+  genotype <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trial <span class='op'>=</span> <span class='cn'>NULL</span>,
+  loc <span class='op'>=</span> <span class='cn'>NULL</span>,
+  year <span class='op'>=</span> <span class='cn'>NULL</span>,
+  repId <span class='op'>=</span> <span class='cn'>NULL</span>,
+  subBlock <span class='op'>=</span> <span class='cn'>NULL</span>,
+  plotId <span class='op'>=</span> <span class='cn'>NULL</span>,
+  rowCoord <span class='op'>=</span> <span class='cn'>NULL</span>,
+  colCoord <span class='op'>=</span> <span class='cn'>NULL</span>,
+  rowId <span class='op'>=</span> <span class='va'>rowCoord</span>,
+  colId <span class='op'>=</span> <span class='va'>colCoord</span>,
+  checkId <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trLocation <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trDate <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trDesign <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trLat <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trLong <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trPlWidth <span class='op'>=</span> <span class='cn'>NULL</span>,
+  trPlLength <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
 
-<span class='fu'>dropTD</span>(<span class='kw'>TD</span>, <span class='kw'>rmTrials</span>)</pre>
+<span class='fu'>dropTD</span><span class='op'>(</span><span class='va'>TD</span>, <span class='va'>rmTrials</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -401,25 +407,39 @@ for trial, the list will contain one item named after the input data.</p>
     <pre class="examples"><div class='input'><span class='co'>## Create a data.frame to be converted to TD object.</span>
 <span class='co'>## The data consists of genotype, trial, row and column information and</span>
 <span class='co'>## two traits, yield and flowering time.</span>
-<span class='kw'>datT1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(geno = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"G"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>), tr = <span class='st'>"T1"</span>,
-                    row = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, each = <span class='fl'>2</span>), col = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, times = <span class='fl'>5</span>),
-                    yield = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, flowering = <span class='fl'>3</span><span class='op'>:</span><span class='fl'>12</span>)
+<span class='va'>datT1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>geno <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"G"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>,
+                    tr <span class='op'>=</span> <span class='st'>"T1"</span>,
+                    row <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, each <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>,
+                    col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, times <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
+                    yield <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>,
+                    flowering <span class='op'>=</span> <span class='fl'>3</span><span class='op'>:</span><span class='fl'>12</span><span class='op'>)</span>
 
 <span class='co'>## Convert data.frame to TD object.</span>
-<span class='kw'>TDT1</span> <span class='op'>&lt;-</span> <span class='fu'>createTD</span>(data = <span class='kw'>datT1</span>, genotype = <span class='st'>"geno"</span>, trial = <span class='st'>"tr"</span>,
-                 rowCoord = <span class='st'>"row"</span>, colCoord = <span class='st'>"col"</span>)
+<span class='va'>TDT1</span> <span class='op'>&lt;-</span> <span class='fu'>createTD</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>datT1</span>,
+                 genotype <span class='op'>=</span> <span class='st'>"geno"</span>,
+                 trial <span class='op'>=</span> <span class='st'>"tr"</span>,
+                 rowCoord <span class='op'>=</span> <span class='st'>"row"</span>,
+                 colCoord <span class='op'>=</span> <span class='st'>"col"</span><span class='op'>)</span>
 
 <span class='co'>## Create a second data.frame similar to the first with data for a second trial.</span>
-<span class='kw'>datT2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(geno = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"G"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>), tr = <span class='st'>"T2"</span>,
-                    row = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, each = <span class='fl'>5</span>), col = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, times = <span class='fl'>2</span>),
-                    yield = <span class='fl'>10</span><span class='op'>:</span><span class='fl'>1</span>, flowering = <span class='fl'>12</span><span class='op'>:</span><span class='fl'>3</span>)
+<span class='va'>datT2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>geno <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"G"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>,
+                    tr <span class='op'>=</span> <span class='st'>"T2"</span>,
+                    row <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, each <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
+                    col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, times <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>,
+                    yield <span class='op'>=</span> <span class='fl'>10</span><span class='op'>:</span><span class='fl'>1</span>,
+                    flowering <span class='op'>=</span> <span class='fl'>12</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>
 
 <span class='co'>## Add this data to the TD object created above.</span>
-<span class='kw'>TDTot</span> <span class='op'>&lt;-</span> <span class='fu'>addTD</span>(TD = <span class='kw'>TDT1</span>, data = <span class='kw'>datT2</span>, genotype = <span class='st'>"geno"</span>, trial = <span class='st'>"tr"</span>,
-               rowCoord = <span class='st'>"row"</span>, colCoord = <span class='st'>"col"</span>)
+<span class='va'>TDTot</span> <span class='op'>&lt;-</span> <span class='fu'>addTD</span><span class='op'>(</span>TD <span class='op'>=</span> <span class='va'>TDT1</span>,
+               data <span class='op'>=</span> <span class='va'>datT2</span>,
+               genotype <span class='op'>=</span> <span class='st'>"geno"</span>,
+               trial <span class='op'>=</span> <span class='st'>"tr"</span>,
+               rowCoord <span class='op'>=</span> <span class='st'>"row"</span>,
+               colCoord <span class='op'>=</span> <span class='st'>"col"</span><span class='op'>)</span>
 
 <span class='co'>## Drop the data for the first trial from the object.</span>
-<span class='kw'>TDT2</span> <span class='op'>&lt;-</span> <span class='fu'>dropTD</span>(TD = <span class='kw'>TDTot</span>, rmTrials = <span class='st'>"T1"</span>)
+<span class='va'>TDT2</span> <span class='op'>&lt;-</span> <span class='fu'>dropTD</span><span class='op'>(</span>TD <span class='op'>=</span> <span class='va'>TDTot</span>,
+               rmTrials <span class='op'>=</span> <span class='st'>"T1"</span><span class='op'>)</span>
 
 </div></pre>
   </div>

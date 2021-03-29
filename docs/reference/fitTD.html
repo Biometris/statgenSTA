@@ -76,7 +76,7 @@ See details for the exact models fitted." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">statgenSTA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@ See details for the exact models fitted." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home"></span>
+    <span class="fas fa-home"></span>
      
   </a>
 </li>
@@ -95,21 +95,21 @@ See details for the exact models fitted." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-file-code-o"></span>
+    <span class="fas fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-seedling"></span>
+    <span class="fas fa-seedling"></span>
      
     other packages
      
@@ -117,13 +117,19 @@ See details for the exact models fitted." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="https://biometris.github.io/statgenGxE">statgenGxE</a>
+    </li>
+    <li>
       <a href="https://biometris.github.io/statgenGWAS">statgenGWAS</a>
+    </li>
+    <li>
+      <a href="https://biometris.github.io/statgenHTP">statgenHTP</a>
     </li>
   </ul>
 </li>
 <li>
   <a href="https://github.com/Biometris/statgenSTA">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg fab"></span>
      
     github
   </a>
@@ -154,20 +160,20 @@ otherwise.
 See details for the exact models fitted.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fitTD</span>(
-  <span class='kw'>TD</span>,
-  trials = <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>TD</span>),
-  design = <span class='kw'>NULL</span>,
-  <span class='kw'>traits</span>,
-  what = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"fixed"</span>, <span class='st'>"random"</span>),
-  covariates = <span class='kw'>NULL</span>,
-  useCheckId = <span class='fl'>FALSE</span>,
-  spatial = <span class='fl'>FALSE</span>,
-  engine = <span class='fl'>NA</span>,
-  control = <span class='kw'>NULL</span>,
-  progress = <span class='fl'>FALSE</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>fitTD</span><span class='op'>(</span>
+  <span class='va'>TD</span>,
+  trials <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>TD</span><span class='op'>)</span>,
+  design <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>traits</span>,
+  what <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"fixed"</span>, <span class='st'>"random"</span><span class='op'>)</span>,
+  covariates <span class='op'>=</span> <span class='cn'>NULL</span>,
+  useCheckId <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  spatial <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  engine <span class='op'>=</span> <span class='cn'>NA</span>,
+  control <span class='op'>=</span> <span class='cn'>NULL</span>,
+  progress <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -293,22 +299,22 @@ included  in the model. This term is constructed using the function
 where<br /> <code>nSeg = (number of columns / 2, number of rows / 2)</code>. nseg and
 nest.div can be modified using the <code>control</code> parameter.<br /><br />
 When <code>asreml</code> is used for modeling and <code>spatial</code> is <code>TRUE</code>
-six models are fitted with different random terms and covariance structure.
+seven models are fitted with different random terms and covariance structure.
 The best model is determined based on a goodness-of-fit criterion, either
 AIC or BIC. This can be set using the control parameter <code>criterion</code>,
 default is AIC.
-The fitted random terms depend on the structure of the data. If the design
+The fitted random terms depend on the structure of the data. If the trial
 has a regular structure, i.e. all replicates appear the same amount of times
-in the design, the following combinations of random and spatial terms are
+in the trial, the following combinations of random and spatial terms are
 fitted:</p><table class='table'>
 <tr><td>Random part</td><td>Spatial part</td></tr>
 <tr><td>random effects based on design</td><td>none</td></tr>
-<tr><td>random effects based on design</td><td>ar1(rowId):colId</td></tr>
-<tr><td>random effects based on design</td><td>rowId:ar1(colId)</td></tr>
-<tr><td>random effects based on design</td><td>ar1(rowId):ar1(colId)</td></tr>
-<tr><td>random effects based on design  + nugget</td><td>ar1(rowId):colId</td></tr>
-<tr><td>random effects based on design + nugget</td><td>rowId:ar1(colId)</td></tr>
-<tr><td>random effects based on design + nugget</td><td>ar1(rowId):ar1(colId)</td></tr>
+<tr><td>random effects based on design</td><td>AR1(rowId):colId</td></tr>
+<tr><td>random effects based on design</td><td>rowId:AR1(colId)</td></tr>
+<tr><td>random effects based on design</td><td>AR1(rowId):ar1(colId)</td></tr>
+<tr><td>random effects based on design + nugget</td><td>AR1(rowId):colId</td></tr>
+<tr><td>random effects based on design + nugget</td><td>rowId:AR1(colId)</td></tr>
+<tr><td>random effects based on design + nugget</td><td>AR1(rowId):AR1(colId)</td></tr>
 </table>
 
 
@@ -331,7 +337,7 @@ terms are fitted:</p><table class='table'>
     <p>Maria Xose Rodriguez-Alvarez, Martin P. Boer, Fred A. van Eeuwijk, Paul H.C.
 Eilers (2017). Correcting for spatial heterogeneity in plant breeding
 experiments with P-splines. Spatial Statistics
-<a href='https://doi.org/10.1016/j.spasta.2017.10.003'>https://doi.org/10.1016/j.spasta.2017.10.003</a></p>
+doi: <a href='https://doi.org/10.1016/j.spasta.2017.10.003'>10.1016/j.spasta.2017.10.003</a></p>
 <p>Butler, D. G., et al. (2010). Analysis of Mixed Models for S language
 environments: ASReml-R reference manual. Brisbane, DPI Publications</p>
 <p>Douglas Bates, Martin Maechler, Ben Bolker, Steve Walker (2015). Fitting
@@ -339,12 +345,16 @@ Linear Mixed-Effects Models Using lme4. Journal of Statistical Software,
 67(1), 1-48. <a href='https://www.jstatsoft.org/article/view/v067i01/0'>https://www.jstatsoft.org/article/view/v067i01/0</a>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Fit model using lme4.</span>
-<span class='kw'>myModel1</span> <span class='op'>&lt;-</span> <span class='fu'>fitTD</span>(TD = <span class='kw'>TDHeat05</span>, design = <span class='st'>"ibd"</span>, traits = <span class='st'>"yield"</span>,
-                  what = <span class='st'>"fixed"</span>, engine = <span class='st'>"lme4"</span>)
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='co'>## Fit model using lme4.</span>
+<span class='va'>lmeMod</span> <span class='op'>&lt;-</span> <span class='fu'>fitTD</span><span class='op'>(</span>TD <span class='op'>=</span> <span class='va'>TDHeat05</span>,
+                design <span class='op'>=</span> <span class='st'>"ibd"</span>,
+                traits <span class='op'>=</span> <span class='st'>"yield"</span>,
+                what <span class='op'>=</span> <span class='st'>"fixed"</span>,
+                engine <span class='op'>=</span> <span class='st'>"lme4"</span><span class='op'>)</span>
 
 <span class='co'>## Summarize results.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>myModel1</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>lmeMod</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Summary statistics 
 #&gt; ==================
 #&gt; 
@@ -387,17 +397,19 @@ Linear Mixed-Effects Models Using lme4. Journal of Statistical Software,
 #&gt; SB041 232.83 30.194
 #&gt; SB143 232.41 30.194</div><div class='input'>
 <span class='co'>## Create base plots of the results.</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>myModel1</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>lmeMod</span><span class='op'>)</span>
 </div><div class='input'>
 <span class='co'>## Create a pdf report summarizing results.</span>
-<span class='co'># \donttest{</span>
-<span class='fu'><a href='report.html'>report</a></span>(<span class='kw'>myModel1</span>, outfile = <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(fileext = <span class='st'>".pdf"</span>), what = <span class='st'>"fixed"</span>)
-</div><div class='img'><img src='fitTD-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
-
+<span class='fu'><a href='report.html'>report</a></span><span class='op'>(</span><span class='va'>lmeMod</span>,
+       outfile <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".pdf"</span><span class='op'>)</span>,
+       what <span class='op'>=</span> <span class='st'>"fixed"</span><span class='op'>)</span>
+</div><div class='img'><img src='fitTD-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## Fit model using SpATS.</span>
-<span class='kw'>myModel2</span> <span class='op'>&lt;-</span> <span class='fu'>fitTD</span>(TD = <span class='kw'>TDHeat05</span>, design = <span class='st'>"res.rowcol"</span>, traits = <span class='st'>"yield"</span>,
-                  what = <span class='st'>"fixed"</span>)
-</div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>myModel2</span>)
+<span class='va'>spaMod</span> <span class='op'>&lt;-</span> <span class='fu'>fitTD</span><span class='op'>(</span>TD <span class='op'>=</span> <span class='va'>TDHeat05</span>,
+                design <span class='op'>=</span> <span class='st'>"res.rowcol"</span>,
+                traits <span class='op'>=</span> <span class='st'>"yield"</span>,
+                what <span class='op'>=</span> <span class='st'>"fixed"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>spaMod</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Summary statistics 
 #&gt; ==================
 #&gt; 
@@ -440,26 +452,34 @@ Linear Mixed-Effects Models Using lme4. Journal of Statistical Software,
 #&gt; SB163 233.97 11.130
 #&gt; SB181 233.14 11.084</div><div class='input'>
 <span class='co'>## Create spatial plots of the results.</span>
-<span class='co'># \donttest{</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>myModel2</span>, plotType = <span class='st'>"spatial"</span>)
-</div><div class='input'><span class='co'># }</span>
-
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>spaMod</span>, plotType <span class='op'>=</span> <span class='st'>"spatial"</span><span class='op'>)</span>
+</div><div class='input'>
+<span class='co'>## Fit model using SpATS.</span>
+<span class='co'>## Specify the number of segments to use in PSANOVA</span>
+<span class='va'>spaMod2</span> <span class='op'>&lt;-</span> <span class='fu'>fitTD</span><span class='op'>(</span>TD <span class='op'>=</span> <span class='va'>TDHeat05</span>,
+                 design <span class='op'>=</span> <span class='st'>"res.rowcol"</span>,
+                 traits <span class='op'>=</span> <span class='st'>"yield"</span>,
+                 what <span class='op'>=</span> <span class='st'>"fixed"</span>,
+                 control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>nSeg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>13</span>, <span class='fl'>26</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Using SpATS for fitting models.</span></div><div class='input'>
 <span class='co'>## Create a pdf report summarizing results.</span>
-<span class='co'># \donttest{</span>
-<span class='fu'><a href='report.html'>report</a></span>(<span class='kw'>myModel2</span>, outfile = <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(fileext = <span class='st'>".pdf"</span>), what = <span class='st'>"fixed"</span>)
-</div><div class='input'><span class='co'># }</span>
-
+<span class='fu'><a href='report.html'>report</a></span><span class='op'>(</span><span class='va'>spaMod</span>, outfile <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".pdf"</span><span class='op'>)</span>, what <span class='op'>=</span> <span class='st'>"fixed"</span><span class='op'>)</span>
+</div><div class='input'>
 <span class='co'>## Fit model using asreml.</span>
-<span class='co'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"asreml"</span>, quietly = <span class='fl'>TRUE</span>)) {
-  <span class='kw'>myModel3</span> <span class='op'>&lt;-</span> <span class='fu'>fitTD</span>(TD = <span class='kw'>TDHeat05</span>, design = <span class='st'>"res.rowcol"</span>, traits = <span class='st'>"yield"</span>,
-                    what = <span class='st'>"fixed"</span>, engine = <span class='st'>"asreml"</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>myModel3</span>)
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"asreml"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>asrMod</span> <span class='op'>&lt;-</span> <span class='fu'>fitTD</span><span class='op'>(</span>TD <span class='op'>=</span> <span class='va'>TDHeat05</span>,
+                  design <span class='op'>=</span> <span class='st'>"res.rowcol"</span>,
+                  traits <span class='op'>=</span> <span class='st'>"yield"</span>,
+                  what <span class='op'>=</span> <span class='st'>"fixed"</span>,
+                  engine <span class='op'>=</span> <span class='st'>"asreml"</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>asrMod</span><span class='op'>)</span>
 
-  <span class='co'># \donttest{</span>
-  <span class='fu'><a href='report.html'>report</a></span>(<span class='kw'>myModel3</span>, outfile = <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(fileext = <span class='st'>".pdf"</span>), what = <span class='st'>"fixed"</span>)
-  <span class='co'># }</span>
-}
-</div><div class='output co'>#&gt; License check Wed Sep 23 12:35:55 2020</div><div class='img'><img src='fitTD-2.png' alt='' width='700' height='433' /></div></pre>
+  <span class='fu'><a href='report.html'>report</a></span><span class='op'>(</span><span class='va'>asrMod</span>,
+         outfile <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".pdf"</span><span class='op'>)</span>,
+         what <span class='op'>=</span> <span class='st'>"fixed"</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div><div class='output co'>#&gt; Online License checked out Mon Mar 29 13:36:02 2021</div><div class='img'><img src='fitTD-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">statgenSTA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home"></span>
+    <span class="fas fa-home"></span>
      
   </a>
 </li>
@@ -90,21 +90,21 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../news/index.html">
-    <span class="fa fa-newspaper-o"></span>
+    <span class="fas fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-file-code-o"></span>
+    <span class="fas fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-seedling"></span>
+    <span class="fas fa-seedling"></span>
      
     other packages
      
@@ -112,13 +112,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="https://biometris.github.io/statgenGxE">statgenGxE</a>
+    </li>
+    <li>
       <a href="https://biometris.github.io/statgenGWAS">statgenGWAS</a>
+    </li>
+    <li>
+      <a href="https://biometris.github.io/statgenHTP">statgenHTP</a>
     </li>
   </ul>
 </li>
 <li>
   <a href="https://github.com/Biometris/statgenSTA">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg fab"></span>
      
     github
   </a>
@@ -140,9 +146,26 @@
       <small>Source: <a href='https://github.com/Biometris/statgenSTA/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="statgensta-107" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.7">
+<a href="#statgensta-107" class="anchor"></a>statgenSTA 1.0.7<small> Unreleased </small>
+</h1>
+<ul>
+<li>Heritablity is now rounded to two decimals for models fitted using asreml and lme4 as was already the case for SpATS.</li>
+<li>The border color of the histograms in the scatter plots for TD objects now matches the fill.</li>
+<li>A minor bug in outlierSTA occurring when a column trial is not available is fixed.</li>
+<li>Default names of layout plots for TD objects are now the trial name instead of the location.</li>
+<li>Layout plots now have an extra options sizeGeno, that can be used for specifying the text size of genotypes.</li>
+<li>In layout plots the raw data of a specified trait can now be visualized using the traits parameter.</li>
+<li>Layout plots now have extra options for specifying custom colors when highlighting genotypes (colHighlight) or sub blocks (colSubBlock).</li>
+<li>The vignette has been updated using the data from the DROPS projects as in the other statgen packages.</li>
+<li>Documentation for several functions has been improved by adding extra clarification and extra examples.</li>
+<li>The data in TDMaize now has an extra column indicating the stress regime of the trials.</li>
+</ul>
+</div>
     <div id="statgensta-106" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.6">
-<a href="#statgensta-106" class="anchor"></a>statgenSTA 1.0.6<small> Unreleased </small>
+<a href="#statgensta-106" class="anchor"></a>statgenSTA 1.0.6<small> 2020-09-23 </small>
 </h1>
 <ul>
 <li>Default colors for genotypes and trials have been improved. User specific default colors may now be set in the R options “statgen.colGeno” (for genotypes) and “statgen.colTrial” (for trials).</li>
