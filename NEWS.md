@@ -1,3 +1,7 @@
+# statgenSTA 1.0.8
+
+* Patch release to pass CRAN check for R.4.2.0. No user visual changes.
+
 # statgenSTA 1.0.7
 
 * Heritablity is now rounded to two decimals for models fitted using asreml and lme4 as was already the case for SpATS.

@@ -615,7 +615,7 @@ print.summary.TD <- function(x,
                              ...) {
   whichStat <- attr(x, "whichStat")
   groupBy  <- attr(x, "group")
-  decimals <- c(rep(x = 0, times = 3), rep(x = 2, times = 7),
+  decimals <- c(rep(x = 1, times = 3), rep(x = 2, times = 7),
                 rep(x = 3, times = 5), rep(x = 2, times = 3),
                 rep(x = 3, times = 4))[whichStat]
   xPrint <- x
