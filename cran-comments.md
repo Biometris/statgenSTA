@@ -1,11 +1,10 @@
-## Release with extra options in some of the plot functions and a partial rewrite of the vignette using a different data set.
-*Fixed link in Readme after earlier submission*
+## Patch release fixing errors in CRAN checks for R-devel
 
 ----
 
 ## Test environments
 
-* local Windows 10 install, R 4.0.3
+* local Windows 10 install, R 4.1.0
 * Ubuntu (on github actions, devel and release)
 * macOS (on github actions, release)
 * R-hub (devel and release)
@@ -27,5 +26,5 @@ There were 2 NOTES:
   * checking package dependencies ... NOTE  
     Package suggested but not available for checking: 'asreml'
     
-    - asreml is a commercial R package that is used as one of three alternatives for      modeling data.
+    - asreml is a commercial R package that is used as one of three alternatives for modeling data.
 
