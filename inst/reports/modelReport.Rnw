@@ -133,6 +133,7 @@ if (engine == "asreml" && !is.null(x[[trial]]$sumTab[[trait]])) {
   chMod <- attr(x = sumTab, which = "chosen")
   sumTab$AIC <- round(sumTab$AIC)
   sumTab$BIC <- round(sumTab$BIC)
+  sumTab$H2 <- round(sumTab$H2, 2)
   sumTab$row <- round(sumTab$row, 2)
   sumTab$col <- round(sumTab$col, 2)
   sumTab$error <- round(sumTab$error, 1)
@@ -143,7 +144,7 @@ if (engine == "asreml" && !is.null(x[[trial]]$sumTab[[trait]])) {
                        caption = paste("Overview of spatial models tried",
                                        "- selected model indicated in bold"),
                        label = "summaryTab",
-                       digits = c(0, 0, 0, 0, 0, 2, 2, 1, 1, 0)),
+                       digits = c(0, 0, 0, 0, 0, 2, 2, 2, 1, 1, 0)),
         latex.environments = "flushleft", caption.placement = "top",
         include.rownames = FALSE, include.colnames = TRUE,
         sanitize.text.function = boldRow)
