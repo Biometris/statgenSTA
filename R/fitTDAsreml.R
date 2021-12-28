@@ -36,6 +36,18 @@ fitTDAsreml <- function(TD,
     list2env(x = checkOut, envir = environment())
   }
   TDTr <- droplevels(TD[[trial]])
+  ## Rename traits with invalid syntax.
+  ## Mainly ()/ seem problematic, but being more strict doesn't hurt.
+  traitsNw <- make.names(traits)
+  traitsRenamed <- traits[!traits %in% traitsNw]
+  if (length(traitsRenamed) > 0) {
+    message("The following traits have been renamed since asreml doesn't ",
+            "allow syntactically invalid traits:\n",
+            paste(traitsRenamed, collapse = ", "))
+    colnames(TDTr)[colnames(TDTr) %in% traits] <-
+      make.names(colnames(TDTr)[colnames(TDTr) %in% traits])
+    traits <- traitsNw
+  }
   ## Should repId be used as fixed effect in the model.
   useRepIdFix <- design %in% c("res.ibd", "res.rowcol", "rcbd")
   ## Indicate extra random effects.
