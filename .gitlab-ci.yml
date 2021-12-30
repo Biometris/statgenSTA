@@ -11,11 +11,12 @@ before_script:
   - apt-get update
   - apt-get install -y --no-install-recommends ${APT_PKGS}
   - apt-get install -y --no-install-recommends qpdf pandoc pandoc-citeproc
-  - export PATH="/usr/local/lib/R/site-library/littler/examples/:${PATH}"
+  - export PATH="/usr/local/lib/R/site-library/littler/examples/:${PATH};$HOME/bin"
   - echo "options(Ncpus = $(nproc --all))" >> /usr/local/lib/R/etc/Rprofile.site
   - install2.r devtools tinytex
   - r -e 'devtools::install_dev_deps()'
   - r -e 'tinytex::install_tinytex()'
+  - r -e 'Sys.getenv("PATH")'
 
 r-release:
   stage: test
