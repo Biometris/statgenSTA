@@ -13,10 +13,10 @@ before_script:
   - apt-get install -y --no-install-recommends qpdf pandoc pandoc-citeproc
   - export PATH="/usr/local/lib/R/site-library/littler/examples/:${PATH}"
   - echo "options(Ncpus = $(nproc --all))" >> /usr/local/lib/R/etc/Rprofile.site
-  - install2.r devtools tinytex
-  - r -e 'tinytex::tlmgr_path("add")'
-  - r -e 'devtools::install_dev_deps()'  
-  - r -e 'tinytex::install_tinytex(); tinytex::tinytex_root()'
+  - install2.r devtools
+  - wget -qO- "https://yihui.org/tinytex/install-unx.sh" \ | sh -s - --admin --no-path
+  - sudo ~/.TinyTeX/bin/*/tlmgr path add  
+  - r -e 'devtools::install_dev_deps()'
 
 r-release:
   stage: test
