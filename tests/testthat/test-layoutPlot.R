@@ -97,3 +97,11 @@ test_that("option title overrides default title in TD layout plot", {
   p1 <- plot(testTD, plotType = "layout", title = "test")
   expect_equal(p1$E1$labels$title, "test")
 })
+
+test_that("plot works correctly if no trial is defined", {
+  testTD2 <- testTD
+  testTD2$E1[["trial"]] <- NULL
+  expect_silent(plot(testTD2, plotType = "layout"))
+})
+
+

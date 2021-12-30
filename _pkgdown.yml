@@ -1,3 +1,6 @@
+template:
+  bootstrap: 5
+
 home:
   title: An R package for single trial analysis of field trials
 
@@ -24,6 +27,10 @@ navbar:
           href: https://biometris.github.io/statgenGWAS
         - text: "statgenHTP"
           href: https://biometris.github.io/statgenHTP
+        - text: "statgenIBD"
+          href: https://biometris.github.io/statgenIBD
+        - text: "LMMsolver"
+          href: https://biometris.github.io/LMMsolver
     - icon: fa-github fa-lg fab
       text: "github"
       href: https://github.com/Biometris/statgenSTA
