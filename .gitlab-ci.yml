@@ -14,7 +14,7 @@ before_script:
   - export PATH="/usr/local/lib/R/site-library/littler/examples/:${PATH}"
   - echo "options(Ncpus = $(nproc --all))" >> /usr/local/lib/R/etc/Rprofile.site
   - install2.r devtools tinytex
-  - /opt/tinytex/bin/*/tlmgr path add
+  - ~/.TinyTeX/bin/*/tlmgr path add
   - r -e 'devtools::install_dev_deps()'  
   - r -e 'tinytex::install_tinytex(); tinytex::tinytex_root()'
 
