@@ -4,3 +4,6 @@
 .Ruserdata
 tests/testthat/Rplots.pdf
 public
+inst/doc
+testScripts/
+docs/
