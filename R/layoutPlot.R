@@ -36,7 +36,15 @@ layoutPlot <- function(x,
   }
   p <- setNames(vector(mode = "list", length = length(trials)), trials)
   for (trial in trials) {
-    trDat <- plotDat[plotDat[["trial"]] == trial, ]
+    ## If TD object was created from a data,frame without trial column all
+    ## observations belong to the same trial and trial name will be the name
+    ## of the original data set. Subsetting on this will result in an empty
+    ## data.frame, so in this case don't subset.
+    if (hasName(x = plotDat, name = "trial")) {
+      trDat <- plotDat[plotDat[["trial"]] == trial, ]
+    } else {
+      trDat <- plotDat
+    }
     if (!chkRowCol(trDat)) next
     plotRep <- hasName(x = trDat, name = "repId")
     plotSubBlock <- hasName(x = trDat, name = "subBlock")
