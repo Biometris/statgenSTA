@@ -15,7 +15,7 @@ before_script:
   - echo "options(Ncpus = $(nproc --all))" >> /usr/local/lib/R/etc/Rprofile.site
   - install2.r devtools tinytex
   - r -e 'devtools::install_dev_deps()'
-  - r -e 'tinytex::install_tinytex'
+  - r -e 'tinytex::install_tinytex()'
 
 r-release:
   stage: test
