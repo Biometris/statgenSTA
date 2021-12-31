@@ -3,7 +3,7 @@ stages:
   - deploy
 
 variables:
-    APT_PKGS: "libcurl4-openssl-dev libssh2-1-dev libssl-dev libxml2-dev zlib1g-dev git build-essential gobjc++ libomp-dev libmagick++-6.q16-dev tk dialog wget"
+    APT_PKGS: "libcurl4-openssl-dev libssh2-1-dev libssl-dev libxml2-dev zlib1g-dev git build-essential gobjc++ libomp-dev libmagick++-6.q16-dev tk dialog"
     _R_CHECK_FORCE_SUGGESTS_: "false"
     TT_AT_HOME: "true"
 
@@ -13,18 +13,7 @@ before_script:
   - apt-get install -y --no-install-recommends qpdf pandoc pandoc-citeproc
   - export PATH="/usr/local/lib/R/site-library/littler/examples/:${PATH}"
   - echo "options(Ncpus = $(nproc --all))" >> /usr/local/lib/R/etc/Rprofile.site
-  - install2.r devtools
-  - wget -qO- \
-    "https://github.com/yihui/tinytex/tree/main/tools/install-unx.sh" | \
-    /usr/bin/sh -s - --admin --no-path \
-    && mv ~/.TinyTeX /opt/TinyTeX \
-    && /opt/TinyTeX/bin/*/tlmgr path add \
-    && tlmgr install metafont mfware inconsolata tex ae parskip listings \
-    && tlmgr path add \
-    && Rscript -e "source('https://install-github.me/yihui/tinytex'); tinytex::r_texmf()" \
-    && chown -R root:staff /opt/TinyTeX \
-    && chmod -R g+w /opt/TinyTeX \
-    && chmod -R g+wx /opt/TinyTeX/bin \
+  - install2.r devtools  
   - r -e 'devtools::install_dev_deps()'
 
 r-release:
@@ -33,7 +22,7 @@ r-release:
     - Docker
   image: rocker/r-ver:latest
   script:
-    - r -e 'devtools::check(check_dir = ".")'
+    - r -e 'devtools::check(check_dir = ".", run_dont_test = FALSE)'
   artifacts:
     paths:
       - "*.Rcheck"
@@ -46,7 +35,7 @@ r-devel:
     - Docker
   image: rocker/r-ver:devel
   script:
-    - r -e 'devtools::check(check_dir = ".")'
+    - r -e 'devtools::check(check_dir = ".", run_dont_test = FALSE)'
   artifacts:
     paths:
       - "*.Rcheck"
