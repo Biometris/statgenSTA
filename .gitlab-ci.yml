@@ -5,6 +5,7 @@ stages:
 variables:
     APT_PKGS: "libcurl4-openssl-dev libssh2-1-dev libssl-dev libxml2-dev zlib1g-dev git build-essential gobjc++ libomp-dev libmagick++-6.q16-dev tk dialog"
     _R_CHECK_FORCE_SUGGESTS_: "false"
+    R_CHECK_DONTTEST_EXAMPLES: "false"
     TT_AT_HOME: "true"
 
 before_script:
@@ -22,7 +23,7 @@ r-release:
     - Docker
   image: rocker/r-ver:latest
   script:
-    - r -e 'devtools::check(check_dir = ".", run_dont_test = FALSE)'
+    - r -e 'devtools::check(check_dir = ".")'
   artifacts:
     paths:
       - "*.Rcheck"
@@ -35,7 +36,7 @@ r-devel:
     - Docker
   image: rocker/r-ver:devel
   script:
-    - r -e 'devtools::check(check_dir = ".", run_dont_test = FALSE)'
+    - r -e 'devtools::check(check_dir = ".")'
   artifacts:
     paths:
       - "*.Rcheck"
