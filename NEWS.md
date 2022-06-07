@@ -1,3 +1,7 @@
+# statgenSTA 1.0.9
+
+* A bug in the STA base plots is fixed. When genotypes were replicated in the field the base plots showed redundant points. Thanks @marktgee.
+
 # statgenSTA 1.0.8
 
 * Patch release to pass CRAN check for R.4.2.0. No user visual changes.
