@@ -49,7 +49,7 @@
 #'  |residF       |F     |residuals for the model with genotype as fixed component                    |yes         |
 #'  |stdResF      |F     |standardized residuals for the model with genotype as fixed component       |yes         |
 #'  |wald         |F     |results of the wald test - only for lme4 and asreml                         |            |
-#'  |CV           |F     |Coefficient of Variation - only for lme4 and asreml                         |yes         |
+#'  |CV           |R     |Coefficient of Variation                                                    |yes         |
 #'  |rDfF         |F     |residual degrees of freedom for the model with genotype as fixed component  |yes         |
 #'  |sed          |F     |standard error of difference - only for asreml                              |            |
 #'  |lsd          |F     |least significant difference - only for asreml                              |            |
@@ -392,6 +392,13 @@ extractSTASpATS <- function(STA,
                                            renamedCols = renCols,
                                            restore = restore)
   }
+  if ("CV" %in% what) {
+    ## Compute Coefficient of Variation.
+    result[["CV"]] <- sapply(X = mr, FUN = function(mr0) {
+      100 * sqrt(unname(mr0$var.comp[predicted])) /
+        mean(fitted(mr0), na.rm = TRUE)
+    })
+  }
   ## Extract residual degrees of freedom.
   if ("rDfF" %in% what) {
     result[["rDfF"]] <- sapply(X = mf, FUN = function(mf0) {
@@ -555,7 +562,7 @@ extractSTALme4 <- function(STA,
                                    engine = "lme4")
   }
   ## Extract variances.
-  if (any(c("varGen", "varErr", "heritability") %in% what)) {
+  if (any(c("varGen", "varErr", "heritability", "CV") %in% what)) {
     varCor <- lapply(X = mr, FUN = lme4::VarCorr)
     varGen <- sapply(X = varCor, FUN = function(vc) {
       vc[[predicted]][1, 1]
@@ -653,9 +660,10 @@ extractSTALme4 <- function(STA,
   }
   if ("CV" %in% what) {
     ## Compute Coefficient of Variation.
-    result[["CV"]] <- sapply(X = mf, FUN = function(mf0) {
-      100 * sigma(mf0) / mean(fitted(mf0), na.rm = TRUE)
+    meanFit <- sapply(X = mr, FUN = function(mr0) {
+      mean(fitted(mr0), na.rm = TRUE)
     })
+    result[["CV"]] <- 100 * sqrt(varGen) / meanFit
   }
   if ("rDfF" %in% what) {
     result[["rDfF"]] <- sapply(X = mf, FUN = df.residual)
@@ -933,9 +941,10 @@ extractSTAAsreml <- function(STA,
   }
   ## Compute Coefficient of Variation.
   if ("CV" %in% what) {
-    result[["CV"]] <- sapply(X = mf, function(mf0) {
-      100 * summary(mf0)$sigma / mean(fitted(mf0), na.rm = TRUE)
+    meanFit <- sapply(X = mr, FUN = function(mr0) {
+      mean(fitted(mr0), na.rm = TRUE)
     })
+    result[["CV"]] <- 100 * sqrt(varGen) / meanFit
   }
   ## Extract residual degrees of freedom.
   if ("rDfF" %in% what) {

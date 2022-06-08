@@ -213,7 +213,7 @@ if (requireNamespace("asreml", quietly = TRUE)) {
     expect_is(extAs$CV, "numeric")
     expect_length(extAs$CV, 1)
     expect_named(extAs$CV, "t1")
-    expect_equivalent(extAs$CV, 35.3962093849912)
+    expect_equivalent(extAs$CV, 0.0402695045982536)
   })
 
   test_that("rDfF is computed correctly", {

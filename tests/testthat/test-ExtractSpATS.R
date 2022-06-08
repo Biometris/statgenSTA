@@ -5,7 +5,7 @@ modelSp <- fitTD(testTD, design = "rowcol", traits = "t1")
 test_that("the output of extractSTA is of the proper type", {
   expect_is(extractSTA(modelSp, what = "BLUEs"), "data.frame")
   expect_is(extractSTA(modelSp), "list")
-  expect_length(extractSTA(modelSp)[["E1"]], 21)
+  expect_length(extractSTA(modelSp)[["E1"]], 22)
   expect_is(extractSTA(modelSp, what = c("BLUEs", "BLUPs")), "list")
   expect_length(extractSTA(modelSp, what = c("BLUEs", "BLUPs"))[["E1"]], 2)
 })
@@ -223,6 +223,14 @@ test_that("standardized residuals are computed correctly for genotype random", {
                  1.1048693624522, 1.69820091952683, -0.549225796850765,
                  -1.10863558256154, -0.112773802011442, 1.37172422699987))
 })
+
+test_that("CV is computed correctly", {
+  expect_is(extSp$CV, "numeric")
+  expect_length(extSp$CV, 1)
+  expect_named(extSp$CV, "t1")
+  expect_equivalent(extSp$CV, 1.58087235613645)
+})
+
 
 test_that("rDfF is computed correctly", {
   expect_is(extSp$rDfF, "numeric")

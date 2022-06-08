@@ -205,7 +205,7 @@ test_that("CV is computed correctly", {
   expect_is(extLm$CV, "numeric")
   expect_length(extLm$CV, 1)
   expect_named(extLm$CV, "t1")
-  expect_equivalent(extLm$CV, 35.3962119791326)
+  expect_equivalent(extLm$CV, 0)
 })
 
 test_that("rDf is computed correctly", {
