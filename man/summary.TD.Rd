@@ -10,8 +10,12 @@
   trial = names(object),
   traits,
   groupBy = NULL,
-  what = if (!is.null(groupBy)) {     c("nObs", "mean", "sd") } else {     c("nObs",
-    "nMiss", "mean", "median", "min", "max", "firstQ", "thirdQ", "var") }
+  what = if (!is.null(groupBy)) {
+     c("nObs", "mean", "sd")
+ } else {
+     c("nObs",
+    "nMiss", "mean", "median", "min", "max", "firstQ", "thirdQ", "var")
+ }
 )
 }
 \arguments{
