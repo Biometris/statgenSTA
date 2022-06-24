@@ -43,6 +43,6 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck, asreml?ignore
+          extra-packages: any::rcmdcheck, package=asreml?ignore
 
       - uses: r-lib/actions/check-r-package@v2

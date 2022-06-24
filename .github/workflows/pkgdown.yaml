@@ -23,7 +23,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::pkgdown, asreml=?ignore
+          extra-packages: any::pkgdown, package=asreml?ignore
           needs: website
 
       - name: Deploy package
