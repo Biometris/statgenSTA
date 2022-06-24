@@ -51,6 +51,23 @@ A `TD` object can be created from a `data.frame` with the function `createTD()`.
 After creating a `TD` object, data for new trials can be added to it using `addTD()`. This function works similarly as `createTD()` except that it adds data to an existing `TD` object instead of creating a new one.  
 Dropping one or more trials from a `TD` object can be achieved by using the function `dropTD()`.
 
+When using check genotypes, the genotype and checkId have to be specified in a specific way to assure the models are fitted correctly. The column genotype should contain `NA` for the check genotypes. The column checkId should contain one value for the regular genotypes, e.g. noCheck, and the name of the genotype for the checks. An example of this layout is in the table below.
+
+| genotype | checkId | 
+|:----------:|:----------:|
+| G~1~ | noCheck | 
+| G~2~ | noCheck | 
+| ... | noCheck | 
+| G~n-1~ | noCheck | 
+| G~n~ | noCheck | 
+| NA | check~1~ | 
+| NA | check~2~  | 
+| ... | ... | 
+| NA | check~m-1~ | 
+| NA | check~m~ | 
+
+Note that fitting models with check genotypes can only be done in this way when genotype is fitted as random effect. When fitting models with genotype as fixed effect both regular and check genotypes should be specified in the genotype column.
+
 ### Example {#ex}
 
 The use of the package is demonstrated using maize data from the European Union project DROPS (https://cordis.europa.eu/project/id/244374). The data is available from https://doi.org/10.15454/IASSTN [@Millet2019] and the relevant data set is included as `data.frame` in the **statgenSTA** package.

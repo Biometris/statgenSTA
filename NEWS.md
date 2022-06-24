@@ -3,6 +3,7 @@
 * A bug in the STA base plots is fixed. When genotypes were replicated in the field the base plots showed redundant points. Thanks @marktgee.
 * Coefficient of Variation can now be extracted for models using SpATS (in previous versions this was only possible for lme4 and asreml)
 * When trying to fit models with genotype fixed and checkId is TRUE a nice error message is now displayed. Before this also wasn't possible but the error message would come from the undelying packages and wasn't very clear.
+* Improved and extended documentation
 
 # statgenSTA 1.0.8
 
