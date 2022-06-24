@@ -25,19 +25,14 @@ read the
 
 ## Installation
 
-  - Install from CRAN:
-
-<!-- end list -->
+-   Install from CRAN:
 
 ``` r
 install.packages("statgenSTA")
 ```
 
-  - Install latest development version from GitHub (requires
-    [remotes](https://github.com/r-lib/remotes)
-package):
-
-<!-- end list -->
+-   Install latest development version from GitHub (requires
+    [remotes](https://github.com/r-lib/remotes) package):
 
 ``` r
 remotes::install_github("Biometris/statgenSTA", ref = "develop", dependencies = TRUE)
