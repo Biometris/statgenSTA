@@ -104,15 +104,14 @@ test_that("option covariates produces expected output structure", {
 })
 
 test_that("option useCheckId produces expected output structure", {
+  expect_error(fitTD(testTD, design = "rowcol", traits = "t1", useCheckId = TRUE),
+               "genotype as fixed effect and useCheckId = TRUE is not possible")
   modelSpCi <- fitTD(testTD, design = "rowcol", traits = "t1",
-                     useCheckId = TRUE)
+                     useCheckId = TRUE, what = "random")
   expect_STA(modelSpCi)
   expect_STAMod(modelSpCi, "mRand")
-  expect_STAMod(modelSpCi, "mFix")
   expect_true(grepl(pattern = "checkId",
                     x = deparse(modelSpCi[["E1"]]$mRand$t1$model$fixed)))
-  expect_true(grepl(pattern = "checkId",
-                    x = deparse(modelSpCi[["E1"]]$mFix$t1$model$fixed)))
 })
 
 test_that("option spatial produces expected output structure", {

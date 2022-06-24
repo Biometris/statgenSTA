@@ -42,7 +42,9 @@ fitted.}
 extra fixed effects in the model.}
 
 \item{useCheckId}{Should checkId be used as a fixed effect in the model?\cr
-If \code{TRUE}, \code{TD} has to contain a column 'checkId'.}
+If \code{TRUE}, \code{TD} has to contain a column 'checkId'. Using checkId
+as fixed effect can only be done when genotype is fitted as a random effect
+in the model.}
 
 \item{spatial}{Should spatial models be tried? Spatial models can
 only be fitted with SpATS and asreml. If SpATS is used for modeling, only

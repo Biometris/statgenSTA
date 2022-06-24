@@ -76,13 +76,14 @@ test_that("option covariates produces expected output structure", {
 })
 
 test_that("option useCheckId produces expected output structure", {
+  expect_error(fitTD(testTD, design = "rcbd", traits = "t1", useCheckId = TRUE,
+                     engine = "lme4"),
+               "genotype as fixed effect and useCheckId = TRUE is not possible")
   modelLmCi <- fitTD(testTD, design = "rcbd", traits = "t1", useCheckId = TRUE,
-                     engine = "lme4")
+                     engine = "lme4", what = "random")
   expect_STA(modelLmCi)
   expect_STAMod(modelLmCi, "mRand", "lmerMod")
-  expect_STAMod(modelLmCi, "mFix", "lm")
   expect_true("checkId" %in% colnames(modelLmCi[["E1"]]$mRand$t1@frame))
-  expect_true("checkId" %in% colnames(modelLmCi[["E1"]]$mFix$t1$model))
 })
 
 test_that("option spatial produces expected output structure", {

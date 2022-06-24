@@ -76,7 +76,9 @@
 #' @param covariates A character vector specifying covariates to be fitted as
 #' extra fixed effects in the model.
 #' @param useCheckId Should checkId be used as a fixed effect in the model?\cr
-#' If \code{TRUE}, \code{TD} has to contain a column 'checkId'.
+#' If \code{TRUE}, \code{TD} has to contain a column 'checkId'. Using checkId
+#' as fixed effect can only be done when genotype is fitted as a random effect
+#' in the model.
 #' @param spatial Should spatial models be tried? Spatial models can
 #' only be fitted with SpATS and asreml. If SpATS is used for modeling, only
 #' spatial models can be fitted and spatial is always set to \code{TRUE}. If
@@ -284,6 +286,11 @@ modelChecks <- function(TD,
       message("Using lme4 for fitting models.")
       engine <- "lme4"
     }
+  }
+  ## Combination of what = fixed and useCheckId = TRUE not allowed.
+  if ("fixed" %in% what && useCheckId) {
+    stop("Fitting models with genotype as fixed effect and useCheckId = TRUE ",
+         "is not possible.\n")
   }
   ## Asreml crashing for traits containing spaces with an incomprehensible
   ## error message. Prevent this from happening by checking beforehand.
