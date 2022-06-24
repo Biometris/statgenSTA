@@ -15,3 +15,4 @@ cran-comments.md
 ^pkgdown$
 ^\.github$
 testScripts
+^CRAN-SUBMISSION$

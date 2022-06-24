@@ -7,7 +7,7 @@
 [![CRAN RStudio mirror
 downloads](https://cranlogs.r-pkg.org/badges/statgenSTA)](https://www.r-pkg.org/pkg/statgenSTA)
 [![R-CMD-check](https://github.com/Biometris/statgenSTA/workflows/R-CMD-check/badge.svg)](https://github.com/Biometris/statgenSTA/actions?workflow=R-CMD-check)
-[![codecov](https://codecov.io/gh/Biometris/statgenSTA/branch/master/graph/badge.svg)](https://codecov.io/gh/Biometris/statgenSTA)
+[![codecov](https://codecov.io/gh/Biometris/statgenSTA/branch/master/graph/badge.svg)](https://app.codecov.io/gh/Biometris/statgenSTA)
 
 **statgenSTA** is an R package providing functions for phenotypic
 analysis of agricultural field trials using mixed models with and
@@ -15,7 +15,7 @@ without spatial components.
 
 Analysis can be done using one of the R packages **SpATS**, **lme4** or
 **asreml**. For the latter a license is required which can be obtained
-upon purchase from [VSNi](https://www.vsni.co.uk/software/asreml-r).
+upon purchase from [VSNi](https://vsni.co.uk/software/asreml-r).
 
 statgenSTA has extensive options for summarizing and visualizing both
 the raw data and the fitted models. The example below shows a selection
