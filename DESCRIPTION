@@ -1,8 +1,8 @@
 Package: statgenSTA
 Type: Package
 Title: Single Trial Analysis (STA) of Field Trials
-Version: 1.0.8.9000
-Date: 2021-11-26
+Version: 1.0.9
+Date: 2022-06-24
 Authors@R: c(person(given = "Bart-Jan", 
                     family = "van Rossum", 
                     email = "bart-jan.vanrossum@wur.nl", 
@@ -14,7 +14,8 @@ Authors@R: c(person(given = "Bart-Jan",
                     comment = c(ORCID = "0000-0003-3672-2921")),
              person(given = "Martin", 
                     family = "Boer",
-                    role = "ctb"),
+                    role = "ctb",
+                    comment = c(ORCID = "0000-0002-1879-4588")),
              person(given = "Marcos",
                     family = "Malosetti",
                     role = "ctb",
