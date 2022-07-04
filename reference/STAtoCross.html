@@ -110,15 +110,15 @@ package.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">STAtoCross</span><span class="op">(</span>
-  <span class="va">STA</span>,
-  trial <span class="op">=</span> <span class="cn">NULL</span>,
-  traits <span class="op">=</span> <span class="cn">NULL</span>,
-  what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BLUEs"</span>, <span class="st">"BLUPs"</span><span class="op">)</span>,
-  <span class="va">genoFile</span>,
-  genotypes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"H"</span>, <span class="st">"B"</span>, <span class="st">"D"</span>, <span class="st">"C"</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">STAtoCross</span><span class="op">(</span></span>
+<span>  <span class="va">STA</span>,</span>
+<span>  trial <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  traits <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BLUEs"</span>, <span class="st">"BLUPs"</span><span class="op">)</span>,</span>
+<span>  <span class="va">genoFile</span>,</span>
+<span>  genotypes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"H"</span>, <span class="st">"B"</span>, <span class="st">"D"</span>, <span class="st">"C"</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -174,19 +174,19 @@ See <code><a href="https://rdrr.io/pkg/qtl/man/read.cross.html" class="external-
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Fit model using SpATS.</span></span>
-<span class="r-in"><span class="va">modSp</span> <span class="op">&lt;-</span> <span class="fu"><a href="fitTD.html">fitTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">TDHeat05</span>,</span>
-<span class="r-in">               design <span class="op">=</span> <span class="st">"res.rowcol"</span>,</span>
-<span class="r-in">               traits <span class="op">=</span> <span class="st">"yield"</span>,</span>
-<span class="r-in">               what <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Fit model using SpATS.</span></span></span>
+<span class="r-in"><span><span class="va">modSp</span> <span class="op">&lt;-</span> <span class="fu"><a href="fitTD.html">fitTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">TDHeat05</span>,</span></span>
+<span class="r-in"><span>               design <span class="op">=</span> <span class="st">"res.rowcol"</span>,</span></span>
+<span class="r-in"><span>               traits <span class="op">=</span> <span class="st">"yield"</span>,</span></span>
+<span class="r-in"><span>               what <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using SpATS for fitting models.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create cross object with BLUEs from modSp using genotypic information</span></span>
-<span class="r-in"><span class="co">## from markers.csv in the package.</span></span>
-<span class="r-in"><span class="va">cross</span> <span class="op">&lt;-</span> <span class="fu">STAtoCross</span><span class="op">(</span><span class="va">modSp</span>,</span>
-<span class="r-in">                    genoFile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"markers.csv"</span>,</span>
-<span class="r-in">                                           package <span class="op">=</span> <span class="st">"statgenSTA"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create cross object with BLUEs from modSp using genotypic information</span></span></span>
+<span class="r-in"><span><span class="co">## from markers.csv in the package.</span></span></span>
+<span class="r-in"><span><span class="va">cross</span> <span class="op">&lt;-</span> <span class="fu">STAtoCross</span><span class="op">(</span><span class="va">modSp</span>,</span></span>
+<span class="r-in"><span>                    genoFile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"markers.csv"</span>,</span></span>
+<span class="r-in"><span>                                           package <span class="op">=</span> <span class="st">"statgenSTA"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -198,7 +198,7 @@ See <code><a href="https://rdrr.io/pkg/qtl/man/read.cross.html" class="external-
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

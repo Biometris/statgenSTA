@@ -108,9 +108,9 @@ data (the trial design).</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getMeta</span><span class="op">(</span><span class="va">TD</span><span class="op">)</span>
-
-<span class="fu">setMeta</span><span class="op">(</span><span class="va">TD</span>, <span class="va">meta</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getMeta</span><span class="op">(</span><span class="va">TD</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">setMeta</span><span class="op">(</span><span class="va">TD</span>, <span class="va">meta</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -173,36 +173,36 @@ in accidentally removing it.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dropsRaw"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create a TD object.</span></span>
-<span class="r-in"><span class="va">dropsTD</span> <span class="op">&lt;-</span> <span class="fu"><a href="TD.html">createTD</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dropsRaw</span><span class="op">[</span><span class="va">dropsRaw</span><span class="op">$</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2012</span>, <span class="op">]</span>,</span>
-<span class="r-in">                    genotype <span class="op">=</span> <span class="st">"Variety_ID"</span>,</span>
-<span class="r-in">                    trial <span class="op">=</span> <span class="st">"Experiment"</span>,</span>
-<span class="r-in">                    loc <span class="op">=</span> <span class="st">"Site"</span>,</span>
-<span class="r-in">                    repId <span class="op">=</span> <span class="st">"Replicate"</span>,</span>
-<span class="r-in">                    subBlock <span class="op">=</span> <span class="st">"block"</span>,</span>
-<span class="r-in">                    rowCoord <span class="op">=</span> <span class="st">"Row"</span>,</span>
-<span class="r-in">                    colCoord <span class="op">=</span> <span class="st">"Column"</span>,</span>
-<span class="r-in">                    trLat <span class="op">=</span> <span class="st">"Lat"</span>,</span>
-<span class="r-in">                    trLong <span class="op">=</span> <span class="st">"Long"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Get meta data from dropsTD.</span></span>
-<span class="r-in"><span class="op">(</span><span class="va">dropsMeta</span> <span class="op">&lt;-</span> <span class="fu">getMeta</span><span class="op">(</span><span class="va">dropsTD</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"dropsRaw"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create a TD object.</span></span></span>
+<span class="r-in"><span><span class="va">dropsTD</span> <span class="op">&lt;-</span> <span class="fu"><a href="TD.html">createTD</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dropsRaw</span><span class="op">[</span><span class="va">dropsRaw</span><span class="op">$</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2012</span>, <span class="op">]</span>,</span></span>
+<span class="r-in"><span>                    genotype <span class="op">=</span> <span class="st">"Variety_ID"</span>,</span></span>
+<span class="r-in"><span>                    trial <span class="op">=</span> <span class="st">"Experiment"</span>,</span></span>
+<span class="r-in"><span>                    loc <span class="op">=</span> <span class="st">"Site"</span>,</span></span>
+<span class="r-in"><span>                    repId <span class="op">=</span> <span class="st">"Replicate"</span>,</span></span>
+<span class="r-in"><span>                    subBlock <span class="op">=</span> <span class="st">"block"</span>,</span></span>
+<span class="r-in"><span>                    rowCoord <span class="op">=</span> <span class="st">"Row"</span>,</span></span>
+<span class="r-in"><span>                    colCoord <span class="op">=</span> <span class="st">"Column"</span>,</span></span>
+<span class="r-in"><span>                    trLat <span class="op">=</span> <span class="st">"Lat"</span>,</span></span>
+<span class="r-in"><span>                    trLong <span class="op">=</span> <span class="st">"Long"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Get meta data from dropsTD.</span></span></span>
+<span class="r-in"><span><span class="op">(</span><span class="va">dropsMeta</span> <span class="op">&lt;-</span> <span class="fu">getMeta</span><span class="op">(</span><span class="va">dropsTD</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        trLocation trDate trDesign  trLat trLong trPlWidth trPlLength</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Cam12R Campagnola   &lt;NA&gt;       NA 45.171  9.532        NA         NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Cra12R    Craiova   &lt;NA&gt;       NA 44.116 24.348        NA         NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Gai12W    Gaillac   &lt;NA&gt;       NA 43.910  1.890        NA         NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Kar12W  Karlsruhe   &lt;NA&gt;       NA 49.100  8.320        NA         NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Ner12R      Nerac   &lt;NA&gt;       NA 44.170  0.307        NA         NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Add trial date to meta data.</span></span>
-<span class="r-in"><span class="va">dropsMeta</span><span class="op">$</span><span class="va">trDate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"010112"</span>, times <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, <span class="st">"%d%m%y"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Add back meta data to wheatTD.</span></span>
-<span class="r-in"><span class="va">dropsTD</span> <span class="op">&lt;-</span> <span class="fu">setMeta</span><span class="op">(</span><span class="va">dropsTD</span>,</span>
-<span class="r-in">                   <span class="va">dropsMeta</span><span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Add trial date to meta data.</span></span></span>
+<span class="r-in"><span><span class="va">dropsMeta</span><span class="op">$</span><span class="va">trDate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"010112"</span>, times <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, <span class="st">"%d%m%y"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Add back meta data to wheatTD.</span></span></span>
+<span class="r-in"><span><span class="va">dropsTD</span> <span class="op">&lt;-</span> <span class="fu">setMeta</span><span class="op">(</span><span class="va">dropsTD</span>,</span></span>
+<span class="r-in"><span>                   <span class="va">dropsMeta</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -214,7 +214,7 @@ in accidentally removing it.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

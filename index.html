@@ -116,10 +116,10 @@
 </h2>
 <ul><li>Install from CRAN:</li></ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"statgenSTA"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"statgenSTA"</span><span class="op">)</span></span></code></pre></div>
 <ul><li>Install latest development version from GitHub (requires <a href="https://github.com/r-lib/remotes" class="external-link">remotes</a> package):</li></ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Biometris/statgenSTA"</span>, ref <span class="op">=</span> <span class="st">"develop"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Biometris/statgenSTA"</span>, ref <span class="op">=</span> <span class="st">"develop"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
@@ -127,69 +127,69 @@
 <p>Example using the phenotypic data for a wheat trial in Chile. The same data is used in the vignette and described there in detail.</p>
 <p>First get the data in the form required by the package, converting it to an object of class <strong>T(rial)D(ata)</strong>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://biometris.github.io/statgenSTA/index.html" class="external-link">statgenSTA</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dropsRaw</span><span class="op">)</span>
-<span class="va">dropsTD</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/TD.html">createTD</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dropsRaw</span>,
-                    genotype <span class="op">=</span> <span class="st">"Variety_ID"</span>, 
-                    trial <span class="op">=</span> <span class="st">"Experiment"</span>,
-                    loc <span class="op">=</span> <span class="st">"Site"</span>,
-                    repId <span class="op">=</span> <span class="st">"Replicate"</span>, 
-                    subBlock <span class="op">=</span> <span class="st">"block"</span>,
-                    rowCoord <span class="op">=</span> <span class="st">"Row"</span>, 
-                    colCoord <span class="op">=</span> <span class="st">"Column"</span>, 
-                    trLat <span class="op">=</span> <span class="st">"Lat"</span>, 
-                    trLong <span class="op">=</span> <span class="st">"Long"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://biometris.github.io/statgenSTA/index.html" class="external-link">statgenSTA</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dropsRaw</span><span class="op">)</span></span>
+<span><span class="va">dropsTD</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/TD.html">createTD</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dropsRaw</span>,</span>
+<span>                    genotype <span class="op">=</span> <span class="st">"Variety_ID"</span>, </span>
+<span>                    trial <span class="op">=</span> <span class="st">"Experiment"</span>,</span>
+<span>                    loc <span class="op">=</span> <span class="st">"Site"</span>,</span>
+<span>                    repId <span class="op">=</span> <span class="st">"Replicate"</span>, </span>
+<span>                    subBlock <span class="op">=</span> <span class="st">"block"</span>,</span>
+<span>                    rowCoord <span class="op">=</span> <span class="st">"Row"</span>, </span>
+<span>                    colCoord <span class="op">=</span> <span class="st">"Column"</span>, </span>
+<span>                    trLat <span class="op">=</span> <span class="st">"Lat"</span>, </span>
+<span>                    trLong <span class="op">=</span> <span class="st">"Long"</span><span class="op">)</span></span></code></pre></div>
 <p>Some plots to get a first idea of the contents of the data.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Plot the layout for Gai12W.</span>
-<span class="co">## Highlight genotypes A3 and 11430 in red and blue.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-     trials <span class="op">=</span> <span class="st">"Gai12W"</span>, 
-     highlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A3"</span>, <span class="st">"11430"</span><span class="op">)</span>,
-     colHighlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Plot the layout for Gai12W.</span></span>
+<span><span class="co">## Highlight genotypes A3 and 11430 in red and blue.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>     trials <span class="op">=</span> <span class="st">"Gai12W"</span>, </span>
+<span>     highlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A3"</span>, <span class="st">"11430"</span><span class="op">)</span>,</span>
+<span>     colHighlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-layoutPlot-1.png" width="75%"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Plot the locations of the trials on a map.</span>
-<span class="co">## Color the trials by water scenario.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-     plotType <span class="op">=</span> <span class="st">"map"</span>,
-     colorTrialBy <span class="op">=</span> <span class="st">"scenarioWater"</span>,
-     colTrial <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"darkgreen"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Plot the locations of the trials on a map.</span></span>
+<span><span class="co">## Color the trials by water scenario.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>     plotType <span class="op">=</span> <span class="st">"map"</span>,</span>
+<span>     colorTrialBy <span class="op">=</span> <span class="st">"scenarioWater"</span>,</span>
+<span>     colTrial <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"darkgreen"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-mapPlot-1.png" width="75%"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Create a boxplot for grain yield.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-     plotType <span class="op">=</span> <span class="st">"box"</span>, 
-     traits <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Create a boxplot for grain yield.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>     plotType <span class="op">=</span> <span class="st">"box"</span>, </span>
+<span>     traits <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-boxPlot-1.png" width="75%"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Create a scatter plot matrix for grain yield.</span>
-<span class="co">## Color trials by scenario and genotypes by family.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-     plotType <span class="op">=</span> <span class="st">"scatter"</span>, 
-     traits <span class="op">=</span> <span class="st">"grain.yield"</span>, 
-     colorTrialBy <span class="op">=</span> <span class="st">"scenarioFull"</span>, 
-     colorGenoBy <span class="op">=</span> <span class="st">"geneticGroup"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Create a scatter plot matrix for grain yield.</span></span>
+<span><span class="co">## Color trials by scenario and genotypes by family.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>     plotType <span class="op">=</span> <span class="st">"scatter"</span>, </span>
+<span>     traits <span class="op">=</span> <span class="st">"grain.yield"</span>, </span>
+<span>     colorTrialBy <span class="op">=</span> <span class="st">"scenarioFull"</span>, </span>
+<span>     colorGenoBy <span class="op">=</span> <span class="st">"geneticGroup"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-scatterPlot-1.png" width="75%"></p>
 <p>Fit mixed models for one of the trials, Gai12W, and visualize the output.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Fit a single trial model using a model based on a resolvable row column design.</span>
-<span class="va">modDropsSp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fitTD.html">fitTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span>, 
-                    trials <span class="op">=</span> <span class="st">"Gai12W"</span>, 
-                    traits <span class="op">=</span> <span class="st">"grain.yield"</span>,
-                    design <span class="op">=</span> <span class="st">"res.rowcol"</span><span class="op">)</span>
-<span class="co">#&gt; Using SpATS for fitting models.</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Fit a single trial model using a model based on a resolvable row column design.</span></span>
+<span><span class="va">modDropsSp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fitTD.html">fitTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span>, </span>
+<span>                    trials <span class="op">=</span> <span class="st">"Gai12W"</span>, </span>
+<span>                    traits <span class="op">=</span> <span class="st">"grain.yield"</span>,</span>
+<span>                    design <span class="op">=</span> <span class="st">"res.rowcol"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Using SpATS for fitting models.</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Spatial plot for the model with genotype fitted as fixed effect.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">modDropsSp</span>, 
-     plotType <span class="op">=</span> <span class="st">"spatial"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Spatial plot for the model with genotype fitted as fixed effect.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">modDropsSp</span>, </span>
+<span>     plotType <span class="op">=</span> <span class="st">"spatial"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-basePlot-1.png" width="75%"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Spatial plot for the model with genotype fitted as fixed effect.</span>
-<span class="co">## Display the spatial trend as a percentage.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">modDropsSp</span>, 
-     plotType <span class="op">=</span> <span class="st">"spatial"</span>, 
-     spaTrend <span class="op">=</span> <span class="st">"percentage"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Spatial plot for the model with genotype fitted as fixed effect.</span></span>
+<span><span class="co">## Display the spatial trend as a percentage.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">modDropsSp</span>, </span>
+<span>     plotType <span class="op">=</span> <span class="st">"spatial"</span>, </span>
+<span>     spaTrend <span class="op">=</span> <span class="st">"percentage"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-spatialPlot-1.png" width="75%"></p>
 </div>
 </div>
@@ -246,7 +246,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer>

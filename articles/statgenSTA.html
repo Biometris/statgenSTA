@@ -98,7 +98,7 @@
       <img src="" class="logo" alt=""><h1>Modeling field trials using statgenSTA</h1>
                         <h4 data-toc-skip class="author">Bart-Jan van Rossum</h4>
             
-            <h4 data-toc-skip class="date">2022-06-24</h4>
+            <h4 data-toc-skip class="date">2022-07-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Biometris/statgenSTA/blob/HEAD/vignettes/statgenSTA.Rmd" class="external-link"><code>vignettes/statgenSTA.Rmd</code></a></small>
       <div class="d-none name"><code>statgenSTA.Rmd</code></div>
@@ -193,21 +193,21 @@ Dropping one or more trials from a <code>TD</code> object can be achieved by usi
 <p>The use of the package is demonstrated using maize data from the European Union project DROPS (<a href="https://cordis.europa.eu/project/id/244374" class="external-link uri">https://cordis.europa.eu/project/id/244374</a>). The data is available from <a href="https://doi.org/10.15454/IASSTN" class="external-link uri">https://doi.org/10.15454/IASSTN</a> <span class="citation">(E. J. Millet et al. 2019)</span> and the relevant data set is included as <code>data.frame</code> in the <strong>statgenSTA</strong> package.</p>
 <p>The first step is loading the data into R.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dropsRaw</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">dropsRaw</span><span class="op">)</span></span></code></pre></div>
 <p>The object named <code>dropsRaw</code> contains data for 256 maize hybrids, grown with two water regimes (irrigated or rainfed), in seven fields in 2012 and 2013. The hybrids are divided in four families. A selection of ten experiments and eight traits is made from the full data set. These ten experiments form a good representation of the full set of experiments covering the five scenarios described in <span class="citation">E. Millet et al. (2016)</span>. Throughout this vignette in all examples the trait grain.yield will be analyzed. For a more detailed description of the contents of the data see <code><a href="../reference/dropsRaw.html">help(dropsRaw)</a></code>.</p>
 <p>For the example, first a <code>TD</code> object is created for experiments conducted in 2012. The data for 2013 is then added later on. In practice all this could be done in one go.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Create a TD object containing data for 2012.</span>
-<span class="va">dropsTD</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TD.html">createTD</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dropsRaw</span><span class="op">[</span><span class="va">dropsRaw</span><span class="op">$</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2012</span>, <span class="op">]</span>,
-                    genotype <span class="op">=</span> <span class="st">"Variety_ID"</span>, 
-                    trial <span class="op">=</span> <span class="st">"Experiment"</span>,
-                    loc <span class="op">=</span> <span class="st">"Site"</span>,
-                    repId <span class="op">=</span> <span class="st">"Replicate"</span>, 
-                    subBlock <span class="op">=</span> <span class="st">"block"</span>,
-                    rowCoord <span class="op">=</span> <span class="st">"Row"</span>, 
-                    colCoord <span class="op">=</span> <span class="st">"Column"</span>, 
-                    trLat <span class="op">=</span> <span class="st">"Lat"</span>, 
-                    trLong <span class="op">=</span> <span class="st">"Long"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Create a TD object containing data for 2012.</span></span>
+<span><span class="va">dropsTD</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TD.html">createTD</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dropsRaw</span><span class="op">[</span><span class="va">dropsRaw</span><span class="op">$</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2012</span>, <span class="op">]</span>,</span>
+<span>                    genotype <span class="op">=</span> <span class="st">"Variety_ID"</span>, </span>
+<span>                    trial <span class="op">=</span> <span class="st">"Experiment"</span>,</span>
+<span>                    loc <span class="op">=</span> <span class="st">"Site"</span>,</span>
+<span>                    repId <span class="op">=</span> <span class="st">"Replicate"</span>, </span>
+<span>                    subBlock <span class="op">=</span> <span class="st">"block"</span>,</span>
+<span>                    rowCoord <span class="op">=</span> <span class="st">"Row"</span>, </span>
+<span>                    colCoord <span class="op">=</span> <span class="st">"Column"</span>, </span>
+<span>                    trLat <span class="op">=</span> <span class="st">"Lat"</span>, </span>
+<span>                    trLong <span class="op">=</span> <span class="st">"Long"</span><span class="op">)</span></span></code></pre></div>
 <p>The <code>TD</code> object just created is a <code>list</code> with five items, one for each trial (combination of location, year and water regime) in the original <code>data.frame</code>. The column “Variety_ID” in the original data is renamed to “genotype” and converted to a factor. The columns “Replicate”, “block”, “loc” are renamed and converted likewise. The columns “Row” and “Column” are renamed to “rowCoord” and “colCoord” respectively. Simultaneously two columns “rowId” and “colId” are created containing the same information converted to a factor. This seemingly duplicate information is needed for spatial analysis. It is possible to define different columns as “rowId” and “colId” than the ones used as “rowCoord” and “colCoord”. Finally, the latitude and longitude of the trials is read from the column “Lat” and “Long” in the input and stored in a <code>TD</code> object named <code>dropsTD</code>. The information about which columns have been renamed, when creating a <code>TD</code> object, is stored as an attribute of each individual <code>data.frame</code> in the object.</p>
 </div>
 <div class="section level3">
@@ -264,51 +264,51 @@ Dropping one or more trials from a <code>TD</code> object can be achieved by usi
 </tbody>
 </table>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Extract metadata from the TD object. </span>
-<span class="op">(</span><span class="va">dropsMeta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getMeta.html">getMeta</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;        trLocation trDate trDesign  trLat trLong trPlWidth trPlLength</span>
-<span class="co">#&gt; Cam12R Campagnola   &lt;NA&gt;       NA 45.171  9.532        NA         NA</span>
-<span class="co">#&gt; Cra12R    Craiova   &lt;NA&gt;       NA 44.116 24.348        NA         NA</span>
-<span class="co">#&gt; Gai12W    Gaillac   &lt;NA&gt;       NA 43.910  1.890        NA         NA</span>
-<span class="co">#&gt; Kar12W  Karlsruhe   &lt;NA&gt;       NA 49.100  8.320        NA         NA</span>
-<span class="co">#&gt; Ner12R      Nerac   &lt;NA&gt;       NA 44.170  0.307        NA         NA</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Extract metadata from the TD object. </span></span>
+<span><span class="op">(</span><span class="va">dropsMeta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getMeta.html">getMeta</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        trLocation trDate trDesign  trLat trLong trPlWidth trPlLength</span></span>
+<span><span class="co">#&gt; Cam12R Campagnola   &lt;NA&gt;       NA 45.171  9.532        NA         NA</span></span>
+<span><span class="co">#&gt; Cra12R    Craiova   &lt;NA&gt;       NA 44.116 24.348        NA         NA</span></span>
+<span><span class="co">#&gt; Gai12W    Gaillac   &lt;NA&gt;       NA 43.910  1.890        NA         NA</span></span>
+<span><span class="co">#&gt; Kar12W  Karlsruhe   &lt;NA&gt;       NA 49.100  8.320        NA         NA</span></span>
+<span><span class="co">#&gt; Ner12R      Nerac   &lt;NA&gt;       NA 44.170  0.307        NA         NA</span></span></code></pre></div>
 <p>After extracting the metadata, it can be modified and then added back to the original <code>TD</code> object.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Set trial data as 1-1-2012.</span>
-<span class="va">dropsMeta</span><span class="op">$</span><span class="va">trDate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"010112"</span>, times <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, <span class="st">"%d%m%y"</span><span class="op">)</span>
-<span class="va">dropsTD</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getMeta.html">setMeta</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span>, meta <span class="op">=</span> <span class="va">dropsMeta</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Set trial data as 1-1-2012.</span></span>
+<span><span class="va">dropsMeta</span><span class="op">$</span><span class="va">trDate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"010112"</span>, times <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, <span class="st">"%d%m%y"</span><span class="op">)</span></span>
+<span><span class="va">dropsTD</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getMeta.html">setMeta</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span>, meta <span class="op">=</span> <span class="va">dropsMeta</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="addTD">Add extra data to a <code>TD</code> object<a class="anchor" aria-label="anchor" href="#addTD"></a>
 </h3>
 <p>To add the data for the 2013 trials to the <code>TD</code> object the function <code><a href="../reference/TD.html">addTD()</a></code> can be used. This function is very similar to <code><a href="../reference/TD.html">createTD()</a></code>. The only exception is, that a <code>TD</code> object has to be specified to which the new data is added.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Add the data for the 2013 trials to the TD object.</span>
-<span class="va">dropsTD</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TD.html">addTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span>, 
-                 data <span class="op">=</span> <span class="va">dropsRaw</span><span class="op">[</span><span class="va">dropsRaw</span><span class="op">$</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2013</span>, <span class="op">]</span>,
-                 genotype <span class="op">=</span> <span class="st">"Variety_ID"</span>, 
-                 trial <span class="op">=</span> <span class="st">"Experiment"</span>,
-                 loc <span class="op">=</span> <span class="st">"Site"</span>, 
-                 repId <span class="op">=</span> <span class="st">"Replicate"</span>, 
-                 subBlock <span class="op">=</span> <span class="st">"block"</span>,
-                 rowCoord <span class="op">=</span> <span class="st">"Row"</span>, 
-                 colCoord <span class="op">=</span> <span class="st">"Column"</span>, 
-                 trLat <span class="op">=</span> <span class="st">"Lat"</span>, 
-                 trLong <span class="op">=</span> <span class="st">"Long"</span><span class="op">)</span>
-
-<span class="co">## Inspect the metadata after the extra trial was added.</span>
-<span class="fu"><a href="../reference/getMeta.html">getMeta</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span><span class="op">)</span>
-<span class="co">#&gt;         trLocation     trDate trDesign  trLat trLong trPlWidth trPlLength</span>
-<span class="co">#&gt; Cam12R  Campagnola 2012-01-01       NA 45.171  9.532        NA         NA</span>
-<span class="co">#&gt; Cra12R     Craiova 2012-01-01       NA 44.116 24.348        NA         NA</span>
-<span class="co">#&gt; Gai12W     Gaillac 2012-01-01       NA 43.910  1.890        NA         NA</span>
-<span class="co">#&gt; Kar12W   Karlsruhe 2012-01-01       NA 49.100  8.320        NA         NA</span>
-<span class="co">#&gt; Ner12R       Nerac 2012-01-01       NA 44.170  0.307        NA         NA</span>
-<span class="co">#&gt; Kar13R   Karlsruhe       &lt;NA&gt;       NA 49.100  8.320        NA         NA</span>
-<span class="co">#&gt; Kar13W   Karlsruhe       &lt;NA&gt;       NA 49.100  8.320        NA         NA</span>
-<span class="co">#&gt; Mar13R Martonvasar       &lt;NA&gt;       NA 47.311 18.778        NA         NA</span>
-<span class="co">#&gt; Mur13R      Murony       &lt;NA&gt;       NA 46.780 21.050        NA         NA</span>
-<span class="co">#&gt; Mur13W      Murony       &lt;NA&gt;       NA 46.780 21.050        NA         NA</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Add the data for the 2013 trials to the TD object.</span></span>
+<span><span class="va">dropsTD</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TD.html">addTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span>, </span>
+<span>                 data <span class="op">=</span> <span class="va">dropsRaw</span><span class="op">[</span><span class="va">dropsRaw</span><span class="op">$</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2013</span>, <span class="op">]</span>,</span>
+<span>                 genotype <span class="op">=</span> <span class="st">"Variety_ID"</span>, </span>
+<span>                 trial <span class="op">=</span> <span class="st">"Experiment"</span>,</span>
+<span>                 loc <span class="op">=</span> <span class="st">"Site"</span>, </span>
+<span>                 repId <span class="op">=</span> <span class="st">"Replicate"</span>, </span>
+<span>                 subBlock <span class="op">=</span> <span class="st">"block"</span>,</span>
+<span>                 rowCoord <span class="op">=</span> <span class="st">"Row"</span>, </span>
+<span>                 colCoord <span class="op">=</span> <span class="st">"Column"</span>, </span>
+<span>                 trLat <span class="op">=</span> <span class="st">"Lat"</span>, </span>
+<span>                 trLong <span class="op">=</span> <span class="st">"Long"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Inspect the metadata after the extra trial was added.</span></span>
+<span><span class="fu"><a href="../reference/getMeta.html">getMeta</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         trLocation     trDate trDesign  trLat trLong trPlWidth trPlLength</span></span>
+<span><span class="co">#&gt; Cam12R  Campagnola 2012-01-01       NA 45.171  9.532        NA         NA</span></span>
+<span><span class="co">#&gt; Cra12R     Craiova 2012-01-01       NA 44.116 24.348        NA         NA</span></span>
+<span><span class="co">#&gt; Gai12W     Gaillac 2012-01-01       NA 43.910  1.890        NA         NA</span></span>
+<span><span class="co">#&gt; Kar12W   Karlsruhe 2012-01-01       NA 49.100  8.320        NA         NA</span></span>
+<span><span class="co">#&gt; Ner12R       Nerac 2012-01-01       NA 44.170  0.307        NA         NA</span></span>
+<span><span class="co">#&gt; Kar13R   Karlsruhe       &lt;NA&gt;       NA 49.100  8.320        NA         NA</span></span>
+<span><span class="co">#&gt; Kar13W   Karlsruhe       &lt;NA&gt;       NA 49.100  8.320        NA         NA</span></span>
+<span><span class="co">#&gt; Mar13R Martonvasar       &lt;NA&gt;       NA 47.311 18.778        NA         NA</span></span>
+<span><span class="co">#&gt; Mur13R      Murony       &lt;NA&gt;       NA 46.780 21.050        NA         NA</span></span>
+<span><span class="co">#&gt; Mur13W      Murony       &lt;NA&gt;       NA 46.780 21.050        NA         NA</span></span></code></pre></div>
 <p>Note that the metadata now contains information about all ten trials. Only for the 2012 trials the trial date is filled. Since this information is not used in any of the analyses in the package we leave this.</p>
 </div>
 <div class="section level3">
@@ -316,38 +316,38 @@ Dropping one or more trials from a <code>TD</code> object can be achieved by usi
 </h3>
 <p>The <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function can be used to get an idea of the content of the data in the <code>TD</code> object. Multiple traits can be summarized at once, but for clarity here a summary is only made for grain.yield of a single trial.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Create a summary for grain yield in Gai12W.</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-        trial <span class="op">=</span> <span class="st">"Gai12W"</span>, 
-        traits <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Summary statistics for grain.yield in Gai12W  </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;                          grain.yield</span>
-<span class="co">#&gt; Number of observations         483.0</span>
-<span class="co">#&gt; Number of missing values        19.0</span>
-<span class="co">#&gt; Mean                           11.23</span>
-<span class="co">#&gt; Median                         11.22</span>
-<span class="co">#&gt; Min                             6.71</span>
-<span class="co">#&gt; Max                            14.68</span>
-<span class="co">#&gt; First quantile                 10.38</span>
-<span class="co">#&gt; Third quantile                 12.09</span>
-<span class="co">#&gt; Variance                       1.845</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Create a summary for grain yield in Gai12W.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>        trial <span class="op">=</span> <span class="st">"Gai12W"</span>, </span>
+<span>        traits <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Summary statistics for grain.yield in Gai12W  </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;                          grain.yield</span></span>
+<span><span class="co">#&gt; Number of observations         483.0</span></span>
+<span><span class="co">#&gt; Number of missing values        19.0</span></span>
+<span><span class="co">#&gt; Mean                           11.23</span></span>
+<span><span class="co">#&gt; Median                         11.22</span></span>
+<span><span class="co">#&gt; Min                             6.71</span></span>
+<span><span class="co">#&gt; Max                            14.68</span></span>
+<span><span class="co">#&gt; First quantile                 10.38</span></span>
+<span><span class="co">#&gt; Third quantile                 12.09</span></span>
+<span><span class="co">#&gt; Variance                       1.845</span></span></code></pre></div>
 <p>Using the default argument settings nine summary statistics are printed, but many more are available. These can be accessed using the argument <code>what</code> in the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. For a full list of available statistics, use <code><a href="../reference/summary.TD.html">help(summary.TD)</a></code>. It is also possible to output all statistics using <code>what = "all"</code>.</p>
 <p>It is possible to summarize the data in a <code>TD</code> object for different groups. This can be done by using the argument <code>groupBy</code>. It will display three main summary statistics per group. Again, more statistics can be displayed using the argument <code>what</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Create a summary per family in Gai12W</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-        trial <span class="op">=</span> <span class="st">"Gai12W"</span>, 
-        traits <span class="op">=</span> <span class="st">"grain.yield"</span>, 
-        groupBy <span class="op">=</span> <span class="st">"geneticGroup"</span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Summary statistics for grain.yield in Gai12W grouped by geneticGroup </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;                        Stiff_Stalk Iodent Other Lancaster</span>
-<span class="co">#&gt; Number of observations       107.0   79.0 210.0      87.0</span>
-<span class="co">#&gt; Mean                         11.85  11.42 10.61     11.80</span>
-<span class="co">#&gt; Standard deviation           1.320  0.964 1.337     1.110</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Create a summary per family in Gai12W</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>        trial <span class="op">=</span> <span class="st">"Gai12W"</span>, </span>
+<span>        traits <span class="op">=</span> <span class="st">"grain.yield"</span>, </span>
+<span>        groupBy <span class="op">=</span> <span class="st">"geneticGroup"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Summary statistics for grain.yield in Gai12W grouped by geneticGroup </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;                        Stiff_Stalk Iodent Other Lancaster</span></span>
+<span><span class="co">#&gt; Number of observations       107.0   79.0 210.0      87.0</span></span>
+<span><span class="co">#&gt; Mean                         11.85  11.42 10.61     11.80</span></span>
+<span><span class="co">#&gt; Standard deviation           1.320  0.964 1.337     1.110</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="TDPlot">Plotting a <code>TD</code> object<a class="anchor" aria-label="anchor" href="#TDPlot"></a>
@@ -364,59 +364,59 @@ Dropping one or more trials from a <code>TD</code> object can be achieved by usi
 <p>In all plots the default colors for both genotype groups and trial groups are chosen from a predefined color palette. For genotype groups the color palette is “Dark 2”, for trial groups it is “Alphabet”. See <a href="https://developer.r-project.org/Blog/public/2019/11/21/a-new-palette-for-r/index.html" class="external-link">here</a> for an overview of these colors.</p>
 <p>It is possible to specify different colors for genotype groups and trial groups per plot using the arguments <code>colGeno</code> and <code>colTrial</code> respectively. Also, more conveniently, the default colors can be set using the options <code>statgen.genoColors</code> and <code>statgen.trialColors</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Set default colors for genotypes and trials.</span>
-<span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="st">"statgen.genoColors"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"green"</span>, <span class="st">"yellow"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="st">"statgen.trialColors"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"brown"</span>, <span class="st">"purple"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Set default colors for genotypes and trials.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="st">"statgen.genoColors"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"green"</span>, <span class="st">"yellow"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="st">"statgen.trialColors"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"brown"</span>, <span class="st">"purple"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>If a plot has more genotype groups than the number of colors specified as default colors, the default colors will be ignored and the function <code><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">topo.colors()</a></code> will be used to generate a color palette instead. For trial groups this is done similarly.</p>
 <div class="section level4">
 <h4 id="layPlot">Layout plot<a class="anchor" aria-label="anchor" href="#layPlot"></a>
 </h4>
 <p>The default plot creates plots for the layout of all trials in the <code>TD</code> object. This can be restricted to selected trials using the <code>trials</code> argument. The width and length of the plot are derived from “trPlWidth” and “trPlLength” in the metadata, if these are available. If <code>repId</code> was specified, when creating the <code>TD</code> object, replicate blocks are delineated by a black line. If <code>subBlock</code> was specified, then sub blocks are delineated by a blue line. This type of plot allows checking the design of the experiment.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-     trials <span class="op">=</span> <span class="st">"Gai12W"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>     trials <span class="op">=</span> <span class="st">"Gai12W"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="statgenSTA_files/figure-html/layoutPlot-1.png"><!-- --></p>
 <p>Note that the default title of the plot is the name of the trial. This can be manually changed using the <code>title</code> argument.</p>
 <p>This plot can be extended by highlighting interesting genotypes in the layout. By default the default <strong>ggplot2</strong> package colors are used for highlighting these genotypes. Custom colors can be specified using the <code>colHighlight</code> argument.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Plot the layout for Gai12W.</span>
-<span class="co">## Highlight genotypes A3 and 11430 in red and blue.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-     trials <span class="op">=</span> <span class="st">"Gai12W"</span>, 
-     highlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A3"</span>, <span class="st">"11430"</span><span class="op">)</span>,
-     colHighlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Plot the layout for Gai12W.</span></span>
+<span><span class="co">## Highlight genotypes A3 and 11430 in red and blue.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>     trials <span class="op">=</span> <span class="st">"Gai12W"</span>, </span>
+<span>     highlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A3"</span>, <span class="st">"11430"</span><span class="op">)</span>,</span>
+<span>     colHighlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="statgenSTA_files/figure-html/layoutPlotHL-1.png"><!-- --></p>
 <p>It is also possible to color the sub blocks within the field. By default the default <strong>ggplot2</strong> package colors are used for coloring these sub blocks. Custom colors can be specified using the <code>colSubBlock</code> argument.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Plot the layout for Gai12W.</span>
-<span class="co">## Color sub blocks using polychrome colors for high contrast.</span>
-<span class="co">## Colors are specified here since this color palette is only available as such</span>
-<span class="co">## from R &gt; 4.0.</span>
-<span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5A5156"</span>, <span class="st">"#E4E1E3"</span>, <span class="st">"#F6222E"</span>, <span class="st">"#FE00FA"</span>, <span class="st">"#16FF32"</span>, <span class="st">"#3283FE"</span>, 
-          <span class="st">"#FEAF16"</span>, <span class="st">"#B00068"</span>, <span class="st">"#1CFFCE"</span>, <span class="st">"#90AD1C"</span>, <span class="st">"#2ED9FF"</span>, <span class="st">"#DEA0FD"</span>, 
-          <span class="st">"#AA0DFE"</span>, <span class="st">"#F8A19F"</span>, <span class="st">"#325A9B"</span>, <span class="st">"#C4451C"</span>, <span class="st">"#1C8356"</span>, <span class="st">"#85660D"</span>, 
-          <span class="st">"#B10DA1"</span>, <span class="st">"#FBE426"</span>, <span class="st">"#1CBE4F"</span>, <span class="st">"#FA0087"</span>, <span class="st">"#FC1CBF"</span>, <span class="st">"#F7E1A0"</span>, 
-          <span class="st">"#C075A6"</span>, <span class="st">"#782AB6"</span>, <span class="st">"#AAF400"</span>, <span class="st">"#BDCDFF"</span>, <span class="st">"#822E1C"</span>, <span class="st">"#B5EFB5"</span>, 
-          <span class="st">"#7ED7D1"</span>, <span class="st">"#1C7F93"</span>, <span class="st">"#D85FF7"</span>, <span class="st">"#683B79"</span>, <span class="st">"#66B0FF"</span>, <span class="st">"#3B00FB"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-     trials <span class="op">=</span> <span class="st">"Gai12W"</span>, 
-     colorSubBlock <span class="op">=</span> <span class="cn">TRUE</span>,
-     colSubBlock <span class="op">=</span> <span class="va">cols</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Plot the layout for Gai12W.</span></span>
+<span><span class="co">## Color sub blocks using polychrome colors for high contrast.</span></span>
+<span><span class="co">## Colors are specified here since this color palette is only available as such</span></span>
+<span><span class="co">## from R &gt; 4.0.</span></span>
+<span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#5A5156"</span>, <span class="st">"#E4E1E3"</span>, <span class="st">"#F6222E"</span>, <span class="st">"#FE00FA"</span>, <span class="st">"#16FF32"</span>, <span class="st">"#3283FE"</span>, </span>
+<span>          <span class="st">"#FEAF16"</span>, <span class="st">"#B00068"</span>, <span class="st">"#1CFFCE"</span>, <span class="st">"#90AD1C"</span>, <span class="st">"#2ED9FF"</span>, <span class="st">"#DEA0FD"</span>, </span>
+<span>          <span class="st">"#AA0DFE"</span>, <span class="st">"#F8A19F"</span>, <span class="st">"#325A9B"</span>, <span class="st">"#C4451C"</span>, <span class="st">"#1C8356"</span>, <span class="st">"#85660D"</span>, </span>
+<span>          <span class="st">"#B10DA1"</span>, <span class="st">"#FBE426"</span>, <span class="st">"#1CBE4F"</span>, <span class="st">"#FA0087"</span>, <span class="st">"#FC1CBF"</span>, <span class="st">"#F7E1A0"</span>, </span>
+<span>          <span class="st">"#C075A6"</span>, <span class="st">"#782AB6"</span>, <span class="st">"#AAF400"</span>, <span class="st">"#BDCDFF"</span>, <span class="st">"#822E1C"</span>, <span class="st">"#B5EFB5"</span>, </span>
+<span>          <span class="st">"#7ED7D1"</span>, <span class="st">"#1C7F93"</span>, <span class="st">"#D85FF7"</span>, <span class="st">"#683B79"</span>, <span class="st">"#66B0FF"</span>, <span class="st">"#3B00FB"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>     trials <span class="op">=</span> <span class="st">"Gai12W"</span>, </span>
+<span>     colorSubBlock <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>     colSubBlock <span class="op">=</span> <span class="va">cols</span><span class="op">)</span></span></code></pre></div>
 <p><img src="statgenSTA_files/figure-html/layoutPlotSB-1.png"><!-- --></p>
 <p>Highlighting genotypes and coloring subBlocks cannot be done simultaneously. If both options are specified, only highlighting is done.</p>
 <p>It is possible to add the labels of the genotypes to the layout.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Plot the layout for Gai12W, label the genotypes.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-     trials <span class="op">=</span> <span class="st">"Gai12W"</span>, 
-     showGeno <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Plot the layout for Gai12W, label the genotypes.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>     trials <span class="op">=</span> <span class="st">"Gai12W"</span>, </span>
+<span>     showGeno <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="statgenSTA_files/figure-html/layoutPlotSG-1.png"><!-- --></p>
 <p>We can visualize the raw data of a given trait on the layout, as a heatmap. This type of plot gives a first indication of the spatial variability for a given trial. This can be further investigated with the spatial modeling. Missing plots are shown in white.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Plot the layout for Gai12W, show raw data for grain yield.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-     trials <span class="op">=</span> <span class="st">"Gai12W"</span>, 
-     traits <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Plot the layout for Gai12W, show raw data for grain yield.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>     trials <span class="op">=</span> <span class="st">"Gai12W"</span>, </span>
+<span>     traits <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="statgenSTA_files/figure-html/layoutPlotGY-1.png"><!-- --></p>
 </div>
 <div class="section level4">
@@ -424,18 +424,18 @@ Dropping one or more trials from a <code>TD</code> object can be achieved by usi
 </h4>
 <p>A second type of plot displays the trial locations on a map. This plot is made based on trLat and trLong in the metadata. If latitude or longitude is not available for a certain location, then this location is not plotted. If the locations are very close to one another, the resulting map can become quite small. The arguments <code>minLatRange</code> and <code>minLongRange</code> can be used to extend the minimum range of latitude and longitude respectively to address this issue. For map plots, where there are many trials close to one another, the trial names can be left out of the plot by specifying the argument <code>printTrialNames = FALSE</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Plot the locations of the trials on a map.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-     plotType <span class="op">=</span> <span class="st">"map"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Plot the locations of the trials on a map.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>     plotType <span class="op">=</span> <span class="st">"map"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="statgenSTA_files/figure-html/mapPlot-1.png"><!-- --></p>
 <p>It is possible to color the trials by a variable in the <code>TD</code> object using the argument <code>colorTrialBy</code>. Colors can be specified with the argument <code>colTrial</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Plot the locations of the trials on a map.</span>
-<span class="co">## Color the trials by water scenario.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-     plotType <span class="op">=</span> <span class="st">"map"</span>,
-     colorTrialBy <span class="op">=</span> <span class="st">"scenarioWater"</span>,
-     colTrial <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"darkgreen"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Plot the locations of the trials on a map.</span></span>
+<span><span class="co">## Color the trials by water scenario.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>     plotType <span class="op">=</span> <span class="st">"map"</span>,</span>
+<span>     colorTrialBy <span class="op">=</span> <span class="st">"scenarioWater"</span>,</span>
+<span>     colTrial <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"darkgreen"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="statgenSTA_files/figure-html/mapPlotCol-1.png"><!-- --></p>
 </div>
 <div class="section level4">
@@ -444,20 +444,20 @@ Dropping one or more trials from a <code>TD</code> object can be achieved by usi
 <p>Boxplots can be made to get an idea of the contents of the data in the <code>TD</code> object. By default a box is plotted per trial in the data for the specified traits. Boxplots for multiple traits can be made at once.</p>
 <p>Boxplots can be made to visually assess the variability of the trait(s) in the <code>TD</code> object. By default a box is plotted per trial for the specified trait. Boxplots for multiple traits can be made at once.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Create a boxplot for grain yield.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-     plotType <span class="op">=</span> <span class="st">"box"</span>, 
-     traits <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Create a boxplot for grain yield.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>     plotType <span class="op">=</span> <span class="st">"box"</span>, </span>
+<span>     traits <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="statgenSTA_files/figure-html/boxPlot-1.png"><!-- --></p>
 <p>The trials in the box plot can be grouped by using the argument <code>groupBy</code>. Colors can be applied to groups within trials by specifying the argument <code>colorTrialBy</code>. As in other plots the argument <code>colTrial</code> can be used to specify the colors used. The boxes for the (groups of) trials can be ordered using the argument <code>orderBy</code>. Boxes can be ordered alphabetically (<code>orderBy = "alphabetic"</code>), and by ascending (<code>orderBy = "ascending"</code>) and descending (<code>orderBy = "descending"</code>) trait mean.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Create a boxplot for grain yield with boxes grouped by year </span>
-<span class="co">## Color the boxes by scenario within years.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-     plotType <span class="op">=</span> <span class="st">"box"</span>, 
-     traits <span class="op">=</span> <span class="st">"grain.yield"</span>, 
-     groupBy <span class="op">=</span> <span class="st">"year"</span>, 
-     colorTrialBy <span class="op">=</span> <span class="st">"scenarioFull"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Create a boxplot for grain yield with boxes grouped by year </span></span>
+<span><span class="co">## Color the boxes by scenario within years.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>     plotType <span class="op">=</span> <span class="st">"box"</span>, </span>
+<span>     traits <span class="op">=</span> <span class="st">"grain.yield"</span>, </span>
+<span>     groupBy <span class="op">=</span> <span class="st">"year"</span>, </span>
+<span>     colorTrialBy <span class="op">=</span> <span class="st">"scenarioFull"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="statgenSTA_files/figure-html/boxPlotGR-1.png"><!-- --></p>
 </div>
 <div class="section level4">
@@ -465,10 +465,10 @@ Dropping one or more trials from a <code>TD</code> object can be achieved by usi
 </h4>
 <p>Another plot, that can be made, is a plot of the correlations between the trials for a specified trait. The order of the plotted trials is determined by clustering them and plotting closely related trials close to one another.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Create a correlation plot for grain yield.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-     plotType <span class="op">=</span> <span class="st">"cor"</span>, 
-     traits <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Create a correlation plot for grain yield.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>     plotType <span class="op">=</span> <span class="st">"cor"</span>, </span>
+<span>     traits <span class="op">=</span> <span class="st">"grain.yield"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="statgenSTA_files/figure-html/corPlot-1.png"><!-- --></p>
 </div>
 <div class="section level4">
@@ -476,13 +476,13 @@ Dropping one or more trials from a <code>TD</code> object can be achieved by usi
 </h4>
 <p>Finally a scatter plot matrix can be made. The lower triangular of the matrix displays scatter plots between trials. The diagonal of the scatter plot matrix visualizes histograms of the data per trial. It is possible to calculate the correlation between trials and print them in the scatter plots by specifying the <code>addCorr</code> argument. The <code>addCorr</code> argument can take the values <code>"tl"</code> (top left), <code>"tr"</code> (top right), <code>"bl"</code> (bottom left) or <code>"br"</code> (bottom right). This indicates, where the correlation is placed in each of the scatter plots. It is possible to color the genotypes and trials in the plots by a variable in the TD object by specifying the arguments <code>colorTrialBy</code>, and <code>colorGenoBy</code>, respectively.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Create a scatter plot matrix for grain yield.</span>
-<span class="co">## Color trials by scenario and genotypes by family.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, 
-     plotType <span class="op">=</span> <span class="st">"scatter"</span>, 
-     traits <span class="op">=</span> <span class="st">"grain.yield"</span>, 
-     colorTrialBy <span class="op">=</span> <span class="st">"scenarioFull"</span>, 
-     colorGenoBy <span class="op">=</span> <span class="st">"geneticGroup"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Create a scatter plot matrix for grain yield.</span></span>
+<span><span class="co">## Color trials by scenario and genotypes by family.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">dropsTD</span>, </span>
+<span>     plotType <span class="op">=</span> <span class="st">"scatter"</span>, </span>
+<span>     traits <span class="op">=</span> <span class="st">"grain.yield"</span>, </span>
+<span>     colorTrialBy <span class="op">=</span> <span class="st">"scenarioFull"</span>, </span>
+<span>     colorGenoBy <span class="op">=</span> <span class="st">"geneticGroup"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="statgenSTA_files/figure-html/scatPlot-1.png"><!-- --></p>
 <hr>
 </div>
@@ -546,19 +546,19 @@ Dropping one or more trials from a <code>TD</code> object can be achieved by usi
 If <code>"SpATS"</code> is used as modeling engine, an extra spatial term is always included in the model (see <a href="#spMod"><strong>Spatial models</strong></a>). A spatial term is also included when the modeling engine is <code>"asreml"</code> and the function argument <code>spatial</code> is set to <code>TRUE</code>.</p>
 <p>Using the <code>TD</code> object named <code>dropsTD</code> from the previous section, a model for the trial Gai12W and trait grain.yield can now be fitted on the data. The trial was set up using a resolvable row column design. This is specified in <code><a href="../reference/fitTD.html">fitTD()</a></code> using the argument <code>design</code>. Since <code>engine</code> is not specified as an argument, <code>"SpATS"</code> is used as <code>engine</code> for fitting the model.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Fit a single trial model using a model based on a resolvable row column design.</span>
-<span class="va">modDropsSp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fitTD.html">fitTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span>, 
-                    trials <span class="op">=</span> <span class="st">"Gai12W"</span>, 
-                    traits <span class="op">=</span> <span class="st">"grain.yield"</span>,
-                    design <span class="op">=</span> <span class="st">"res.rowcol"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Fit a single trial model using a model based on a resolvable row column design.</span></span>
+<span><span class="va">modDropsSp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fitTD.html">fitTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span>, </span>
+<span>                    trials <span class="op">=</span> <span class="st">"Gai12W"</span>, </span>
+<span>                    traits <span class="op">=</span> <span class="st">"grain.yield"</span>,</span>
+<span>                    design <span class="op">=</span> <span class="st">"res.rowcol"</span><span class="op">)</span></span></code></pre></div>
 <p>Note that by not supplying the <code>what</code> argument in the <code><a href="../reference/fitTD.html">fitTD()</a></code> function, two models are fitted. One for genotype as a fixed effect and one for genotype as a random effect. The results of both these models are stored in the <code>STA</code> object named <code>modDropsSp</code>. This is very useful for extracting different results from the model later on. A trade-off is that fitting two models takes more time than fitting only one. Therefore, when fitting models to large data sets it is sensible to explicitly define the <code>what</code> argument if only a specific subset of the results is needed as output.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Fit a single trial model with genotype as random effect.</span>
-<span class="va">modDropsSp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fitTD.html">fitTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span>, 
-                     trials <span class="op">=</span> <span class="st">"Gai12W"</span>, 
-                     traits <span class="op">=</span> <span class="st">"grain.yield"</span>, 
-                     what <span class="op">=</span> <span class="st">"random"</span>, 
-                     design <span class="op">=</span> <span class="st">"res.rowcol"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Fit a single trial model with genotype as random effect.</span></span>
+<span><span class="va">modDropsSp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fitTD.html">fitTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span>, </span>
+<span>                     trials <span class="op">=</span> <span class="st">"Gai12W"</span>, </span>
+<span>                     traits <span class="op">=</span> <span class="st">"grain.yield"</span>, </span>
+<span>                     what <span class="op">=</span> <span class="st">"random"</span>, </span>
+<span>                     design <span class="op">=</span> <span class="st">"res.rowcol"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="spMod">Spatial models<a class="anchor" aria-label="anchor" href="#spMod"></a>
@@ -566,13 +566,13 @@ If <code>"SpATS"</code> is used as modeling engine, an extra spatial term is alw
 <p>When using <code>"SpATS"</code> as a modeling engine for fitting a model, an extra spatial component is always included in the model. This spatial component is composed using the <code>PSANOVA()</code> function in the <strong>SpATS</strong> package, which uses 2-dimensional smoothing with P-splines as described in <span class="citation">Lee, Durbán, and Eilers (2013)</span> and in <span class="citation">Rodríguez-Álvarez et al. (2018)</span>. See <code><a href="https://rdrr.io/pkg/SpATS/man/PSANOVA.html" class="external-link">help(PSANOVA, SpATS)</a></code> for a detailed description. The arguments <code>nseg</code> and <code>nest.div</code> of the <code>PSANOVA()</code> function can be modified using the <code>control</code> argument in the <code><a href="../reference/fitTD.html">fitTD()</a></code> function.<br>
 The default number for the number of segments is (number of columns / 2, number of rows / 2). Fitting the model in the previous section specifying the number of segments for columns and rows as 28 and 18 respectively, works as follows:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Fit a spatial single trial model using SpATS. </span>
-<span class="co">## Manually specify the number of segments for rows and columns.</span>
-<span class="va">modDropsSp3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fitTD.html">fitTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span>, 
-                     trials <span class="op">=</span> <span class="st">"Gai12W"</span>, 
-                     traits <span class="op">=</span> <span class="st">"grain.yield"</span>, 
-                     design <span class="op">=</span> <span class="st">"res.rowcol"</span>, 
-                     control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>nSeg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">18</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Fit a spatial single trial model using SpATS. </span></span>
+<span><span class="co">## Manually specify the number of segments for rows and columns.</span></span>
+<span><span class="va">modDropsSp3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fitTD.html">fitTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span>, </span>
+<span>                     trials <span class="op">=</span> <span class="st">"Gai12W"</span>, </span>
+<span>                     traits <span class="op">=</span> <span class="st">"grain.yield"</span>, </span>
+<span>                     design <span class="op">=</span> <span class="st">"res.rowcol"</span>, </span>
+<span>                     control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>nSeg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">18</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, spatial models can be fitted using <code>"asreml"</code> as modeling <code>engine</code> and setting the argument <code>spatial = TRUE</code>. In this case seven models are fitted and the best model, based on a goodness-of-fit criterion, either AIC or BIC. The default is AIC, this can be modified with the <code>control</code> argument in the <code><a href="../reference/fitTD.html">fitTD()</a></code> function.</p>
 <p>The seven models fitted largely depend on the trial design. On top of the model described in the previous section extra random terms are added. These extra random terms depend on the structure of the data. If the trial has a regular structure, i.e. all replicates appear the same amount of times in the trial, the following combinations of random and spatial terms are fitted:</p>
 <table class="table">
@@ -650,62 +650,62 @@ The default number for the number of segments is (number of columns / 2, number 
 </table>
 <p>Fitting a model similar to the one above using asreml with BIC as goodness-of-fit criterion works as follows:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"asreml"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="co">## Fit a spatial single trial model using asreml.</span>
-  <span class="va">modDropsAs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fitTD.html">fitTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span>, 
-                      trials <span class="op">=</span> <span class="st">"Gai12W"</span>, 
-                      traits <span class="op">=</span> <span class="st">"grain.yield"</span>, 
-                      design <span class="op">=</span> <span class="st">"res.rowcol"</span>, 
-                      spatial <span class="op">=</span> <span class="cn">TRUE</span>, 
-                      engine <span class="op">=</span> <span class="st">"asreml"</span>,
-                      control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>criterion <span class="op">=</span> <span class="st">"BIC"</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"asreml"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co">## Fit a spatial single trial model using asreml.</span></span>
+<span>  <span class="va">modDropsAs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fitTD.html">fitTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span>, </span>
+<span>                      trials <span class="op">=</span> <span class="st">"Gai12W"</span>, </span>
+<span>                      traits <span class="op">=</span> <span class="st">"grain.yield"</span>, </span>
+<span>                      design <span class="op">=</span> <span class="st">"res.rowcol"</span>, </span>
+<span>                      spatial <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                      engine <span class="op">=</span> <span class="st">"asreml"</span>,</span>
+<span>                      control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>criterion <span class="op">=</span> <span class="st">"BIC"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>The fitted models and the best model are stored in the output together with a summary table with details on the fitted models.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/exists.html" class="external-link">exists</a></span><span class="op">(</span><span class="st">"modDropsAs"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="co">## Overview of fitted models.</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">modDropsAs</span><span class="op">$</span><span class="va">Gai12W</span><span class="op">$</span><span class="va">sumTab</span><span class="op">$</span><span class="va">grain.yield</span>, digits <span class="op">=</span> <span class="fl">2</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="op">}</span>  </code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/exists.html" class="external-link">exists</a></span><span class="op">(</span><span class="st">"modDropsAs"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co">## Overview of fitted models.</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">modDropsAs</span><span class="op">$</span><span class="va">Gai12W</span><span class="op">$</span><span class="va">sumTab</span><span class="op">$</span><span class="va">grain.yield</span>, digits <span class="op">=</span> <span class="fl">2</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="op">}</span>  </span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="model-summary">Model summary<a class="anchor" aria-label="anchor" href="#model-summary"></a>
 </h3>
 <p>Since genotype has been fitted both as fixed and as random factor in the object named <code>modDropsSp</code>, it is possible to calculate both the Best Linear Unbiased Estimators (BLUEs) and the Best Linear Unbiased Predictors (BLUPs). Therefore, both are printed in the summary of the model together with their respective standard errors.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Set nBest to 5 to limit the output to the best 5 genotypes.</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">modDropsSp</span>, 
-        nBest <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
-<span class="co">#&gt; Summary statistics </span>
-<span class="co">#&gt; ==================</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Summary statistics for grain.yield in Gai12W  </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;                          grain.yield</span>
-<span class="co">#&gt; Number of observations         483.0</span>
-<span class="co">#&gt; Number of missing values        19.0</span>
-<span class="co">#&gt; Mean                           11.23</span>
-<span class="co">#&gt; Median                         11.22</span>
-<span class="co">#&gt; Min                             6.71</span>
-<span class="co">#&gt; Max                            14.68</span>
-<span class="co">#&gt; First quantile                 10.38</span>
-<span class="co">#&gt; Third quantile                 12.09</span>
-<span class="co">#&gt; Variance                       1.845</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Estimated heritability </span>
-<span class="co">#&gt; ======================</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Heritability: 0.84 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Predicted means (BLUEs &amp; BLUPs) </span>
-<span class="co">#&gt; ===============================</span>
-<span class="co">#&gt; Best 5 genotypes</span>
-<span class="co">#&gt;            BLUEs       SE    BLUPs     SE</span>
-<span class="co">#&gt; Lo1261  13.97797  0.47111 13.65462 0.4329</span>
-<span class="co">#&gt; Lo1253  13.90798  0.47146 13.44686 0.4350</span>
-<span class="co">#&gt; Lo1223  13.71245  0.47115 13.27799 0.4337</span>
-<span class="co">#&gt; DKMBST  13.66095  0.47214 13.23978 0.4346</span>
-<span class="co">#&gt; HMV5422 13.60944  0.67929 13.02878 0.5784</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Set nBest to 5 to limit the output to the best 5 genotypes.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">modDropsSp</span>, </span>
+<span>        nBest <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Summary statistics </span></span>
+<span><span class="co">#&gt; ==================</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Summary statistics for grain.yield in Gai12W  </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;                          grain.yield</span></span>
+<span><span class="co">#&gt; Number of observations         483.0</span></span>
+<span><span class="co">#&gt; Number of missing values        19.0</span></span>
+<span><span class="co">#&gt; Mean                           11.23</span></span>
+<span><span class="co">#&gt; Median                         11.22</span></span>
+<span><span class="co">#&gt; Min                             6.71</span></span>
+<span><span class="co">#&gt; Max                            14.68</span></span>
+<span><span class="co">#&gt; First quantile                 10.38</span></span>
+<span><span class="co">#&gt; Third quantile                 12.09</span></span>
+<span><span class="co">#&gt; Variance                       1.845</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Estimated heritability </span></span>
+<span><span class="co">#&gt; ======================</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Heritability: 0.84 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Predicted means (BLUEs &amp; BLUPs) </span></span>
+<span><span class="co">#&gt; ===============================</span></span>
+<span><span class="co">#&gt; Best 5 genotypes</span></span>
+<span><span class="co">#&gt;            BLUEs       SE    BLUPs     SE</span></span>
+<span><span class="co">#&gt; Lo1261  13.97797  0.47111 13.65462 0.4329</span></span>
+<span><span class="co">#&gt; Lo1253  13.90798  0.47146 13.44686 0.4350</span></span>
+<span><span class="co">#&gt; Lo1223  13.71245  0.47115 13.27799 0.4337</span></span>
+<span><span class="co">#&gt; DKMBST  13.66095  0.47214 13.23978 0.4346</span></span>
+<span><span class="co">#&gt; HMV5422 13.60944  0.67929 13.02878 0.5784</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="model-plots">Model plots<a class="anchor" aria-label="anchor" href="#model-plots"></a>
@@ -716,10 +716,10 @@ The default number for the number of segments is (number of columns / 2, number 
 </h4>
 <p>The first is a series of four plots, a histogram of the residuals, a normal quantile plot of the residuals, a scatter plot of residuals against fitted values and a scatter plot of absolute residuals against fitted values. These plots can be made by calling <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> on the <code>STA</code> object. Plots can be made for multiple trials and multiple traits simultaneously, either for the model with genotype as fixed effect or for the model with genotype as random effect. By default plots are made for all trials and all traits, but this can be restricted using the arguments <code>trials</code> and <code>traits</code>. If only one model is fitted the results of the fitted model will be plotted. In case both models were fitted, as a default the results will be plotted for the model with genotype fixed. This can be changed using the argument <code>what</code>.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Base plots for the model with genotype fitted as random effect.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">modDropsSp</span>, 
-     plotType <span class="op">=</span> <span class="st">"base"</span>, 
-     what <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Base plots for the model with genotype fitted as random effect.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">modDropsSp</span>, </span>
+<span>     plotType <span class="op">=</span> <span class="st">"base"</span>, </span>
+<span>     what <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="statgenSTA_files/figure-html/basePlot-1.png"><!-- --></p>
 </div>
 <div class="section level4">
@@ -727,16 +727,16 @@ The default number for the number of segments is (number of columns / 2, number 
 </h4>
 <p>The second type of plot consists of five plots, spatial plots of the raw data, fitted values, residuals and either BLUEs or BLUPs, and a histogram of the BLUEs or BLUPs. If <code>"SpATS"</code> was used as <code>engine</code> for modeling an extra plot with the fitted spatial trend is included. The spatial trend can be displayed on the original scale (default, <code>spaTrend = "raw"</code>) or as percentage (<code>spaTrend = "percentage"</code>). In the latter case the spatial trend is scaled (i.e., divided by the average of the observed response variable of interest across the field) and displayed as percentage. The call for creating these plots is similar to the base plots, but requires the specification of the argument <code>plotType = "spatial"</code>. Note that spatial plots can only be made if spatial information, i.e. <code>rowCoord</code> and <code>colCoord</code>, is available in the <code>TD</code> object.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Spatial plot for the model with genotype fitted as fixed effect.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">modDropsSp</span>, 
-     plotType <span class="op">=</span> <span class="st">"spatial"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Spatial plot for the model with genotype fitted as fixed effect.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">modDropsSp</span>, </span>
+<span>     plotType <span class="op">=</span> <span class="st">"spatial"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="statgenSTA_files/figure-html/spatPlot-1.png"><!-- --></p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Spatial plot for the model with genotype fitted as fixed effect.</span>
-<span class="co">## Display the spatial trend as a percentage.</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">modDropsSp</span>, 
-     plotType <span class="op">=</span> <span class="st">"spatial"</span>, 
-     spaTrend <span class="op">=</span> <span class="st">"percentage"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Spatial plot for the model with genotype fitted as fixed effect.</span></span>
+<span><span class="co">## Display the spatial trend as a percentage.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">modDropsSp</span>, </span>
+<span>     plotType <span class="op">=</span> <span class="st">"spatial"</span>, </span>
+<span>     spaTrend <span class="op">=</span> <span class="st">"percentage"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="statgenSTA_files/figure-html/spatPlotPerc-1.png"><!-- --></p>
 </div>
 </div>
@@ -745,32 +745,32 @@ The default number for the number of segments is (number of columns / 2, number 
 </h3>
 <p>After fitting a model, it is possible to perform an outlier detection on the results. This outlier detection checks the residuals in the fitted model and compares them to a limit. Observations with a residual larger than this limit are marked as outliers. The default limit is calculated based on the number of observations in the data. Setting a custom limit is also possible.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Outlier detection for the model with genotype fitted as random.</span>
-<span class="va">outliers</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outlierSTA.html">outlierSTA</a></span><span class="op">(</span><span class="va">modDropsSp</span>, 
-                       traits <span class="op">=</span> <span class="st">"grain.yield"</span>,
-                       what <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span>
-<span class="co">#&gt; Large standardized residuals.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   trial genotype       trait    value       res outlier</span>
-<span class="co">#&gt;  Gai12W     B105 grain.yield 7.513174 -2.883388    TRUE</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Outlier detection for the model with genotype fitted as random.</span></span>
+<span><span class="va">outliers</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outlierSTA.html">outlierSTA</a></span><span class="op">(</span><span class="va">modDropsSp</span>, </span>
+<span>                       traits <span class="op">=</span> <span class="st">"grain.yield"</span>,</span>
+<span>                       what <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Large standardized residuals.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   trial genotype       trait    value       res outlier</span></span>
+<span><span class="co">#&gt;  Gai12W     B105 grain.yield 7.513174 -2.883388    TRUE</span></span></code></pre></div>
 <p>The output of the outlier detection function is a <code>data.frame</code> with the outliers and of vector of indices of the outliers in the original data. This vector can be used for removing outliers from the data.</p>
 <p>It is possible to perform outlier detection on a model with genotype fitted as fixed, however, in doing so it is only possible to detect outliers in genotypes that are replicated in the data. For unreplicated genotypes the residual will always be 0 and, therefore, these genotypes will never be marked as outliers.</p>
 <p>To get an idea of the magnitude of the outliers, the argument <code>commonFactors</code> can be used to see the values of observations with similar characteristics. In the example below, for all outliers also the other observations for the same genotype are shown.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Outlier detection for the model with genotype fitted as random.</span>
-<span class="co">## A custom limit is used and commonFactors set to genotype.</span>
-<span class="va">outliers</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outlierSTA.html">outlierSTA</a></span><span class="op">(</span><span class="va">modDropsSp</span>, 
-                       traits <span class="op">=</span> <span class="st">"grain.yield"</span>, 
-                       what <span class="op">=</span> <span class="st">"random"</span>,
-                       rLimit <span class="op">=</span> <span class="fl">2.7</span>, 
-                       commonFactors <span class="op">=</span> <span class="st">"genotype"</span><span class="op">)</span>
-<span class="co">#&gt; Large standardized residuals.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   trial genotype       trait     value       res outlier</span>
-<span class="co">#&gt;  Gai12W     A347 grain.yield  8.767218 -2.769882    TRUE</span>
-<span class="co">#&gt;  Gai12W     A347 grain.yield 10.448529  1.858846   FALSE</span>
-<span class="co">#&gt;  Gai12W     B105 grain.yield  7.513174 -2.883388    TRUE</span>
-<span class="co">#&gt;  Gai12W     B105 grain.yield  9.331618  1.446252   FALSE</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Outlier detection for the model with genotype fitted as random.</span></span>
+<span><span class="co">## A custom limit is used and commonFactors set to genotype.</span></span>
+<span><span class="va">outliers</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outlierSTA.html">outlierSTA</a></span><span class="op">(</span><span class="va">modDropsSp</span>, </span>
+<span>                       traits <span class="op">=</span> <span class="st">"grain.yield"</span>, </span>
+<span>                       what <span class="op">=</span> <span class="st">"random"</span>,</span>
+<span>                       rLimit <span class="op">=</span> <span class="fl">2.7</span>, </span>
+<span>                       commonFactors <span class="op">=</span> <span class="st">"genotype"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Large standardized residuals.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   trial genotype       trait     value       res outlier</span></span>
+<span><span class="co">#&gt;  Gai12W     A347 grain.yield  8.767218 -2.769882    TRUE</span></span>
+<span><span class="co">#&gt;  Gai12W     A347 grain.yield 10.448529  1.858846   FALSE</span></span>
+<span><span class="co">#&gt;  Gai12W     B105 grain.yield  7.513174 -2.883388    TRUE</span></span>
+<span><span class="co">#&gt;  Gai12W     B105 grain.yield  9.331618  1.446252   FALSE</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="model-reports">Model reports<a class="anchor" aria-label="anchor" href="#model-reports"></a>
@@ -779,12 +779,12 @@ The default number for the number of segments is (number of columns / 2, number 
 <p>When no outfile is specified, reports will be created with a default names, e.g. “modelReport_trial_trait_fixed_timestamp.pdf”, in the current working directory. The argument <code>outfile</code> can be used to change the name and location of the report. The value of this argument should be a valid location and name for a <strong>pdf</strong> file, i.e. including the postfix “.pdf”. Non-existing directories are created by the <code><a href="../reference/report.html">report()</a></code> function. When an outfile is specified, trial, trait and modeltype (fixed or random) are concatenated to it in the name of the report.</p>
 <p>The reports contain general information on the model fitted, a summary of the results, the plots described in the previous section, a list of best (highest BLUEs or BLUPs) genotypes and a scatter plot of all genotypes and their BLUEs or BLUPs. For some traits a low value might mean a genotype is performing well. To correctly show the best genotypes in the report in this case, set the argument <code>descending</code> to <code>TRUE</code> in the <code><a href="../reference/report.html">report()</a></code> function.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Create a report in the current working directory</span>
-<span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span><span class="va">modDropsSp</span><span class="op">)</span>
-<span class="co">## Create a report for the model with genotype fitted as random.</span>
-<span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span><span class="va">modDropsSp</span>, 
-       outfile <span class="op">=</span> <span class="st">"./myReports/dropsReport.pdf"</span>, 
-       what <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Create a report in the current working directory</span></span>
+<span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span><span class="va">modDropsSp</span><span class="op">)</span></span>
+<span><span class="co">## Create a report for the model with genotype fitted as random.</span></span>
+<span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span><span class="va">modDropsSp</span>, </span>
+<span>       outfile <span class="op">=</span> <span class="st">"./myReports/dropsReport.pdf"</span>, </span>
+<span>       what <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span></code></pre></div>
 <p>Reporting for an object of class <code>STA</code> can be done for multiple trials, traits and model types simultaneously. For each combination of trial, trait and model type, a separate <strong>pdf</strong> report will be created. The arguments <code>traits</code>, <code>trials</code> and <code>what</code> can be used for specifying the models for which the reports should be generated.</p>
 <hr>
 </div>
@@ -970,46 +970,46 @@ The default number for the number of segments is (number of columns / 2, number 
 <p>Using the argument <code>what = "all"</code> in the <code><a href="../reference/extractSTA.html">extractSTA()</a></code> function call, extracts all results possible for the fitted model. This is also the default.</p>
 <p>Below are some examples of extracting results from a fitted model. Recall that <code>modDropsSp</code> contains two fitted models, one with genotype as fixed effect and one with genotype as random effect.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Extract BLUEs.</span>
-<span class="va">BLUEsDrops</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extractSTA.html">extractSTA</a></span><span class="op">(</span>STA <span class="op">=</span> <span class="va">modDropsSp</span>, 
-                         what <span class="op">=</span> <span class="st">"BLUEs"</span><span class="op">)</span>
-<span class="co">## Extract BLUEs and BLUPs.</span>
-<span class="va">predDrops</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extractSTA.html">extractSTA</a></span><span class="op">(</span>STA <span class="op">=</span> <span class="va">modDropsSp</span>, 
-                        what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BLUEs"</span>, <span class="st">"BLUPs"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Extract BLUEs.</span></span>
+<span><span class="va">BLUEsDrops</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extractSTA.html">extractSTA</a></span><span class="op">(</span>STA <span class="op">=</span> <span class="va">modDropsSp</span>, </span>
+<span>                         what <span class="op">=</span> <span class="st">"BLUEs"</span><span class="op">)</span></span>
+<span><span class="co">## Extract BLUEs and BLUPs.</span></span>
+<span><span class="va">predDrops</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extractSTA.html">extractSTA</a></span><span class="op">(</span>STA <span class="op">=</span> <span class="va">modDropsSp</span>, </span>
+<span>                        what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BLUEs"</span>, <span class="st">"BLUPs"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Note that <code>BLUEsDrops</code> is a data.frame, whereas <code>predDrops</code> is a list with one item, since we fitted a model for only one trial.</p>
 <div class="section level3">
 <h3 id="adding-extra-variables">Adding extra variables<a class="anchor" aria-label="anchor" href="#adding-extra-variables"></a>
 </h3>
 <p>The <code>data.frame</code> named <code>BLUEsDrops</code> consists of only three columns: genotype, trial, and grain.yield. If the model would have been fitted for multiple traits all these traits would become columns in the <code>data.frame</code>. It might be useful to add extra columns from the data used to fit the model to the output for use in further analysis of the data. This can be achieved using the argument <code>keep</code> in the <code><a href="../reference/extractSTA.html">extractSTA()</a></code> function. To include the water scenario in the output, useful for using the BLUEs for a GxE analysis, use the following command:</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Extract BLUEs from the fitted model.</span>
-<span class="va">BLUEsDrops2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extractSTA.html">extractSTA</a></span><span class="op">(</span>STA <span class="op">=</span> <span class="va">modDropsSp</span>, 
-                          what <span class="op">=</span> <span class="st">"BLUEs"</span>, 
-                          keep <span class="op">=</span> <span class="st">"scenarioWater"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">BLUEsDrops2</span><span class="op">)</span>
-<span class="co">#&gt;   genotype  trial scenarioWater grain.yield</span>
-<span class="co">#&gt; 1    11430 Gai12W            WW   11.708511</span>
-<span class="co">#&gt; 2       A3 Gai12W            WW   11.554153</span>
-<span class="co">#&gt; 3     A310 Gai12W            WW   11.072887</span>
-<span class="co">#&gt; 4     A347 Gai12W            WW    9.511043</span>
-<span class="co">#&gt; 5     A374 Gai12W            WW   10.908948</span>
-<span class="co">#&gt; 6     A375 Gai12W            WW   10.823341</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Extract BLUEs from the fitted model.</span></span>
+<span><span class="va">BLUEsDrops2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extractSTA.html">extractSTA</a></span><span class="op">(</span>STA <span class="op">=</span> <span class="va">modDropsSp</span>, </span>
+<span>                          what <span class="op">=</span> <span class="st">"BLUEs"</span>, </span>
+<span>                          keep <span class="op">=</span> <span class="st">"scenarioWater"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">BLUEsDrops2</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   genotype  trial scenarioWater grain.yield</span></span>
+<span><span class="co">#&gt; 1    11430 Gai12W            WW   11.708511</span></span>
+<span><span class="co">#&gt; 2       A3 Gai12W            WW   11.554153</span></span>
+<span><span class="co">#&gt; 3     A310 Gai12W            WW   11.072887</span></span>
+<span><span class="co">#&gt; 4     A347 Gai12W            WW    9.511043</span></span>
+<span><span class="co">#&gt; 5     A374 Gai12W            WW   10.908948</span></span>
+<span><span class="co">#&gt; 6     A375 Gai12W            WW   10.823341</span></span></code></pre></div>
 <p>Multiple columns can be included in the output in this way. Note that not every column from the original <code>TD</code> object can be included in the extracted data. Only columns that, for each genotype, have only one value per trial can be included. For example, the column <code>repId</code> containing replicates, that has several different values for a single genotype within each trial, cannot be included. When trying to do so it will be ignored with a warning.<br>
 It is, however, possible to include <code>repId</code> when extracting fitted values, since for each observation in the original data a fitted value is computed.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Extract fitted values from the model.</span>
-<span class="co">## Add repId and family to the output.</span>
-<span class="va">fitVals</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extractSTA.html">extractSTA</a></span><span class="op">(</span>STA <span class="op">=</span> <span class="va">modDropsSp</span>, 
-                      what <span class="op">=</span> <span class="st">"fitted"</span>, 
-                      keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"repId"</span>, <span class="st">"geneticGroup"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fitVals</span><span class="op">)</span>
-<span class="co">#&gt;   genotype  trial repId geneticGroup grain.yield</span>
-<span class="co">#&gt; 1    DE811 Gai12W     1  Stiff_Stalk    9.796469</span>
-<span class="co">#&gt; 2  UH_P089 Gai12W     1       Iodent   11.133917</span>
-<span class="co">#&gt; 3    W182E Gai12W     1        Other    8.933867</span>
-<span class="co">#&gt; 4      Lp5 Gai12W     1  Stiff_Stalk   11.975927</span>
-<span class="co">#&gt; 5    F7082 Gai12W     1        Other    8.924579</span>
-<span class="co">#&gt; 6   Lo1087 Gai12W     1  Stiff_Stalk   13.206323</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Extract fitted values from the model.</span></span>
+<span><span class="co">## Add repId and family to the output.</span></span>
+<span><span class="va">fitVals</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extractSTA.html">extractSTA</a></span><span class="op">(</span>STA <span class="op">=</span> <span class="va">modDropsSp</span>, </span>
+<span>                      what <span class="op">=</span> <span class="st">"fitted"</span>, </span>
+<span>                      keep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"repId"</span>, <span class="st">"geneticGroup"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fitVals</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   genotype  trial repId geneticGroup grain.yield</span></span>
+<span><span class="co">#&gt; 1    DE811 Gai12W     1  Stiff_Stalk    9.796469</span></span>
+<span><span class="co">#&gt; 2  UH_P089 Gai12W     1       Iodent   11.133917</span></span>
+<span><span class="co">#&gt; 3    W182E Gai12W     1        Other    8.933867</span></span>
+<span><span class="co">#&gt; 4      Lp5 Gai12W     1  Stiff_Stalk   11.975927</span></span>
+<span><span class="co">#&gt; 5    F7082 Gai12W     1        Other    8.924579</span></span>
+<span><span class="co">#&gt; 6   Lo1087 Gai12W     1  Stiff_Stalk   13.206323</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="prepare-data-for-gxe-analysis">Prepare data for GxE analysis<a class="anchor" aria-label="anchor" href="#prepare-data-for-gxe-analysis"></a>
@@ -1017,19 +1017,19 @@ It is, however, possible to include <code>repId</code> when extracting fitted va
 <p>Performing a GxE analysis on can be done using the <a href="https://biometris.github.io/statgenGxE/index.html" class="external-link"><strong>statgenGxE</strong></a> package. This package uses the same input format for its analyses as the <strong>statgenSTA</strong> package.</p>
 <p>To use the BLUEs or BLUPs from the fitted model in a GxE analysis they can easily be converted into a <code>TD</code> object using the function <code><a href="../reference/STAtoTD.html">STAtoTD()</a></code>. This function creates a <code>TD</code> object from a fitted model including one or more of the following: BLUEs, standard errors of BLUEs, BLUPs and standard errors of BLUPs. Optionally, a column <code>wt</code> with weights (calculated as <span class="math inline">\((1 / seBLUEs)^2\)</span>) can be added as well. In the same way as described in the previous section extra columns can be added to the output using the argument <code>keep</code>.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Fit a model for all trials with genotype as fixed factor.</span>
-<span class="va">modDropsSpTot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fitTD.html">fitTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span>, 
-                       traits <span class="op">=</span> <span class="st">"grain.yield"</span>, 
-                       what <span class="op">=</span> <span class="st">"fixed"</span>, 
-                       design <span class="op">=</span> <span class="st">"res.rowcol"</span><span class="op">)</span>
-<span class="co">## Create a TD object containing BLUEs and standard errors of BLUEs.</span>
-<span class="va">TDGxE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/STAtoTD.html">STAtoTD</a></span><span class="op">(</span>STA <span class="op">=</span> <span class="va">modDropsSpTot</span>, 
-                 what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BLUEs"</span>, <span class="st">"seBLUEs"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">## Add weights and water scenario to the output.</span>
-<span class="va">TDGxE2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/STAtoTD.html">STAtoTD</a></span><span class="op">(</span>STA <span class="op">=</span> <span class="va">modDropsSpTot</span>, 
-                  what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BLUEs"</span>, <span class="st">"seBLUEs"</span><span class="op">)</span>, 
-                  keep <span class="op">=</span> <span class="st">"scenarioWater"</span>,
-                  addWt <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Fit a model for all trials with genotype as fixed factor.</span></span>
+<span><span class="va">modDropsSpTot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fitTD.html">fitTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">dropsTD</span>, </span>
+<span>                       traits <span class="op">=</span> <span class="st">"grain.yield"</span>, </span>
+<span>                       what <span class="op">=</span> <span class="st">"fixed"</span>, </span>
+<span>                       design <span class="op">=</span> <span class="st">"res.rowcol"</span><span class="op">)</span></span>
+<span><span class="co">## Create a TD object containing BLUEs and standard errors of BLUEs.</span></span>
+<span><span class="va">TDGxE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/STAtoTD.html">STAtoTD</a></span><span class="op">(</span>STA <span class="op">=</span> <span class="va">modDropsSpTot</span>, </span>
+<span>                 what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BLUEs"</span>, <span class="st">"seBLUEs"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## Add weights and water scenario to the output.</span></span>
+<span><span class="va">TDGxE2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/STAtoTD.html">STAtoTD</a></span><span class="op">(</span>STA <span class="op">=</span> <span class="va">modDropsSpTot</span>, </span>
+<span>                  what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BLUEs"</span>, <span class="st">"seBLUEs"</span><span class="op">)</span>, </span>
+<span>                  keep <span class="op">=</span> <span class="st">"scenarioWater"</span>,</span>
+<span>                  addWt <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <hr>
 </div>
 </div>
@@ -1070,7 +1070,7 @@ Rodríguez-Álvarez, María, Martin P. Boer, Fred van Eeuwijk, and Paul H. C. Ei
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer>

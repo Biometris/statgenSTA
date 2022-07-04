@@ -107,15 +107,15 @@ because of their commonFactors.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">outlierSTA</span><span class="op">(</span>
-  <span class="va">STA</span>,
-  trials <span class="op">=</span> <span class="cn">NULL</span>,
-  traits <span class="op">=</span> <span class="cn">NULL</span>,
-  what <span class="op">=</span> <span class="cn">NULL</span>,
-  rLimit <span class="op">=</span> <span class="cn">NULL</span>,
-  commonFactors <span class="op">=</span> <span class="cn">NULL</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">outlierSTA</span><span class="op">(</span></span>
+<span>  <span class="va">STA</span>,</span>
+<span>  trials <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  traits <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  what <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rLimit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  commonFactors <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -170,17 +170,17 @@ similar to the outliers as defined by <code>commonFactors</code></p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Fit a model using lme4.</span></span>
-<span class="r-in"><span class="va">modLme</span> <span class="op">&lt;-</span> <span class="fu"><a href="fitTD.html">fitTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">TDHeat05</span>,</span>
-<span class="r-in">                traits <span class="op">=</span> <span class="st">"yield"</span>,</span>
-<span class="r-in">                design <span class="op">=</span> <span class="st">"res.rowcol"</span>,</span>
-<span class="r-in">                engine <span class="op">=</span> <span class="st">"lme4"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Detect outliers in the standardized residuals of the fitted model.</span></span>
-<span class="r-in"><span class="va">outliers</span> <span class="op">&lt;-</span> <span class="fu">outlierSTA</span><span class="op">(</span>STA <span class="op">=</span> <span class="va">modLme</span>,</span>
-<span class="r-in">                       traits <span class="op">=</span> <span class="st">"yield"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Fit a model using lme4.</span></span></span>
+<span class="r-in"><span><span class="va">modLme</span> <span class="op">&lt;-</span> <span class="fu"><a href="fitTD.html">fitTD</a></span><span class="op">(</span>TD <span class="op">=</span> <span class="va">TDHeat05</span>,</span></span>
+<span class="r-in"><span>                traits <span class="op">=</span> <span class="st">"yield"</span>,</span></span>
+<span class="r-in"><span>                design <span class="op">=</span> <span class="st">"res.rowcol"</span>,</span></span>
+<span class="r-in"><span>                engine <span class="op">=</span> <span class="st">"lme4"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Detect outliers in the standardized residuals of the fitted model.</span></span></span>
+<span class="r-in"><span><span class="va">outliers</span> <span class="op">&lt;-</span> <span class="fu">outlierSTA</span><span class="op">(</span>STA <span class="op">=</span> <span class="va">modLme</span>,</span></span>
+<span class="r-in"><span>                       traits <span class="op">=</span> <span class="st">"yield"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> No large standardized residuals.</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -192,7 +192,7 @@ similar to the outliers as defined by <code>commonFactors</code></p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>
