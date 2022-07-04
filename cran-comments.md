@@ -1,4 +1,5 @@
-## Release containing some minor fixes and improvements in the documentation
+## Release containing some minor fixes and improvements in the documentation.
+
 
 ----
 
