@@ -152,7 +152,7 @@ scatterPlot <- function(x,
       binWidth <- diff(range(plotTab[[trial]], na.rm = TRUE)) / 10
       ggplot2::ggplot(plotTab,
                       ggplot2::aes_string(x = trial,
-                                          y = "(..count..)/sum(..count..)")) +
+                                          y = "ggplot2::after_stat(count/sum(count))")) +
         ggplot2::geom_histogram(na.rm = TRUE, binwidth = binWidth,
                                 boundary = 0, fill = histCols[trial],
                                 color = histCols[trial]) +

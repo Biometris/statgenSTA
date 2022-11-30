@@ -148,13 +148,13 @@ layoutPlot <- function(x,
                                                   y = "y - 0.5",
                                                   yend = "y + 0.5",
                                                   linetype = "'subBlocks'"),
-                              data = subBlockBord[["vertW"]], size = 0.6,
+                              data = subBlockBord[["vertW"]], linewidth = 0.6,
                               color = "blue") +
         ggplot2::geom_segment(ggplot2::aes_string(x = "x - 0.5",
                                                   xend = "x + 0.5",
                                                   y = "y - 0.5",
                                                   yend = "y - 0.5"),
-                              data = subBlockBord[["horW"]], size = 0.6,
+                              data = subBlockBord[["horW"]], linewidth = 0.6,
                               color = "blue")
     }
     if (showGeno) {
@@ -174,12 +174,12 @@ layoutPlot <- function(x,
                                                   y = "y - 0.5",
                                                   yend = "y + 0.5",
                                                   linetype = "'replicates'"),
-                              data = repBord[["vertW"]], size = 1) +
+                              data = repBord[["vertW"]], linewidth = 1) +
         ggplot2::geom_segment(ggplot2::aes_string(x = "x - 0.5",
                                                   xend = "x + 0.5",
                                                   y = "y - 0.5",
                                                   yend = "y - 0.5"),
-                              data = repBord[["horW"]], size = 1)
+                              data = repBord[["horW"]], linewidth = 1)
     }
     if (plotSubBlock || plotRep) {
       shwVals <- c(plotRep, plotSubBlock)

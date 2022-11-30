@@ -409,7 +409,7 @@ plot.STA <- function(x,
         plots$p1 <-
           ggplot2::ggplot(data = plotDat,
                           ggplot2::aes_string(x = "residuals",
-                                              y = "(..count..)/sum(..count..)")) +
+                                              y = "ggplot2::after_stat(count/sum(count))")) +
           ggplot2::geom_histogram(fill = "darkgrey", color = "grey50", bins = 10,
                                   boundary = 0) +
           ggplot2::scale_y_continuous(expand = c(0, 0, 0, 0.05),
