@@ -394,9 +394,8 @@ extractSTASpATS <- function(STA,
   }
   if ("CV" %in% what) {
     ## Compute Coefficient of Variation.
-    result[["CV"]] <- sapply(X = mr, FUN = function(mr0) {
-      100 * sqrt(unname(mr0$var.comp[predicted])) /
-        mean(fitted(mr0), na.rm = TRUE)
+    result[["CV"]] <- sapply(X = mf, FUN = function(mf0) {
+      100 * sqrt(mf0$psi[1]) / mean(fitted(mf0), na.rm = TRUE)
     })
   }
   ## Extract residual degrees of freedom.
@@ -578,7 +577,7 @@ extractSTALme4 <- function(STA,
       ## Estimate heritability on a line mean basis.
       if (useRepId) {
         result[["heritability"]] <- round(varGen /
-          (varGen + (varErr / length(unique(TD$repId)))), 2)
+                                            (varGen + (varErr / length(unique(TD$repId)))), 2)
       } else {
         result[["heritability"]] <- round(varGen / (varGen + varErr), 2)
       }
@@ -660,10 +659,9 @@ extractSTALme4 <- function(STA,
   }
   if ("CV" %in% what) {
     ## Compute Coefficient of Variation.
-    meanFit <- sapply(X = mr, FUN = function(mr0) {
-      mean(fitted(mr0), na.rm = TRUE)
+    result[["CV"]] <- sapply(X = mf, FUN = function(mf0) {
+      100 * sigma(mf0) / mean(fitted(mf0), na.rm = TRUE)
     })
-    result[["CV"]] <- 100 * sqrt(varGen) / meanFit
   }
   if ("rDfF" %in% what) {
     result[["rDfF"]] <- sapply(X = mf, FUN = df.residual)
@@ -941,10 +939,9 @@ extractSTAAsreml <- function(STA,
   }
   ## Compute Coefficient of Variation.
   if ("CV" %in% what) {
-    meanFit <- sapply(X = mr, FUN = function(mr0) {
-      mean(fitted(mr0), na.rm = TRUE)
+    result[["CV"]] <- sapply(X = mf, function(mf0) {
+      100 * summary(mf0)$sigma / mean(fitted(mf0), na.rm = TRUE)
     })
-    result[["CV"]] <- 100 * sqrt(varGen) / meanFit
   }
   ## Extract residual degrees of freedom.
   if ("rDfF" %in% what) {
