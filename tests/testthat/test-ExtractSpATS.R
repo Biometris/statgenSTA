@@ -228,7 +228,7 @@ test_that("CV is computed correctly", {
   expect_is(extSp$CV, "numeric")
   expect_length(extSp$CV, 1)
   expect_named(extSp$CV, "t1")
-  expect_equivalent(extSp$CV, 1.58087235613645)
+  expect_equivalent(extSp$CV, 30.4678439332338)
 })
 
 
