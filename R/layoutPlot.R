@@ -32,7 +32,7 @@ layoutPlot <- function(x,
     chkChar(highlight, null = FALSE)
     chkChar(colHighlight)
     plotDat[["highlight."]] <- ifelse(plotDat[["genotype"]] %in% highlight,
-                                    as.character(plotDat[["genotype"]]), NA)
+                                      as.character(plotDat[["genotype"]]), NA)
   }
   p <- setNames(vector(mode = "list", length = length(trials)), trials)
   for (trial in trials) {
@@ -61,7 +61,7 @@ layoutPlot <- function(x,
     fullGrid <- expand.grid(colCoord = xMin:xMax, rowCoord = yMin:yMax)
     trDat <- merge(fullGrid, trDat, all.x = TRUE)
     trDat[!is.na(trDat[["rowId"]]), "color."] <- "grey85"
-    ## Compute aspect for proper depiction of field size. If no information
+      ## Compute aspect for proper depiction of field size. If no information
     ## is available plots are assumed to be square.
     ylen <- attr(trDat, "trPlLength")
     xlen <- attr(trDat, "trPlWidth")
@@ -83,7 +83,8 @@ layoutPlot <- function(x,
     ## Create base plot.
     pTr <-
       ggplot2::ggplot(data = trDat,
-                      ggplot2::aes_string(x = "colCoord", y = "rowCoord")) +
+                      ggplot2::aes(x = .data[["colCoord"]],
+                                   y = .data[["rowCoord"]])) +
       ggplot2::coord_fixed(ratio = aspect,
                            xlim = range(trDat[["colCoord"]]) + c(-0.5, 0.5),
                            ylim = range(trDat[["rowCoord"]]) + c(-0.5, 0.5),
@@ -100,8 +101,8 @@ layoutPlot <- function(x,
       ## Genotypes to be highlighted get a color.
       ## Everything else the NA color.
       pTr <- pTr +
-        ggplot2::geom_tile(ggplot2::aes_string(fill = "highlight.",
-                                               color = "color.")) +
+        ggplot2::geom_tile(ggplot2::aes(fill = .data[["highlight."]],
+                                        color = .data[["color."]])) +
         ggplot2::scale_color_manual(values = "grey85", na.translate = FALSE,
                                     na.value = "transparant") +
         ## Remove NA from scale.
@@ -112,8 +113,8 @@ layoutPlot <- function(x,
     } else if (plotSubBlock && colorSubBlock) {
       ## Color tiles by subblock.
       pTr <- pTr +
-        ggplot2::geom_tile(ggplot2::aes_string(fill = "subBlock",
-                                               color = "color.")) +
+        ggplot2::geom_tile(ggplot2::aes(fill = .data[["subBlock"]],
+                                        color = .data[["color."]])) +
         ggplot2::scale_fill_discrete(na.translate = FALSE,
                                      type = colSubBlock) +
         ggplot2::scale_color_manual(values = "grey85", na.translate = FALSE,
@@ -122,7 +123,7 @@ layoutPlot <- function(x,
     } else if (plotTrait) {
       ## Color tiles by trait value.
       pTr <- pTr +
-        ggplot2::geom_tile(ggplot2::aes_string(fill = traits),
+        ggplot2::geom_tile(ggplot2::aes(fill = .data[[traits]]),
                            color = "grey85") +
         ## Adjust plot colors.
         ggplot2::scale_fill_gradientn(colors = topo.colors(n = 100),
@@ -130,7 +131,7 @@ layoutPlot <- function(x,
     } else {
       ## No subblocks and no highlights so just a single fill color.
       pTr <- pTr +
-        ggplot2::geom_tile(ggplot2::aes_string(color = "color."),
+        ggplot2::geom_tile(ggplot2::aes(color = .data[["color."]]),
                            fill = "white") +
         ggplot2::scale_color_manual(values = "grey85", na.translate = FALSE,
                                     na.value = "transparant") +
@@ -143,24 +144,24 @@ layoutPlot <- function(x,
       ## adding/subtracting 0.5 assures plotting at the borders of
       ## the tiles.
       pTr <- pTr +
-        ggplot2::geom_segment(ggplot2::aes_string(x = "x - 0.5",
-                                                  xend = "x - 0.5",
-                                                  y = "y - 0.5",
-                                                  yend = "y + 0.5",
-                                                  linetype = "'subBlocks'"),
+        ggplot2::geom_segment(ggplot2::aes(x = .data[["x"]] - 0.5,
+                                           xend = .data[["x"]] - 0.5,
+                                           y = .data[["y"]] - 0.5,
+                                           yend = .data[["y"]] + 0.5,
+                                           linetype = "subBlocks"),
                               data = subBlockBord[["vertW"]], linewidth = 0.6,
                               color = "blue") +
-        ggplot2::geom_segment(ggplot2::aes_string(x = "x - 0.5",
-                                                  xend = "x + 0.5",
-                                                  y = "y - 0.5",
-                                                  yend = "y - 0.5"),
+        ggplot2::geom_segment(ggplot2::aes(x = .data[["x"]] - 0.5,
+                                           xend = .data[["x"]] + 0.5,
+                                           y = .data[["y"]] - 0.5,
+                                           yend = .data[["y"]] - 0.5),
                               data = subBlockBord[["horW"]], linewidth = 0.6,
                               color = "blue")
     }
     if (showGeno) {
       ## Add names of genotypes to the center of the tiles.
       pTr <- pTr +
-        ggplot2::geom_text(ggplot2::aes_string(label = "genotype"),
+        ggplot2::geom_text(ggplot2::aes(label = .data[["genotype"]]),
                            size = sizeGeno, check_overlap = TRUE, na.rm = TRUE)
     }
     if (plotRep) {
@@ -169,16 +170,16 @@ layoutPlot <- function(x,
       ## adding/subtracting 0.5 assures plotting at the borders of
       ## the tiles.
       pTr <- pTr +
-        ggplot2::geom_segment(ggplot2::aes_string(x = "x - 0.5",
-                                                  xend = "x - 0.5",
-                                                  y = "y - 0.5",
-                                                  yend = "y + 0.5",
-                                                  linetype = "'replicates'"),
+        ggplot2::geom_segment(ggplot2::aes(x = .data[["x"]] - 0.5,
+                                           xend = .data[["x"]] - 0.5,
+                                           y = .data[["y"]] - 0.5,
+                                           yend = .data[["y"]] + 0.5,
+                                           linetype = "replicates"),
                               data = repBord[["vertW"]], linewidth = 1) +
-        ggplot2::geom_segment(ggplot2::aes_string(x = "x - 0.5",
-                                                  xend = "x + 0.5",
-                                                  y = "y - 0.5",
-                                                  yend = "y - 0.5"),
+        ggplot2::geom_segment(ggplot2::aes(x = .data[["x"]] - 0.5,
+                                           xend = .data[["x"]] + 0.5,
+                                           y = .data[["y"]] - 0.5,
+                                           yend = .data[["y"]] - 0.5),
                               data = repBord[["horW"]], linewidth = 1)
     }
     if (plotSubBlock || plotRep) {

@@ -408,8 +408,8 @@ plot.STA <- function(x,
         ## Plot histogram of residuals.
         plots$p1 <-
           ggplot2::ggplot(data = plotDat,
-                          ggplot2::aes_string(x = "residuals",
-                                              y = "ggplot2::after_stat(count/sum(count))")) +
+                          ggplot2::aes(x = .data[["residuals"]],
+                                       y = ggplot2::after_stat(count / sum(count)))) +
           ggplot2::geom_histogram(fill = "darkgrey", color = "grey50", bins = 10,
                                   boundary = 0) +
           ggplot2::scale_y_continuous(expand = c(0, 0, 0, 0.05),
@@ -422,7 +422,7 @@ plot.STA <- function(x,
         ## Plot QQ plot of residuals.
         plots$p2 <-
           ggplot2::ggplot(data = plotDat,
-                          ggplot2::aes_string(sample = "residuals")) +
+                          ggplot2::aes(sample = .data[["residuals"]])) +
           ggplot2::stat_qq(shape = 1, alpha = 0.7) +
           ggplot2::labs(y = "Residuals", x = "Normal quantiles") +
           ggplot2::theme(panel.background = ggplot2::element_blank(),
@@ -432,7 +432,8 @@ plot.STA <- function(x,
         ## Plot residuals vs fitted values.
         plots$p3 <-
           ggplot2::ggplot(data = plotDat,
-                          ggplot2::aes_string(x = "fitted", y = "residuals")) +
+                          ggplot2::aes(x = .data[["fitted"]],
+                                       y = .data[["residuals"]])) +
           ggplot2::geom_point(shape = 1, alpha = 0.7) +
           ggplot2::geom_smooth(method = "loess", formula = "y ~ x",
                                color = "red") +
@@ -445,8 +446,8 @@ plot.STA <- function(x,
         ## Plot absolute value of residuals vs fitted values.
         plots$p4 <-
           ggplot2::ggplot(data = plotDat,
-                          ggplot2::aes_string(x = "fitted",
-                                              y = "abs(residuals)")) +
+                          ggplot2::aes(x = .data[["fitted"]],
+                                       y = abs(.data[["residuals"]]))) +
           ggplot2::geom_point(shape = 1, alpha = 0.7) +
           ggplot2::geom_smooth(method = "loess", formula = "y ~ x",
                                color = "red") +
@@ -555,7 +556,7 @@ plot.STA <- function(x,
                               title = legends[5], colors = colors)
         plots$p6 <-
           ggplot2::ggplot(data = plotDat) +
-          ggplot2::geom_histogram(ggplot2::aes(x = pred),
+          ggplot2::geom_histogram(ggplot2::aes(x = .data[["pred"]]),
                                   fill = "white", color = "black", bins = 10,
                                   boundary = 0, na.rm = TRUE) +
           ## Remove empty space between ticks and actual plot.
@@ -595,8 +596,9 @@ fieldPlot <- function(plotDat,
                       spaTrend = "raw",
                       ...) {
   p <- ggplot2::ggplot(data = plotDat,
-                       ggplot2::aes_string(x = "colCoord", y = "rowCoord",
-                                           fill = fillVar)) +
+                       ggplot2::aes(x = .data[["colCoord"]],
+                                    y = .data[["rowCoord"]],
+                                    fill = .data[[fillVar]])) +
     ggplot2::geom_tile(na.rm = TRUE) +
     ## Remove empty space between ticks and actual plot.
     ggplot2::scale_x_continuous(expand = c(0, 0), breaks = xTicks) +

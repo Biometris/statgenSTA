@@ -107,9 +107,10 @@ corPlot <- function(x,
     }
     ## Create plot.
     pTr <- ggplot2::ggplot(data = meltedCorMatLow,
-                           ggplot2::aes_string("trial1", "trial2")) +
-      ggplot2::geom_tile(ggplot2::aes_string(fill = "cor"),
-                         color = "grey50") +
+                           ggplot2::aes(x = .data[["trial1"]],
+                                        y = .data[["trial2"]],
+                                        fill = .data[["cor"]])) +
+      ggplot2::geom_tile(color = "grey50") +
       ## Create a gradient scale.
       ggplot2::scale_fill_gradient2(low = "blue", high = "red", mid = "white",
                                     na.value = "grey", limit = c(-1, 1)) +

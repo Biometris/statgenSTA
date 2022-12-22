@@ -3,8 +3,14 @@
 
 #' @importFrom xtable xtable
 #' @importFrom graphics plot
+#' @importFrom rlang .data
 #' @import stats
 NULL
+
+## CRAN Note avoidance.
+if (getRversion() >= "2.15.1") {
+  utils::globalVariables("count")
+}
 
 statgenDefaultOptions <- list(
   ##palette.colors(palette = "Dark 2")

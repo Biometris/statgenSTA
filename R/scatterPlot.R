@@ -33,8 +33,8 @@ scatterPlot <- function(x,
   if (!is.null(colorTrialBy)) {
     chkChar(colorTrialBy, len = 1, null = FALSE)
     if (!all(vapply(X = x, FUN = hasName, FUN.VALUE = logical(1),
-                  name = colorTrialBy))) {
-    stop("colorTrialBy should be a column in TD.\n")
+                    name = colorTrialBy))) {
+      stop("colorTrialBy should be a column in TD.\n")
     }
     chkChar(colTrial)
   }
@@ -151,8 +151,8 @@ scatterPlot <- function(x,
       colnames(plotTab) <- make.names(paste0("t", colnames(plotTab)))
       binWidth <- diff(range(plotTab[[trial]], na.rm = TRUE)) / 10
       ggplot2::ggplot(plotTab,
-                      ggplot2::aes_string(x = trial,
-                                          y = "ggplot2::after_stat(count/sum(count))")) +
+                      ggplot2::aes(x = .data[[trial]],
+                                   y = ggplot2::after_stat(count / sum(count)))) +
         ggplot2::geom_histogram(na.rm = TRUE, binwidth = binWidth,
                                 boundary = 0, fill = histCols[trial],
                                 color = histCols[trial]) +
@@ -224,9 +224,9 @@ scatterPlot <- function(x,
     ## Create a facet plot containing only scatter plots.
     scatterBase <-
       ggplot2::ggplot(data = plotTab,
-                      ggplot2::aes_string(x = paste0(trait, ".x"),
-                                          y = paste0(trait, ".y"),
-                                          color = paste0("`", colorGenoBy, "`"))) +
+                      ggplot2::aes(x = .data[[paste0(trait, ".x")]],
+                                   y = .data[[paste0(trait, ".y")]],
+                                   color = .data[[colorGenoBy]])) +
       ggplot2::geom_point(na.rm = TRUE, shape = 1,
                           show.legend = colorGenoBy != ".colorGenoBy") +
       ggplot2::scale_color_manual(values = colGeno) +
@@ -242,7 +242,7 @@ scatterPlot <- function(x,
                                                           fill = NA))
     if (colorTrialBy != ".colorTrialBy") {
       scatterBase <- scatterBase +
-        ggplot2::geom_point(ggplot2::aes_string(fill = colorTrialBy),
+        ggplot2::geom_point(ggplot2::aes(fill = .data[[colorTrialBy]]),
                             color = NA, na.rm = TRUE) +
         ggplot2::scale_fill_discrete(labels = names(colorTrialColors)) +
         ggplot2::guides(fill = ggplot2::guide_legend(override.aes =
@@ -252,8 +252,9 @@ scatterPlot <- function(x,
       ## Add correlation annotated in the corner of the plot.
       scatterBase <- scatterBase +
         ggplot2::geom_text(data = meltedCorMat,
-                           ggplot2::aes_string(x = "x", y = "y",
-                                               label = "paste('rho ==', round(cor, 2))"),
+                           ggplot2::aes(x = .data[["x"]], y = .data[["y"]],
+                                        label = paste("rho ==",
+                                                      round(.data[["cor"]], 2))),
                            color = "red", hjust = "inward", vjust = "inward",
                            parse = TRUE, inherit.aes = FALSE)
     }

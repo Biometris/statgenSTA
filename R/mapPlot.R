@@ -91,14 +91,15 @@ mapPlot <- function(x,
   latR <- latR + c(-0.1, 0.1) * diff(latR)
   ## Create data usable by ggplot geom_polygon.
   mapDat <- mapData(xLim = longR, yLim = latR)
-  p <- ggplot2::ggplot(mapDat, ggplot2::aes_string(x = "long", y = "lat")) +
-    ggplot2::geom_polygon(ggplot2::aes_string(group = "group"), fill = "white",
-                          color = "black") +
+  p <- ggplot2::ggplot(mapDat, ggplot2::aes(x = .data[["long"]],
+                                            y = .data[["lat"]])) +
+    ggplot2::geom_polygon(ggplot2::aes(group = .data[["group"]]),
+                          fill = "white", color = "black") +
     ## Add a proper map projection.
     ggplot2::coord_map(clip = "on", xlim = longR, ylim = latR) +
     ## Add trial locations.
     ggplot2::geom_point(data = locs,
-                        ggplot2::aes_string(color = colorTrialBy),
+                        ggplot2::aes(color = .data[[colorTrialBy]]),
                         show.legend = isFALSE(printTrialNames) &
                           colorTrialBy != ".colorTrialBy") +
     ggplot2::scale_color_manual(values = colTrial) +
@@ -112,8 +113,8 @@ mapPlot <- function(x,
   if (!isFALSE(printTrialNames)) {
     p <- p +
       ggrepel::geom_text_repel(mapping =
-                                 ggplot2::aes_string(label = "name",
-                                                     color = colorTrialBy),
+                                 ggplot2::aes(label = .data[["name"]],
+                                              color = .data[[colorTrialBy]]),
                                data = locs, size = 3,
                                nudge_x = 0.01 * diff(longR),
                                nudge_y = 0.04 * diff(latR),

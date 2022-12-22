@@ -59,7 +59,7 @@ Description: Phenotypic analysis of field trials using mixed models with and
 License: GPL
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 Depends: R (>= 3.3)
 Imports: 
@@ -72,6 +72,7 @@ Imports:
     mapproj,
     maps,
     qtl,
+    rlang,
     scales (>= 1.1.0),
     SpATS (>= 1.0-18),
     xtable

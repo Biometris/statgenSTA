@@ -1,3 +1,7 @@
+# statgenSTA 1.0.10.9999
+
+* soft-deprecated `aes_string` from ggplot2 is no longer used. 
+
 # statgenSTA 1.0.10
 
 * Functions no longer rely on soft-deprecated ggplot2 functionality.

@@ -106,9 +106,8 @@ boxPlot <- function(x,
     }
     ## Create boxplot.
     pTr <- ggplot2::ggplot(plotDat,
-                           ggplot2::aes_string(x = paste0("`", xVar, "`"),
-                                               y = paste0("`", trait, "`"),
-                                               fill = colorTrialBy)) +
+                           ggplot2::aes(x = .data[[xVar]], y = .data[[trait]],
+                                        fill = .data[[colorTrialBy]])) +
       ggplot2::geom_boxplot(na.rm = TRUE,
                             show.legend = colorTrialBy != ".colorTrialBy") +
       ggplot2::scale_fill_manual(values = colTrial) +

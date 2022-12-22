@@ -24,7 +24,7 @@ test_that("option groupBy functions properly for TD box plot", {
                "groupBy should be a column in TD")
   p <- plot(testTD, plotType = "box", traits = "t1", groupBy = "repId",
             output = FALSE)
-  expect_true("~repId" %in% as.character(p$t1$mapping))
+  expect_true("~.data[[\"repId\"]]" %in% as.character(p$t1$mapping))
 })
 
 test_that("option colorTrialBy functions properly for TD box plot", {
@@ -38,7 +38,8 @@ test_that("option colorTrialBy functions properly for TD box plot", {
                "Number of colors provided doesn't match number of trial groups")
   p <- plot(testTD, plotType = "box", traits = "t1", colorTrialBy = "repId",
             output = FALSE)
-  expect_true(all(c("~repId", "~trial") %in% as.character(p$t1$mapping)))
+  expect_true(all(c("~.data[[\"repId\"]]", "~.data[[\"trial\"]]") %in%
+                    as.character(p$t1$mapping)))
 })
 
 test_that("option orderBy functions properly for TD box plot", {

@@ -54,7 +54,7 @@ test_that("option highlight functions properly in TD layout plot", {
   geoms1 <- getGeoms(p1)
   ## Two plots should be highlighted as defined in variable highlight..
   expect_setequal(as.character(p1[[1]]$layers[geoms1 == "GeomTile"][[1]]$mapping),
-                  c("~highlight.", "~color."))
+                  c("~.data[[\"highlight.\"]]", "~.data[[\"color.\"]]"))
   expect_equal(sum(!is.na(p1[[1]]$data$highlight.)), 2)
 })
 
@@ -72,7 +72,7 @@ test_that("option colorSubBlock functions properly in TD layout plot", {
   geoms1 <- getGeoms(p1)
   ## Fill should be based on subBlocks.
   expect_setequal(as.character(p1[[1]]$layers[geoms1 == "GeomTile"][[1]]$mapping),
-                  c("~subBlock", "~color."))
+                  c("~.data[[\"subBlock\"]]", "~.data[[\"color.\"]]"))
 })
 
 test_that("specifying custom colors for subBlock functions properly in TD layout plot", {
@@ -90,7 +90,7 @@ test_that("option highlight overrides colorSubBlock in TD layout plot", {
   geoms1 <- getGeoms(p1)
   ## Two plots should be highlighted as defined in variable highlight..
   expect_setequal(as.character(p1[[1]]$layers[geoms1 == "GeomTile"][[1]]$mapping),
-                  c("~highlight.", "~color."))
+                  c("~.data[[\"highlight.\"]]", "~.data[[\"color.\"]]"))
 })
 
 test_that("option title overrides default title in TD layout plot", {
