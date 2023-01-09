@@ -18,7 +18,7 @@ R,ranEf,random genetic effects,1,1,1,1
 R,residR,residuals for the model with genotype as random component,1,1,1,1
 R,stdResR,standardized residuals for the model with genotype as random component,1,1,1,1
 F,wald,results of the wald test - only for lme4 and asreml,1,1,0,0
-R,CV,Coefficient of Variation,1,1,1,2
+F,CV,Coefficient of Variation,1,1,1,2
 F,rDfF,residual degrees of freedom for the model with genotype as fixed component,1,1,1,2
 R,rDfR,residual degrees of freedom for the model with genotype as random component,1,1,1,2
 R,effDim,effective dimensions - only for SpATS,0,0,1,0
