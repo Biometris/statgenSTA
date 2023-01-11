@@ -7,7 +7,7 @@
 [![CRAN RStudio mirror
 downloads](https://cranlogs.r-pkg.org/badges/statgenSTA)](https://www.r-pkg.org/pkg/statgenSTA)
 [![R-CMD-check](https://github.com/Biometris/statgenSTA/workflows/R-CMD-check/badge.svg)](https://github.com/Biometris/statgenSTA/actions?workflow=R-CMD-check)
-[![codecov](https://codecov.io/gh/Biometris/statgenSTA/branch/master/graph/badge.svg)](https://app.codecov.io/gh/Biometris/statgenSTA)
+[![codecov](https://codecov.io/gh/Biometris/statgenSTA/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Biometris/statgenSTA)
 
 **statgenSTA** is an R package providing functions for phenotypic
 analysis of agricultural field trials using mixed models with and
@@ -25,14 +25,14 @@ read the
 
 ## Installation
 
--   Install from CRAN:
+- Install from CRAN:
 
 ``` r
 install.packages("statgenSTA")
 ```
 
--   Install latest development version from GitHub (requires
-    [remotes](https://github.com/r-lib/remotes) package):
+- Install latest development version from GitHub (requires
+  [remotes](https://github.com/r-lib/remotes) package):
 
 ``` r
 remotes::install_github("Biometris/statgenSTA", ref = "develop", dependencies = TRUE)
