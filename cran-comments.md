@@ -1,4 +1,4 @@
-## Release containing some minor fixes and removal of deprecated ggplot2 functionality.
+## Release containing a bug fix, removal of a deprecated function and remove use of deprecated ggplot2 functionality.
 
 ----
 
