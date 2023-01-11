@@ -1,6 +1,7 @@
-# statgenSTA 1.0.10.9999
+# statgenSTA 1.0.11
 
-* A bug in extractSTA was fixed. It is now possible to extract CV when only a fixed model is fitted.
+* A bug in `extractSTA` was fixed. It is now possible to extract CV when only a fixed model is fitted.
+* The `extract` function that had been deprecated for a long time is now removed from the package.
 * soft-deprecated `aes_string` from ggplot2 is no longer used. 
 
 # statgenSTA 1.0.10
