@@ -276,7 +276,47 @@ Linear Mixed-Effects Models Using lme4. Journal of Statistical Software,
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Summarize results.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lmeMod</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in sapply(X = varCor, FUN = "attr", "sc")^2:</span> non-numeric argument to binary operator</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Summary statistics </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ==================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Summary statistics for yield in HEAT05  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                             yield</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of observations      338.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of missing values      0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mean                       184.16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Median                     179.81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Min                         54.58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Max                        341.77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> First quantile             148.56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Third quantile             220.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variance                 2569.229</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Predicted means (BLUEs) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ===============================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Best 20 genotypes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        BLUEs     SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB023 302.84 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB025 297.84 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB022 285.13 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB032 280.96 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB011 272.45 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB156 262.77 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB055 253.21 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB020 253.08 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB144 251.55 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB045 250.07 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB054 246.51 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB031 245.69 30.338</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB027 244.27 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB128 243.91 30.338</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB194 239.22 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB077 238.66 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB093 236.58 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB106 233.86 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB041 232.83 30.194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SB143 232.41 30.194</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Create base plots of the results.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lmeMod</span><span class="op">)</span></span></span>
