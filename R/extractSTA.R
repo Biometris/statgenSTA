@@ -561,7 +561,7 @@ extractSTALme4 <- function(STA,
                                    engine = "lme4")
   }
   ## Extract variances.
-  if (any(c("varGen", "varErr", "heritability", "CV") %in% what)) {
+  if (any(c("varGen", "varErr", "heritability") %in% what)) {
     varCor <- lapply(X = mr, FUN = lme4::VarCorr)
     varGen <- sapply(X = varCor, FUN = function(vc) {
       vc[[predicted]][1, 1]
