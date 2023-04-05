@@ -1,3 +1,7 @@
+# statgenSTA 1.0.11.9000
+
+* soft-deprecated `facets` in `facet_wrap` from ggplot2 is no longer used.
+
 # statgenSTA 1.0.11
 
 * A bug in `extractSTA` was fixed. It is now possible to extract CV when only a fixed model is fitted.

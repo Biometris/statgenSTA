@@ -232,7 +232,7 @@ scatterPlot <- function(x,
       ggplot2::scale_color_manual(values = colGeno) +
       ggplot2::scale_x_continuous(breaks = scales::breaks_extended(n = 3)) +
       ggplot2::scale_y_continuous(breaks = scales::breaks_extended(n = 3)) +
-      ggplot2::facet_grid(facets = c("trial.y", "trial.x")) +
+      ggplot2::facet_grid(rows = trial.y ~ trial.x) +
       ggplot2::labs(title = plotTitle, x = "", y = "") +
       ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
                      aspect.ratio = 1,
