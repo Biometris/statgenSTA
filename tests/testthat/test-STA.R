@@ -62,7 +62,7 @@ test_that("summary.STA produces correct output for asreml with spatial models", 
   expect_equal(sumAsTs$selSpatMod, "AR1(x)AR1")
   expect_equal(nrow(sumAsTs$stats), 9)
   expect_equal(dim(sumAsTs$meanTab), c(15, 4))
-  expect_equivalent(sumAsTs$heritability, -0.72)
+  expect_equivalent(sumAsTs$heritability, 0.44)
   expect_equal(nrow(sumAsTs$sed), 3)
   expect_equal(nrow(sumAsTs$lsd), 3)
   expect_equal(dim(sumAsTs$spatSumTab), c(7, 10))

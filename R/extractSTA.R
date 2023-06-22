@@ -828,10 +828,18 @@ extractSTAAsreml <- function(STA,
   if ("varErr" %in% what) {
     result[["varErr"]] <- sapply(X = mr, FUN = function(mr0) {
       if (asreml4()) {
-        unname(mr0$vparameters["units!R"] * mr0$sigma2)
+        if ("units" %in% names(mr0$vparameters)) {
+          paramVal <- unname(mr0$vparameters["units"])
+        } else {
+          paramVal <- unname(mr0$vparameters[names(mr0$vparameters) %in%
+                                               c("units!R", "rowId:colId!R",
+                                                 "rowCoord:colCoord!R",
+                                                 "iexp(rowCoord,colCoord)!R")])
+        }
       } else {
-        unname(mr0$gammas["R!variance"] * mr0$sigma2)
+        paramVal <- unname(mr0$gammas[c("R!variance", "units!units.var")])
       }
+      paramVal * mr0$sigma2
     })
   }
   ## Estimate heritability on a line mean basis.
