@@ -706,6 +706,7 @@ report.STA <- function(x,
   what <- match.arg(what, several.ok = TRUE)
   for (trial in trials) {
     for (whatTr in what) {
+      outTr <- gsub(pattern = " ", replacement = "_", x = trial)
       modTr <- x[trial]
       whatMod <- c("mFix", "mRand")[whatTr == c("fixed", "random")]
       if (is.null(modTr[[trial]][[whatMod]])) {
@@ -722,7 +723,7 @@ report.STA <- function(x,
         next
       }
       for (trait in traitsTr) {
-        outTr <- gsub(pattern = " ", replacement = "_", x = trait)
+        outTrt <- gsub(pattern = " ", replacement = "_", x = trait)
         ## report name has to be adapted.
         if (!is.null(outfile)) {
           ## Add trial and trait info before file extension.
@@ -730,7 +731,7 @@ report.STA <- function(x,
           outLen <- nchar(outfile)
           outfileTr <- paste0(substring(text = outfile, first = 1,
                                         last = outLen - nchar(outExt) - 1),
-                              "_", trial, "_", outTr, "_", whatTr, ".", outExt)
+                              "_", outTr, "_", outTrt, "_", whatTr, ".", outExt)
         } else {
           outfileTr <- paste0("./modelReport_" , trial, "_", outTr, "_", whatTr,
                               "_", timeStamp, ".pdf")

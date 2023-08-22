@@ -1,6 +1,7 @@
 # statgenSTA 1.0.11.9000
 
 * A bug in extracting the the error variances for spatial models fitted with asreml is fixed. Previously for some models NA would be returned as error variance.
+* It is now possible to create reports for trials that have a space in their name.
 * soft-deprecated `facets` in `facet_wrap` from ggplot2 is no longer used.
 
 # statgenSTA 1.0.11
