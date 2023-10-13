@@ -308,7 +308,8 @@ modelChecks <- function(TD,
                if (design %in% c("rowcol", "res.rowcol")) c("rowId", "colId"),
                if (design %in% c("res.ibd", "res.rowcol", "rcbd")) "repId",
                if (design %in% c("ibd", "res.ibd")) "subBlock",
-               if (useCheckId) "checkId")
+               if (useCheckId) "checkId",
+               if (spatial) c("rowId", "colId"))
   for (desCol in desCols) {
     if (!hasName(TD[[trial]], desCol)) {
       stop(desCol, " should be a column in ", trial, ".\n")
