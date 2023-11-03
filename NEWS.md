@@ -1,4 +1,4 @@
-# statgenSTA 1.0.11.9000
+# statgenSTA 1.0.12
 
 * For spatial models fitted with asreml convergence is now based on convergence of both the model with genotype as random and the model with genotype as fixed effect. This used to be based only on the model with genotype as random effect.
 * If for spatial models fitted with asreml the selected model contains units as a random model component, that is now printed in the summary of the model.
