@@ -59,7 +59,7 @@ test_that("summary.STA produces correct output for asreml with spatial models", 
                                     spatial = TRUE, engine = "asreml"))
   expect_warning(sumAsTs <- summary(modelAsTs))
   expect_length(sumAsTs, 7)
-  expect_equal(sumAsTs$selSpatMod, "AR1(x)AR1")
+  expect_equal(sumAsTs$selSpatMod, "AR1(x)AR1 - units")
   expect_equal(nrow(sumAsTs$stats), 9)
   expect_equal(dim(sumAsTs$meanTab), c(15, 4))
   expect_equivalent(sumAsTs$heritability, 0.44)
@@ -120,7 +120,7 @@ test_that("print.summary.STA functions properly", {
                     "Least Significant Difference (genotype modeled as fixed effect) ") %in%
                     sumAs))
   expect_true(all(c("Overview of tried spatial models ",
-                    "Selected spatial model:  AR1(x)AR1 ") %in%
+                    "Selected spatial model:  AR1(x)AR1 - units ") %in%
                     sumAsTs))
 })
 

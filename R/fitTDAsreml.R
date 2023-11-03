@@ -511,7 +511,8 @@ bestSpatMod <- function(TD,
     }
     mr[[trait]] <- bestModrTr
     mf[[trait]] <- bestModfTr
-    spatial[[trait]] <- spatCh[bestMod]
+    extraTerm <- if (randTerm[bestMod] != "NULL") paste("-", randTerm[bestMod])
+    spatial[[trait]] <- paste(spatCh[bestMod], extraTerm)
     attr(x = modSum, which = "chosen") <- bestMod
     sumTab[[trait]] <- modSum
   } # End for traits.
