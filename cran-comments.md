@@ -1,10 +1,10 @@
-## Release containing a bug fix, removal of a deprecated function and remove use of deprecated ggplot2 functionality.
+## Release containing several improvements and bug fixes.
 
 ----
 
 ## Test environments
 
-* local Windows 10 install, R 4.2.2
+* local Windows 10 install, R 4.3.1
 * Ubuntu (on github actions, devel and release)
 * macOS (on github actions, release)
 * R-hub (devel and release)
