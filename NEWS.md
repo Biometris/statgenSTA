@@ -1,5 +1,6 @@
 # statgenSTA 1.0.11.9000
 
+* For spatial models fitted with asreml convergence is now based on convergence of both the model with genotype as random and the model with genotype as fixed effect. This used to be based only on the model with genotype as random effect.
 * A bug in extracting the the error variances for spatial models fitted with asreml is fixed. Previously for some models NA would be returned as error variance.
 * It is now possible to create reports for trials that have a space in their name.
 * An extra check is added to assure row and column information are available when fitting spatial models.
