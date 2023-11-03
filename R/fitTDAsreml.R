@@ -482,7 +482,7 @@ bestSpatMod <- function(TD,
     if (length(mfTrait$warning) != 0) {
       warning("Warning in asreml for model ", spatCh[i],
               " genotype fixed, trait ", trait, " in trial ",
-              TDTr$trial[1], ":\n", mrTrait$warning, "\n", call. = FALSE)
+              TDTr$trial[1], ":\n", mfTrait$warning, "\n", call. = FALSE)
     }
     if (is.null(mfTrait$error)) {
       mfTrait <- mfTrait$value
