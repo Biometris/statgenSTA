@@ -127,6 +127,11 @@ summary.STA <- function(object,
                            is.null(object[[trials]]$mRand[[trait]]))) {
       stop("No fitted model found for ", trait, " in ", trials, ".\n")
     }
+    ## Remove possible row/column filler observations.
+    TD <- lapply(X = TD, FUN = function(dat) {
+      dat[genoOrCheck(dat, predicted = "genotype",
+                      useCheckId = hasName(x = dat, name = "checkId")), ]
+    })
     stats <- summary.TD(object = TD, traits = trait)
     ## get predicted means (BLUEs + BLUPs).
     extr <- extractSTA(object, trials = trials, traits = trait)[[trials]]
