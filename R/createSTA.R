@@ -134,6 +134,16 @@ summary.STA <- function(object,
     ## merge when using Reduce.
     joinList <- Filter(f = Negate(f = is.null),
                        x = extr[c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs")])
+    ## Combine genotype and columns if needed.
+    joinList <- lapply(X = joinList, FUN = function(dat) {
+      if (hasName(x = dat, name = "checkId")) {
+        dat[["genotype"]] <- ifelse(is.na(dat[["genotype"]]),
+                                    as.character(dat[["checkId"]]),
+                                    as.character(dat[["genotype"]]))
+        dat[["checkId"]] <- NULL
+      }
+      return(dat)
+    })
     meanTab <- joinList[[1]]
     for (i in 2:length(joinList)) {
       meanTab <- merge(meanTab, joinList[[i]], all = TRUE, by = "genotype",

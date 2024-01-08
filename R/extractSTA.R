@@ -214,8 +214,8 @@ extractSTASpATS <- function(STA,
   TD <- STA$TD[[1]]
   renCols <- attr(TD, "renamedCols")
   predicted <- STA$predicted
-  useCheckId <- length(grep(pattern = "checkId",
-                            x = deparse(mr[[1]]$model$fixed))) > 0
+  useCheckId <- !is.null(mr) &&
+    "checkId" %in% attr(terms(mr[[1]]$model$fixed), "term.labels")
   whatPred <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ranEf")
   what <- extractOptSel(what = what, fixed = !is.null(mf),
                         random = !is.null(mr), engine = "SpATS")
@@ -225,7 +225,7 @@ extractSTASpATS <- function(STA,
     which(is.na(TD[[trait]]))
   }, simplify = FALSE)
   ## Create baseData and baseDataPred to which further results will be merged.
-  base <- createBaseData(TD, predicted, keep, useRepId,
+  base <- createBaseData(TD, predicted, keep, useRepId, useCheckId,
                          bdPred = any(what %in% whatPred))
   baseData <- base$baseData
   baseDataPred <- base$baseDataPred
@@ -453,11 +453,13 @@ extractSTALme4 <- function(STA,
   TD <- STA$TD[[1]]
   renCols <- attr(TD, "renamedCols")
   predicted <- STA$predicted
+  useCheckId <- !is.null(mr) &&
+    "checkId" %in% attr(terms(formula(mr[[1]])), "term.labels")
   whatPred <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ranEf")
   what <- extractOptSel(what = what, fixed = !is.null(mf),
                         random = !is.null(mr), engine = "lme4")
   ## Create baseData and baseDataPred to which further results will be merged.
-  base <- createBaseData(TD, predicted, keep, useRepId,
+  base <- createBaseData(TD, predicted, keep, useRepId, useCheckId,
                          bdPred = any(what %in% whatPred))
   baseData <- base$baseData
   baseDataPred <- base$baseDataPred
@@ -690,11 +692,13 @@ extractSTAAsreml <- function(STA,
   TD <- STA$TD[[1]]
   renCols <- attr(TD, "renamedCols")
   predicted <- STA$predicted
+  useCheckId <- !is.null(mr) &&
+    "checkId" %in% attr(terms(mr[[1]]$call$fixed), "term.labels")
   whatPred <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ranEf")
   what <- extractOptSel(what = what, fixed = !is.null(mf),
                         random = !is.null(mr), engine = "asreml")
   ## Create baseData and baseDataPred to which further results will be merged.
-  base <- createBaseData(TD, predicted, keep, useRepId,
+  base <- createBaseData(TD, predicted, keep, useRepId, useCheckId,
                          bdPred = any(what %in% whatPred))
   baseData <- base$baseData
   baseDataPred <- base$baseDataPred
@@ -862,7 +866,7 @@ extractSTAAsreml <- function(STA,
   ## Extract fitted values.
   if ("fitted" %in% what) {
     fitVal <- cbind(baseData, sapply(X = mf, FUN = function(mf0) {
-      fitted(mf0)[!is.na(as.character(mf0$call$data[["genotype"]]))]
+      fitted(mf0)[genoOrCheck(mf0$call$data, "genotype", useCheckId)]
     }))
     result[["fitted"]] <- restoreColNames(renDat = fitVal, renamedCols = renCols,
                                           restore = restore)
@@ -870,7 +874,8 @@ extractSTAAsreml <- function(STA,
   ## Extract residuals.
   if ("residF" %in% what) {
     resVal <- cbind(baseData, sapply(X = mf, FUN = function(mf0) {
-      residuals(mf0, type = "response")[!is.na(as.character(mf0$call$data[["genotype"]]))]
+      residuals(mf0, type = "response")[genoOrCheck(mf0$call$data,
+                                                    "genotype", useCheckId)]
     }))
     result[["residF"]] <- restoreColNames(renDat = resVal, renamedCols = renCols,
                                           restore = restore)
@@ -878,7 +883,8 @@ extractSTAAsreml <- function(STA,
   ## Extract standardized residuals.
   if ("stdResF" %in% what) {
     stdRes <- cbind(baseData, sapply(X = mf, FUN = function(mf0) {
-      residuals(mf0, type = "stdCond")[!is.na(as.character(mf0$call$data[["genotype"]]))]
+      residuals(mf0, type = "stdCond")[genoOrCheck(mf0$call$data,
+                                                   "genotype", useCheckId)]
     }))
     result[["stdResF"]] <- restoreColNames(renDat = stdRes, renamedCols = renCols,
                                            restore = restore)
@@ -886,7 +892,7 @@ extractSTAAsreml <- function(STA,
   ## Extract rMeans.
   if ("rMeans" %in% what) {
     rMeans <- cbind(baseData, sapply(X = mr, FUN = function(mr0) {
-      fitted(mr0)[!is.na(as.character(mr0$call$data[["genotype"]]))]
+      fitted(mr0)[genoOrCheck(mr0$call$data, "genotype", useCheckId)]
     }))
     result[["rMeans"]] <- restoreColNames(renDat = rMeans, renamedCols = renCols,
                                           restore = restore)
@@ -913,7 +919,8 @@ extractSTAAsreml <- function(STA,
   ## Extract residuals for genotype random.
   if ("residR" %in% what) {
     resVal <- cbind(baseData, sapply(X = mr, FUN = function(mr0) {
-      residuals(mr0, type = "response")[!is.na(as.character(mr0$call$data[["genotype"]]))]
+      residuals(mr0, type = "response")[genoOrCheck(mr0$call$data,
+                                                    "genotype", useCheckId)]
     }))
     result[["residR"]] <- restoreColNames(renDat = resVal,
                                           renamedCols = renCols,
@@ -922,7 +929,8 @@ extractSTAAsreml <- function(STA,
   ## Extract standardized residuals.
   if ("stdResR" %in% what) {
     stdRes <- cbind(baseData, sapply(X = mr, FUN = function(mr0) {
-      residuals(mr0, type = "stdCond")[!is.na(as.character(mr0$call$data[["genotype"]]))]
+      residuals(mr0, type = "stdCond")[genoOrCheck(mr0$call$data,
+                                                   "genotype", useCheckId)]
     }))
     result[["stdResR"]] <- restoreColNames(renDat = stdRes,
                                            renamedCols = renCols,
@@ -988,6 +996,26 @@ extractSTAAsreml <- function(STA,
   return(result)
 }
 
+#' Helper function for determining if an observation is a valid
+#' genotype of check genotype.
+#' Used for excluding columns that have been added to create rectangular
+#' row-column data required for asreml.
+#'
+#' @noRd
+#' @keywords internal
+genoOrCheck <- function(dat,
+                        predicted = "genotype",
+                        useCheckId = FALSE) {
+  geno <- !is.na(as.character(dat[[predicted]]))
+  if (useCheckId) {
+    check <- is.na(as.character(dat[[predicted]])) &
+      !is.na(as.character(dat[["checkId"]]))
+    return(geno | check)
+  }
+  return(geno)
+}
+
+
 #' Helper function for creating baseData
 #'
 #' @noRd
@@ -996,14 +1024,17 @@ createBaseData <- function(TD,
                            predicted,
                            keep = NULL,
                            useRepId = FALSE,
+                           useCheckId = FALSE,
                            bdPred = FALSE) {
   ## Create baseData consisting of predicted variable, possibly repId and
   ## selected keep columns.
-  baseData <- TD[, colnames(TD) %in% c(predicted, ifelse(useRepId, "repId", ""),
+  baseData <- TD[, colnames(TD) %in% c(predicted,
+                                       ifelse(useRepId, "repId", ""),
+                                       ifelse(useCheckId, "checkId", ""),
                                        keep), drop = FALSE]
   ## Remove NA values for predicted.
   ## Possibly inserted when adding empty lines for missing row/column info.
-  baseData <- baseData[!is.na(as.character(baseData[[predicted]])), ,
+  baseData <- baseData[genoOrCheck(baseData, predicted, useCheckId), ,
                        drop = FALSE]
   ## Create baseData for predictions with predicted variable(s).
   if (bdPred) {
