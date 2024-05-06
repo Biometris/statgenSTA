@@ -1,3 +1,7 @@
+# statgenSTA 1.0.13
+
+* Patch release for R 4.4.0. No user visual changes.
+
 # statgenSTA 1.0.12
 
 * For spatial models fitted with asreml convergence is now based on convergence of both the model with genotype as random and the model with genotype as fixed effect. This used to be based only on the model with genotype as random effect.

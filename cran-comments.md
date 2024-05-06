@@ -1,4 +1,4 @@
-## Release containing several improvements and bug fixes.
+## Patch release for R 4.4.0
 
 ----
 
