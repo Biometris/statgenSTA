@@ -36,7 +36,7 @@ layoutPlot <- function(x,
   }
   p <- setNames(vector(mode = "list", length = length(trials)), trials)
   for (trial in trials) {
-    ## If TD object was created from a data,frame without trial column all
+    ## If TD object was created from a data.frame without trial column all
     ## observations belong to the same trial and trial name will be the name
     ## of the original data set. Subsetting on this will result in an empty
     ## data.frame, so in this case don't subset.
@@ -92,9 +92,9 @@ layoutPlot <- function(x,
       ggplot2::theme(panel.background = ggplot2::element_blank(),
                      plot.title = ggplot2::element_text(hjust = 0.5)) +
       ## Move ticks to edge of the plot.
-      ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(),
+      ggplot2::scale_x_continuous(breaks = scales::breaks_extended(Q = xMin:xMax),
                                   expand = c(0, 0)) +
-      ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(),
+      ggplot2::scale_y_continuous(breaks = scales::breaks_extended(Q = yMin:yMax),
                                   expand = c(0, 0)) +
       ggplot2::ggtitle(plotTitle)
     if (sum(!is.na(trDat[["highlight."]])) > 0) {

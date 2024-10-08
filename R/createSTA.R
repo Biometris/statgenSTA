@@ -485,8 +485,8 @@ plot.STA <- function(x,
         if (x[[trial]]$engine == "SpATS") {
           ## Execute this part first since it needs plotData without missings
           ## removed.
-          ## Code mimickes code from SpATS package but is adapted to create a
-          ## data.frame useable by ggplot.
+          ## Code mimicks code from SpATS package but is adapted to create a
+          ## data.frame usable by ggplot.
           plotDat <- plotDat[order(plotDat[["colCoord"]],
                                    plotDat[["rowCoord"]]), ]
           nCol <- xMax - xMin + 1
@@ -497,9 +497,9 @@ plot.STA <- function(x,
           spatTr <- SpATS::obtain.spatialtrend(model,
                                                grid = c(nCol * p1, nRow * p2))
           ## spatial trend contains values for all data points, so NA in original
-          ## data need to be removed. The kronecker multiplication is needed to
-          ## convert the normal row col pattern to the smaller grid extending the
-          ## missing values.
+          ## data need to be removed. The Kronecker multiplication is needed to
+          ## convert the normal row col pattern to the smaller grid extending
+          ## the missing values.
           ## First a matrix M is created containing information for all
           ## columns/rows in the field even if they are completely empty.
           M <- matrix(nrow = nRow, ncol = nCol,
@@ -524,10 +524,10 @@ plot.STA <- function(x,
           ## Remove missings from data.
           plotDatSpat <- ggplot2::remove_missing(plotDatSpat, na.rm = TRUE)
         }
-        ## Create data.frame with all rows columns in field.
+        ## Create data.frame with all rows and columns in field.
         ## Full missing rows/columns are included.
         ## If not geom_tile just fills the empty columns by expanding the
-        ## neighboring colums (or rows).
+        ## neighboring columns (or rows).
         fullGrid <- expand.grid(colCoord = xMin:xMax, rowCoord = yMin:yMax)
         plotDat <- merge(fullGrid, plotDat, all.x = TRUE)
         ## Code taken from plot.SpATS and simplified.
@@ -547,8 +547,8 @@ plot.STA <- function(x,
         plots$p3 <- fieldPlot(plotDat = plotDat, fillVar = "residuals",
                               title = legends[3], colors = colors)
         if (x[[trial]]$engine == "SpATS") {
-          ## Get tickmarks from first plot to be used as ticks.
-          ## Spatial plot tends to use different tickmarks by default.
+          ## Get tick marks from first plot to be used as ticks.
+          ## Spatial plot tends to use different tick marks by default.
           xTicks <-
             ggplot2::ggplot_build(plots[[1]])$layout$panel_params[[1]]$x$breaks
           if (spaTrend == "raw") {
@@ -610,14 +610,20 @@ fieldPlot <- function(plotDat,
                       xTicks = ggplot2::waiver(),
                       spaTrend = "raw",
                       ...) {
+  xMin <- min(plotDat[["colCoord"]])
+  xMax <- max(plotDat[["colCoord"]])
+  yMin <- min(plotDat[["rowCoord"]])
+  yMax <- max(plotDat[["rowCoord"]])
   p <- ggplot2::ggplot(data = plotDat,
                        ggplot2::aes(x = .data[["colCoord"]],
                                     y = .data[["rowCoord"]],
                                     fill = .data[[fillVar]])) +
     ggplot2::geom_tile(na.rm = TRUE) +
     ## Remove empty space between ticks and actual plot.
-    ggplot2::scale_x_continuous(expand = c(0, 0), breaks = xTicks) +
-    ggplot2::scale_y_continuous(expand = c(0, 0)) +
+    ggplot2::scale_x_continuous(breaks = scales::breaks_extended(Q = xMin:xMax),
+                                expand = c(0, 0)) +
+    ggplot2::scale_y_continuous(breaks = scales::breaks_extended(Q = yMin:yMax),
+                                expand = c(0, 0)) +
     ## No background. Center and resize title. Resize axis labels.
     ## Remove legend title and resize legend entries.
     ggplot2::theme(panel.background = ggplot2::element_blank(),
