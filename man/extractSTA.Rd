@@ -84,7 +84,7 @@ Possible options for \code{what} are:\tabular{llll}{
    residF \tab F \tab residuals for the model with genotype as fixed component \tab yes \cr
    stdResF \tab F \tab standardized residuals for the model with genotype as fixed component \tab yes \cr
    wald \tab F \tab results of the wald test - only for lme4 and asreml \tab  \cr
-   CV \tab R \tab Coefficient of Variation \tab yes \cr
+   CV \tab F \tab Coefficient of Variation \tab yes \cr
    rDfF \tab F \tab residual degrees of freedom for the model with genotype as fixed component \tab yes \cr
    sed \tab F \tab standard error of difference - only for asreml \tab  \cr
    lsd \tab F \tab least significant difference - only for asreml \tab  \cr

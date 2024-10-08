@@ -4,7 +4,7 @@ F,seBLUEs,standard errors of the BLUEs,1,1,1,1
 R,BLUPs,Best Linear Unbiased Predictors,1,1,1,1
 R,seBLUPs,standard errors of the BLUPs,1,1,1,1
 F,ue,unit errors - only for lme4 and asreml,1,1,0,1
-R,heritability,broad sense heritability,1,1,1,2
+R,heritability,generalized heritability,1,1,1,2
 F,varCompF,variance components for the model with genotype as fixed component,1,1,1,0
 R,varCompR,variance components for the model with genotype as random component,1,1,1,0
 R,varGen,genetic variance component,1,1,1,2
