@@ -90,7 +90,7 @@ Possible options for \code{what} are:\tabular{llll}{
    lsd \tab F \tab least significant difference - only for asreml \tab  \cr
    BLUPs \tab R \tab Best Linear Unbiased Predictors \tab yes \cr
    seBLUPs \tab R \tab standard errors of the BLUPs \tab yes \cr
-   heritability \tab R \tab broad sense heritability \tab yes \cr
+   heritability \tab R \tab generalized heritability \tab yes \cr
    varCompR \tab R \tab variance components for the model with genotype as random component \tab  \cr
    varGen \tab R \tab genetic variance component \tab yes \cr
    varErr \tab R \tab residual variance component \tab yes \cr

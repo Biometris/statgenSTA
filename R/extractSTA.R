@@ -55,7 +55,7 @@
 #'  |lsd          |F     |least significant difference - only for asreml                              |            |
 #'  |BLUPs        |R     |Best Linear Unbiased Predictors                                             |yes         |
 #'  |seBLUPs      |R     |standard errors of the BLUPs                                                |yes         |
-#'  |heritability |R     |broad sense heritability                                                    |yes         |
+#'  |heritability |R     |generalized heritability                                                    |yes         |
 #'  |varCompR     |R     |variance components for the model with genotype as random component         |            |
 #'  |varGen       |R     |genetic variance component                                                  |yes         |
 #'  |varErr       |R     |residual variance component                                                 |yes         |
