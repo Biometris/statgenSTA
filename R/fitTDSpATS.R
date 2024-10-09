@@ -195,5 +195,5 @@ fitTDSpATS <- function(TD,
   sumTab <- setNames(vector(mode = "list", length = length(traits)), traits)
   return(list(mRand = mr, mFix = mf, TD = TDOut, traits = traits,
               design = design, spatial = spatial, engine = "SpATS",
-              predicted = "genotype", sumTab = sumTab))
+              predicted = "genotype", sumTab = sumTab, useCheckId = useCheckId))
 }

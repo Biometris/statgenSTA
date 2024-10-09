@@ -236,7 +236,8 @@ fitTDAsreml <- function(TD,
     return(list(mRand = if ("random" %in% what) mr else NULL,
                 mFix = if ("fixed" %in% what) mf else NULL, TD = TDOut,
                 traits = traits, design = design, spatial = spatial,
-                engine = "asreml", predicted = "genotype", sumTab = sumTab))
+                engine = "asreml", predicted = "genotype", sumTab = sumTab,
+                useCheckId = useCheckId))
   } else {# spatial
     regular <- min(repTab) == 1 && max(repTab) == 1
     return(bestSpatMod(TD = TD[trial], traits = traits, what = what,
@@ -520,5 +521,6 @@ bestSpatMod <- function(TD,
   return(list(mRand = if ("random" %in% what) mr else NULL,
               mFix = if ("fixed" %in% what) mf else NULL, TD = TD,
               traits = traits, design = design, spatial = spatial,
-              engine = "asreml", predicted = "genotype", sumTab = sumTab))
+              engine = "asreml", predicted = "genotype", sumTab = sumTab,
+              useCheckId = useCheckId))
 }

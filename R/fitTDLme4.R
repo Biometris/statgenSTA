@@ -141,5 +141,6 @@ fitTDLme4 <- function(TD,
   return(list(mRand = if ("random" %in% what) mr else NULL,
               mFix = if ("fixed" %in% what) mf else NULL, TD = TDOut,
               traits = traits, design = design, spatial = spatial,
-              engine = "lme4", predicted = "genotype", sumTab = sumTab))
+              engine = "lme4", predicted = "genotype", sumTab = sumTab,
+              useCheckId = useCheckId))
 }

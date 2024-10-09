@@ -98,6 +98,7 @@ summary.STA <- function(object,
   if (is.null(trait)) {
     trait <- object[[trials[1]]]$traits
   }
+  useCheckId <- object[[trials[1]]]$useCheckId
   ## If sortBy not provided, sort by BLUEs if available, BLUPs otherwise.
   ## If sortBy is provided, but only 1 of genotype fixed/ genotype random is
   ## fitted, ignore sortBy and overrule by available output.
@@ -129,8 +130,7 @@ summary.STA <- function(object,
     }
     ## Remove possible row/column filler observations.
     TD <- lapply(X = TD, FUN = function(dat) {
-      dat[genoOrCheck(dat, predicted = "genotype",
-                      useCheckId = hasName(x = dat, name = "checkId")), ]
+      dat[genoOrCheck(dat, predicted = "genotype", useCheckId = useCheckId), ]
     })
     stats <- summary.TD(object = TD, traits = trait)
     ## get predicted means (BLUEs + BLUPs).

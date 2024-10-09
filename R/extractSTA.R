@@ -124,13 +124,15 @@ extractSTA <- function(STA,
       return(NULL)
     }
     engine <- STATr$engine
+    useCheckId <- STATr$useCheckId
     ## Set useRepId to TRUE when it is used as fixed effect in the model.
     useRepId <- STATr$design %in% c("res.ibd", "res.rowcol", "rcbd")
     ## Extract statistics from fitted model.
     result <- do.call(what = paste0("extractSTA", tools::toTitleCase(engine)),
                       args = list(STA = STATr, traits = traitsTr, what = what,
                                   useRepId = useRepId, keep = keep,
-                                  restore = restoreColNames))
+                                  restore = restoreColNames,
+                                  useCheckId = useCheckId))
     attr(x = result, which = "traits") <- traitsTr
     attr(x = result, which = "design") <- STATr$design
     attr(x = result, which = "engine") <- engine
@@ -178,14 +180,13 @@ extractSTASpATS <- function(STA,
                             what = "all",
                             keep = NULL,
                             useRepId,
-                            restore = FALSE) {
+                            restore = FALSE,
+                            useCheckId = FALSE) {
   mf <- STA$mFix[names(STA$mFix) %in% traits]
   mr <- STA$mRand[names(STA$mRand) %in% traits]
   TD <- STA$TD[[1]]
   renCols <- attr(TD, "renamedCols")
   predicted <- STA$predicted
-  useCheckId <- !is.null(mr) &&
-    "checkId" %in% attr(terms(mr[[1]]$model$fixed), "term.labels")
   whatPred <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ranEf")
   what <- extractOptSel(what = what, fixed = !is.null(mf),
                         random = !is.null(mr), engine = "SpATS")
@@ -417,14 +418,13 @@ extractSTALme4 <- function(STA,
                            what = "all",
                            keep = NULL,
                            useRepId,
-                           restore = FALSE) {
+                           restore = FALSE,
+                           useCheckId = FALSE) {
   mf <- STA$mFix[names(STA$mFix) %in% traits]
   mr <- STA$mRand[names(STA$mRand) %in% traits]
   TD <- STA$TD[[1]]
   renCols <- attr(TD, "renamedCols")
   predicted <- STA$predicted
-  useCheckId <- !is.null(mr) &&
-    "checkId" %in% attr(terms(formula(mr[[1]])), "term.labels")
   whatPred <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ranEf")
   what <- extractOptSel(what = what, fixed = !is.null(mf),
                         random = !is.null(mr), engine = "lme4")
@@ -653,7 +653,8 @@ extractSTAAsreml <- function(STA,
                              what = "all",
                              keep = NULL,
                              useRepId,
-                             restore = FALSE) {
+                             restore = FALSE,
+                             useCheckId = FALSE) {
   if (!requireNamespace("asreml", quietly = TRUE)) {
     stop("asreml cannot be successfully loaded.\n")
   }
@@ -662,8 +663,6 @@ extractSTAAsreml <- function(STA,
   TD <- STA$TD[[1]]
   renCols <- attr(TD, "renamedCols")
   predicted <- STA$predicted
-  useCheckId <- !is.null(mr) &&
-    "checkId" %in% attr(terms(mr[[1]]$call$fixed), "term.labels")
   whatPred <- c("BLUEs", "seBLUEs", "BLUPs", "seBLUPs", "ranEf")
   what <- extractOptSel(what = what, fixed = !is.null(mf),
                         random = !is.null(mr), engine = "asreml")

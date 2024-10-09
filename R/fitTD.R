@@ -117,7 +117,9 @@
 #' \item{predicted}{A character string indicating the variable that has been
 #' predicted.}
 #' \item{sumTab}{A data.frame with a summary table for the spatial models tried
-#' when \code{engine = "asreml"} and \code{spatial = TRUE}}
+#' when \code{engine = "asreml"} and \code{spatial = TRUE}
+#' \item{useCheckId}{A boolean indicating if checkId was used when fitting the
+#' models}}
 #'
 #' @references
 #' Maria Xose Rodriguez-Alvarez, Martin P. Boer, Fred A. van Eeuwijk, Paul H.C.

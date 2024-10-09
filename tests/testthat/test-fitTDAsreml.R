@@ -7,9 +7,10 @@ if (requireNamespace("asreml", quietly = TRUE)) {
     test_that(paste(deparse(substitute(STA)), "has correct STA structure"), {
       expect_is(STA, "STA")
       for (tr in names(STA)) {
-        expect_length(STA[[tr]], 9)
+        expect_length(STA[[tr]], 10)
         expect_named(STA[[tr]], c("mRand", "mFix", "TD", "traits", "design",
-                                  "spatial", "engine", "predicted", "sumTab"))
+                                  "spatial", "engine", "predicted", "sumTab",
+                                  "useCheckId"))
         expect_is(STA[[tr]]$TD, "TD")
       }
     })

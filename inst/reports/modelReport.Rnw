@@ -73,10 +73,7 @@ if (is.null(x[[trial]]$mFix)) {
   predName <- "BLUEs"
 }
 ## Get use of checkId from model call.
-useCheckId <- (engine == "SpATS" && length(grep(pattern = "checkId",
-                                                x = deparse(model$model$fixed))) > 0) ||
-  (engine %in% c("asreml", "lme4") && length(grep(pattern = "+ checkId +",
-                                                  x = getCall(model))) > 0)
+useCheckId <- x[[trial]]$useCheckId
 @
 
 % Article title, Authors and Affiliations
