@@ -1,3 +1,8 @@
+# statgenSTA 1.0.14
+
+* For spatial models fitted with SpATS it is now assured that the number of segments used for rows and columns is divisible by the value of nest.div used. This is done to accommodate a minor fix in an upcoming release of SpATS.
+* Layout plots, both for raw data and as part of the plotted output after fitting a model now have a better mechanism for labeling the coordinates. This should prevent non-integer values from occuring as labels.
+
 # statgenSTA 1.0.13
 
 * Patch release for R 4.4.0. No user visual changes.
