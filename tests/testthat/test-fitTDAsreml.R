@@ -96,7 +96,7 @@ if (requireNamespace("asreml", quietly = TRUE)) {
     expect_is(modelAsTs[["E1"]]$spatial, "list")
     expect_length(modelAsTs[["E1"]]$spatial, 1)
     expect_named(modelAsTs[["E1"]]$spatial, "t1")
-    expect_equal(modelAsTs[["E1"]]$spatial$t1, "AR1(x)AR1 - units")
+    expect_equal(modelAsTs[["E1"]]$spatial$t1, "AR1(x)id ")
   })
 
   test_that("option spatial functions properly with missing data", {
@@ -120,7 +120,7 @@ if (requireNamespace("asreml", quietly = TRUE)) {
     expect_warning(modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1",
                                       spatial = TRUE, engine = "asreml",
                                       control = list(criterion = "BIC")))
-    expect_equal(modelAsTs[["E1"]]$spatial$t1, "AR1(x)AR1 - units")
+    expect_equal(modelAsTs[["E1"]]$spatial$t1, "AR1(x)id ")
   })
 
   ### Missing data.

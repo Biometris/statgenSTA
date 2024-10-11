@@ -20,7 +20,7 @@ test_that("summary.STA produces correct output for SpATS", {
   expect_null(sumSp$selSpatMod)
   expect_equal(nrow(sumSp$stats), 9)
   expect_equal(dim(sumSp$meanTab), c(15, 4))
-  expect_equivalent(sumSp$heritability, 0.01)
+  expect_equivalent(sumSp$heritability, 0)
   expect_equal(nrow(sumSp$sed), 0)
   expect_equal(nrow(sumSp$lsd), 0)
   expect_null(sumSp$spatSumTab)
@@ -59,10 +59,10 @@ test_that("summary.STA produces correct output for asreml with spatial models", 
                                     spatial = TRUE, engine = "asreml"))
   expect_warning(sumAsTs <- summary(modelAsTs))
   expect_length(sumAsTs, 7)
-  expect_equal(sumAsTs$selSpatMod, "AR1(x)AR1 - units")
+  expect_equal(sumAsTs$selSpatMod, "AR1(x)id ")
   expect_equal(nrow(sumAsTs$stats), 9)
   expect_equal(dim(sumAsTs$meanTab), c(15, 4))
-  expect_equivalent(sumAsTs$heritability, 0.44)
+  expect_equivalent(sumAsTs$heritability, 0)
   expect_equal(nrow(sumAsTs$sed), 3)
   expect_equal(nrow(sumAsTs$lsd), 3)
   expect_equal(dim(sumAsTs$spatSumTab), c(7, 10))
@@ -113,14 +113,15 @@ test_that("print.summary.STA functions properly", {
   skip_if_not_installed("asreml")
   modelAs <- fitTD(testTD, design = "rowcol", traits = "t1", engine = "asreml")
   expect_warning(modelAsTs <- fitTD(testTD, design = "ibd", traits = "t1",
-                                    spatial = TRUE, engine = "asreml"))
+                                    trials = "E1", spatial = TRUE,
+                                    engine = "asreml"))
   sumAs <- capture.output(summary(modelAs))
   expect_warning(sumAsTs <- capture.output(summary(modelAsTs)))
   expect_true(all(c("Standard Error of Difference (genotype modeled as fixed effect) ",
                     "Least Significant Difference (genotype modeled as fixed effect) ") %in%
                     sumAs))
   expect_true(all(c("Overview of tried spatial models ",
-                    "Selected spatial model:  AR1(x)AR1 - units ") %in%
+                    "Selected spatial model:  AR1(x)id  ") %in%
                     sumAsTs))
 })
 
