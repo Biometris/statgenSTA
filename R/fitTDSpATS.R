@@ -98,7 +98,7 @@ fitTDSpATS <- function(TD,
     }
   }
   ## Assure nSeg is divisible by nestDiv.
-  nSeg <- nSeg + nSeg %% nestDiv
+  nSeg <- ceiling(nSeg / nestDiv) * nestDiv
   ## Construct formula for fixed part.
   fixedForm <- formula(paste("~",
                              if (useRepIdFix) "repId" else "1",
