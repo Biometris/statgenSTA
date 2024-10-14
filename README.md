@@ -15,7 +15,7 @@ without spatial components.
 
 Analysis can be done using one of the R packages **SpATS**, **lme4** or
 **asreml**. For the latter a license is required which can be obtained
-upon purchase from [VSNi](https://vsni.co.uk/software/asreml-r).
+upon purchase from [VSNi](https://vsni.co.uk/software/asreml-r/).
 
 statgenSTA has extensive options for summarizing and visualizing both
 the raw data and the fitted models. The example below shows a selection
