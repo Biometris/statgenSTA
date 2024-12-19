@@ -301,7 +301,7 @@ print.summary.STA <- function(x,
 #' @param output Should the plot be output to the current device? If
 #' \code{FALSE} only a list of ggplot objects is invisibly returned.
 #'
-#' @return A list containing ggplot objects for the selected plots.
+#' @returns A list containing ggplot objects for the selected plots.
 #'
 #' @examples
 #' ## Run a single trait analysis using SpATS.
@@ -675,7 +675,7 @@ fieldPlot <- function(plotDat,
 #' genotype as fixed or genotype as random factor should be reported. By
 #' default all fitted models in the STA object are reported.
 #'
-#' @return A pdf report and the .tex file and figures folder that can be used
+#' @returns A pdf report and the .tex file and figures folder that can be used
 #' to recreate the report.
 #'
 #' @examples

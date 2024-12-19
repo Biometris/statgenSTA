@@ -60,7 +60,7 @@
 #' @param restoreColNames Should the original column names be restored in the
 #' output of the extracted data?
 #'
-#' @return Depending on the input either a data.frame or a list with, per
+#' @returns Depending on the input either a data.frame or a list with, per
 #' trial for which statistics have been extracted, a list of those statistics.
 #'
 #' @seealso \code{\link{fitTD}}

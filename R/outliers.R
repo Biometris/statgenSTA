@@ -28,7 +28,7 @@
 #' no similar observations.
 #' @param verbose Should the outliers be printed to the console?
 #'
-#' @return A list with two components:
+#' @returns A list with two components:
 #' \itemize{
 #' \item{indicator - a list of numeric vectors indicating the location of the
 #' outliers in the data}

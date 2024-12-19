@@ -89,7 +89,7 @@
 #' @param trPlLength An optional positive numerical vector indicating the
 #' lengths of the plots.
 #'
-#' @return An object of class TD, a list of data.frames with renamed columns
+#' @returns An object of class TD, a list of data.frames with renamed columns
 #' and an attribute \code{renamedCols} containing an overview of renamed
 #' columns. For each unique value of trial, the output has a data.frame in
 #' the list with the same name as the trial. These data.frames have attributes
@@ -453,7 +453,7 @@ dropTD <- function(TD,
 #' \item{all}{All summary statistics.}
 #' }
 #'
-#' @return A table containing the selected summary statistics.
+#' @returns A table containing the selected summary statistics.
 #'
 #' @family functions for TD objects
 #'
