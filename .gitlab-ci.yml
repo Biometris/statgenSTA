@@ -15,13 +15,13 @@ before_script:
   - export PATH="/usr/local/lib/R/site-library/littler/examples/:${PATH}"
   - echo "options(Ncpus = $(nproc --all))" >> /usr/local/lib/R/etc/Rprofile.site
   - install2.r devtools
-  - r -e 'devtools::install_dev_deps()'
+  - r -e 'devtools::install_dev_deps(upgrade = "never")'
 
 r-release:
   stage: test
   tags:
     - Docker
-  image: rocker/r-ver:latest
+  image: rocker/verse:latest
   script:
     - r -e 'devtools::check(check_dir = ".")'
   artifacts:
@@ -29,12 +29,13 @@ r-release:
       - "*.Rcheck"
     name: logs
     when: always
+    expire_in: 1 month
 
 r-devel:
   stage: test
   tags:
     - Docker
-  image: rocker/r-ver:devel
+  image: rocker/verse:devel
   script:
     - r -e 'devtools::check(check_dir = ".")'
   artifacts:
@@ -42,4 +43,5 @@ r-devel:
       - "*.Rcheck"
     name: logs
     when: always
+    expire_in: 1 month
 
