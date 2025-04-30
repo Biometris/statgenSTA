@@ -744,6 +744,11 @@ report.STA <- function(x,
         next
       }
       for (trait in traitsTr) {
+        if (is.null(modTr[[trial]][[whatMod]][[trait]])) {
+          warning("Model with genotype ", whatTr, " not available for trial ",
+                  trial, " for trait ", trait, ".\nReport skipped.")
+          next
+        }
         outTrt <- gsub(pattern = " ", replacement = "_", x = trait)
         ## report name has to be adapted.
         if (!is.null(outfile)) {
@@ -754,7 +759,8 @@ report.STA <- function(x,
                                         last = outLen - nchar(outExt) - 1),
                               "_", outTr, "_", outTrt, "_", whatTr, ".", outExt)
         } else {
-          outfileTr <- paste0("./modelReport_" , trial, "_", outTr, "_", whatTr,
+          outfileTr <- paste0("./modelReport_" , outTr,
+                              "_", outTrt, "_", whatTr,
                               "_", timeStamp, ".pdf")
         }
         createReport(x = modTr, reportName = "modelReport.Rnw",

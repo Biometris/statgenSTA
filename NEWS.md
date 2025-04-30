@@ -1,3 +1,7 @@
+# statgenSTA 1.0.14.9000
+
+* Reports are no longer generated for trait - trial combinations for which no model was fitted. 
+
 # statgenSTA 1.0.14
 
 * For spatial models fitted with SpATS it is now assured that the number of segments used for rows and columns is divisible by the value of nest.div used. This is done to accommodate a minor fix in an upcoming release of SpATS.
