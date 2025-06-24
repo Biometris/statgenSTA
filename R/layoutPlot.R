@@ -190,9 +190,9 @@ layoutPlot <- function(x,
         ## Add a legend entry for replicates and subBlocks.
         ggplot2::scale_linetype_manual(c("replicates", "subBlocks")[shwVals],
                                        values = c("replicates" = "solid",
-                                                  "subBlocks" = "solid")[shwVals],
-                                       name = ggplot2::element_blank()) +
-        ggplot2::guides(linetype = ggplot2::guide_legend(override.aes = newAes))
+                                                  "subBlocks" = "solid")[shwVals]) +
+        ggplot2::guides(linetype = ggplot2::guide_legend(override.aes = newAes,
+                                                         title = NULL))
     }
     p[[trial]] <- pTr
     if (output) {

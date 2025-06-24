@@ -1,6 +1,7 @@
-# statgenSTA 1.0.14.9000
+# statgenSTA 1.0.15
 
 * Reports are no longer generated for trait - trial combinations for which no model was fitted. 
+* Small code change for compatibility with the upcoming version of ggplot2.
 
 # statgenSTA 1.0.14
 

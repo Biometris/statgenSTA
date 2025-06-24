@@ -103,5 +103,3 @@ test_that("plot works correctly if no trial is defined", {
   testTD2$E1[["trial"]] <- NULL
   expect_silent(plot(testTD2, plotType = "layout"))
 })
-
-
